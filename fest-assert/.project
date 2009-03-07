@@ -1,0 +1,13 @@
+<projectDescription>
+  <name>fest-assert</name>
+  <comment>&apos;Flexible&apos; or &apos;fluent&apos; assertions for testing</comment>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>
