@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+ 
+<suite name="All Tests" verbose="1">
+  <test name="All packages" >
+    <packages>
+      <package name="org.apache.tools.ant.taskdefs.optional.junit"/>
+      <package name="org.fest.swing.junit.ant"/>
+      <package name="org.fest.swing.junit.runner"/>
+    </packages>
+  </test>
+</suite>
