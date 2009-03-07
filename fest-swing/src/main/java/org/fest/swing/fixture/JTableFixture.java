@@ -54,6 +54,7 @@ import static org.fest.util.Strings.concat;
  * @author Alex Ruiz
  * @author Yvonne Wang
  * @author Fabien Barbero
+ * @author Andriy Tsykholyas
  */
 public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements CommonComponentFixture {
 
