@@ -85,7 +85,15 @@ public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements C
   }
 
   private void createDriver() {
-    updateDriver(new JTableDriver(robot));
+    updateDriver(createJTableDriver());
+  }
+
+  /**
+   * Creates the <code>{@link JTableDriver}</code> for this fixture.
+   * @return the created <code>JTableDriver</code>.
+   */
+  protected JTableDriver createJTableDriver() {
+    return new JTableDriver(robot);
   }
 
   final void updateDriver(JTableDriver newDriver) {
