@@ -15,13 +15,18 @@
  */
 package org.fest.swing.fixture;
 
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.TestGroups.GUI;
+import static org.fest.swing.test.task.DialogShowTask.packAndShow;
+
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Point;
 
 import javax.swing.JDialog;
-
-import org.testng.annotations.Test;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.annotation.RunsInEDT;
@@ -29,14 +34,7 @@ import org.fest.swing.core.BasicRobot;
 import org.fest.swing.driver.ComponentDriver;
 import org.fest.swing.driver.DialogDriver;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.TestGroups.GUI;
-import static org.fest.swing.test.task.DialogShowTask.packAndShow;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link DialogFixture}</code>.
@@ -98,13 +96,18 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
     }
   }
 
+  @Test(expectedExceptions = NullPointerException.class)
+  public void shouldThrowErrorIfDriverIsNull() {
+    fixture.updateDriver(null);
+  }
+
   public void shouldMoveToFront() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.moveToFront(target);
         expectLastCall().once();
       }
-      
+
       protected void codeToTest() {
         assertThatReturnsThis(fixture.moveToFront());
       }
@@ -117,7 +120,7 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
         driver.moveToBack(target);
         expectLastCall().once();
       }
-      
+
       protected void codeToTest() {
         assertThatReturnsThis(fixture.moveToBack());
       }
@@ -246,7 +249,7 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
       }
     }.run();
   }
-  
+
   ComponentDriver driver() { return driver; }
   Dialog target() { return target; }
   DialogFixture fixture() { return fixture; }

@@ -19,7 +19,11 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
 
-import org.fest.swing.core.*;
+import org.fest.swing.core.BasicRobot;
+import org.fest.swing.core.KeyPressInfo;
+import org.fest.swing.core.MouseButton;
+import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.core.Robot;
 import org.fest.swing.driver.FrameDriver;
 import org.fest.swing.exception.ActionFailedException;
 import org.fest.swing.exception.ComponentLookupException;
@@ -90,7 +94,13 @@ public class FrameFixture extends WindowFixture<Frame> implements FrameLikeFixtu
     updateDriver(new FrameDriver(robot));
   }
 
-  void updateDriver(FrameDriver newDriver) {
+  /**
+   * Sets the <code>{@link FrameDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>FrameDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void updateDriver(FrameDriver newDriver) {
+    if (newDriver == null) throw new NullPointerException("The driver should not be null");
     driver = newDriver;
   }
 
@@ -150,7 +160,7 @@ public class FrameFixture extends WindowFixture<Frame> implements FrameLikeFixtu
     driver.iconify(target);
     return this;
   }
-  
+
   /**
    * Simulates a user deiconifying this fixture's <code>{@link Frame}</code>.
    * @return this fixture.
@@ -211,7 +221,7 @@ public class FrameFixture extends WindowFixture<Frame> implements FrameLikeFixtu
     driver.pressAndReleaseKey(target, keyPressInfo);
     return this;
   }
-  
+
   /**
    * Simulates a user pressing and releasing the given keys on this fixture's <code>{@link Frame}</code>.
    * @param keyCodes one or more codes of the keys to press.
@@ -380,7 +390,7 @@ public class FrameFixture extends WindowFixture<Frame> implements FrameLikeFixtu
   }
 
   /**
-   * If the given <code>{@link Frame}</code> is visible, sends it to the back and may cause it to lose focus or 
+   * If the given <code>{@link Frame}</code> is visible, sends it to the back and may cause it to lose focus or
    * activation if it is the focused or active.
    * @return this fixture.
    */

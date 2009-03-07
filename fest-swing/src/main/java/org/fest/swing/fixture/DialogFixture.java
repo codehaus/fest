@@ -19,7 +19,11 @@ import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import org.fest.swing.core.*;
+import org.fest.swing.core.BasicRobot;
+import org.fest.swing.core.KeyPressInfo;
+import org.fest.swing.core.MouseButton;
+import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.core.Robot;
 import org.fest.swing.driver.DialogDriver;
 import org.fest.swing.exception.ActionFailedException;
 import org.fest.swing.exception.ComponentLookupException;
@@ -89,7 +93,13 @@ public class DialogFixture extends WindowFixture<Dialog> {
     updateDriver(new DialogDriver(robot));
   }
 
-  void updateDriver(DialogDriver newDriver) {
+  /**
+   * Sets the <code>{@link DialogDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>DialogDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void updateDriver(DialogDriver newDriver) {
+    if (newDriver == null) throw new NullPointerException("The driver should not be null");
     driver = newDriver;
   }
 
@@ -164,7 +174,7 @@ public class DialogFixture extends WindowFixture<Dialog> {
 
 
   /**
-   * If the given <code>{@link Dialog}</code> is visible, sends it to the back and may cause it to lose focus or 
+   * If the given <code>{@link Dialog}</code> is visible, sends it to the back and may cause it to lose focus or
    * activation if it is the focused or active.
    * @return this fixture.
    */
@@ -186,7 +196,7 @@ public class DialogFixture extends WindowFixture<Dialog> {
     driver.pressAndReleaseKey(target, keyPressInfo);
     return this;
   }
-  
+
   /**
    * Simulates a user pressing and releasing the given keys on this fixture's <code>{@link Dialog}</code>.
    * @param keyCodes one or more codes of the keys to press.

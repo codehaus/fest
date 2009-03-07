@@ -92,8 +92,10 @@ public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements C
   /**
    * Sets the <code>{@link JTableDriver}</code> to be used by this fixture.
    * @param newDriver the new <code>JTableDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
    */
   protected final void updateDriver(JTableDriver newDriver) {
+    if (newDriver == null) throw new NullPointerException("The driver should not be null");
     driver = newDriver;
   }
 

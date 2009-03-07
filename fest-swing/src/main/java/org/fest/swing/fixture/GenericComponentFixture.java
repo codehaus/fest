@@ -1,15 +1,15 @@
 /*
  * Created on Jul 18, 2008
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
- * 
+ *
  * Copyright @2008-2009 the original author or authors.
  */
 package org.fest.swing.fixture;
@@ -28,7 +28,7 @@ import org.fest.swing.timing.Timeout;
  * specialized fixtures providing higher level input operations for custom components.
  * <p>
  * Example:
- * 
+ *
  * <pre>
  * public class MyWidget extends JComponent {
  *  ...
@@ -37,24 +37,24 @@ import org.fest.swing.timing.Timeout;
  *  }
  *  ...
  * }
- * 
+ *
  * public class MyWidgetFixture extends GenericComponentFixture&lt;MyWidget&gt; {
  *   public MyWidgetFixture(Robot robot, MyWidget target) {
  *     super(robot, target);
  *   }
- *     
+ *
  *   public void clickAndDrag(Point start, Point end) {
  *     robot.pressMouse(target, start);
  *     robot.moveMouse(target, end);
  *     robot.releaseAllMouseButtons();
  *   }
  * }
- * 
+ *
  * </pre>
- * 
+ *
  * </p>
  * @param <T> the type of <code>Component</code> that this fixture can manage.
- * 
+ *
  * @author <a href="mailto:simeon.fitch@mseedsoft.com">Simeon H.K. Fitch</a>
  */
 public abstract class GenericComponentFixture<T extends Component> extends ComponentFixture<T> implements
@@ -88,16 +88,21 @@ public abstract class GenericComponentFixture<T extends Component> extends Compo
     updateDriver(driver);
   }
 
-  void updateDriver(ComponentDriver newDriver) {
+  /**
+   * Sets the <code>{@link ComponentDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>ComponentDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void updateDriver(ComponentDriver newDriver) {
     if (newDriver == null) throw new NullPointerException("The driver should not be null");
     this.driver = newDriver;
   }
 
   /**
-   * Returns the driver that handles input requests. 
-   * @return the driver that handles input requests.
+   * Returns the <code>{@link ComponentDriver}</code> used by this fixture.
+   * @return the driver used by this fixture.
    */
-  protected ComponentDriver driver() {
+  protected final ComponentDriver driver() {
     return driver;
   }
 

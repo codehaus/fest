@@ -15,6 +15,21 @@
  */
 package org.fest.swing.fixture;
 
+import static java.awt.Color.BLUE;
+import static java.awt.Font.PLAIN;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
+import static org.fest.swing.core.MouseClickInfo.leftButton;
+import static org.fest.swing.data.TableCell.row;
+import static org.fest.swing.exception.ActionFailedException.actionFailure;
+import static org.fest.swing.test.builder.JPopupMenus.popupMenu;
+import static org.fest.swing.test.builder.JTableHeaders.tableHeader;
+import static org.fest.swing.test.builder.JTables.table;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
@@ -22,8 +37,6 @@ import java.awt.Point;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
-
-import org.testng.annotations.Test;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.cell.JTableCellReader;
@@ -35,21 +48,7 @@ import org.fest.swing.data.TableCellByColumnId;
 import org.fest.swing.driver.ComponentDriver;
 import org.fest.swing.driver.JTableDriver;
 import org.fest.swing.exception.ActionFailedException;
-
-import static java.awt.Color.BLUE;
-import static java.awt.Font.PLAIN;
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
-import static org.fest.swing.core.MouseClickInfo.leftButton;
-import static org.fest.swing.data.TableCell.row;
-import static org.fest.swing.exception.ActionFailedException.actionFailure;
-import static org.fest.swing.test.builder.JPopupMenus.popupMenu;
-import static org.fest.swing.test.builder.JTableHeaders.tableHeader;
-import static org.fest.swing.test.builder.JTables.table;
-import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JTableFixture}</code>.
@@ -71,6 +70,11 @@ public class JTableFixtureTest extends CommonComponentFixtureTestCase<JTable> {
     fixture = new JTableFixture(robot(), target);
     fixture.updateDriver(driver);
     cell = row(6).column(8);
+  }
+
+  @Test(expectedExceptions = NullPointerException.class)
+  public void shouldThrowErrorIfDriverIsNull() {
+    fixture.updateDriver(null);
   }
 
   public void shouldCreateFixtureWithGivenComponentName() {
