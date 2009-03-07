@@ -1,0 +1,33 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+ 
+<suite name="All Tests" verbose="1">
+  <test name="All packages" >
+    <!--  
+    <groups>
+      <run>
+        <exclude name="EDT Query" />
+      </run>
+    </groups>
+    -->
+    <packages>
+      <package name="org.fest.swing.annotation"/>
+      <package name="org.fest.swing.applet"/>
+      <package name="org.fest.swing.core"/>
+      <package name="org.fest.swing.core.matcher"/>
+      <package name="org.fest.swing.driver"/>
+      <package name="org.fest.swing.exception"/>
+      <package name="org.fest.swing.finder"/>
+      <package name="org.fest.swing.fixture"/>
+      <package name="org.fest.swing.format"/>
+      <package name="org.fest.swing.hierarchy"/>
+      <package name="org.fest.swing.image"/>
+      <package name="org.fest.swing.input"/>
+      <package name="org.fest.swing.keystroke"/>
+      <package name="org.fest.swing.launcher"/>
+      <package name="org.fest.swing.listener"/>
+      <package name="org.fest.swing.monitor"/>
+      <package name="org.fest.swing.query"/>
+      <package name="org.fest.swing.util"/>
+    </packages>
+  </test>
+</suite>
