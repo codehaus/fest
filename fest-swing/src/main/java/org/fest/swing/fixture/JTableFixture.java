@@ -86,18 +86,14 @@ public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements C
   }
 
   private void createDriver() {
-    updateDriver(createJTableDriver());
+    updateDriver(new JTableDriver(robot));
   }
 
   /**
-   * Creates the <code>{@link JTableDriver}</code> for this fixture.
-   * @return the created <code>JTableDriver</code>.
+   * Sets the <code>{@link JTableDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JTableDriver</code>.
    */
-  protected JTableDriver createJTableDriver() {
-    return new JTableDriver(robot);
-  }
-
-  final void updateDriver(JTableDriver newDriver) {
+  protected final void updateDriver(JTableDriver newDriver) {
     driver = newDriver;
   }
 
@@ -469,7 +465,6 @@ public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements C
     return this;
   }
 
-
   /**
    * Gives input focus to this fixture's <code>{@link JTable}</code>.
    * @throws IllegalStateException if this fixture's <code>JTable</code> is disabled.
@@ -529,7 +524,6 @@ public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements C
     return this;
   }
 
-
   /**
    * Asserts that this fixture's <code>{@link JTable}</code> has the given number of rows.
    * @param expected the expected number of rows.
@@ -540,7 +534,6 @@ public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements C
     driver.requireRowCount(target, expected);
     return this;
   }
-
 
   /**
    * Asserts that this fixture's <code>{@link JTable}</code> has the given number of columns.
