@@ -15,19 +15,21 @@
  */
 package org.fest.swing.fixture;
 
-import java.awt.Component;
-
-import org.fest.swing.core.Robot;
-import org.fest.swing.core.Settings;
-import org.fest.swing.exception.ComponentLookupException;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.driver.ComponentDriver.propertyName;
-import static org.fest.swing.fixture.ComponentFixtureValidator.*;
+import static org.fest.swing.fixture.ComponentFixtureValidator.notNullRobot;
+import static org.fest.swing.fixture.ComponentFixtureValidator.notNullTarget;
 import static org.fest.swing.format.Formatting.format;
 import static org.fest.swing.query.ComponentBackgroundQuery.backgroundOf;
 import static org.fest.swing.query.ComponentFontQuery.fontOf;
 import static org.fest.swing.query.ComponentForegroundQuery.foregroundOf;
+
+import java.awt.Component;
+
+import org.fest.swing.core.Robot;
+import org.fest.swing.core.Settings;
+import org.fest.swing.driver.ComponentDriver;
+import org.fest.swing.exception.ComponentLookupException;
 
 /**
  * Understands simulation of user events on a <code>{@link Component}</code> and verification of the state of such
@@ -72,6 +74,10 @@ public abstract class ComponentFixture<T extends Component> {
     return robot.finder().findByType(type, requireShowing(robot));
   }
 
+  static void validateNotNull(ComponentDriver driver) {
+    if (driver == null) throw new NullPointerException("The driver should not be null");
+  }
+  
   /**
    * Creates a new <code>{@link ComponentFixture}</code>.
    * @param robot performs simulation of user events on a <code>Component</code>.

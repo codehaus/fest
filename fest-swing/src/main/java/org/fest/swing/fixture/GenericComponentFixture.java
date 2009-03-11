@@ -85,7 +85,7 @@ public abstract class GenericComponentFixture<T extends Component> extends Compo
    */
   public GenericComponentFixture(Robot robot, ComponentDriver driver, T target) {
     super(robot, target);
-    updateDriver(driver);
+    driver(driver);
   }
 
   /**
@@ -93,8 +93,8 @@ public abstract class GenericComponentFixture<T extends Component> extends Compo
    * @param newDriver the new <code>ComponentDriver</code>.
    * @throws NullPointerException if the given driver is <code>null</code>.
    */
-  protected final void updateDriver(ComponentDriver newDriver) {
-    if (newDriver == null) throw new NullPointerException("The driver should not be null");
+  protected final void driver(ComponentDriver newDriver) {
+    validateNotNull(newDriver);
     this.driver = newDriver;
   }
 

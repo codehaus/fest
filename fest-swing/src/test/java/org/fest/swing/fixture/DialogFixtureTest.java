@@ -53,7 +53,7 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
     driver = createMock(DialogDriver.class);
     target = createDialog();
     fixture = new DialogFixture(robot(), target);
-    fixture.updateDriver(driver);
+    fixture.driver(driver);
   }
 
   @RunsInEDT
@@ -98,7 +98,7 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
 
   @Test(expectedExceptions = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
-    fixture.updateDriver(null);
+    fixture.driver(null);
   }
 
   public void shouldMoveToFront() {

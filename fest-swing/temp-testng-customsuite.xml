@@ -1,0 +1,12 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="fest-swing">
+  <test verbose="2" name="org.fest.swing.fixture.JComboBoxFixtureTest" annotations="JDK">
+    <classes>
+      <class name="org.fest.swing.fixture.JComboBoxFixtureTest">
+        <methods>
+          <include name="shouldThrowErrorIfDriverIsNull"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+</suite>

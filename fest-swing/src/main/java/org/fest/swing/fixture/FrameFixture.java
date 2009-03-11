@@ -91,7 +91,7 @@ public class FrameFixture extends WindowFixture<Frame> implements FrameLikeFixtu
   }
 
   private void createDriver() {
-    updateDriver(new FrameDriver(robot));
+    driver(new FrameDriver(robot));
   }
 
   /**
@@ -99,8 +99,8 @@ public class FrameFixture extends WindowFixture<Frame> implements FrameLikeFixtu
    * @param newDriver the new <code>FrameDriver</code>.
    * @throws NullPointerException if the given driver is <code>null</code>.
    */
-  protected final void updateDriver(FrameDriver newDriver) {
-    if (newDriver == null) throw new NullPointerException("The driver should not be null");
+  protected final void driver(FrameDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 

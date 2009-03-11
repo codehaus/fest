@@ -90,7 +90,7 @@ public class DialogFixture extends WindowFixture<Dialog> {
   }
 
   private void createDriver() {
-    updateDriver(new DialogDriver(robot));
+    driver(new DialogDriver(robot));
   }
 
   /**
@@ -98,8 +98,8 @@ public class DialogFixture extends WindowFixture<Dialog> {
    * @param newDriver the new <code>DialogDriver</code>.
    * @throws NullPointerException if the given driver is <code>null</code>.
    */
-  protected final void updateDriver(DialogDriver newDriver) {
-    if (newDriver == null) throw new NullPointerException("The driver should not be null");
+  protected final void driver(DialogDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 

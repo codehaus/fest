@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.fest.swing.fixture.JCheckBoxFixtureTest" failures="1" tests="1" time="0.922" errors="0">
+  <properties/>
+  <testcase name="shouldThrowErrorIfDriverIsNull" time="0.015" classname="org.fest.swing.fixture.JCheckBoxFixtureTest">
+    <failure type="org.testng.TestException" message="
+Expected an exception in test method org.fest.swing.fixture.JCheckBoxFixtureTest.shouldThrowErrorIfDriverIsNull()">
+      <![CDATA[org.testng.TestException: 
+Expected an exception in test method org.fest.swing.fixture.JCheckBoxFixtureTest.shouldThrowErrorIfDriverIsNull()
+... Removed 16 stack frames]]>
+    </failure>
+  </testcase>
+</testsuite>

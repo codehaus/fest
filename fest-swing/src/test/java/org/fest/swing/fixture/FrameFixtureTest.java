@@ -50,7 +50,7 @@ import org.testng.annotations.Test;
                     .withTitle("A Frame")
                     .createNew();
     fixture = new FrameFixture(robot(), target);
-    fixture.updateDriver(driver);
+    fixture.driver(driver);
   }
 
   public void shouldCreateFixtureWithGivenComponentName() {
@@ -83,7 +83,7 @@ import org.testng.annotations.Test;
 
   @Test(expectedExceptions = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
-    fixture.updateDriver(null);
+    fixture.driver(null);
   }
 
   public void shouldMoveToFront() {
