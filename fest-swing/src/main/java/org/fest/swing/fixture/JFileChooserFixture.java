@@ -1,16 +1,16 @@
 /*
  * Created on Jul 9, 2007
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * Copyright @2007-2009 the original author or authors.
  */
 package org.fest.swing.fixture;
@@ -32,12 +32,13 @@ import org.fest.swing.timing.Timeout;
  * Understands simulation of user events on a <code>{@link JFileChooser}</code> and verification of the state of such
  * <code>{@link JFileChooser}</code>.
  *
- * @author Yvonne Wang 
+ * @author Yvonne Wang
+ * @author Alex Ruiz
  */
 public class JFileChooserFixture extends ComponentFixture<JFileChooser> implements CommonComponentFixture {
 
   private JFileChooserDriver driver;
-  
+
   /**
    * Creates a new <code>{@link JFileChooserFixture}</code>.
    * @param robot performs simulation of user events on a <code>JFileChooser</code>.
@@ -49,7 +50,7 @@ public class JFileChooserFixture extends ComponentFixture<JFileChooser> implemen
     super(robot, JFileChooser.class);
     createDriver();
   }
-  
+
   /**
    * Creates a new <code>{@link JFileChooserFixture}</code>.
    * @param robot performs simulation of user events on the given <code>JFileChooser</code>.
@@ -61,7 +62,7 @@ public class JFileChooserFixture extends ComponentFixture<JFileChooser> implemen
     super(robot, target);
     createDriver();
   }
-  
+
   /**
    * Creates a new <code>{@link JFileChooserFixture}</code>.
    * @param robot performs simulation of user events on a <code>JFileChooser</code>.
@@ -76,10 +77,16 @@ public class JFileChooserFixture extends ComponentFixture<JFileChooser> implemen
   }
 
   private void createDriver() {
-    updateDriver(new JFileChooserDriver(robot));
+    driver(new JFileChooserDriver(robot));
   }
 
-  final void updateDriver(JFileChooserDriver newDriver) {
+  /**
+   * Sets the <code>{@link JFileChooserDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JFileChooserDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JFileChooserDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 
@@ -92,7 +99,7 @@ public class JFileChooserFixture extends ComponentFixture<JFileChooser> implemen
   public void approve() {
     driver.clickApproveButton(target);
   }
-  
+
   /**
    * Finds the "Approve" button in this fixture's <code>{@link JFileChooser}</code>.
    * @return the found "Approve" button.
@@ -120,9 +127,9 @@ public class JFileChooserFixture extends ComponentFixture<JFileChooser> implemen
   public JButtonFixture cancelButton() {
     return new JButtonFixture(robot, driver.cancelButton(target));
   }
-  
+
   /**
-   * Returns a fixture that manages the field where the user can enter the name of the file to select in this fixture's 
+   * Returns a fixture that manages the field where the user can enter the name of the file to select in this fixture's
    * <code>{@link JFileChooser}</code>.
    * @return the created fixture.
    * @throws ComponentLookupException if a matching textToMatch field could not be found.
@@ -148,7 +155,7 @@ public class JFileChooserFixture extends ComponentFixture<JFileChooser> implemen
     driver.selectFile(target, file);
     return this;
   }
-  
+
 
   /**
    * Selects the given files in this fixture's <code>{@link JFileChooser}</code>.
@@ -158,11 +165,11 @@ public class JFileChooserFixture extends ComponentFixture<JFileChooser> implemen
    * @throws IllegalArgumentException if the given array of files is empty.
    * @throws IllegalStateException if this fixture's <code>JFileChooser</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JFileChooser</code> is not showing on the screen.
-   * @throws IllegalStateException if this fixture's <code>JFileChooser</code> does not support multiple selection and 
+   * @throws IllegalStateException if this fixture's <code>JFileChooser</code> does not support multiple selection and
    * there is more than one file to select.
    * @throws IllegalArgumentException if this fixture's <code>JFileChooser</code> can select directories only and any of
    * the files to select is not a directory.
-   * @throws IllegalArgumentException if this fixture's <code>JFileChooser</code> cannot select directories and any of 
+   * @throws IllegalArgumentException if this fixture's <code>JFileChooser</code> cannot select directories and any of
    * the files to select is a directory.
    */
   public JFileChooserFixture selectFiles(File... files) {
@@ -192,7 +199,7 @@ public class JFileChooserFixture extends ComponentFixture<JFileChooser> implemen
     driver.click(target);
     return this;
   }
-  
+
   /**
    * Simulates a user clicking this fixture's <code>{@link JFileChooser}</code>.
    * @param button the button to click.
@@ -218,7 +225,7 @@ public class JFileChooserFixture extends ComponentFixture<JFileChooser> implemen
     driver.click(target, mouseClickInfo);
     return this;
   }
-  
+
   /**
    * Simulates a user double-clicking this fixture's <code>{@link JFileChooser}</code>.
    * @return this fixture.
@@ -240,7 +247,7 @@ public class JFileChooserFixture extends ComponentFixture<JFileChooser> implemen
     driver.rightClick(target);
     return this;
   }
-  
+
   /**
    * Gives input focus to this fixture's <code>{@link JFileChooser}</code>.
    * @return this fixture.
@@ -331,7 +338,7 @@ public class JFileChooserFixture extends ComponentFixture<JFileChooser> implemen
     driver.requireEnabled(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JFileChooser}</code> is enabled.
    * @param timeout the time this fixture will wait for the component to be enabled.
@@ -362,7 +369,7 @@ public class JFileChooserFixture extends ComponentFixture<JFileChooser> implemen
     driver.requireVisible(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JFileChooser}</code> is not visible.
    * @return this fixture.

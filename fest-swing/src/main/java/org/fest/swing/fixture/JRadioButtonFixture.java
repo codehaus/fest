@@ -1,16 +1,16 @@
 /*
  * Created on Sep 18, 2007
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * Copyright @2007-2009 the original author or authors.
  */
 package org.fest.swing.fixture;
@@ -26,9 +26,9 @@ import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.timing.Timeout;
 
 /**
- * Understands simulation of user events on a <code>{@link JRadioButton}</code> and verification of the state of such 
+ * Understands simulation of user events on a <code>{@link JRadioButton}</code> and verification of the state of such
  * <code>{@link JRadioButton}</code>.
- * 
+ *
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
@@ -47,7 +47,7 @@ public class JRadioButtonFixture extends TwoStateButtonFixture<JRadioButton> {
     super(robot, target);
     createDriver();
   }
-  
+
   /**
    * Creates a new <code>{@link JRadioButtonFixture}</code>.
    * @param robot performs simulation of user events on a <code>JRadioButton</code>.
@@ -62,16 +62,22 @@ public class JRadioButtonFixture extends TwoStateButtonFixture<JRadioButton> {
   }
 
   private void createDriver() {
-    updateDriver(new AbstractButtonDriver(robot));
+    driver(new AbstractButtonDriver(robot));
   }
-  
-  void updateDriver(AbstractButtonDriver newDriver) {
+
+  /**
+   * Sets the <code>{@link AbstractButtonDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>AbstractButtonDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(AbstractButtonDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 
   /**
-   * Returns the text of this fixture's <code>{@link JRadioButton}</code>. 
-   * @return the text of this fixture's <code>JRadioButton</code>. 
+   * Returns the text of this fixture's <code>{@link JRadioButton}</code>.
+   * @return the text of this fixture's <code>JRadioButton</code>.
    */
   public String text() {
     return driver.textOf(target);
@@ -227,7 +233,7 @@ public class JRadioButtonFixture extends TwoStateButtonFixture<JRadioButton> {
     driver.releaseKey(target, keyCode);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JRadioButton}</code> has input focus.
    * @return this fixture.
@@ -247,7 +253,7 @@ public class JRadioButtonFixture extends TwoStateButtonFixture<JRadioButton> {
     driver.requireEnabled(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JRadioButton}</code> is enabled.
    * @param timeout the time this fixture will wait for the component to be enabled.
@@ -278,7 +284,7 @@ public class JRadioButtonFixture extends TwoStateButtonFixture<JRadioButton> {
     driver.requireSelected(target);
     return this;
   }
-  
+
   /**
    * Verifies that this fixture's <code>{@link JRadioButton}</code> is not selected.
    * @return this fixture.
@@ -288,7 +294,7 @@ public class JRadioButtonFixture extends TwoStateButtonFixture<JRadioButton> {
     driver.requireNotSelected(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JRadioButton}</code> is visible.
    * @return this fixture.
@@ -308,10 +314,10 @@ public class JRadioButtonFixture extends TwoStateButtonFixture<JRadioButton> {
     driver.requireNotVisible(target);
     return this;
   }
-  
+
   /**
-   * Asserts that the text of this fixture's <code>{@link JRadioButton}</code> is equal to the specified 
-   * <code>String</code>. 
+   * Asserts that the text of this fixture's <code>{@link JRadioButton}</code> is equal to the specified
+   * <code>String</code>.
    * @param expected the text to match.
    * @return this fixture.
    * @throws AssertionError if the text of the target JRadioButton is not equal to the given one.

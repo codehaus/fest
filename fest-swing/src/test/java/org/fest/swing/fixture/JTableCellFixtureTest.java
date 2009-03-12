@@ -368,7 +368,7 @@ public class JTableCellFixtureTest {
 
   private JTableFixture tableFixtureStub() {
     JTableFixture tableFixture = new JTableFixture(createMock(Robot.class), table().createNew());
-    tableFixture.updateDriver(createMock(JTableDriver.class));
+    tableFixture.driver(createMock(JTableDriver.class));
     return tableFixture;
   }
 }

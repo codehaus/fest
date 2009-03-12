@@ -68,13 +68,13 @@ public class JTableFixtureTest extends CommonComponentFixtureTestCase<JTable> {
     driver = createMock(JTableDriver.class);
     target = table().createNew();
     fixture = new JTableFixture(robot(), target);
-    fixture.updateDriver(driver);
+    fixture.driver(driver);
     cell = row(6).column(8);
   }
 
   @Test(expectedExceptions = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
-    fixture.updateDriver(null);
+    fixture.driver(null);
   }
 
   public void shouldCreateFixtureWithGivenComponentName() {

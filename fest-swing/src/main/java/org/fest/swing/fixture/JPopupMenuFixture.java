@@ -18,7 +18,11 @@ package org.fest.swing.fixture;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import org.fest.swing.core.*;
+import org.fest.swing.core.GenericTypeMatcher;
+import org.fest.swing.core.KeyPressInfo;
+import org.fest.swing.core.MouseButton;
+import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.core.Robot;
 import org.fest.swing.driver.JPopupMenuDriver;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.exception.WaitTimedOutError;
@@ -33,7 +37,7 @@ public class JPopupMenuFixture extends ComponentFixture<JPopupMenu> implements C
 
   private JPopupMenuDriver driver;
   private final JMenuItemFinder menuItemFinder;
-  
+
   /**
    * Creates a new <code>{@link JPopupMenuFixture}</code>.
    * @param robot performs simulation of user events on the given <code>JPopupMenu</code>.
@@ -44,10 +48,15 @@ public class JPopupMenuFixture extends ComponentFixture<JPopupMenu> implements C
   public JPopupMenuFixture(Robot robot, JPopupMenu target) {
     super(robot, target);
     menuItemFinder = new JMenuItemFinder(robot, target);
-    updateDriver(new JPopupMenuDriver(robot));
+    driver(new JPopupMenuDriver(robot));
   }
 
-  final void updateDriver(JPopupMenuDriver newDriver) {
+  /**
+   * Sets the <code>{@link JPopupMenuDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JPopupMenuDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JPopupMenuDriver newDriver) {
     driver = newDriver;
   }
 
@@ -236,7 +245,7 @@ public class JPopupMenuFixture extends ComponentFixture<JPopupMenu> implements C
     driver.releaseKey(target, keyCode);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JPopupMenu}</code> has input focus.
    * @return this fixture.

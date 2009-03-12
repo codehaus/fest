@@ -62,10 +62,16 @@ public class JScrollBarFixture extends JPopupMenuInvokerFixture<JScrollBar> impl
   }
 
   private void createDriver() {
-    updateDriver(new JScrollBarDriver(robot));
+    driver(new JScrollBarDriver(robot));
   }
-  
-  final void updateDriver(JScrollBarDriver newDriver) {
+
+  /**
+   * Sets the <code>{@link JScrollBarDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JScrollBarDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JScrollBarDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 
@@ -281,7 +287,7 @@ public class JScrollBarFixture extends JPopupMenuInvokerFixture<JScrollBar> impl
     driver.scrollToMinimum(target);
     return this;
   }
-  
+
   /**
    * Simulates a user scrolling down one unit (usually a line.)
    * @return this fixture.
@@ -340,7 +346,7 @@ public class JScrollBarFixture extends JPopupMenuInvokerFixture<JScrollBar> impl
     driver.requireValue(target, value);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JScrollBar}</code> has input focus.
    * @return this fixture.

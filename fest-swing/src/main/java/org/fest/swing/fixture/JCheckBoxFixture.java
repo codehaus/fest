@@ -1,16 +1,16 @@
 /*
  * Created on Jun 10, 2007
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * Copyright @2007-2009 the original author or authors.
  */
 package org.fest.swing.fixture;
@@ -26,15 +26,15 @@ import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.timing.Timeout;
 
 /**
- * Understands simulation of user events on a <code>{@link JCheckBox}</code> and verification of the state of such 
+ * Understands simulation of user events on a <code>{@link JCheckBox}</code> and verification of the state of such
  * <code>{@link JCheckBox}</code>.
- * 
+ *
  * @author Alex Ruiz
  */
 public class JCheckBoxFixture extends TwoStateButtonFixture<JCheckBox> {
 
   private AbstractButtonDriver driver;
-  
+
   /**
    * Creates a new <code>{@link JCheckBoxFixture}</code>.
    * @param robot performs simulation of user events on the given <code>JCheckBox</code>.
@@ -61,16 +61,22 @@ public class JCheckBoxFixture extends TwoStateButtonFixture<JCheckBox> {
   }
 
   private void createDriver() {
-    updateDriver(new AbstractButtonDriver(robot));
+    driver(new AbstractButtonDriver(robot));
   }
-  
-  final void updateDriver(AbstractButtonDriver newDriver) {
+
+  /**
+   * Sets the <code>{@link AbstractButtonDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>AbstractButtonDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(AbstractButtonDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
-  
+
   /**
-   * Returns the text of this fixture's <code>{@link JCheckBox}</code>. 
-   * @return the text of this fixture's <code>JCheckBox</code>. 
+   * Returns the text of this fixture's <code>{@link JCheckBox}</code>.
+   * @return the text of this fixture's <code>JCheckBox</code>.
    */
   public String text() {
     return driver.textOf(target);
@@ -97,7 +103,7 @@ public class JCheckBoxFixture extends TwoStateButtonFixture<JCheckBox> {
     driver.unselect(target);
     return this;
   }
-  
+
   /**
    * Simulates a user clicking this fixture's <code>{@link JCheckBox}</code>.
    * @return this fixture.
@@ -212,7 +218,7 @@ public class JCheckBoxFixture extends TwoStateButtonFixture<JCheckBox> {
     driver.pressKey(target, keyCode);
     return this;
   }
-  
+
   /**
    * Simulates a user releasing the given key on this fixture's <code>{@link JCheckBox}</code>.
    * @param keyCode the code of the key to release.
@@ -226,7 +232,7 @@ public class JCheckBoxFixture extends TwoStateButtonFixture<JCheckBox> {
     driver.releaseKey(target, keyCode);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JCheckBox}</code> has input focus.
    * @return this fixture.
@@ -246,7 +252,7 @@ public class JCheckBoxFixture extends TwoStateButtonFixture<JCheckBox> {
     driver.requireEnabled(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JCheckBox}</code> is enabled.
    * @param timeout the time this fixture will wait for the component to be enabled.
@@ -257,7 +263,7 @@ public class JCheckBoxFixture extends TwoStateButtonFixture<JCheckBox> {
     driver.requireEnabled(target, timeout);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JCheckBox}</code> is disabled.
    * @return this fixture.
@@ -309,8 +315,8 @@ public class JCheckBoxFixture extends TwoStateButtonFixture<JCheckBox> {
   }
 
   /**
-   * Asserts that the text of this fixture's <code>{@link JCheckBox}</code> is equal to the specified 
-   * <code>String</code>. 
+   * Asserts that the text of this fixture's <code>{@link JCheckBox}</code> is equal to the specified
+   * <code>String</code>.
    * @param expected the text to match.
    * @return this fixture.
    * @throws AssertionError if the text of the target JCheckBox is not equal to the given one.

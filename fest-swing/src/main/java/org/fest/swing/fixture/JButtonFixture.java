@@ -1,16 +1,16 @@
 /*
  * Created on Dec 16, 2006
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * Copyright @2006-2009 the original author or authors.
  */
 package org.fest.swing.fixture;
@@ -27,9 +27,9 @@ import org.fest.swing.exception.WaitTimedOutError;
 import org.fest.swing.timing.Timeout;
 
 /**
- * Understands simulation of user events on a <code>{@link JButton}</code> and verification of the state of such 
+ * Understands simulation of user events on a <code>{@link JButton}</code> and verification of the state of such
  * <code>{@link JButton}</code>.
- * 
+ *
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
@@ -37,7 +37,7 @@ public class JButtonFixture extends JPopupMenuInvokerFixture<JButton> implements
     TextDisplayFixture {
 
   private AbstractButtonDriver driver;
-  
+
   /**
    * Creates a new <code>{@link JButtonFixture}</code>.
    * @param target the <code>JButton</code> to be managed by this fixture.
@@ -49,7 +49,7 @@ public class JButtonFixture extends JPopupMenuInvokerFixture<JButton> implements
     super(robot, target);
     createDriver();
   }
-  
+
   /**
    * Creates a new <code>{@link JButtonFixture}</code>.
    * @param robot performs simulation of user events on a <code>JButton</code>.
@@ -64,16 +64,22 @@ public class JButtonFixture extends JPopupMenuInvokerFixture<JButton> implements
   }
 
   private void createDriver() {
-    updateDriver(new AbstractButtonDriver(robot));
+    driver(new AbstractButtonDriver(robot));
   }
-  
-  final void updateDriver(AbstractButtonDriver newDriver) {
+
+  /**
+   * Sets the <code>{@link AbstractButtonDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>AbstractButtonDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(AbstractButtonDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 
   /**
-   * Returns the text of this fixture's <code>{@link JButton}</code>. 
-   * @return the text of this fixture's <code>JButton</code>. 
+   * Returns the text of this fixture's <code>{@link JButton}</code>.
+   * @return the text of this fixture's <code>JButton</code>.
    */
   public String text() {
     return driver.textOf(target);
@@ -89,7 +95,7 @@ public class JButtonFixture extends JPopupMenuInvokerFixture<JButton> implements
     driver.click(target);
     return this;
   }
-  
+
   /**
    * Simulates a user clicking this fixture's <code>{@link JButton}</code>.
    * @param button the button to click.
@@ -207,7 +213,7 @@ public class JButtonFixture extends JPopupMenuInvokerFixture<JButton> implements
     driver.releaseKey(target, keyCode);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JButton}</code> has input focus.
    * @return this fixture.
@@ -227,7 +233,7 @@ public class JButtonFixture extends JPopupMenuInvokerFixture<JButton> implements
     driver.requireEnabled(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JButton}</code> is enabled.
    * @param timeout the time this fixture will wait for the component to be enabled.
@@ -258,7 +264,7 @@ public class JButtonFixture extends JPopupMenuInvokerFixture<JButton> implements
     driver.requireVisible(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JButton}</code> is not visible.
    * @return this fixture.
@@ -268,7 +274,7 @@ public class JButtonFixture extends JPopupMenuInvokerFixture<JButton> implements
     driver.requireNotVisible(target);
     return this;
   }
-  
+
   /**
    * Asserts that the text of this fixture's <code>{@link JButton}</code> is equal to the specified <code>String</code>.
    * @param expected the text to match.

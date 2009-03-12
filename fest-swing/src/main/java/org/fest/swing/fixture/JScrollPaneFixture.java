@@ -31,6 +31,7 @@ import org.fest.swing.timing.Timeout;
  * <code>{@link JScrollPane}</code>.
  *
  * @author Yvonne Wang
+ * @author Alex Ruiz
  */
 public class JScrollPaneFixture extends JPopupMenuInvokerFixture<JScrollPane> implements CommonComponentFixture {
 
@@ -45,10 +46,16 @@ public class JScrollPaneFixture extends JPopupMenuInvokerFixture<JScrollPane> im
    */
   public JScrollPaneFixture(Robot robot, JScrollPane target) {
     super(robot, target);
-    updateDriver(newComponentDriver());
+    driver(newComponentDriver());
   }
 
-  final void updateDriver(JScrollPaneDriver newDriver) {
+  /**
+   * Sets the <code>{@link JScrollPaneDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JScrollPaneDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JScrollPaneDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 
@@ -230,7 +237,7 @@ public class JScrollPaneFixture extends JPopupMenuInvokerFixture<JScrollPane> im
     driver.requireFocused(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JScrollPane}</code> is enabled.
    * @return this fixture.

@@ -15,24 +15,23 @@
  */
 package org.fest.swing.fixture;
 
-import javax.swing.JComboBox;
-import javax.swing.JList;
-
-import org.easymock.classextension.EasyMock;
-import org.testng.annotations.Test;
-
-import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.cell.JComboBoxCellReader;
-import org.fest.swing.driver.ComponentDriver;
-import org.fest.swing.driver.JComboBoxDriver;
-
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JComboBoxes.comboBox;
 import static org.fest.swing.test.builder.JLists.list;
 import static org.fest.util.Arrays.array;
+
+import javax.swing.JComboBox;
+import javax.swing.JList;
+
+import org.easymock.classextension.EasyMock;
+import org.fest.mocks.EasyMockTemplate;
+import org.fest.swing.cell.JComboBoxCellReader;
+import org.fest.swing.driver.ComponentDriver;
+import org.fest.swing.driver.JComboBoxDriver;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JComboBoxFixture}</code>.
@@ -50,7 +49,12 @@ import static org.fest.util.Arrays.array;
     driver = EasyMock.createMock(JComboBoxDriver.class);
     target = comboBox().createNew();
     fixture = new JComboBoxFixture(robot(), target);
-    fixture.updateDriver(driver);
+    fixture.driver(driver);
+  }
+
+  @Test(expectedExceptions = NullPointerException.class)
+  public void shouldThrowErrorIfDriverIsNull() {
+    fixture.driver(null);
   }
 
   public void shouldCreateFixtureWithGivenComponentName() {

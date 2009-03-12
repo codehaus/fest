@@ -39,7 +39,7 @@ import org.fest.swing.timing.Timeout;
 public class JInternalFrameFixture extends ContainerFixture<JInternalFrame> implements CommonComponentFixture,
     FrameLikeFixture {
   private JInternalFrameDriver driver;
-  
+
   /**
    * Creates a new <code>{@link JInternalFrameFixture}</code>.
    * @param robot performs simulation of user events on a <code>JInternalFrame</code>.
@@ -66,13 +66,19 @@ public class JInternalFrameFixture extends ContainerFixture<JInternalFrame> impl
   }
 
   private void createDriver() {
-    updateDriver(new JInternalFrameDriver(robot));
+    driver(new JInternalFrameDriver(robot));
   }
-  
-  final void updateDriver(JInternalFrameDriver newDriver) {
+
+  /**
+   * Sets the <code>{@link JInternalFrameDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JInternalFrameDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JInternalFrameDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
-  
+
   /**
    * Brings this fixture's <code>{@link JInternalFrame}</code> to the front.
    * @return this fixture.
@@ -113,7 +119,7 @@ public class JInternalFrameFixture extends ContainerFixture<JInternalFrame> impl
   }
 
   /**
-   * Simulates a user maximizing this fixture's <code>{@link JInternalFrame}</code>, deconifying it first if it is 
+   * Simulates a user maximizing this fixture's <code>{@link JInternalFrame}</code>, deconifying it first if it is
    * iconified.
    * @return this fixture.
    * @throws ActionFailedException if the given <code>JInternalFrame</code> is not maximizable.
@@ -125,7 +131,7 @@ public class JInternalFrameFixture extends ContainerFixture<JInternalFrame> impl
   }
 
   /**
-   * Simulates a user normalizing this fixture's <code>{@link JInternalFrame}</code>, deconifying it first if it is 
+   * Simulates a user normalizing this fixture's <code>{@link JInternalFrame}</code>, deconifying it first if it is
    * iconified.
    * @return this fixture.
    * @throws ActionFailedException if the <code>JInternalFrame</code> vetoes the action.

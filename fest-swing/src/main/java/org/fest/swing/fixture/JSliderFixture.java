@@ -31,6 +31,7 @@ import org.fest.swing.timing.Timeout;
  * <code>{@link JSlider}</code>.
  *
  * @author Yvonne Wang
+ * @author Alex Ruiz
  */
 public class JSliderFixture extends JPopupMenuInvokerFixture<JSlider> implements CommonComponentFixture {
 
@@ -62,13 +63,19 @@ public class JSliderFixture extends JPopupMenuInvokerFixture<JSlider> implements
   }
 
   private void createDriver() {
-    updateDriver(new JSliderDriver(robot));
+    driver(new JSliderDriver(robot));
   }
 
-  final void updateDriver(JSliderDriver newDriver) {
+  /**
+   * Sets the <code>{@link JSliderDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JSliderDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JSliderDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
-  
+
   /**
    * Simulates a user sliding this fixture's <code>{@link JSlider}</code> to the given value.
    * @param value the value to slide the <code>JSlider</code> to.
@@ -243,7 +250,7 @@ public class JSliderFixture extends JPopupMenuInvokerFixture<JSlider> implements
     driver.requireFocused(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JSlider}</code> is enabled.
    * @return this fixture.
@@ -264,7 +271,7 @@ public class JSliderFixture extends JPopupMenuInvokerFixture<JSlider> implements
     driver.requireEnabled(target, timeout);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JSlider}</code> is disabled.
    * @return this fixture.
@@ -274,7 +281,7 @@ public class JSliderFixture extends JPopupMenuInvokerFixture<JSlider> implements
     driver.requireDisabled(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JSlider}</code>.
    * @return this fixture.

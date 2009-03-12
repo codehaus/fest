@@ -1,16 +1,16 @@
 /*
  * Created on Oct 20, 2006
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * Copyright @2006-2009 the original author or authors.
  */
 package org.fest.swing.fixture;
@@ -33,9 +33,9 @@ import org.fest.swing.timing.Timeout;
  */
 public class JLabelFixture extends JPopupMenuInvokerFixture<JLabel> implements CommonComponentFixture,
     TextDisplayFixture {
-  
+
   private JLabelDriver driver;
-  
+
   /**
    * Creates a new <code>{@link JLabelFixture}</code>.
    * @param robot performs simulation of user events on the given <code>JLabel</code>.
@@ -47,7 +47,7 @@ public class JLabelFixture extends JPopupMenuInvokerFixture<JLabel> implements C
     super(robot, target);
     createDriver();
   }
-  
+
   /**
    * Creates a new <code>{@link JLabelFixture}</code>.
    * @param robot performs simulation of user events on a <code>JLabel</code>.
@@ -60,15 +60,21 @@ public class JLabelFixture extends JPopupMenuInvokerFixture<JLabel> implements C
     super(robot, labelName, JLabel.class);
     createDriver();
   }
-  
+
   private void createDriver() {
-    updateDriver(new JLabelDriver(robot));
+    driver(new JLabelDriver(robot));
   }
-  
-  final void updateDriver(JLabelDriver newDriver) {
+
+  /**
+   * Sets the <code>{@link JLabelDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JLabelDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JLabelDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
-  
+
   /**
    * Returns the text of this fixture's <code>{@link JLabel}</code>.
    * @return the text of this fixture's <code>JLabel</code>.
@@ -76,7 +82,7 @@ public class JLabelFixture extends JPopupMenuInvokerFixture<JLabel> implements C
   public String text() {
     return driver.textOf(target);
   }
-  
+
   /**
    * Simulates a user clicking this fixture's <code>{@link JLabel}</code>.
    * @return this fixture.
@@ -87,7 +93,7 @@ public class JLabelFixture extends JPopupMenuInvokerFixture<JLabel> implements C
     driver.click(target);
     return this;
   }
-  
+
   /**
    * Simulates a user clicking this fixture's <code>{@link JLabel}</code>.
    * @param button the button to click.
@@ -100,7 +106,7 @@ public class JLabelFixture extends JPopupMenuInvokerFixture<JLabel> implements C
     driver.click(target, button);
     return this;
   }
-  
+
   /**
    * Simulates a user clicking this fixture's <code>{@link JLabel}</code>.
    * @param mouseClickInfo specifies the button to click and the times the button should be clicked.
@@ -113,7 +119,7 @@ public class JLabelFixture extends JPopupMenuInvokerFixture<JLabel> implements C
     driver.click(target, mouseClickInfo);
     return this;
   }
-  
+
   /**
    * Simulates a user double-clicking this fixture's <code>{@link JLabel}</code>.
    * @return this fixture.
@@ -135,7 +141,7 @@ public class JLabelFixture extends JPopupMenuInvokerFixture<JLabel> implements C
     driver.rightClick(target);
     return this;
   }
-  
+
   /**
    * Gives input focus to this fixture's <code>{@link JLabel}</code>.
    * @return this fixture.
@@ -162,7 +168,7 @@ public class JLabelFixture extends JPopupMenuInvokerFixture<JLabel> implements C
     driver.pressAndReleaseKey(target, keyPressInfo);
     return this;
   }
-  
+
   /**
    * Simulates a user pressing and releasing the given keys on this fixture's <code>{@link JLabel}</code>.
    * @param keyCodes one or more codes of the keys to press.
@@ -207,7 +213,7 @@ public class JLabelFixture extends JPopupMenuInvokerFixture<JLabel> implements C
   }
 
   /**
-   * Asserts that the text of this fixture's <code>{@link JLabel}</code> is equal to the specified <code>String</code>. 
+   * Asserts that the text of this fixture's <code>{@link JLabel}</code> is equal to the specified <code>String</code>.
    * @param expected the text to match.
    * @return this fixture.
    * @throws AssertionError if the text of the target component is not equal to the given one.
@@ -236,7 +242,7 @@ public class JLabelFixture extends JPopupMenuInvokerFixture<JLabel> implements C
     driver.requireEnabled(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JLabel}</code> is enabled.
    * @param timeout the time this fixture will wait for the component to be enabled.
@@ -267,7 +273,7 @@ public class JLabelFixture extends JPopupMenuInvokerFixture<JLabel> implements C
     driver.requireVisible(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JLabel}</code> is not visible.
    * @return this fixture.

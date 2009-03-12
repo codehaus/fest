@@ -15,9 +15,20 @@
  */
 package org.fest.swing.fixture;
 
-import javax.swing.JMenuItem;
+import static java.awt.event.InputEvent.SHIFT_MASK;
+import static java.awt.event.KeyEvent.VK_A;
+import static java.awt.event.KeyEvent.VK_B;
+import static java.awt.event.KeyEvent.VK_C;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.KeyPressInfo.keyCode;
+import static org.fest.swing.test.builder.JMenuItems.menuItem;
+import static org.fest.swing.timing.Timeout.timeout;
 
-import org.testng.annotations.Test;
+import javax.swing.JMenuItem;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.core.ComponentFinder;
@@ -26,16 +37,7 @@ import org.fest.swing.core.Robot;
 import org.fest.swing.driver.ComponentDriver;
 import org.fest.swing.driver.JMenuItemDriver;
 import org.fest.swing.timing.Timeout;
-
-import static java.awt.event.InputEvent.SHIFT_MASK;
-import static java.awt.event.KeyEvent.*;
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.KeyPressInfo.keyCode;
-import static org.fest.swing.test.builder.JMenuItems.menuItem;
-import static org.fest.swing.timing.Timeout.timeout;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JMenuItemFixture}</code>.
@@ -53,10 +55,15 @@ import static org.fest.swing.timing.Timeout.timeout;
     driver = createMock(JMenuItemDriver.class);
     target = menuItem().withText("A MenuItem").createNew();
     fixture = new JMenuItemFixture(robot(), target);
-    fixture.updateDriver(driver);
+    fixture.driver(driver);
   }
 
-  @Test public void shouldCreateFixtureWithGivenComponentName() {
+  @Test(expectedExceptions = NullPointerException.class)
+  public void shouldThrowErrorIfDriverIsNull() {
+    fixture.driver(null);
+  }
+
+  public void shouldCreateFixtureWithGivenComponentName() {
     String name = "menuItem";
     Robot robot = robot();
     ComponentFinder finder = finder();
@@ -66,7 +73,7 @@ import static org.fest.swing.timing.Timeout.timeout;
     verifyLookup(new JMenuItemFixture(robot, name));
   }
 
-  @Test public void shouldClickMenuItem() {
+  public void shouldClickMenuItem() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.click(target);
@@ -79,7 +86,7 @@ import static org.fest.swing.timing.Timeout.timeout;
     }.run();
   }
 
-  @Test public void shouldPressAndReleaseKey() {
+  public void shouldPressAndReleaseKey() {
     final KeyPressInfo keyPressInfo = keyCode(VK_A).modifiers(SHIFT_MASK);
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -93,7 +100,7 @@ import static org.fest.swing.timing.Timeout.timeout;
     }.run();
   }
 
-  @Test public void shouldPressAndReleaseKeys() {
+  public void shouldPressAndReleaseKeys() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.pressAndReleaseKeys(target, VK_A, VK_B, VK_C);
@@ -106,7 +113,7 @@ import static org.fest.swing.timing.Timeout.timeout;
     }.run();
   }
 
-  @Test public void shouldPressKey() {
+  public void shouldPressKey() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.pressKey(target, VK_A);
@@ -119,7 +126,7 @@ import static org.fest.swing.timing.Timeout.timeout;
     }.run();
   }
 
-  @Test public void shouldReleaseKey() {
+  public void shouldReleaseKey() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.releaseKey(target, VK_A);
@@ -132,7 +139,7 @@ import static org.fest.swing.timing.Timeout.timeout;
     }.run();
   }
 
-  @Test public void shouldRequireDisabled() {
+  public void shouldRequireDisabled() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.requireDisabled(target);
@@ -145,7 +152,7 @@ import static org.fest.swing.timing.Timeout.timeout;
     }.run();
   }
 
-  @Test public void shouldRequireEnabled() {
+  public void shouldRequireEnabled() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.requireEnabled(target);
@@ -158,7 +165,7 @@ import static org.fest.swing.timing.Timeout.timeout;
     }.run();
   }
 
-  @Test public void shouldRequireEnabledUsingTimeout() {
+  public void shouldRequireEnabledUsingTimeout() {
     final Timeout timeout = timeout(2000);
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -172,7 +179,7 @@ import static org.fest.swing.timing.Timeout.timeout;
     }.run();
   }
 
-  @Test public void shouldRequireNotVisible() {
+  public void shouldRequireNotVisible() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.requireNotVisible(target);
@@ -185,7 +192,7 @@ import static org.fest.swing.timing.Timeout.timeout;
     }.run();
   }
 
-  @Test public void shouldRequireVisible() {
+  public void shouldRequireVisible() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.requireVisible(target);

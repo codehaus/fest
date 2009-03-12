@@ -15,193 +15,197 @@
  */
 package org.fest.swing.fixture;
 
-import javax.swing.JScrollBar;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.swing.test.builder.JScrollBars.scrollBar;
 
-import org.testng.annotations.Test;
+import javax.swing.JScrollBar;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.ComponentDriver;
 import org.fest.swing.driver.JScrollBarDriver;
-
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.swing.test.builder.JScrollBars.scrollBar;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JScrollBarFixture}</code>.
  *
  * @author Alex Ruiz
  */
+@Test
 public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrollBar> {
 
   private JScrollBarDriver driver;
   private JScrollBar target;
   private JScrollBarFixture fixture;
-  
+
   void onSetUp() {
     driver = createMock(JScrollBarDriver.class);
     target = scrollBar().createNew();
     fixture = new JScrollBarFixture(robot(), target);
-    fixture.updateDriver(driver);
+    fixture.driver(driver);
   }
-  
-  @Test public void shouldCreateFixtureWithGivenComponentName() {
+
+  @Test(expectedExceptions = NullPointerException.class)
+  public void shouldThrowErrorIfDriverIsNull() {
+    fixture.driver(null);
+  }
+
+  public void shouldCreateFixtureWithGivenComponentName() {
     String name = "scrollBar";
     expectLookupByName(name, JScrollBar.class);
     verifyLookup(new JScrollBarFixture(robot(), name));
   }
 
-  @Test public void shouldRequireValue() {
+  public void shouldRequireValue() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.requireValue(target, 8);
         expectLastCall().once();
       }
-      
+
       protected void codeToTest() {
         assertThatReturnsThis(fixture.requireValue(8));
       }
     }.run();
   }
 
-  @Test public void shouldScrollBlockDown() {
+  public void shouldScrollBlockDown() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.scrollBlockDown(target);
         expectLastCall().once();
       }
-      
+
       protected void codeToTest() {
         assertThatReturnsThis(fixture.scrollBlockDown());
       }
     }.run();
   }
-  
-  @Test public void shouldScrollBlockDownTheGivenTimes() {
+
+  public void shouldScrollBlockDownTheGivenTimes() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.scrollBlockDown(target, 6);
         expectLastCall().once();
       }
-      
+
       protected void codeToTest() {
         assertThatReturnsThis(fixture.scrollBlockDown(6));
       }
     }.run();
   }
 
-  @Test public void shouldScrollBlockUp() {
+  public void shouldScrollBlockUp() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.scrollBlockUp(target);
         expectLastCall().once();
       }
-      
+
       protected void codeToTest() {
         assertThatReturnsThis(fixture.scrollBlockUp());
       }
     }.run();
   }
-  
-  @Test public void shouldScrollBlockUpTheGivenTimes() {
+
+  public void shouldScrollBlockUpTheGivenTimes() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.scrollBlockUp(target, 6);
         expectLastCall().once();
       }
-      
+
       protected void codeToTest() {
         assertThatReturnsThis(fixture.scrollBlockUp(6));
       }
     }.run();
   }
 
-  @Test public void shouldScrollToMaximum() {
+  public void shouldScrollToMaximum() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.scrollToMaximum(target);
         expectLastCall().once();
       }
-      
+
       protected void codeToTest() {
         assertThatReturnsThis(fixture.scrollToMaximum());
       }
     }.run();
   }
-  
-  @Test public void shouldScrollToMinimum() {
+
+  public void shouldScrollToMinimum() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.scrollToMinimum(target);
         expectLastCall().once();
       }
-      
+
       protected void codeToTest() {
         assertThatReturnsThis(fixture.scrollToMinimum());
       }
     }.run();
   }
 
-  @Test public void shouldScrollToPosition() {
+  public void shouldScrollToPosition() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.scrollTo(target, 8);
         expectLastCall().once();
       }
-      
+
       protected void codeToTest() {
         assertThatReturnsThis(fixture.scrollTo(8));
       }
     }.run();
   }
 
-  @Test public void shouldScrollUnitDown() {
+  public void shouldScrollUnitDown() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.scrollUnitDown(target);
         expectLastCall().once();
       }
-      
+
       protected void codeToTest() {
         assertThatReturnsThis(fixture.scrollUnitDown());
       }
     }.run();
   }
-  
-  @Test public void shouldScrollUnitDownTheGivenTimes() {
+
+  public void shouldScrollUnitDownTheGivenTimes() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.scrollUnitDown(target, 6);
         expectLastCall().once();
       }
-      
+
       protected void codeToTest() {
         assertThatReturnsThis(fixture.scrollUnitDown(6));
       }
     }.run();
   }
 
-  @Test public void shouldScrollUnitUp() {
+  public void shouldScrollUnitUp() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.scrollUnitUp(target);
         expectLastCall().once();
       }
-      
+
       protected void codeToTest() {
         assertThatReturnsThis(fixture.scrollUnitUp());
       }
     }.run();
   }
-  
-  @Test public void shouldScrollUnitUpTheGivenTimes() {
+
+  public void shouldScrollUnitUpTheGivenTimes() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.scrollUnitUp(target, 6);
         expectLastCall().once();
       }
-      
+
       protected void codeToTest() {
         assertThatReturnsThis(fixture.scrollUnitUp(6));
       }

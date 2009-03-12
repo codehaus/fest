@@ -86,7 +86,7 @@ public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements C
   }
 
   private void createDriver() {
-    updateDriver(new JTableDriver(robot));
+    driver(new JTableDriver(robot));
   }
 
   /**
@@ -94,8 +94,8 @@ public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements C
    * @param newDriver the new <code>JTableDriver</code>.
    * @throws NullPointerException if the given driver is <code>null</code>.
    */
-  protected final void updateDriver(JTableDriver newDriver) {
-    if (newDriver == null) throw new NullPointerException("The driver should not be null");
+  protected final void driver(JTableDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 

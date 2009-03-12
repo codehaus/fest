@@ -34,7 +34,7 @@ public class JMenuItemFixture extends ComponentFixture<JMenuItem> implements Key
     StateVerificationFixture {
 
   private JMenuItemDriver driver;
-  
+
   /**
    * Creates a new <code>{@link JMenuItemFixture}</code>.
    * @param robot performs simulation of user events on a <code>JMenuItem</code>.
@@ -56,10 +56,16 @@ public class JMenuItemFixture extends ComponentFixture<JMenuItem> implements Key
    */
   public JMenuItemFixture(Robot robot, JMenuItem target) {
     super(robot, target);
-    updateDriver(new JMenuItemDriver(robot));
+    driver(new JMenuItemDriver(robot));
   }
 
-  final void updateDriver(JMenuItemDriver newDriver) {
+  /**
+   * Sets the <code>{@link JMenuItemDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JMenuItemDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JMenuItemDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 

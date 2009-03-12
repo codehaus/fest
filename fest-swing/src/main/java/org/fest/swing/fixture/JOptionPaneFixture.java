@@ -15,6 +15,8 @@
  */
 package org.fest.swing.fixture;
 
+import static org.fest.swing.fixture.ComponentFixtureValidator.notNullRobot;
+
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.text.JTextComponent;
@@ -27,8 +29,6 @@ import org.fest.swing.driver.JOptionPaneDriver;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.timing.Timeout;
 
-import static org.fest.swing.fixture.ComponentFixtureValidator.notNullRobot;
-
 /**
  * Understands simulation of user events on a <code>{@link JOptionPane}</code> and verification of the state of such
  * <code>{@link JOptionPane}</code>.
@@ -38,7 +38,7 @@ import static org.fest.swing.fixture.ComponentFixtureValidator.notNullRobot;
 public class JOptionPaneFixture extends ComponentFixture<JOptionPane> implements CommonComponentFixture {
 
   private JOptionPaneDriver driver;
-  
+
   /**
    * Creates a new <code>{@link JOptionPaneFixture}</code>.
    * @param robot finds a showing <code>JOptionPane</code>, which will be managed by this fixture.
@@ -64,10 +64,16 @@ public class JOptionPaneFixture extends ComponentFixture<JOptionPane> implements
    */
   public JOptionPaneFixture(Robot robot, JOptionPane target) {
     super(robot, target);
-    updateDriver(new JOptionPaneDriver(robot));
+    driver(new JOptionPaneDriver(robot));
   }
 
-  final void updateDriver(JOptionPaneDriver newDriver) {
+  /**
+   * Sets the <code>{@link JOptionPaneDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JOptionPaneDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JOptionPaneDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 

@@ -15,24 +15,24 @@
  */
 package org.fest.swing.fixture;
 
-import javax.swing.JSlider;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.swing.test.builder.JSliders.slider;
 
-import org.testng.annotations.Test;
+import javax.swing.JSlider;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.ComponentDriver;
 import org.fest.swing.driver.JSliderDriver;
-
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.swing.test.builder.JSliders.slider;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JSliderFixture}</code>.
  *
  * @author Yvonne Wang
+ * @author Alex Ruiz
  */
+@Test
 public class JSliderFixtureTest extends CommonComponentFixtureTestCase<JSlider> {
 
   private JSliderDriver driver;
@@ -43,16 +43,21 @@ public class JSliderFixtureTest extends CommonComponentFixtureTestCase<JSlider> 
     driver = createMock(JSliderDriver.class);
     target = slider().createNew();
     fixture = new JSliderFixture(robot(), target);
-    fixture.updateDriver(driver);
+    fixture.driver(driver);
   }
 
-  @Test public void shouldCreateFixtureWithGivenComponentName() {
+  @Test(expectedExceptions = NullPointerException.class)
+  public void shouldThrowErrorIfDriverIsNull() {
+    fixture.driver(null);
+  }
+
+  public void shouldCreateFixtureWithGivenComponentName() {
     String name = "slider";
     expectLookupByName(name, JSlider.class);
     verifyLookup(new JSliderFixture(robot(), name));
   }
 
-  @Test public void shouldSlideToValue() {
+  public void shouldSlideToValue() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.slide(target, 8);
@@ -65,7 +70,7 @@ public class JSliderFixtureTest extends CommonComponentFixtureTestCase<JSlider> 
     }.run();
   }
 
-  @Test public void shouldSlideToMax() {
+  public void shouldSlideToMax() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.slideToMaximum(target);
@@ -78,7 +83,7 @@ public class JSliderFixtureTest extends CommonComponentFixtureTestCase<JSlider> 
     }.run();
   }
 
-  @Test public void shouldSlideToMin() {
+  public void shouldSlideToMin() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.slideToMinimum(target);

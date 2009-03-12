@@ -35,7 +35,7 @@ import org.fest.swing.timing.Timeout;
 public class JPanelFixture extends ContainerFixture<JPanel> implements CommonComponentFixture {
 
   private JComponentDriver driver;
-  
+
   /**
    * Creates a new <code>{@link JPanelFixture}</code>.
    * @param robot performs simulation of user events on a <code>JPanel</code>.
@@ -62,10 +62,16 @@ public class JPanelFixture extends ContainerFixture<JPanel> implements CommonCom
   }
 
   private void createDriver() {
-    updateDriver(new JComponentDriver(robot));
+    driver(new JComponentDriver(robot));
   }
-  
-  final void updateDriver(JComponentDriver newDriver) {
+
+  /**
+   * Sets the <code>{@link JComponentDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JComponentDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JComponentDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 

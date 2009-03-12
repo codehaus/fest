@@ -34,7 +34,7 @@ import org.fest.swing.timing.Timeout;
  * <code>{@link JComboBox}</code>.
  * <p>
  * The conversion between the values given in tests and the values being displayed by a <code>{@link JComboBox}</code>
- * renderer is performed by a <code>{@link JComboBoxCellReader}</code>. This fixture uses a 
+ * renderer is performed by a <code>{@link JComboBoxCellReader}</code>. This fixture uses a
  * <code>{@link JComboBoxCellReader}</code> by default.
  * </p>
  *
@@ -72,10 +72,16 @@ public class JComboBoxFixture extends JPopupMenuInvokerFixture<JComboBox> implem
   }
 
   private void createDriver() {
-    updateDriver(new JComboBoxDriver(robot));
+    driver(new JComboBoxDriver(robot));
   }
 
-  final void updateDriver(JComboBoxDriver newDriver) {
+  /**
+   * Sets the <code>{@link JComboBoxDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JComboBoxDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JComboBoxDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 
@@ -274,7 +280,7 @@ public class JComboBoxFixture extends JPopupMenuInvokerFixture<JComboBox> implem
    * @return this fixture.
    * @throws IllegalStateException if this fixture's <code>JComboBox</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JComboBox</code> is not showing on the screen.
-   * @throws IndexOutOfBoundsException if the given index is negative or greater than the index of the last item in the 
+   * @throws IndexOutOfBoundsException if the given index is negative or greater than the index of the last item in the
    * <code>JComboBox</code>.
    */
   public JComboBoxFixture selectItem(int index) {
@@ -296,13 +302,13 @@ public class JComboBoxFixture extends JPopupMenuInvokerFixture<JComboBox> implem
     driver.selectItem(target, text);
     return this;
   }
-  
+
   /**
-   * Returns the <code>String</code> representation of the value of an item in this fixture's 
+   * Returns the <code>String</code> representation of the value of an item in this fixture's
    * <code>{@link JComboBox}</code>, using this fixture's <code>{@link JComboBoxCellReader}</code>.
    * @param index the index of the item to return.
    * @return the <code>String</code> representation of the value of an item in this fixture's <code>JComboBox</code>.
-   * @throws IndexOutOfBoundsException if the given index is negative or greater than the index of the last item in the 
+   * @throws IndexOutOfBoundsException if the given index is negative or greater than the index of the last item in the
    * <code>JComboBox</code>.
    * @see #cellReader(JComboBoxCellReader)
    */
@@ -405,7 +411,7 @@ public class JComboBoxFixture extends JPopupMenuInvokerFixture<JComboBox> implem
   }
 
   /**
-   * Verifies that this fixture's <code>{@link JComboBox}</code> does not have any selection. 
+   * Verifies that this fixture's <code>{@link JComboBox}</code> does not have any selection.
    * @return this fixture.
    * @throws AssertionError if this fixture's <code>JComboBox</code> has a selection.
    */

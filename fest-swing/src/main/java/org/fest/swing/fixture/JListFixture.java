@@ -15,6 +15,8 @@
  */
 package org.fest.swing.fixture;
 
+import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
+
 import javax.swing.JList;
 
 import org.fest.swing.cell.JListCellReader;
@@ -31,14 +33,12 @@ import org.fest.swing.exception.WaitTimedOutError;
 import org.fest.swing.timing.Timeout;
 import org.fest.swing.util.Range;
 
-import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
-
 /**
  * Understands simulation of user events on a <code>{@link JList}</code> and verification of the state of such
  * <code>{@link JList}</code>.
  * <p>
  * The conversion between the values given in tests and the values being displayed by a <code>{@link JList}</code>
- * renderer is performed by a <code>{@link JListCellReader}</code>. This fixture uses a 
+ * renderer is performed by a <code>{@link JListCellReader}</code>. This fixture uses a
  * <code>{@link BasicJListCellReader}</code> by default.
  * </p>
  *
@@ -76,15 +76,21 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
   }
 
   private void createDriver() {
-    updateDriver(new JListDriver(robot));
+    driver(new JListDriver(robot));
   }
-  
-  final void updateDriver(JListDriver newDriver) {
+
+  /**
+   * Sets the <code>{@link JListDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JListDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JListDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 
   /**
-   * Returns the <code>String</code> representation of the value of an item in this fixture's 
+   * Returns the <code>String</code> representation of the value of an item in this fixture's
    * <code>{@link JList}</code>, using this fixture's <code>{@link JListCellReader}</code>.
    * @param index the index of the item to return.
    * @return the <code>String</code> representation of the value of an item in this fixture's <code>JList</code>.
@@ -135,7 +141,7 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
   public JListItemFixture item(String text) {
     return new JListItemFixture(this, driver.indexOf(target, text));
   }
-  
+
   /**
    * Simulates a user selecting the items (in the specified range) in this fixture's <code>{@link JList}</code>.
    * @param from the starting point of the selection.
@@ -143,7 +149,7 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
    * @return this fixture.
    * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
-   * @throws IndexOutOfBoundsException if the any index is negative or greater than the index of the last item in the 
+   * @throws IndexOutOfBoundsException if the any index is negative or greater than the index of the last item in the
    * <code>JList</code>.
    */
   public JListFixture selectItems(Range.From from, Range.To to) {
@@ -157,7 +163,7 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
    * @return this fixture.
    * @throws NullPointerException if the given array is <code>null</code>.
    * @throws IllegalArgumentException if the given array is empty.
-   * @throws IndexOutOfBoundsException if any of the indices is negative or greater than the index of the last item in 
+   * @throws IndexOutOfBoundsException if any of the indices is negative or greater than the index of the last item in
    * the <code>JList</code>.
    * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
@@ -173,7 +179,7 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
    * @return this fixture.
    * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
-   * @throws IndexOutOfBoundsException if the given index is negative or greater than the index of the last item in the 
+   * @throws IndexOutOfBoundsException if the given index is negative or greater than the index of the last item in the
    * <code>JList</code>.
    */
   public JListFixture selectItem(int index) {
@@ -279,7 +285,7 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
     driver.click(target, mouseClickInfo);
     return this;
   }
-  
+
   /**
    * Simulates a user double-clicking this fixture's <code>{@link JList}</code>.
    * @return this fixture.
@@ -414,7 +420,7 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
    * @return this fixture.
    * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
-   * @throws IndexOutOfBoundsException if the given index is negative or greater than the index of the last item in the 
+   * @throws IndexOutOfBoundsException if the given index is negative or greater than the index of the last item in the
    * <code>JList</code>.
    */
   public JListFixture drag(int index) {
@@ -428,7 +434,7 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
    * @return this fixture.
    * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
-   * @throws IndexOutOfBoundsException if the given index is negative or greater than the index of the last item in the 
+   * @throws IndexOutOfBoundsException if the given index is negative or greater than the index of the last item in the
    * <code>JList</code>.
    * @throws ActionFailedException if there is no drag action in effect.
    */
@@ -444,7 +450,7 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
    * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
    * @throws ComponentLookupException if a pop-up menu cannot be found.
-   * @throws IndexOutOfBoundsException if the given index is negative or greater than the index of the last item in the 
+   * @throws IndexOutOfBoundsException if the given index is negative or greater than the index of the last item in the
    * <code>JList</code>.
    */
   public JPopupMenuFixture showPopupMenuAt(int index) {
@@ -553,7 +559,7 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
   }
 
   /**
-   * Verifies that this fixture's <code>{@link JList}</code> does not have any selection. 
+   * Verifies that this fixture's <code>{@link JList}</code> does not have any selection.
    * @return this fixture.
    * @throws AssertionError if this fixture's <code>JList</code> has a selection.
    */
@@ -563,7 +569,7 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
   }
 
   /**
-   * Updates the implementation of <code>{@link JListCellReader}</code> to use when comparing internal values of 
+   * Updates the implementation of <code>{@link JListCellReader}</code> to use when comparing internal values of
    * this fixture's <code>{@link JList}</code> and the values expected in a test. The default implementation to use
    * is <code>{@link BasicJListCellReader}</code>.
    * @param cellReader the new <code>JListCellValueReader</code> to use.

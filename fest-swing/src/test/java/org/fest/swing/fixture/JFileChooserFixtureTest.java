@@ -1,19 +1,28 @@
 /*
  * Created on Jul 9, 2007
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * Copyright @2007-2009 the original author or authors.
  */
 package org.fest.swing.fixture;
+
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.test.builder.JButtons.button;
+import static org.fest.swing.test.builder.JFileChoosers.fileChooser;
+import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.util.Arrays.array;
 
 import java.io.File;
 
@@ -21,39 +30,35 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
-import org.testng.annotations.Test;
-
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.ComponentDriver;
 import org.fest.swing.driver.JFileChooserDriver;
-
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.test.builder.JButtons.button;
-import static org.fest.swing.test.builder.JFileChoosers.fileChooser;
-import static org.fest.swing.test.builder.JTextFields.textField;
-import static org.fest.util.Arrays.array;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JFileChooserFixture}</code>.
  *
  * @author Yvonne Wang
+ * @author Alex Ruiz
  */
 @Test public class JFileChooserFixtureTest extends CommonComponentFixtureTestCase<JFileChooser> {
 
   private JFileChooserDriver driver;
   private JFileChooser target;
   private JFileChooserFixture fixture;
-  
+
   void onSetUp() {
     driver = createMock(JFileChooserDriver.class);
     target = fileChooser().createNew();
     fixture = new JFileChooserFixture(robot(), target);
-    fixture.updateDriver(driver);
+    fixture.driver(driver);
   }
-  
+
+  @Test(expectedExceptions = NullPointerException.class)
+  public void shouldThrowErrorIfDriverIsNull() {
+    fixture.driver(null);
+  }
+
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "fileChooser";
     expectLookupByName(name, targetType());
@@ -82,7 +87,7 @@ import static org.fest.util.Arrays.array;
       }
     }.run();
   }
-  
+
   public void shouldClickApproveButton() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -95,7 +100,7 @@ import static org.fest.util.Arrays.array;
       }
     }.run();
   }
-  
+
   public void shouldReturnApproveButton() {
     final JButton approveButton = button().createNew();
     new EasyMockTemplate(driver) {
@@ -136,7 +141,7 @@ import static org.fest.util.Arrays.array;
       }
     }.run();
   }
-  
+
   public void shouldSelectFile() {
     final File file = new File("fake");
     new EasyMockTemplate(driver) {
@@ -150,7 +155,7 @@ import static org.fest.util.Arrays.array;
       }
     }.run();
   }
-  
+
   public void shouldSelectFiles() {
     final File[] files = array(new File("Fake1"), new File("Fake2"));
     new EasyMockTemplate(driver) {

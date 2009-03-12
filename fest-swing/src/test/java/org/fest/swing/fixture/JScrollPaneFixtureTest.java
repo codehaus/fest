@@ -15,28 +15,28 @@
  */
 package org.fest.swing.fixture;
 
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-
-import org.testng.annotations.Test;
-
-import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.driver.ComponentDriver;
-import org.fest.swing.driver.JScrollPaneDriver;
-
 import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JLists.list;
 import static org.fest.swing.test.builder.JScrollBars.scrollBar;
 import static org.fest.swing.test.builder.JScrollPanes.scrollPane;
 
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+
+import org.fest.mocks.EasyMockTemplate;
+import org.fest.swing.driver.ComponentDriver;
+import org.fest.swing.driver.JScrollPaneDriver;
+import org.testng.annotations.Test;
+
 /**
  * Tests for <code>{@link JScrollPaneFixture}</code>.
  *
  * @author Yvonne Wang
+ * @author Alex Ruiz
  */
+@Test
 public class JScrollPaneFixtureTest extends CommonComponentFixtureTestCase<JScrollPane> {
 
   private JScrollPaneDriver driver;
@@ -48,16 +48,21 @@ public class JScrollPaneFixtureTest extends CommonComponentFixtureTestCase<JScro
     target = scrollPane().withView(list().createNew())
                          .createNew();
     fixture = new JScrollPaneFixture(robot(), target);
-    fixture.updateDriver(driver);
+    fixture.driver(driver);
   }
 
-  @Test public void shouldCreateFixtureWithGivenComponentName() {
+  @Test(expectedExceptions = NullPointerException.class)
+  public void shouldThrowErrorIfDriverIsNull() {
+    fixture.driver(null);
+  }
+
+  public void shouldCreateFixtureWithGivenComponentName() {
     String name = "scrollPane";
     expectLookupByName(name, JScrollPane.class);
     verifyLookup(new JScrollPaneFixture(robot(), name));
   }
 
-  @Test public void shouldReturnHorizontalScrollBar() {
+  public void shouldReturnHorizontalScrollBar() {
     final JScrollBar scrollBar = scrollBar().createNew();
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -71,7 +76,7 @@ public class JScrollPaneFixtureTest extends CommonComponentFixtureTestCase<JScro
     }.run();
   }
 
-  @Test public void shouldReturnVerticalScrollBar() {
+  public void shouldReturnVerticalScrollBar() {
     final JScrollBar scrollBar = scrollBar().createNew();
     new EasyMockTemplate(driver) {
       protected void expectations() {
