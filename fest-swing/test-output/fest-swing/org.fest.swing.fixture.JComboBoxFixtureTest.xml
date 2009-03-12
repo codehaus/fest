@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.fest.swing.fixture.JComboBoxFixtureTest" failures="0" tests="1" time="0.453" errors="0">
-  <properties/>
-  <testcase name="shouldThrowErrorIfDriverIsNull" time="0.0" classname="org.fest.swing.fixture.JComboBoxFixtureTest"/>
-</testsuite>
