@@ -65,10 +65,16 @@ public class JSpinnerFixture extends JPopupMenuInvokerFixture<JSpinner> implemen
   }
 
   private void createDriver() {
-    updateDriver(new JSpinnerDriver(robot));
+    driver(new JSpinnerDriver(robot));
   }
 
-  final void updateDriver(JSpinnerDriver newDriver) {
+  /**
+   * Sets the <code>{@link JSpinnerDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JSpinnerDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JSpinnerDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 
@@ -135,7 +141,7 @@ public class JSpinnerFixture extends JPopupMenuInvokerFixture<JSpinner> implemen
     driver.enterText(target, text);
     return this;
   }
-  
+
   /**
    * Simulates a user entering and committing the given text in this fixture's <code>{@link JSpinner}</code> (assuming
    * its editor has a <code>{@link JTextComponent}</code> under it.)
@@ -304,7 +310,7 @@ public class JSpinnerFixture extends JPopupMenuInvokerFixture<JSpinner> implemen
     driver.requireFocused(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JSpinner}</code> is enabled.
    * @return this fixture.

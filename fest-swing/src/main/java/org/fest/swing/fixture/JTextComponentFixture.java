@@ -33,7 +33,7 @@ import org.fest.swing.timing.Timeout;
  *
  * @author Alex Ruiz
  */
-public class JTextComponentFixture extends JPopupMenuInvokerFixture<JTextComponent> 
+public class JTextComponentFixture extends JPopupMenuInvokerFixture<JTextComponent>
     implements CommonComponentFixture, TextInputFixture {
 
   private JTextComponentDriver driver;
@@ -64,10 +64,16 @@ public class JTextComponentFixture extends JPopupMenuInvokerFixture<JTextCompone
   }
 
   private void createDriver() {
-    updateDriver(new JTextComponentDriver(robot));
+    driver(new JTextComponentDriver(robot));
   }
 
-  void updateDriver(JTextComponentDriver newDriver) {
+  /**
+   * Sets the <code>{@link JTextComponentDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JTextComponentDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JTextComponentDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 
@@ -85,7 +91,7 @@ public class JTextComponentFixture extends JPopupMenuInvokerFixture<JTextCompone
    * @return this fixture.
    * @throws IllegalStateException if this fixture's <code>JTextComponent</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JTextComponent</code> is not showing on the screen.
-   * @throws IllegalArgumentException if this fixture's <code>JTextComponent</code> does not contain the given text to 
+   * @throws IllegalArgumentException if this fixture's <code>JTextComponent</code> does not contain the given text to
    * select.
    * @throws ActionFailedException if the selecting the text in the given range fails.
    */
@@ -202,8 +208,8 @@ public class JTextComponentFixture extends JPopupMenuInvokerFixture<JTextCompone
   }
 
   /**
-   * Sets the text in this fixture's <code>{@link JTextComponent}</code>. Unlike 
-   * <code>{@link #enterText(String)}</code>, this method bypasses the event system and allows immediate updating on the 
+   * Sets the text in this fixture's <code>{@link JTextComponent}</code>. Unlike
+   * <code>{@link #enterText(String)}</code>, this method bypasses the event system and allows immediate updating on the
    * underlying document model.
    * <p>
    * Primarily desired for speeding up tests when precise user event fidelity isn't necessary.
@@ -320,7 +326,7 @@ public class JTextComponentFixture extends JPopupMenuInvokerFixture<JTextCompone
     driver.requireFocused(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JTextComponent}</code> is enabled.
    * @return this fixture.
@@ -371,11 +377,11 @@ public class JTextComponentFixture extends JPopupMenuInvokerFixture<JTextCompone
     driver.requireNotVisible(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JTextComponent}</code> is editable.
    * @throws AssertionError if this fixture's <code>JTextComponent</code> is not editable.
-   * @return this fixture. 
+   * @return this fixture.
    */
   public JTextComponentFixture requireEditable() {
     driver.requireEditable(target);
@@ -385,7 +391,7 @@ public class JTextComponentFixture extends JPopupMenuInvokerFixture<JTextCompone
   /**
    * Asserts that this fixture's <code>{@link JTextComponent}</code> is not editable.
    * @throws AssertionError if this fixture's <code>JTextComponent</code> is editable.
-   * @return this fixture. 
+   * @return this fixture.
    */
   public JTextComponentFixture requireNotEditable() {
     driver.requireNotEditable(target);

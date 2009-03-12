@@ -66,13 +66,19 @@ public class JTabbedPaneFixture extends JPopupMenuInvokerFixture<JTabbedPane> im
   }
 
   private void createDriver() {
-    updateDriver(new JTabbedPaneDriver(robot));
+    driver(new JTabbedPaneDriver(robot));
   }
 
-  final void updateDriver(JTabbedPaneDriver newDriver) {
+  /**
+   * Sets the <code>{@link JTabbedPaneDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JTabbedPaneDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JTabbedPaneDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
-  
+
   /**
    * Returns the titles of all the tabs in this fixture's <code>{@link JTabbedPane}</code>.
    * @return the titles of all the tabs.
@@ -80,7 +86,7 @@ public class JTabbedPaneFixture extends JPopupMenuInvokerFixture<JTabbedPane> im
   public String[] tabTitles() {
     return driver.tabTitles(target);
   }
-  
+
   /**
    * Simulates a user selecting the tab located at the given index.
    * @param index the index of the tab to select.
@@ -254,7 +260,7 @@ public class JTabbedPaneFixture extends JPopupMenuInvokerFixture<JTabbedPane> im
     driver.requireFocused(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JTabbedPane}</code> is enabled.
    * @return this fixture.
@@ -320,7 +326,7 @@ public class JTabbedPaneFixture extends JPopupMenuInvokerFixture<JTabbedPane> im
 
   /**
    * Asserts that the tabs of this fixture's <code>{@link JTabbedPane}</code> have the given titles. The tab titles are
-   * evaluated by index order, for example, the first tab is expected to have the first title in the given array, and so 
+   * evaluated by index order, for example, the first tab is expected to have the first title in the given array, and so
    * on.
    * @param titles the expected titles.
    * @return this fixture.

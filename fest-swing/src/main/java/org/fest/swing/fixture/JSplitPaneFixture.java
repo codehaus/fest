@@ -1,16 +1,16 @@
 /*
  * Created on Sep 4, 2007
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * Copyright @2007-2009 the original author or authors.
  */
 package org.fest.swing.fixture;
@@ -30,12 +30,13 @@ import org.fest.swing.timing.Timeout;
  * Understands simulation of user events on a <code>{@link JSplitPane}</code> and verification of the state of such
  * <code>{@link JSplitPane}</code>.
  *
- * @author Yvonne Wang 
+ * @author Yvonne Wang
+ * @author Alex Ruiz
  */
 public class JSplitPaneFixture extends JPopupMenuInvokerFixture<JSplitPane> implements CommonComponentFixture {
 
   private JSplitPaneDriver driver;
-  
+
   /**
    * Creates a new <code>{@link JSplitPaneFixture}</code>.
    * @param robot performs simulation of user events on the given <code>JSplitPane</code>.
@@ -61,13 +62,19 @@ public class JSplitPaneFixture extends JPopupMenuInvokerFixture<JSplitPane> impl
   }
 
   private void createDriver() {
-    updateDriver(new JSplitPaneDriver(robot));
+    driver(new JSplitPaneDriver(robot));
   }
 
-  final void updateDriver(JSplitPaneDriver newDriver) {
+  /**
+   * Sets the <code>{@link JSplitPaneDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JSplitPaneDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JSplitPaneDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
-  
+
   /**
    * Simulates a user moving the divider of this fixture's <code>{@link JSplitPane}</code>.
    * @param location the location to move the divider to.
@@ -90,7 +97,7 @@ public class JSplitPaneFixture extends JPopupMenuInvokerFixture<JSplitPane> impl
     driver.click(target);
     return this;
   }
-  
+
   /**
    * Simulates a user clicking this fixture's <code>{@link JSplitPane}</code>.
    * @param button the button to click.
@@ -103,7 +110,7 @@ public class JSplitPaneFixture extends JPopupMenuInvokerFixture<JSplitPane> impl
     driver.click(target, button);
     return this;
   }
-  
+
   /**
    * Simulates a user clicking this fixture's <code>{@link JSplitPane}</code>.
    * @param mouseClickInfo specifies the button to click and the times the button should be clicked.
@@ -167,7 +174,7 @@ public class JSplitPaneFixture extends JPopupMenuInvokerFixture<JSplitPane> impl
   }
 
   /**
-   * Simulates a user pressing and releasing the given keys on this fixture's <code>{@link JSplitPane}</code>. This 
+   * Simulates a user pressing and releasing the given keys on this fixture's <code>{@link JSplitPane}</code>. This
    * method does not affect the current focus.
    * @param keyCodes one or more codes of the keys to press.
    * @return this fixture.
@@ -195,7 +202,7 @@ public class JSplitPaneFixture extends JPopupMenuInvokerFixture<JSplitPane> impl
     driver.pressKey(target, keyCode);
     return this;
   }
-  
+
   /**
    * Simulates a user releasing the given key on this fixture's <code>{@link JSplitPane}</code>.
    * @param keyCode the code of the key to release.
@@ -209,7 +216,7 @@ public class JSplitPaneFixture extends JPopupMenuInvokerFixture<JSplitPane> impl
     driver.releaseKey(target, keyCode);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JSplitPane}</code> has input focus.
    * @return this fixture.
@@ -219,7 +226,7 @@ public class JSplitPaneFixture extends JPopupMenuInvokerFixture<JSplitPane> impl
     driver.requireFocused(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JSplitPane}</code> is enabled.
    * @return this fixture.
@@ -240,7 +247,7 @@ public class JSplitPaneFixture extends JPopupMenuInvokerFixture<JSplitPane> impl
     driver.requireEnabled(target, timeout);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JSplitPane}</code> is disabled.
    * @return this fixture.
@@ -250,7 +257,7 @@ public class JSplitPaneFixture extends JPopupMenuInvokerFixture<JSplitPane> impl
     driver.requireDisabled(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JSplitPane}</code> is visible.
    * @return this fixture.

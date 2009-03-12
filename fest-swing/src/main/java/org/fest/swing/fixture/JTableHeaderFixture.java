@@ -28,6 +28,7 @@ import org.fest.swing.exception.LocationUnavailableException;
  * Understands simulation of user events on a <code>{@link JTableHeader}</code>.
  *
  * @author Yvonne Wang
+ * @author Alex Ruiz
  */
 public class JTableHeaderFixture extends ComponentFixture<JTableHeader> {
 
@@ -42,10 +43,16 @@ public class JTableHeaderFixture extends ComponentFixture<JTableHeader> {
    */
   public JTableHeaderFixture(Robot robot, JTableHeader target) {
     super(robot, target);
-    updateDriver(new JTableHeaderDriver(robot));
+    driver(new JTableHeaderDriver(robot));
   }
 
-  final void updateDriver(JTableHeaderDriver newDriver) {
+  /**
+   * Sets the <code>{@link JTableHeaderDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JTableHeaderDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JTableHeaderDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 
@@ -88,7 +95,7 @@ public class JTableHeaderFixture extends ComponentFixture<JTableHeader> {
     JPopupMenu popupMenu = driver.showPopupMenu(target, columnName);
     return new JPopupMenuFixture(robot, popupMenu);
   }
-  
+
   /**
    * Simulates a user clicking the column under the given index, in this fixture's <code>{@link JTableHeader}</code>,
    * using the given mouse button, the given number of times.

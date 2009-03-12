@@ -37,7 +37,7 @@ import org.fest.swing.timing.Timeout;
  * <p>
  * <code>{@link TreePath}</code>s can be specified using <code>String</code>s. For example, for the following
  * tree:
- * 
+ *
  * <pre><code>
  * root
  *   |
@@ -45,13 +45,13 @@ import org.fest.swing.timing.Timeout;
  *      |
  *      -- node1.1
  * </code></pre>
- * 
+ *
  * we can identify the node "node1.1" as follows:
- * 
+ *
  * <pre><code>
  *   root/node1/node1.1
  * </code></pre>
- * 
+ *
  * </p>
  * <p>
  * The default path separator is "/". It can be changed by calling <code>{@link #separator(String)}</code>.
@@ -61,7 +61,7 @@ import org.fest.swing.timing.Timeout;
  * renderer is performed by a <code>{@link JTreeCellReader}</code>. This fixture uses a
  * <code>{@link BasicJTreeCellReader}</code> by default.
  * </p>
- * 
+ *
  * @author Keith Coughtrey
  * @author Alex Ruiz
  * @author Yvonne Wang
@@ -97,13 +97,19 @@ public class JTreeFixture extends JPopupMenuInvokerFixture<JTree> implements Com
   }
 
   private void createDriver() {
-    updateDriver(new JTreeDriver(robot));
+    driver(new JTreeDriver(robot));
   }
 
-  void updateDriver(JTreeDriver newDriver) {
+  /**
+   * Sets the <code>{@link JTreeDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JTreeDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JTreeDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
-  
+
   /**
    * Simulates a user clicking this fixture's <code>{@link JTree}</code>.
    * @return this fixture.
@@ -233,7 +239,7 @@ public class JTreeFixture extends JPopupMenuInvokerFixture<JTree> implements Com
     driver.selectPath(target, path);
     return this;
   }
-  
+
   /**
    * Select the given paths, expanding parent nodes if necessary.
    * @param paths the paths to select.
@@ -248,7 +254,7 @@ public class JTreeFixture extends JPopupMenuInvokerFixture<JTree> implements Com
     driver.selectPaths(target, paths);
     return this;
   }
- 
+
   /**
    * Simulates a user selecting the tree node at the given row.
    * @param row the index of the row to select.
@@ -312,7 +318,7 @@ public class JTreeFixture extends JPopupMenuInvokerFixture<JTree> implements Com
     JPopupMenu popupMenu = driver.showPopupMenu(target, row);
     return new JPopupMenuFixture(robot, popupMenu);
   }
-  
+
   /**
    * Shows a pop-up menu at the position of the last node in the given path. The last node in the given path will be
    * made visible (by expanding the parent node(s)) if it is not visible.
@@ -407,7 +413,7 @@ public class JTreeFixture extends JPopupMenuInvokerFixture<JTree> implements Com
     driver.requireFocused(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JTree}</code> is enabled.
    * @return this fixture.
@@ -462,7 +468,7 @@ public class JTreeFixture extends JPopupMenuInvokerFixture<JTree> implements Com
   /**
    * Asserts that this fixture's <code>{@link JTree}</code> is editable.
    * @throws AssertionError if this fixture's <code>JTree</code> is not editable.
-   * @return this fixture. 
+   * @return this fixture.
    * @throws AssertionError if this fixture's <code>JTree</code> is not editable.
    */
   public JTreeFixture requireEditable() {
@@ -473,7 +479,7 @@ public class JTreeFixture extends JPopupMenuInvokerFixture<JTree> implements Com
   /**
    * Asserts that this fixture's <code>{@link JTree}</code> is not editable.
    * @throws AssertionError if this fixture's <code>JTree</code> is editable.
-   * @return this fixture. 
+   * @return this fixture.
    * @throws AssertionError if this fixture's <code>JTree</code> is editable.
    */
   public JTreeFixture requireNotEditable() {
@@ -493,7 +499,7 @@ public class JTreeFixture extends JPopupMenuInvokerFixture<JTree> implements Com
     driver.requireSelection(target, paths);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JTree}</code>'s selected rows are equal to the given one.
    * @param rows the indices of the rows, expected to be selected.
@@ -505,7 +511,7 @@ public class JTreeFixture extends JPopupMenuInvokerFixture<JTree> implements Com
     driver.requireSelection(target, rows);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JTree}</code>'s does not have any selection.
    * @return this fixture.
@@ -535,7 +541,7 @@ public class JTreeFixture extends JPopupMenuInvokerFixture<JTree> implements Com
     driver.separator(separator);
     return this;
   }
-  
+
   /**
    * Updates the implementation of <code>{@link JTreeCellReader}</code> to use when comparing internal values of a
    * <code>{@link JTree}</code> and the values expected in a test. The default implementation to use

@@ -81,10 +81,16 @@ public class JToolBarFixture extends ContainerFixture<JToolBar> implements Commo
   }
 
   private void createDriver() {
-    updateDriver(new JToolBarDriver(robot));
+    driver(new JToolBarDriver(robot));
   }
 
-  void updateDriver(JToolBarDriver newDriver) {
+  /**
+   * Sets the <code>{@link JToolBarDriver}</code> to be used by this fixture.
+   * @param newDriver the new <code>JToolBarDriver</code>.
+   * @throws NullPointerException if the given driver is <code>null</code>.
+   */
+  protected final void driver(JToolBarDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 
@@ -239,7 +245,7 @@ public class JToolBarFixture extends ContainerFixture<JToolBar> implements Commo
     driver.requireFocused(target);
     return this;
   }
-  
+
   /**
    * Asserts that this fixture's <code>{@link JToolBar}</code> is enabled.
    * @return this fixture.

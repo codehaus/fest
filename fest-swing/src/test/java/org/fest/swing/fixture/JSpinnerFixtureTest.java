@@ -15,18 +15,16 @@
  */
 package org.fest.swing.fixture;
 
-import javax.swing.JSpinner;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.swing.test.builder.JSpinners.spinner;
 
-import org.testng.annotations.Test;
+import javax.swing.JSpinner;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.ComponentDriver;
 import org.fest.swing.driver.JSpinnerDriver;
-
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.swing.test.builder.JSpinners.spinner;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JSpinnerFixture}</code>.
@@ -44,7 +42,12 @@ import static org.fest.swing.test.builder.JSpinners.spinner;
     driver = createMock(JSpinnerDriver.class);
     target = spinner().createNew();
     fixture = new JSpinnerFixture(robot(), target);
-    fixture.updateDriver(driver);
+    fixture.driver(driver);
+  }
+
+  @Test(expectedExceptions = NullPointerException.class)
+  public void shouldThrowErrorIfDriverIsNull() {
+    fixture.driver(null);
   }
 
   public void shouldCreateFixtureWithGivenComponentName() {
@@ -143,7 +146,7 @@ import static org.fest.swing.test.builder.JSpinners.spinner;
       }
     }.run();
   }
-  
+
   public void shouldEnterTextAndCommit() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
