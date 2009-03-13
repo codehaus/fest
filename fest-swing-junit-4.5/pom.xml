@@ -6,7 +6,7 @@
   <groupId>fest</groupId>
   <artifactId>fest-swing-junit-4.5</artifactId>
   <version>1.1</version>
-  <name>FEST Swing - JUnit Extension</name>
+  <name>FEST Swing - JUnit 4.5 Extension</name>
   <description>JUnit-specific extension for FEST-Swing</description>
   <inceptionYear>2007</inceptionYear>
   <url>http://fest.easytesting.org/swing</url>
