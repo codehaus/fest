@@ -16,6 +16,7 @@
 package org.fest.swing.junit45.runner;
 
 import org.fest.swing.annotation.GUITest;
+import org.fest.swing.junit.v4_5.runner.GUITestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

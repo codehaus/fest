@@ -18,12 +18,18 @@ Copyright @2007-2009 the original author or authors.
 </head>
 <body bgcolor="white">
 <p>
-Provides utility methods to be used in the creation of custom JUnit <code>Runner</code>s that takes a screenshot of 
-failed GUI tests executed, for example, in an IDE or through Ant.
+Provides a custom JUnit <code>Runner</code> that takes a screenshot of failed GUI tests executed, for example, in an
+IDE.
 </p>
 <p>
-Due to JUnit's weak support for extensibility and API changes, we have to provide a <code>Runner</code> for each version 
-of JUnit, starting from 4.3.1.
+The custom JUnit <code>Runner</code>, <code>{@link org.fest.swing.junit.runner.GUITestRunner}</code>, can 
+take screenshots of failed GUI tests. To use it, just annotate your test class with 
+&quot;<code>@RunWith(GUITestRunner.class)</code>.&quot; Screenshots of failed tests will be saved in the directory 
+&quot;failed-gui-tests&quot; (relative to the directory where tests are executed.)
+</p>
+<p>
+<code>GUITestRunner</code> has been tested with Eclipse 3.1.1. It is currently not working with IntelliJ IDEA due to bug 
+<a href="http://www.jetbrains.net/jira/browse/IDEA-13389" target="_blank">IDEA-13389</a>. 
 </p>
 </body>
 </html>

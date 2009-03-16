@@ -4,9 +4,9 @@
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>fest</groupId>
-  <artifactId>fest-swing-junit</artifactId>
+  <artifactId>fest-swing-junit-4.3.1</artifactId>
   <version>1.2a1</version>
-  <name>FEST Swing - JUnit Extension</name>
+  <name>FEST Swing - JUnit 4.3.1 Extension</name>
   <description>JUnit-specific extension for FEST-Swing</description>
   <inceptionYear>2007</inceptionYear>
   <url>http://fest.easytesting.org/swing</url>
@@ -61,6 +61,12 @@
     <dependency>
       <groupId>fest</groupId>
       <artifactId>fest-swing</artifactId>
+      <version>1.2a1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>fest</groupId>
+      <artifactId>fest-swing-junit</artifactId>
       <version>1.2a1</version>
       <scope>compile</scope>
     </dependency>

@@ -1,5 +1,5 @@
 /*
- * Created on Mar 13, 2009
+ * Created on Mar 16, 2009
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,25 +13,13 @@
  *
  * Copyright @2009 the original author or authors.
  */
-package org.fest.swing.junit45.runner;
-
-import org.fest.swing.annotation.GUITest;
-import org.fest.swing.junit.v4_5.runner.GUITestRunner;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+package org.fest.swing.junit.v4_3_1.runner;
 
 /**
- * Understands a JUnit test to be used to test the TestNG tests in this package.
+ * Tests for <code>{@link MethodRunner}</code>.
  *
  * @author Alex Ruiz
  */
-@RunWith(GUITestRunner.class)
-@GUITest
-public class SomeGUITest {
+public class MethodRunnerTest {
 
-  @Test public void successfulGUITest() {}
-
-  @Test public void failedGUITest() {
-    throw new RuntimeException("Failed on purpose");
-  }
 }

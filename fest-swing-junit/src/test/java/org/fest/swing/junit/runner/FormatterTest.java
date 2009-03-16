@@ -41,17 +41,17 @@ public class FormatterTest {
   
   @Test public void shouldFormatMethodWithNoParameters() throws Exception {
     Method m = type.getDeclaredMethod("methodWithNoParameters");
-    assertThat(Formatter.format(type, m)).isEqualTo(concat(typeName, ".methodWithNoParameters"));
+    assertThat(Formatter.testNameFrom(type, m)).isEqualTo(concat(typeName, ".methodWithNoParameters"));
   }
   
   @Test public void shouldFormatMethodWithOneParameter() throws Exception {
     Method m = type.getDeclaredMethod("methodWithOneParameter", float.class);
-    assertThat(Formatter.format(type, m)).isEqualTo(concat(typeName, ".methodWithOneParameter(float)"));
+    assertThat(Formatter.testNameFrom(type, m)).isEqualTo(concat(typeName, ".methodWithOneParameter(float)"));
   }
 
   @Test public void shouldFormatMethodWithParameters() throws Exception {
     Method m = type.getDeclaredMethod("methodWithParameters", String.class, int.class);
-    assertThat(Formatter.format(type, m)).isEqualTo(concat(typeName, ".methodWithParameters(java.lang.String, int)"));
+    assertThat(Formatter.testNameFrom(type, m)).isEqualTo(concat(typeName, ".methodWithParameters(java.lang.String, int)"));
   }
   
   
