@@ -9,9 +9,9 @@
   <name>FEST Mocks</name>
   <description>Utilities that simplify usage of Mock Objects</description>
   <inceptionYear>2007</inceptionYear>
-  <url>http://code.google.com/p/fest/</url>
+  <url>http://fest.easytesting.org/mocks</url>
   <parent>
-    <groupId>fest</groupId>
+    <groupId>org.easytesting</groupId>
     <artifactId>fest</artifactId>
     <version>1.0</version>
   </parent>
@@ -24,13 +24,13 @@
     </mailingList>
   </mailingLists>
   <scm>
-    <developerConnection>scm:svn:https://fest.googlecode.com/svn/trunk/</developerConnection>
-    <connection>scm:svn:http://fest.googlecode.com/svn/trunk/</connection>
-    <url>http://fisheye2.cenqua.com/browse/fest</url>
+    <developerConnection>scm:svn:https://svn.codehaus.org/fest/</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/fest/</connection>
+    <url>http://fisheye.codehaus.org/browse/fest/</url>
   </scm>
   <issueManagement>
-    <system>Google Code</system>
-    <url>http://code.google.com/p/fest/issues</url>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/FEST</url>
   </issueManagement>
   <dependencies>
     <dependency>

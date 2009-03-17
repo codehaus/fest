@@ -3,7 +3,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd ">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>fest</groupId>
+  <groupId>org.easytesting</groupId>
   <artifactId>fest</artifactId>
   <version>1.0</version>
   <packaging>pom</packaging>
@@ -17,7 +17,7 @@
   </licenses>
   <organization>
     <name>FEST (Fixtures for Easy Software Testing)</name>
-    <url>http://code.google.com/p/fest</url>
+    <url>http://fest.easytesting.org</url>
   </organization>
   <developers>
     <developer>

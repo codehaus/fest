@@ -3,15 +3,15 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd ">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>fest</groupId>
+  <groupId>org.easytesting</groupId>
   <artifactId>fest-test</artifactId>
   <version>1.0</version>
   <name>FEST Testing</name>
   <description>Utility methods for testing FEST modules</description>
   <inceptionYear>2008</inceptionYear>
-  <url>http://code.google.com/p/fest/</url>
+  <url>http://fest.easytesting.org</url>
   <parent>
-    <groupId>fest</groupId>
+    <groupId>org.easytesting</groupId>
     <artifactId>fest</artifactId>
     <version>1.0</version>
   </parent>
@@ -24,17 +24,17 @@
     </mailingList>
   </mailingLists>
   <scm>
-    <developerConnection>scm:svn:https://fest.googlecode.com/svn/trunk/</developerConnection>
-    <connection>scm:svn:http://fest.googlecode.com/svn/trunk/</connection>
-    <url>http://fisheye2.cenqua.com/browse/fest</url>
+    <developerConnection>scm:svn:https://svn.codehaus.org/fest/</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/fest/</connection>
+    <url>http://fisheye.codehaus.org/browse/fest/</url>
   </scm>
   <issueManagement>
-    <system>Google Code</system>
-    <url>http://code.google.com/p/fest/issues</url>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/FEST</url>
   </issueManagement>
   <dependencies>
     <dependency>
-      <groupId>fest</groupId>
+      <groupId>org.easytesting</groupId>
       <artifactId>fest-util</artifactId>
       <version>1.0</version>
       <scope>compile</scope>
