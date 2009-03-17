@@ -3,15 +3,15 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd ">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>fest</groupId>
+  <groupId>org.easytesting</groupId>
   <artifactId>fest-swing-junit-4.3.1</artifactId>
-  <version>1.2a1</version>
+  <version>1.2a1-SNAPSHOT</version>
   <name>FEST Swing - JUnit 4.3.1 Extension</name>
-  <description>JUnit-specific extension for FEST-Swing</description>
+  <description>JUnit 4.3.1-specific extension for FEST-Swing</description>
   <inceptionYear>2007</inceptionYear>
   <url>http://fest.easytesting.org/swing</url>
   <parent>
-    <groupId>fest</groupId>
+    <groupId>org.easytesting</groupId>
     <artifactId>fest</artifactId>
     <version>1.0</version>
   </parent>
@@ -24,34 +24,15 @@
     </mailingList>
   </mailingLists>
   <scm>
-    <developerConnection>scm:svn:https://fest.googlecode.com/svn/trunk/</developerConnection>
-    <connection>scm:svn:http://fest.googlecode.com/svn/trunk/</connection>
-    <url>http://fisheye2.cenqua.com/browse/fest</url>
+    <developerConnection>scm:svn:https://svn.codehaus.org/fest/</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/fest/</connection>
+    <url>http://fisheye.codehaus.org/browse/fest/</url>
   </scm>
   <issueManagement>
-    <system>Google Code</system>
-    <url>http://code.google.com/p/fest/issues</url>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/FEST</url>
   </issueManagement>
   <dependencies>
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>5.7</version>
-      <classifier>jdk15</classifier>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-      <version>1.3</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.ant</groupId>
-      <artifactId>ant-junit</artifactId>
-      <version>1.7.0</version>
-      <scope>provided</scope>
-    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -59,27 +40,34 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>fest</groupId>
+      <groupId>org.easytesting</groupId>
       <artifactId>fest-swing</artifactId>
-      <version>1.2a1</version>
+      <version>1.2a1-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>fest</groupId>
+      <groupId>org.easytesting</groupId>
       <artifactId>fest-swing-junit</artifactId>
-      <version>1.2a1</version>
+      <version>1.2a1-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>fest</groupId>
+      <groupId>org.easytesting</groupId>
       <artifactId>fest-assert</artifactId>
       <version>1.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>fest</groupId>
+      <groupId>org.easytesting</groupId>
       <artifactId>fest-mocks</artifactId>
       <version>1.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>5.7</version>
+      <classifier>jdk15</classifier>
       <scope>test</scope>
     </dependency>
   </dependencies>
