@@ -15,22 +15,19 @@
 package org.fest.swing.junit.v4_3_1.runner;
 
 
+import static org.junit.runner.Description.createSuiteDescription;
+import static org.junit.runner.Description.createTestDescription;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
 import org.fest.swing.junit.runner.FailureScreenshotTaker;
 import org.fest.swing.junit.runner.ImageFolderCreator;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.internal.runners.BeforeAndAfterRunner;
-import org.junit.internal.runners.InitializationError;
-import org.junit.internal.runners.MethodValidator;
-import org.junit.internal.runners.TestIntrospector;
+import org.junit.internal.runners.*;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
-import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 
 /**
@@ -70,10 +67,11 @@ public class GUITestRunner extends Runner {
    */
   @Override
   public void run(RunNotifier notifier) {
-    new InnerRunner(notifier).runProtected();
+    new InnerRunner(this, notifier).runProtected();
   }
 
-  final void doRun(RunNotifier notifier) {
+  // called by InnerRunner
+  void doRun(RunNotifier notifier) {
     if (testMethods.isEmpty()) notifier.testAborted(getDescription(), new Exception("No runnable methods"));
     for (Method method : testMethods)
       invokeTestMethod(method, notifier);
@@ -84,10 +82,10 @@ public class GUITestRunner extends Runner {
     try {
       test = testClass.getConstructor().newInstance();
     } catch (InvocationTargetException e) {
-      notifier.testAborted(methodDescription(method), e.getCause());
+      notifier.testAborted(descriptionOf(method), e.getCause());
       return;
     } catch (Exception e) {
-      notifier.testAborted(methodDescription(method), e);
+      notifier.testAborted(descriptionOf(method), e);
       return;
     }
     createMethodRunner(test, method, notifier).run();
@@ -106,30 +104,13 @@ public class GUITestRunner extends Runner {
    * @return a <code>Description</code> showing the tests to be run by the receiver.
    */
   public Description getDescription() {
-    Description spec = Description.createSuiteDescription(testClass.getName());
+    Description spec = createSuiteDescription(testClass.getName());
     for (Method method : testMethods)
-      spec.addChild(methodDescription(method));
+      spec.addChild(descriptionOf(method));
     return spec;
   }
 
-  private Description methodDescription(Method method) {
-    return Description.createTestDescription(testClass, method.getName());
-  }
-
-  private class InnerRunner extends BeforeAndAfterRunner {
-    private final RunNotifier notifier;
-
-    InnerRunner(RunNotifier notifier) {
-      super(testClass(), BeforeClass.class, AfterClass.class, null);
-      this.notifier = notifier;
-    }
-
-    protected void runUnprotected() {
-      doRun(notifier);
-    }
-
-    protected void addFailure(Throwable targetException) {
-      notifier.fireTestFailure(new Failure(getDescription(), targetException));
-    }
+  private Description descriptionOf(Method method) {
+    return createTestDescription(testClass, method.getName());
   }
 }
