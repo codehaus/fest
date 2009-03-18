@@ -1,0 +1,7 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>mrj</groupId>
+  <artifactId>MRJToolkitStubs</artifactId>
+  <name>MRJ Toolkit Stubs</name>
+  <version>1.0</version>
+</project>
