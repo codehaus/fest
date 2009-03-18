@@ -355,7 +355,7 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <dependencies>
           <dependency>
-            <groupId>fest</groupId>
+            <groupId>org.easytesting</groupId>
             <artifactId>fest-assembly</artifactId>
             <version>1.0</version>
           </dependency>
