@@ -18,17 +18,13 @@ package org.fest.swing.junit.runner;
 import static java.io.File.separator;
 import static java.util.logging.Level.WARNING;
 import static org.fest.swing.image.ScreenshotTaker.PNG_EXTENSION;
-import static org.fest.util.Files.currentFolder;
-import static org.fest.util.Files.delete;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.fest.swing.image.ScreenshotTaker;
-import org.fest.util.FilesException;
 
 /**
  * Understands taking a screenshot of the desktop when a GUI test fails.
@@ -37,30 +33,22 @@ import org.fest.util.FilesException;
  */
 public class FailureScreenshotTaker {
 
-  private static final String FAILED_GUI_TESTS_FOLDER = "failed-gui-tests";
-
   private static Logger logger = Logger.getAnonymousLogger();
 
-  private final ScreenshotTaker screenshotTaker = new ScreenshotTaker();
-
   private final File imageFolder;
+  private final ScreenshotTaker screenshotTaker;
 
   /**
    * Creates a new </code>{@link FailureScreenshotTaker}</code>.
+   * @param imageFolder the folder where screenshots will be saved to.
    */
-  public FailureScreenshotTaker() {
-    imageFolder = createImageFolder();
+  public FailureScreenshotTaker(File imageFolder) {
+    this(imageFolder, new ScreenshotTaker());
   }
 
-  private File createImageFolder() {
-    try {
-      File images = new File(concat(currentFolder().getCanonicalPath(), separator, FAILED_GUI_TESTS_FOLDER));
-      delete(images);
-      images.mkdir();
-      return images;
-    } catch (IOException e) {
-      throw new FilesException(concat("Unable to create directory ", quote(FAILED_GUI_TESTS_FOLDER)), e);
-    }
+  FailureScreenshotTaker(File imageFolder, ScreenshotTaker screenshotTaker) {
+    this.imageFolder = imageFolder;
+    this.screenshotTaker = screenshotTaker;
   }
 
   /**

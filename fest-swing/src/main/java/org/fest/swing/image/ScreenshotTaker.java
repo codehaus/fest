@@ -15,7 +15,22 @@
  */
 package org.fest.swing.image;
 
-import java.awt.*;
+import static org.fest.swing.core.FocusOwnerFinder.focusOwner;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.query.ComponentLocationOnScreenQuery.locationOnScreen;
+import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
+import static org.fest.util.Files.newFile;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.isEmpty;
+import static org.fest.util.Strings.quote;
+
+import java.awt.AWTException;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Locale;
@@ -28,20 +43,13 @@ import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
 
-import static org.fest.swing.core.FocusOwnerFinder.focusOwner;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.query.ComponentLocationOnScreenQuery.locationOnScreen;
-import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
-import static org.fest.util.Files.newFile;
-import static org.fest.util.Strings.*;
-
 /**
  * Understands taking screenshots of the desktop and GUI components.
  *
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public final class ScreenshotTaker {
+public class ScreenshotTaker {
 
   /** Extension of the image files containing the screenshots taken by instances of this class (png). */
   public static final String PNG_EXTENSION = "png";
@@ -136,7 +144,7 @@ public final class ScreenshotTaker {
       }
     });
   }
-  
+
   @RunsInEDT
   private static void showCaretOf(final JTextComponent textComponent) {
     execute(new GuiTask() {
