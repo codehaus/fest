@@ -15,11 +15,7 @@
  */
 package org.fest.swing.junit.runner;
 
-import static java.io.File.separator;
 import static org.fest.util.Files.currentFolder;
-import static org.fest.util.Files.delete;
-import static org.fest.util.Strings.concat;
-import static org.fest.util.Strings.quote;
 
 import java.io.File;
 
@@ -34,20 +30,22 @@ public class ImageFolderCreator {
 
   private static final String FAILED_GUI_TESTS_FOLDER = "failed-gui-tests";
 
+  private final FolderCreator folderCreator;
+
+  public ImageFolderCreator() {
+    this(new FolderCreator());
+  }
+
+  ImageFolderCreator(FolderCreator folderCreator) {
+    this.folderCreator = folderCreator;
+  }
+
   /**
    * Creates the folder where to save screenshots of failing GUI tests. The name of the folder to create is
    * 'failed-gui-tests'. If the folder already exists, it is deleted and recreated again.
    * @throws FilesException if any error occurs when creating the folder.
    */
   public File createImageFolder() {
-    try {
-      String canonicalPath = currentFolder().getCanonicalPath();
-      File imageFolder = new File(concat(canonicalPath, separator, FAILED_GUI_TESTS_FOLDER));
-      delete(imageFolder);
-      imageFolder.mkdir();
-      return imageFolder;
-    } catch (Exception e) {
-      throw new FilesException(concat("Unable to create directory ", quote(FAILED_GUI_TESTS_FOLDER)), e);
-    }
+    return folderCreator.createFolder(currentFolder(), FAILED_GUI_TESTS_FOLDER);
   }
 }
