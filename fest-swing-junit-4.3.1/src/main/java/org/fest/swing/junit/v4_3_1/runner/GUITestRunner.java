@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import org.fest.swing.junit.runner.FailureScreenshotTaker;
+import org.fest.swing.junit.runner.ImageFolderCreator;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -43,7 +44,7 @@ public class GUITestRunner extends Runner {
   private final List<Method> testMethods;
   private final Class<?> testClass;
 
-  private final FailureScreenshotTaker screenshotTaker = new FailureScreenshotTaker();
+  private final FailureScreenshotTaker screenshotTaker;
 
   /**
    * Creates a new <code>{@link GUITestRunner}</code>.
@@ -54,6 +55,7 @@ public class GUITestRunner extends Runner {
     this.testClass = testClass;
     testMethods = new TestIntrospector(testClass).getTestMethods(Test.class);
     validate();
+    screenshotTaker = new FailureScreenshotTaker(new ImageFolderCreator().createImageFolder());
   }
 
   private void validate() throws InitializationError {
