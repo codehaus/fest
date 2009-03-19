@@ -15,17 +15,16 @@
  */
 package org.fest.reflect.method;
 
-import java.util.List;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.reflect.util.ExpectedFailures.*;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import java.util.List;
 
 import org.fest.reflect.Jedi;
 import org.fest.reflect.reference.TypeRef;
 import org.fest.test.CodeToTest;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.reflect.util.ExpectedFailures.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Tests for the fluent interface for methods.
@@ -57,7 +56,7 @@ import static org.fest.reflect.util.ExpectedFailures.*;
       }
     });
   }
-  
+
   public void shouldThrowErrorIfMethodReturnTypeIsNull() {
     expectNullPointerException("The return type of the method to access should not be null").on(new CodeToTest() {
       public void run() {
@@ -65,7 +64,7 @@ import static org.fest.reflect.util.ExpectedFailures.*;
       }
     });
   }
-  
+
   public void shouldThrowErrorIfMethodReturnTypeReferenceIsNull() {
     expectNullPointerException("The return type reference of the method to access should not be null").on(
       new CodeToTest() {
@@ -83,7 +82,7 @@ import static org.fest.reflect.util.ExpectedFailures.*;
       }
     });
   }
-  
+
   public void shouldThrowErrorIfMethodTargetIsNull() {
     expectNullPointerException("Target should not be null").on(new CodeToTest() {
       public void run() {
@@ -148,7 +147,7 @@ import static org.fest.reflect.util.ExpectedFailures.*;
   }
 
   public void shouldThrowErrorIfInvalidArgs() {
-    expectReflectionError("Unable to invoke method 'setName' with arguments [8]").on(new CodeToTest() {
+    expectIllegalArgumentException("argument type mismatch").on(new CodeToTest() {
       public void run() {
         int invalidArg = 8;
         new MethodName("setName").withParameterTypes(String.class).in(jedi).invoke(invalidArg);
@@ -204,7 +203,7 @@ import static org.fest.reflect.util.ExpectedFailures.*;
       }
     });
   }
-  
+
   public void shouldCallStaticMethodWithNoArgsAndReturnValue() {
     Jedi.addCommonPower("Jump");
     int count = new StaticMethodName("commonPowerCount").withReturnType(int.class).in(Jedi.class).invoke();
@@ -218,7 +217,7 @@ import static org.fest.reflect.util.ExpectedFailures.*;
                                            .withParameterTypes(int.class).in(Jedi.class).invoke(0);
     assertThat(power).isEqualTo("Jump");
   }
-  
+
   public void shouldCallStaticMethodWithNoArgsAndReturnValueReference() {
     Jedi.addCommonPower("jump");
     List<String> powers = new StaticMethodName("commonPowers").withReturnType(new TypeRef<List<String>>() {})
@@ -246,7 +245,7 @@ import static org.fest.reflect.util.ExpectedFailures.*;
     new StaticMethodName("clearCommonPowers").in(Jedi.class).invoke();
     assertThat(Jedi.commonPowerCount()).isEqualTo(0);
   }
-  
+
   public void shouldThrowErrorIfInvalidStaticMethodName() {
     String message = "Unable to find method 'powerSize' in org.fest.reflect.Jedi with parameter type(s) []";
     expectReflectionError(message).on(new CodeToTest() {
@@ -258,7 +257,7 @@ import static org.fest.reflect.util.ExpectedFailures.*;
   }
 
   public void shouldThrowErrorIfInvalidArgsForStaticMethod() {
-    expectReflectionError("Unable to invoke method 'addCommonPower' with arguments [8]").on(new CodeToTest() {
+    expectIllegalArgumentException("argument type mismatch").on(new CodeToTest() {
       public void run() {
         int invalidArg = 8;
         new StaticMethodName("addCommonPower").withParameterTypes(String.class).in(Jedi.class).invoke(invalidArg);
