@@ -5,6 +5,14 @@
     <author email="alex.ruiz.05@gmail.com">Alex Ruiz</author>
   </properties>
   <body>
+    <release version="1.2" date="TBD" description="Subsequent release">
+      <action dev="alruiz" type="add" issue="FEST-68" due-to="Francis ANDRE">
+        Method invocation now rethrow the original exception thrown by the method.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-68" due-to="Francis ANDRE">
+        Constructor invocation now rethrow the original exception thrown by the constructor.
+      </action>
+    </release>
     <release version="1.1" date="2009-02-10" description="Subsequent release">
       <action dev="alruiz" type="add" issue="117" due-to="Xavier Dury">
         Added class org.fest.reflect.type.TypeRef based on Neal Gafter's TypeReference.

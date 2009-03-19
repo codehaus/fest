@@ -14,13 +14,16 @@
  */
 package org.fest.reflect.method;
 
+import static org.fest.reflect.util.Accessibles.makeAccessible;
+import static org.fest.reflect.util.Accessibles.setAccessibleIgnoringExceptions;
+import static org.fest.reflect.util.Throwables.targetOf;
+import static org.fest.util.Arrays.format;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
 import java.lang.reflect.Method;
 
 import org.fest.reflect.exception.ReflectionError;
-
-import static org.fest.reflect.util.Accessibles.*;
-import static org.fest.util.Arrays.format;
-import static org.fest.util.Strings.*;
 
 /**
  * Understands the use of reflection to access a method from an object.
@@ -97,12 +100,18 @@ public final class Invoker<T> {
     try {
       makeAccessible(method);
       return (T) method.invoke(target, args);
-    } catch (Exception e) {
-      throw new ReflectionError(concat("Unable to invoke method ", quote(method.getName()), " with arguments ",
-          format(args)), e);
+    } catch (Throwable t) {
+      Throwable cause = targetOf(t);
+      if (cause instanceof RuntimeException) throw (RuntimeException)cause;
+      throw cannotInvokeMethod(cause, args);
     } finally {
       setAccessibleIgnoringExceptions(method, accessible);
     }
+  }
+
+  private ReflectionError cannotInvokeMethod(Throwable cause, Object... args) {
+    String message = concat("Unable to invoke method ", quote(method.getName()), " with arguments ", format(args));
+    throw new ReflectionError(message, cause);
   }
 
   /**
