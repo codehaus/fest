@@ -35,17 +35,19 @@ import org.testng.annotations.Test;
   }
 
   public void shouldReturnToStringIfTestIsJUnit4TestCaseFacade() {
-    JUnit4TestCaseFacade test = constructor().withParameterTypes(Description.class)
-                                             .in(JUnit4TestCaseFacade.class)
-                                             .newInstance(createSuiteDescription("hello"));
+    JUnit4TestCaseFacade test = createJUnit4TestCaseFacade("hello");
     assertThat(Tests.methodNameFrom(test)).isEqualTo("hello");
   }
 
   public void shouldReturnToStringWithoutClassNameIfTestIsJUnit4TestCaseFacade() {
-    JUnit4TestCaseFacade test = constructor().withParameterTypes(Description.class)
-                                             .in(JUnit4TestCaseFacade.class)
-                                             .newInstance(createSuiteDescription("hello(world)"));
+    JUnit4TestCaseFacade test = createJUnit4TestCaseFacade("hello(world)");
     assertThat(Tests.methodNameFrom(test)).isEqualTo("hello");
+  }
+
+  private JUnit4TestCaseFacade createJUnit4TestCaseFacade(String description) {
+    return constructor().withParameterTypes(Description.class)
+                        .in(JUnit4TestCaseFacade.class)
+                        .newInstance(createSuiteDescription(description));
   }
 
   public void shouldReturnNameIfTestIsInstanceOfTestCase() {
@@ -54,22 +56,32 @@ import org.testng.annotations.Test;
   }
 
   public void shouldReturnNameByCallingNameMethodOfTest() {
-    class MyTest implements junit.framework.Test {
-      public String name() { return "name"; }
-      public int countTestCases() { return 0; }
-      public void run(TestResult result) {}
-    }
-    MyTest test = new MyTest();
+    MyTestWithName test = new MyTestWithName();
     assertThat(Tests.methodNameFrom(test)).isEqualTo("name");
   }
 
+  private static class MyTestWithName implements junit.framework.Test {
+    public String name() { return "name"; }
+    public int countTestCases() { return 0; }
+    public void run(TestResult result) {}
+  }
+
   public void shouldReturnNameByCallingGetNameMethodOfTest() {
-    class MyTest implements junit.framework.Test {
-      public String getName() { return "name"; }
+    MyTestWithGetName test = new MyTestWithGetName();
+    assertThat(Tests.methodNameFrom(test)).isEqualTo("name");
+  }
+
+  private static class MyTestWithGetName implements junit.framework.Test {
+    public String getName() { return "name"; }
+    public int countTestCases() { return 0; }
+    public void run(TestResult result) {}
+  }
+
+  public void shouldReturnUnknownIfTestDoesNotHaveNameOrGetNameMethods() {
+    junit.framework.Test test = new junit.framework.Test() {
       public int countTestCases() { return 0; }
       public void run(TestResult result) {}
-    }
-    MyTest test = new MyTest();
-    assertThat(Tests.methodNameFrom(test)).isEqualTo("name");
+    };
+    assertThat(Tests.methodNameFrom(test)).isEqualTo("unknown");
   }
 }
