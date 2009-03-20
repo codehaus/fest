@@ -1,15 +1,15 @@
 /*
  * Created on Jul 19, 2007
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
- * 
+ *
  * Copyright @2007-2009 the original author or authors.
  */
 package org.fest.swing.junit.ant;
@@ -21,26 +21,20 @@ import java.net.URL;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.Task;
-import org.apache.tools.ant.taskdefs.Delete;
-import org.apache.tools.ant.taskdefs.TempFile;
-import org.apache.tools.ant.taskdefs.XSLTProcess;
+import org.apache.tools.ant.*;
+import org.apache.tools.ant.taskdefs.*;
 import org.apache.tools.ant.taskdefs.XSLTProcess.Param;
 import org.apache.tools.ant.taskdefs.optional.junit.AggregateTransformer;
 import org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator;
-import org.apache.tools.ant.types.Path;
-import org.apache.tools.ant.types.Reference;
-import org.apache.tools.ant.types.Resource;
+import org.apache.tools.ant.types.*;
 import org.apache.tools.ant.types.resources.FileResource;
 import org.apache.tools.ant.types.resources.URLResource;
 import org.apache.tools.ant.util.FileUtils;
 
 /**
- * Transform a JUnit xml report. The default transformation generates an HTML report in either framed or non-framed
+ * Transforms a JUnit XML report. The default transformation generates an HTML report in either framed or non-framed
  * style.
- * 
+ *
  * @author Alex Ruiz
  */
 public class ReportTransformer extends AggregateTransformer {
@@ -49,8 +43,8 @@ public class ReportTransformer extends AggregateTransformer {
 
   private Path classpath;
 
-  /** The params that will be sent to the XSL transformation. */
-  private final List<XSLTProcess.Param> params;
+  /** The parameters that will be sent to the XSL transformation. */
+  private final List<Param> params;
 
   /** Instance of a utility class to use for file operations. */
   private static final FileUtils FILE_UTILS = FileUtils.getFileUtils();
@@ -69,7 +63,7 @@ public class ReportTransformer extends AggregateTransformer {
 
   /**
    * Create an instance of an XSL parameter for configuration by Ant.
-   * @return an instance of the Param class to be configured.
+   * @return an instance of the <code>Param</code> class to be configured.
    */
   @Override public Param createParam() {
     Param p = new Param();
@@ -110,7 +104,7 @@ public class ReportTransformer extends AggregateTransformer {
   }
 
   /**
-   * access the stylesheet to be used as a resource.
+   * Access the stylesheet to be used as a resource.
    * @return stylesheet as a resource
    */
   @Override protected Resource getStylesheet() {
@@ -175,7 +169,7 @@ public class ReportTransformer extends AggregateTransformer {
     deleteTask.setFile(outputFile);
     deleteTask.execute();
   }
-  
+
   /**
    * Sets an additional classpath.
    * @param classpath the additional classpath to append to the current one.
