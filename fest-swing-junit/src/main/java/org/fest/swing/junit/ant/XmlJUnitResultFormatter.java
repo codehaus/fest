@@ -1,50 +1,28 @@
 /*
  * Created on Jun 6, 2007
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
- * 
+ *
  * Copyright @2007-2009 the original author or authors.
  */
 package org.fest.swing.junit.ant;
 
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.ATTR_CLASSNAME;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.ATTR_ERRORS;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.ATTR_FAILURES;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.ATTR_MESSAGE;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.ATTR_NAME;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.ATTR_TESTS;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.ATTR_TIME;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.ATTR_TYPE;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.ATTR_VALUE;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.ERROR;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.FAILURE;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.HOSTNAME;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.PROPERTIES;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.PROPERTY;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.SYSTEM_ERR;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.SYSTEM_OUT;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.TESTCASE;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.TESTSUITE;
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.TIMESTAMP;
+import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.*;
+import static org.fest.swing.junit.ant.Tests.testClassNameFrom;
+import static org.fest.swing.junit.ant.Tests.testMethodNameFrom;
 import static org.fest.util.Strings.isEmpty;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -55,20 +33,13 @@ import junit.framework.AssertionFailedError;
 import junit.framework.Test;
 
 import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.taskdefs.optional.junit.JUnitResultFormatter;
-import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
-import org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner;
-import org.apache.tools.ant.taskdefs.optional.junit.JUnitVersionHelper2;
-import org.apache.tools.ant.util.DOMElementWriter;
-import org.apache.tools.ant.util.DateUtils;
-import org.apache.tools.ant.util.FileUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Text;
+import org.apache.tools.ant.taskdefs.optional.junit.*;
+import org.apache.tools.ant.util.*;
+import org.w3c.dom.*;
 
 /**
  * Understands a copy of the original <code>XMLJUnitResultFormatter</code>, with flexibility for extension.
- * 
+ *
  * @author Alex Ruiz
  */
 public class XmlJUnitResultFormatter implements JUnitResultFormatter {
@@ -86,19 +57,19 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
 
   /** The XML document. */
   private Document document;
-  
+
   /** The wrapper for the whole test suite. */
   private Element rootElement;
-  
+
   /** Element for the current test. */
-  private ConcurrentMap<Test, Element> testElements = new ConcurrentHashMap<Test, Element>();
-  
+  private final ConcurrentMap<Test, Element> testElements = new ConcurrentHashMap<Test, Element>();
+
   /** Tests that failed. */
-  private ConcurrentMap<Test, Test> failedTests = new ConcurrentHashMap<Test, Test>();
-  
+  private final ConcurrentMap<Test, Test> failedTests = new ConcurrentHashMap<Test, Test>();
+
   /** Timing helper. */
-  private ConcurrentMap<Test, Long> testStarts = new ConcurrentHashMap<Test, Long>();
-  
+  private final ConcurrentMap<Test, Long> testStarts = new ConcurrentHashMap<Test, Long>();
+
   /** Where to write the log to. */
   private OutputStream out;
 
@@ -116,7 +87,7 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
     rootElement.appendChild(nested);
     nested.appendChild(document.createCDATASection(output));
   }
-  
+
   protected final Document document() { return document; }
   protected final Element rootElement() { return rootElement; }
 
@@ -137,7 +108,7 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
   private void writeSuiteName(String suiteName) {
     rootElement.setAttribute(ATTR_NAME, suiteName == null ? UNKNOWN : suiteName);
   }
-  
+
   private void writeHostname() {
     String hostName = null;
     try {
@@ -147,7 +118,7 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
     }
     rootElement.setAttribute(HOSTNAME, hostName);
   }
-  
+
   private void writeTimestamp() {
     String timestamp = DateUtils.format(new Date(), DateUtils.ISO8601_DATETIME_PATTERN);
     rootElement.setAttribute(TIMESTAMP, timestamp);
@@ -169,7 +140,7 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
   }
 
   protected void onStartTestSuite(JUnitTest suite) {}
-  
+
   /**
    * The whole test suite ended.
    * @param suite the test suite.
@@ -216,14 +187,14 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
 
   private Element createAndAddCurrentTest(Test test) {
     Element currentTest = document.createElement(TESTCASE);
-    String methodName = JUnitVersionHelper2.testMethodName(test);
+    String methodName = testMethodNameFrom(test);
     currentTest.setAttribute(ATTR_NAME, methodName == null ? UNKNOWN : methodName);
-    currentTest.setAttribute(ATTR_CLASSNAME, JUnitVersionHelper2.testClassName(test));
+    currentTest.setAttribute(ATTR_CLASSNAME, testClassNameFrom(test));
     rootElement.appendChild(currentTest);
-    testElements.put(test, currentTest);    
+    testElements.put(test, currentTest);
     return currentTest;
   }
-  
+
   private void writeExecutionTime(Test test, Element currentTest) {
     long startTime = testStarts.get(test);
     double executionTime = (System.currentTimeMillis() - startTime) / 1000.0;
@@ -277,7 +248,7 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
     writeError(error, errorElement);
     writeStackTrace(error, errorElement);
   }
-  
+
   private void writeError(Throwable error, Element destination) {
     String message = error.getMessage();
     if (!isEmpty(message)) destination.setAttribute(ATTR_MESSAGE, error.getMessage());
@@ -293,6 +264,6 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
     Text textNode = document.createTextNode(text);
     destination.appendChild(textNode);
   }
-    
+
   protected void onFailureOrError(Test test, Throwable error, Element errorElement) {}
 }

@@ -17,9 +17,12 @@ package org.fest.swing.junit.ant;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.reflect.core.Reflection.constructor;
+import static org.fest.reflect.core.Reflection.staticInnerClass;
 import static org.junit.runner.Description.createSuiteDescription;
 import junit.framework.*;
 
+import org.apache.tools.ant.taskdefs.optional.junit.JUnitTaskMirrorImpl;
+import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
 import org.junit.runner.Description;
 import org.testng.annotations.Test;
 
@@ -31,33 +34,27 @@ import org.testng.annotations.Test;
 @Test public class TestsTest {
 
   public void shouldReturnUnknownIfTestIsNull() {
-    assertThat(Tests.methodNameFrom(null)).isEqualTo("unknown");
+    assertThat(Tests.testMethodNameFrom(null)).isEqualTo("unknown");
   }
 
-  public void shouldReturnToStringIfTestIsJUnit4TestCaseFacade() {
+  public void shouldReturnToStringAsMethodNameIfTestIsJUnit4TestCaseFacade() {
     JUnit4TestCaseFacade test = createJUnit4TestCaseFacade("hello");
-    assertThat(Tests.methodNameFrom(test)).isEqualTo("hello");
+    assertThat(Tests.testMethodNameFrom(test)).isEqualTo("hello");
   }
 
-  public void shouldReturnToStringWithoutClassNameIfTestIsJUnit4TestCaseFacade() {
+  public void shouldReturnToStringWithoutClassNameAsMethodNameIfTestIsJUnit4TestCaseFacade() {
     JUnit4TestCaseFacade test = createJUnit4TestCaseFacade("hello(world)");
-    assertThat(Tests.methodNameFrom(test)).isEqualTo("hello");
+    assertThat(Tests.testMethodNameFrom(test)).isEqualTo("hello");
   }
 
-  private JUnit4TestCaseFacade createJUnit4TestCaseFacade(String description) {
-    return constructor().withParameterTypes(Description.class)
-                        .in(JUnit4TestCaseFacade.class)
-                        .newInstance(createSuiteDescription(description));
-  }
-
-  public void shouldReturnNameIfTestIsInstanceOfTestCase() {
+  public void shouldReturnNameAsMethodNameIfTestIsInstanceOfTestCase() {
     TestCase test = new TestCase("Leia") {};
-    assertThat(Tests.methodNameFrom(test)).isEqualTo("Leia");
+    assertThat(Tests.testMethodNameFrom(test)).isEqualTo("Leia");
   }
 
   public void shouldReturnNameByCallingNameMethodOfTest() {
     MyTestWithName test = new MyTestWithName();
-    assertThat(Tests.methodNameFrom(test)).isEqualTo("name");
+    assertThat(Tests.testMethodNameFrom(test)).isEqualTo("name");
   }
 
   private static class MyTestWithName implements junit.framework.Test {
@@ -68,7 +65,7 @@ import org.testng.annotations.Test;
 
   public void shouldReturnNameByCallingGetNameMethodOfTest() {
     MyTestWithGetName test = new MyTestWithGetName();
-    assertThat(Tests.methodNameFrom(test)).isEqualTo("name");
+    assertThat(Tests.testMethodNameFrom(test)).isEqualTo("name");
   }
 
   private static class MyTestWithGetName implements junit.framework.Test {
@@ -82,6 +79,36 @@ import org.testng.annotations.Test;
       public int countTestCases() { return 0; }
       public void run(TestResult result) {}
     };
-    assertThat(Tests.methodNameFrom(test)).isEqualTo("unknown");
+    assertThat(Tests.testMethodNameFrom(test)).isEqualTo("unknown");
+  }
+
+  public void shouldReturnTestClassNameFromVmExitErrorTest() {
+    Class<?> vmExitErrorTestClass = staticInnerClass("VmExitErrorTest").in(JUnitTaskMirrorImpl.class).get();
+    Object test = constructor().withParameterTypes(String.class, JUnitTest.class, String.class)
+                               .in(vmExitErrorTestClass)
+                               .newInstance("someMessage", new JUnitTest("testClassName"), "testName");
+    assertThat(test).isInstanceOf(junit.framework.Test.class);
+    assertThat(Tests.testClassNameFrom((junit.framework.Test)test)).isEqualTo("testClassName");
+  }
+
+  public void shouldReturnToStringAsClassNameIfTestIsJUnit4TestCaseFacade() {
+    JUnit4TestCaseFacade test = createJUnit4TestCaseFacade("hello");
+    assertThat(Tests.testClassNameFrom(test)).isEqualTo(JUnit4TestCaseFacade.class.getName());
+  }
+
+  public void shouldReturnToStringWithoutClassNameAsClasNameIfTestIsJUnit4TestCaseFacade() {
+    JUnit4TestCaseFacade test = createJUnit4TestCaseFacade("hello(world)");
+    assertThat(Tests.testClassNameFrom(test)).isEqualTo("world");
+  }
+
+  private JUnit4TestCaseFacade createJUnit4TestCaseFacade(String description) {
+    return constructor().withParameterTypes(Description.class)
+                        .in(JUnit4TestCaseFacade.class)
+                        .newInstance(createSuiteDescription(description));
+  }
+
+  public void shouldReturnToStringAsClassNameIfTestIsInstanceOfTestCase() {
+    TestCase test = new TestCase("Leia") {};
+    assertThat(Tests.testClassNameFrom(test)).isEqualTo(test.getClass().getName());
   }
 }

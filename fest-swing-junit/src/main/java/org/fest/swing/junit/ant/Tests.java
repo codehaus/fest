@@ -14,6 +14,8 @@
  */
 package org.fest.swing.junit.ant;
 
+import static org.fest.reflect.core.Reflection.method;
+
 import java.lang.reflect.Method;
 
 import junit.framework.Test;
@@ -26,11 +28,13 @@ import junit.framework.TestCase;
  */
 final class Tests {
 
+  private static final String JUNIT4_TEST_CASE_FACADE_TYPE = "junit.framework.JUnit4TestCaseFacade";
+
   private static final String UNKNOWN = "unknown";
 
   private static Method testCaseName = nameMethodIn(TestCase.class);
 
-  static String methodNameFrom(Test test) {
+  static String testMethodNameFrom(Test test) {
     if (test == null) return UNKNOWN;
     if (isJUnit4TestCaseFacade(test)) return trimClassNameFromMethodName(test.toString());
     if (test instanceof TestCase && testCaseName != null) return invokeNameMethod(testCaseName, test);
@@ -38,7 +42,7 @@ final class Tests {
   }
 
   private static boolean isJUnit4TestCaseFacade(Test test) {
-    return test.getClass().getName().equals("junit.framework.JUnit4TestCaseFacade");
+    return isJunit4TestCaseFacade(test);
   }
 
   // Self-describing as of JUnit 4 (#38811). But trim "(ClassName)".
@@ -72,5 +76,37 @@ final class Tests {
     } catch (Exception e) {
       return UNKNOWN;
     }
+  }
+
+  static String testClassNameFrom(Test test) {
+    String className = classNameOf(test);
+    if (className.endsWith("VmExitErrorTest")) return classNameFromVmExitErrorTest(test);
+    if (isJunit4TestCaseFacade(test)) return testClassNameFromJUnit4TestCaseFacade(test);
+    return className;
+  }
+
+  private static String classNameFromVmExitErrorTest(Test test) {
+    try {
+      return method("getClassName").withReturnType(String.class).in(test).invoke();
+    } catch (Exception e) {
+      return UNKNOWN;
+    }
+  }
+
+  private static boolean isJunit4TestCaseFacade(Test test) {
+    return classNameOf(test).equals(JUNIT4_TEST_CASE_FACADE_TYPE);
+  }
+
+  // JUnit 4 wraps solo tests this way. We can extract the original test name with a little hack.
+  private static String testClassNameFromJUnit4TestCaseFacade(Test test) {
+    String name = test.toString();
+    int i = name.lastIndexOf('(');
+    if (i == -1) return classNameOf(test);
+    if (!name.endsWith(")")) return classNameOf(test);
+    return name.substring(i + 1, name.length() - 1);
+  }
+
+  private static String classNameOf(Test test) {
+    return test.getClass().getName();
   }
 }
