@@ -33,26 +33,19 @@ import org.w3c.dom.Element;
 public final class ScreenshotOnFailureResultFormatter extends XmlJUnitResultFormatter {
 
   private ScreenshotXmlWriter screenshotXmlWriter;
-  private ImageException cannotTakeScreenshots;
 
-  public ScreenshotOnFailureResultFormatter() {
+  @Override protected void onStartTestSuite(JUnitTest suite) {
     try {
       screenshotXmlWriter = new ScreenshotXmlWriter(document());
     } catch (ImageException e) {
-      cannotTakeScreenshots = e;
+      informCannotTakeScreenshots(e);
     }
   }
 
-  @Override protected void onStartTestSuite(JUnitTest suite) {
-    if (cannotTakeScreenshots == null) return;
-    informCannotTakeScreenshots();
-    cannotTakeScreenshots = null;
-  }
-
-  private void informCannotTakeScreenshots() {
-    Element e = document().createElement(ERROR);
-    writeErrorAndStackTrace(cannotTakeScreenshots, e);
-    rootElement().appendChild(e);
+  private void informCannotTakeScreenshots(ImageException error) {
+    Element errorElement = document().createElement(ERROR);
+    writeErrorAndStackTrace(error, errorElement);
+    rootElement().appendChild(errorElement);
   }
 
   @Override protected void onFailureOrError(Test test, Throwable error, Element errorElement) {
