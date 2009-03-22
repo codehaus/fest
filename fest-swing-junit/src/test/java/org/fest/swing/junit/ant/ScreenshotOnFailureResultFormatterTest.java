@@ -17,16 +17,21 @@ package org.fest.swing.junit.ant;
 
 import static java.lang.String.valueOf;
 import static java.security.AccessController.doPrivileged;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.reflect.core.Reflection.field;
 import static org.fest.swing.junit.xml.XmlAttribute.name;
 
 import java.security.PrivilegedAction;
 
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
+import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.image.ImageException;
 import org.fest.swing.junit.xml.XmlNode;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.w3c.dom.Element;
 
 /**
  * Tests for <code>{@link ScreenshotOnFailureResultFormatter}</code>.
@@ -65,5 +70,42 @@ import org.testng.annotations.Test;
         return null;
       }
     });
+  }
+
+  public void shouldTakeScreenshotWhenTestFails() {
+    final ScreenshotXmlWriter writer = createMock(ScreenshotXmlWriter.class);
+    updateWriterInFormatter(writer);
+    final junit.framework.Test test = failingTest();
+    final Element errorElement = errorElement();
+    new EasyMockTemplate(writer) {
+      protected void expectations() {
+        writer.addScreenshotToXmlElement(test, errorElement);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        formatter.onFailureOrError(test, new Throwable(), errorElement);
+      }
+    }.run();
+  }
+
+  public void shouldNotTakeScreenshotWhenTestFailsIfScreenshotWriterIsNull() {
+    updateWriterInFormatter(null);
+    final junit.framework.Test test = failingTest();
+    final Element errorElement = errorElement();
+    formatter.onFailureOrError(test, new Throwable(), errorElement);
+    // no assertions to be made...are we sure this test is meaningful?
+  }
+
+  private void updateWriterInFormatter(final ScreenshotXmlWriter writer) {
+    field("screenshotXmlWriter").ofType(ScreenshotXmlWriter.class).in(formatter).set(writer);
+  }
+
+  private Element errorElement() {
+    return createMock(Element.class);
+  }
+
+  private junit.framework.Test failingTest() {
+    return createMock(junit.framework.Test.class);
   }
 }
