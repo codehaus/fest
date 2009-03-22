@@ -49,7 +49,7 @@ import org.w3c.dom.Element;
   }
 
   public void shouldWriterErrorInXmlDocumentIfScreenshotWriterCouldNotBeCreated() {
-    headlessAWT(true);
+    headlessAWT(true); // force an ImageException to be thrown
     try {
       formatter.startTestSuite(new JUnitTest());
       XmlNode root = new XmlNode(formatter.rootElement());
@@ -91,9 +91,7 @@ import org.w3c.dom.Element;
 
   public void shouldNotTakeScreenshotWhenTestFailsIfScreenshotWriterIsNull() {
     updateWriterInFormatter(null);
-    final junit.framework.Test test = failingTest();
-    final Element errorElement = errorElement();
-    formatter.onFailureOrError(test, new Throwable(), errorElement);
+    formatter.onFailureOrError(failingTest(), new Throwable(), errorElement());
     // no assertions to be made...are we sure this test is meaningful?
   }
 
