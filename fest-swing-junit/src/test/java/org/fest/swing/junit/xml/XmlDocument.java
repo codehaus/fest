@@ -38,6 +38,10 @@ public class XmlDocument {
     }
   }
 
+  public XmlDocument(Document target) {
+    document = target;
+  }
+
   public XmlNode addNode(String name) {
     Element e = document.createElement(name);
     document.appendChild(e);
@@ -45,4 +49,10 @@ public class XmlDocument {
   }
 
   public Document target() { return document; }
+
+  public XmlNode root() {
+    Element root = document.getDocumentElement();
+    if (root == null) throw new NullPointerException("document does not have a root node");
+    return new XmlNode(root);
+  }
 }

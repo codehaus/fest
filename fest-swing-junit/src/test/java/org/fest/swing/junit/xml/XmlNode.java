@@ -16,6 +16,8 @@
 package org.fest.swing.junit.xml;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
 
 import org.fest.assertions.AssertExtension;
 import org.w3c.dom.*;
@@ -29,7 +31,7 @@ public class XmlNode implements AssertExtension {
 
   private final Element element;
 
-  XmlNode(Element e) {
+  public XmlNode(Element e) {
     element = e;
   }
 
@@ -69,6 +71,12 @@ public class XmlNode implements AssertExtension {
 
   public XmlNode hasText(String expected) {
     assertThat(element.getTextContent()).as("text").isEqualTo(expected);
+    return this;
+  }
+
+  public XmlNode hasAttribute(XmlAttribute attribute) {
+    String value = element.getAttribute(attribute.name);
+    assertThat(value).as(concat("value of attribute ", quote(attribute.name))).isEqualTo(attribute.value);
     return this;
   }
 }

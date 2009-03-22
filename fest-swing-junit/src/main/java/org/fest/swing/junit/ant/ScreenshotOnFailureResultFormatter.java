@@ -34,6 +34,11 @@ public final class ScreenshotOnFailureResultFormatter extends XmlJUnitResultForm
 
   private ScreenshotXmlWriter screenshotXmlWriter;
 
+  /**
+   * Execution of the JUnit test suite started. Internally, this method creates the writer responsible for embedding
+   * a screenshot of the desktop in the XML report.
+   * @param suite the JUnit test suite.
+   */
   @Override protected void onStartTestSuite(JUnitTest suite) {
     try {
       screenshotXmlWriter = new ScreenshotXmlWriter(document());
@@ -48,6 +53,12 @@ public final class ScreenshotOnFailureResultFormatter extends XmlJUnitResultForm
     rootElement().appendChild(errorElement);
   }
 
+  /**
+   * A test failed. This method embeds a screenshot of the desktop if the failing test is a GUI test.
+   * @param test the failing test.
+   * @param error the cause of the failure.
+   * @param errorElement the element in the XML report containing information about the failure.
+   */
   @Override protected void onFailureOrError(Test test, Throwable error, Element errorElement) {
     if (screenshotXmlWriter == null) return;
     screenshotXmlWriter.addScreenshotToXmlElement(test, errorElement);
