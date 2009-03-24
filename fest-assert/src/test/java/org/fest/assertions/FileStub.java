@@ -38,29 +38,19 @@ class FileStub extends File {
     absolutePath(absolutePath);
   }
 
-  void absolute(boolean absolute) {
-    this.absolute = absolute;
-  }
+  void absolute(boolean val) { absolute = val; }
 
-  void absolutePath(String absolutePath) {
-    this.absolutePath = absolutePath;
-  }
+  void absolutePath(String val) { absolutePath = val; }
 
-  void directory(boolean directory) {
-    this.directory = directory;
-  }
+  void directory(boolean val) { directory = val; }
 
   @Override public boolean exists() {
     return exists;
   }
 
-  void exists(boolean exists) {
-    this.exists = exists;
-  }
+  void exists(boolean val) { exists = val; }
 
-  void file(boolean file) {
-    this.file = file;
-  }
+  void file(boolean val) { file = val; }
 
   @Override public String getAbsolutePath() {
     return absolutePath;
@@ -86,9 +76,7 @@ class FileStub extends File {
     return length;
   }
 
-  void length(long length) {
-    this.length = length;
-  }
+  void length(long val) { length = val; }
 
   /** @see java.lang.Object#hashCode() */
   @Override public int hashCode() {

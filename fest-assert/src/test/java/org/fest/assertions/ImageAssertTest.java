@@ -14,26 +14,22 @@
  */
 package org.fest.assertions;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.Test;
-
-import org.fest.test.CodeToTest;
-
-import static java.awt.Color.*;
-
+import static java.awt.Color.BLUE;
+import static java.awt.Color.YELLOW;
 import static org.fest.assertions.CommonFailures.*;
 import static org.fest.assertions.Resources.file;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import static org.fest.util.Strings.concat;
-
 import static org.testng.Assert.*;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import org.fest.test.CodeToTest;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link ImageAssert}</code>.
@@ -504,13 +500,9 @@ public class ImageAssertTest {
     private BufferedImage imageRead;
     private IOException toThrow;
 
-    void imageRead(BufferedImage imageRead) {
-      this.imageRead = imageRead;
-    }
+    void imageRead(BufferedImage image) { imageRead = image; }
 
-    void toThrow(IOException toThrow) {
-      this.toThrow = toThrow;
-    }
+    void toThrow(IOException e) { toThrow = e; }
 
     @Override BufferedImage read(File imageFile) throws IOException {
       if (toThrow != null) throw toThrow;

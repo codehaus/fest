@@ -15,7 +15,8 @@
  */
 package org.fest.assertions;
 
-import static org.fest.util.Strings.*;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.isEmpty;
 
 /**
  * Understands a condition to be met by a given <code>{@link Object}</code>.
@@ -43,17 +44,17 @@ public abstract class Condition<T> {
 
   /**
    * Sets the description of this condition.
-   * @param description the description to set.
+   * @param newDescription the description to set.
    * @return this condition.
    */
-  public final Condition<T> as(String description) {
-    this.description = description;
+  public final Condition<T> as(String newDescription) {
+    description = newDescription;
     return this;
   }
 
   final String addDescriptionTo(String s) {
-    String descriptionToAdd = description(); 
-    if (isEmpty(descriptionToAdd)) descriptionToAdd = getClass().getSimpleName();  
+    String descriptionToAdd = description();
+    if (isEmpty(descriptionToAdd)) descriptionToAdd = getClass().getSimpleName();
     return concat(s, ":<", descriptionToAdd, ">");
   }
 

@@ -23,7 +23,7 @@ package org.fest.assertions;
  */
 public abstract class Assert {
 
-  Description description;
+  private Description description;
 
   /**
    * Returns the description of the actual <code>boolean</code> value in this assertion.
@@ -36,25 +36,25 @@ public abstract class Assert {
   /**
    * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
    * thrown when an assertion fails.
-   * @param description the new description.
+   * @param d the new description.
    */
-  protected final void description(String description) {
-    description(new BasicDescription(description));
+  protected final void description(String d) {
+    description(new BasicDescription(d));
   }
 
   /**
    * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
    * thrown when an assertion fails.
-   * @param description the new description.
+   * @param d the new description.
    */
-  protected final void description(Description description) {
-    this.description = description;
+  protected final void description(Description d) {
+    this.description = d;
   }
 
   /**
    * Throws <code>{@link UnsupportedOperationException}</code> if called. It is easy to accidentally call
    * <code>{@link #equals(Object)}</code> instead of <code>isEqualTo</code>.
-   * @throws UnsupportedOperationException
+   * @throws UnsupportedOperationException if this method is called.
    */
   @Override public final boolean equals(Object obj) {
     throw new UnsupportedOperationException("'equals' is not supported...maybe you intended to call 'isEqualTo'");

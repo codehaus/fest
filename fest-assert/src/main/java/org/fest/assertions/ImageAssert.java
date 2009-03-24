@@ -15,15 +15,17 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.Fail.errorMessageIfEqual;
+import static org.fest.assertions.Fail.errorMessageIfNotEqual;
+import static org.fest.assertions.Formatting.inBrackets;
+import static org.fest.util.Objects.areEqual;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
-import static org.fest.assertions.Fail.*;
-import static org.fest.assertions.Formatting.inBrackets;
-import static org.fest.util.Objects.areEqual;
-import static org.fest.util.Strings.*;
 
 /**
  * Understands assertion methods for images. To create a new instance of this class use the
@@ -172,9 +174,9 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
     fail(errorMessageIfNotEqual(actual, null));
   }
 
-  private void failIfNotEqual(Dimension actual, Dimension expected) {
-    if (!areEqual(actual, expected))
-      fail(concat("image size, expected:", inBrackets(expected), " but was:", inBrackets(actual)));
+  private void failIfNotEqual(Dimension a, Dimension e) {
+    if (!areEqual(a, e))
+      fail(concat("image size, expected:", inBrackets(e), " but was:", inBrackets(a)));
   }
 
   /**
@@ -246,8 +248,8 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
   public ImageAssert hasSize(Dimension expected) {
     isNotNull();
     if (expected == null) throw new IllegalArgumentException("The size to compare to should not be null");
-    Dimension actual = new Dimension(this.actual.getWidth(), this.actual.getHeight());
-    Fail.failIfNotEqual(description(), actual, expected);
+    Dimension actualDimension = new Dimension(actual.getWidth(), actual.getHeight());
+    Fail.failIfNotEqual(description(), actualDimension, expected);
     return this;
   }
 

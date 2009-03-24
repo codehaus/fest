@@ -14,21 +14,19 @@
  */
 package org.fest.assertions;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import org.fest.assertions.FileContentComparator.LineDiff;
-import org.fest.test.CodeToTest;
-
 import static org.fest.assertions.CommonFailures.*;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Systems.LINE_SEPARATOR;
-
 import static org.testng.Assert.*;
+
+import java.io.File;
+import java.io.IOException;
+
+import org.fest.assertions.FileContentComparator.LineDiff;
+import org.fest.test.CodeToTest;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link FileAssert}</code>.
@@ -467,18 +465,18 @@ public class FileAssertTest {
 
   static class FileContentComparatorStub extends FileContentComparator {
     private LineDiff[] diffs = new LineDiff[0];
-    private IOException e;
+    private IOException toThrow;
 
-    void lineDiffs(LineDiff...diffs) {
-      this.diffs = diffs;
+    void lineDiffs(LineDiff...newDiffs) {
+      diffs = newDiffs;
     }
 
     void exceptionToThrow(IOException e) {
-      this.e = e;
+      this.toThrow = e;
     }
 
     @Override LineDiff[] compareContents(File actual, File expected) throws IOException {
-      if (e != null) throw e;
+      if (toThrow != null) throw toThrow;
       return diffs;
     }
   }
