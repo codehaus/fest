@@ -20,17 +20,9 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.query.ComponentLocationOnScreenQuery.locationOnScreen;
 import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
 import static org.fest.util.Files.newFile;
-import static org.fest.util.Strings.concat;
-import static org.fest.util.Strings.isEmpty;
-import static org.fest.util.Strings.quote;
+import static org.fest.util.Strings.*;
 
-import java.awt.AWTException;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Locale;
@@ -86,13 +78,8 @@ public class ScreenshotTaker {
    * @throws SecurityException if <code>readDisplayPixels</code> permission is not granted.
    */
   public BufferedImage takeDesktopScreenshot() {
-    Rectangle screen = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
-    JTextComponent textComponent = findFocusOwnerAndHideItsCaret();
-    try {
-      return robot.createScreenCapture(screen);
-    } finally {
-      if (textComponent != null) showCaretOf(textComponent);
-    }
+    Rectangle r = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+    return takeScreenshot(r);
   }
 
   /**
@@ -118,15 +105,16 @@ public class ScreenshotTaker {
     Point locationOnScreen = locationOnScreen(c);
     Dimension size = sizeOf(c);
     Rectangle r = new Rectangle(locationOnScreen.x,  locationOnScreen.y, size.width, size.height);
+    return takeScreenshot(r);
+  }
+
+  private BufferedImage takeScreenshot(Rectangle r) {
     JTextComponent textComponent = findFocusOwnerAndHideItsCaret();
-    if (textComponent != null) robot.waitForIdle();
+    robot.waitForIdle();
     try {
-      return robot.createScreenCapture(r);
+      return takeScreenshot(robot, r);
     } finally {
-      if (textComponent != null) {
-        showCaretOf(textComponent);
-        robot.waitForIdle();
-      }
+      showCaretIfPossible(textComponent);
     }
   }
 
@@ -143,6 +131,20 @@ public class ScreenshotTaker {
         return textComponent;
       }
     });
+  }
+
+  private static BufferedImage takeScreenshot(final Robot robot, final Rectangle r) {
+    return execute(new GuiQuery<BufferedImage>() {
+      protected BufferedImage executeInEDT() {
+        return robot.createScreenCapture(r);
+      }
+    });
+  }
+
+  private void showCaretIfPossible(JTextComponent textComponent) {
+    if (textComponent == null) return;
+    showCaretOf(textComponent);
+    robot.waitForIdle();
   }
 
   @RunsInEDT
