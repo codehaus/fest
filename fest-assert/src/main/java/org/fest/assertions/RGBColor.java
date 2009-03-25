@@ -52,22 +52,6 @@ final class RGBColor {
   int green() { return green; }
   int blue() { return blue; }
 
-  @Override public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + blue;
-    result = prime * result + green;
-    result = prime * result + red;
-    return result;
-  }
-
-  @Override public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null) return false;
-    if (getClass() != obj.getClass()) return false;
-    return equals((RGBColor) obj, 0);
-  }
-
   boolean equals(RGBColor color, int threshold) {
     if (abs(red - color.red) > threshold) return false;
     if (abs(green - color.green) > threshold) return false;
@@ -76,7 +60,7 @@ final class RGBColor {
 
   @Override public String toString() {
     return concat(
-        getClass().getName(), "[",
+        "color[",
         "r=", valueOf(red), ",",
         "g=", valueOf(green), ",",
         "b=", valueOf(blue), "]"

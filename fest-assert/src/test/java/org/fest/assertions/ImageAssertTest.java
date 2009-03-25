@@ -272,23 +272,25 @@ import org.testng.annotations.Test;
   }
 
   public void shouldFailIfImageColorsAreNotEqualAndExpectingEqual() {
-    expectAssertionError("images do not have the same color(s)").on(new CodeToTest() {
-      public void run() {
-        BufferedImage a = fivePixelBlueImage();
-        BufferedImage e = fivePixelYellowImage();
-        new ImageAssert(a).isEqualTo(e);
-      }
-    });
+    expectAssertionError("expected:<color[r=0,g=0,b=255]> but was:<color[r=255,g=255,b=0]> at pixel [0,0]").on(
+      new CodeToTest() {
+        public void run() {
+          BufferedImage a = fivePixelBlueImage();
+          BufferedImage e = fivePixelYellowImage();
+          new ImageAssert(a).isEqualTo(e);
+        }
+      });
   }
 
   public void shouldFailShowingDescriptionIfImageColorsAreNotEqualAndExpectingEqual() {
-    expectAssertionError("[A Test] images do not have the same color(s)").on(new CodeToTest() {
-      public void run() {
-        BufferedImage a = fivePixelBlueImage();
-        BufferedImage e = image(5, 5, YELLOW);
-        new ImageAssert(a).as("A Test").isEqualTo(e);
-      }
-    });
+    expectAssertionError("[A Test] expected:<color[r=0,g=0,b=255]> but was:<color[r=255,g=255,b=0]> at pixel [0,0]").on(
+      new CodeToTest() {
+        public void run() {
+          BufferedImage a = fivePixelBlueImage();
+          BufferedImage e = image(5, 5, YELLOW);
+          new ImageAssert(a).as("A Test").isEqualTo(e);
+        }
+      });
   }
 
   public void shouldPassIfImageWidthsAreNotEqual() {
