@@ -18,6 +18,7 @@ package org.fest.assertions;
 import static org.fest.assertions.Fail.errorMessageIfEqual;
 import static org.fest.assertions.Fail.errorMessageIfNotEqual;
 import static org.fest.assertions.Formatting.inBrackets;
+import static org.fest.assertions.Threshold.threshold;
 import static org.fest.util.Objects.areEqual;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
@@ -35,6 +36,8 @@ import java.io.IOException;
  * @author Alex Ruiz
  */
 public final class ImageAssert extends GenericAssert<BufferedImage> {
+
+  private static final Threshold ZERO_THRESHOLD = threshold(0);
 
   private static ImageReader imageReader = new ImageReader();
 
@@ -162,10 +165,29 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * @throws AssertionError if the actual image is not equal to the given one.
    */
   public ImageAssert isEqualTo(BufferedImage expected) {
+    return isEqualTo(expected, ZERO_THRESHOLD);
+  }
+
+  /**
+   * Verifies that the actual image is equal to the given one. Two images are equal if:
+   * <ol>
+   * <li>they have the same size</li>
+   * <li>the difference between the RGB values of the color of each pixel is less than or equal to the given
+   * threshold</li>
+   * </ol>
+   * @param expected the given image to compare the actual image to.
+   * @param threshold the threshold to use to decide if the color of two pixels are similar: two pixels that
+   * are identical to the human eye may still have slightly different color values. For example, by using a threshold
+   * of 1 we can indicate that a blue value of 60 is similar to a blue value of 61.
+   * @return this assertion object.
+   * @throws AssertionError if the actual image is not equal to the given one.
+   * @since 1.1
+   */
+  public ImageAssert isEqualTo(BufferedImage expected, Threshold threshold) {
     if (areEqual(actual, expected)) return this;
     failIfNull(expected);
     failIfNotEqual(sizeOf(actual), sizeOf(expected));
-    if (!hasEqualColor(expected)) fail("images do not have the same color(s)");
+    failIfNotEqualColor(expected, threshold);
     return this;
   }
 
@@ -177,6 +199,20 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
   private void failIfNotEqual(Dimension a, Dimension e) {
     if (!areEqual(a, e))
       fail(concat("image size, expected:", inBrackets(e), " but was:", inBrackets(a)));
+  }
+
+  private void failIfNotEqualColor(BufferedImage expected, Threshold threshold) {
+    int w = actual.getWidth();
+    int h = actual.getHeight();
+    for (int x = 0; x < w; x++)
+      for (int y = 0; y < h; y++) {
+        RGBColor actualRGB = new RGBColor(actual.getRGB(x, y));
+        RGBColor expectedRGB = new RGBColor(expected.getRGB(x, y));
+        if (actualRGB.equals(expectedRGB, threshold.value())) continue;
+        fail(concat(
+            "color (RGB), expected:", inBrackets(actualRGB), " but was:", inBrackets(expectedRGB),
+            " at pixel [", x, ",", y, "]"));
+      }
   }
 
   /**

@@ -37,13 +37,13 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class ImageAssertTest {
+@Test public class ImageAssertTest {
 
   @AfterClass public void tearDown() {
     ImageAssert.imageReader(new ImageReader());
   }
 
-  @Test public void shouldReadImageFile() throws IOException {
+  public void shouldReadImageFile() throws IOException {
     ImageReaderStub imageReader = new ImageReaderStub();
     BufferedImage read = fivePixelBlueImage();
     imageReader.imageRead(read);
@@ -53,7 +53,7 @@ public class ImageAssertTest {
     assertSame(image, read);
   }
 
-  @Test public void shouldReturnNullImageFileIfIOExceptionThrown() {
+  public void shouldReturnNullImageFileIfIOExceptionThrown() {
     ImageReaderStub imageReader = new ImageReaderStub();
     IOException toThrow = new IOException();
     imageReader.toThrow(toThrow);
@@ -67,36 +67,36 @@ public class ImageAssertTest {
     }
   }
 
-  @Test public void shouldFailIfImagePathIsNotFileWhenReadingImage() {
+  public void shouldFailIfImagePathIsNotFileWhenReadingImage() {
     expectIllegalArgumentException("The path 'blah' does not belong to a file").on(new CodeToTest() {
-      public void run() throws Throwable {
+      public void run() throws IOException  {
         ImageAssert.read("blah");
       }
     });
   }
 
-  @Test public void shouldSetTextDescription() {
+  public void shouldSetTextDescription() {
     ImageAssert assertion = new ImageAssert(fivePixelBlueImage());
     assertNull(assertion.description());
     assertion.as("A Test");
     assertEquals(assertion.description(), "A Test");
   }
 
-  @Test public void shouldSetTextDescriptionSafelyForGroovy() {
+  public void shouldSetTextDescriptionSafelyForGroovy() {
     ImageAssert assertion = new ImageAssert(fivePixelBlueImage());
     assertNull(assertion.description());
     assertion.describedAs("A Test");
     assertEquals(assertion.description(), "A Test");
   }
 
-  @Test public void shouldSetDescription() {
+  public void shouldSetDescription() {
     ImageAssert assertion = new ImageAssert(fivePixelBlueImage());
     assertNull(assertion.description());
     assertion.as(new BasicDescription("A Test"));
     assertEquals(assertion.description(), "A Test");
   }
 
-  @Test public void shouldSetDescriptionSafelyForGroovy() {
+  public void shouldSetDescriptionSafelyForGroovy() {
     ImageAssert assertion = new ImageAssert(fivePixelBlueImage());
     assertNull(assertion.description());
     assertion.describedAs(new BasicDescription("A Test"));
@@ -109,11 +109,11 @@ public class ImageAssertTest {
     }
   }
 
-  @Test public void shouldPassIfConditionSatisfied() {
+  public void shouldPassIfConditionSatisfied() {
     new ImageAssert(fivePixelBlueImage()).satisfies(new NotNull());
   }
 
-  @Test public void shouldThrowErrorIfConditionIsNullWhenCheckingIfSatisfied() {
+  public void shouldThrowErrorIfConditionIsNullWhenCheckingIfSatisfied() {
     expectIllegalArgumentExceptionIfConditionIsNull().on(new CodeToTest() {
       public void run() {
         new ImageAssert(fivePixelBlueImage()).satisfies(null);
@@ -121,7 +121,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailIfConditionNotSatisfied() {
+  public void shouldFailIfConditionNotSatisfied() {
     expectAssertionError("actual value:<null> should satisfy condition:<NotNull>").on(new CodeToTest() {
       public void run() {
         new ImageAssert(null).satisfies(new NotNull());
@@ -129,7 +129,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfConditionNotSatisfied() {
+  public void shouldFailShowingDescriptionIfConditionNotSatisfied() {
     expectAssertionError("[A Test] actual value:<null> should satisfy condition:<NotNull>").on(new CodeToTest() {
       public void run() {
         new ImageAssert(null).as("A Test").satisfies(new NotNull());
@@ -137,7 +137,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailIfConditionNotSatisfiedShowingDescriptionOfCondition() {
+  public void shouldFailIfConditionNotSatisfiedShowingDescriptionOfCondition() {
     expectAssertionError("actual value:<null> should satisfy condition:<Non-null>").on(new CodeToTest() {
       public void run() {
         new ImageAssert(null).satisfies(new NotNull().as("Non-null"));
@@ -145,7 +145,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfConditionNotSatisfiedShowingDescriptionOfCondition() {
+  public void shouldFailShowingDescriptionIfConditionNotSatisfiedShowingDescriptionOfCondition() {
     expectAssertionError("[A Test] actual value:<null> should satisfy condition:<Non-null>").on(new CodeToTest() {
       public void run() {
         new ImageAssert(null).as("A Test").satisfies(new NotNull().as("Non-null"));
@@ -153,11 +153,11 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldPassIfConditionNotSatisfied() {
+  public void shouldPassIfConditionNotSatisfied() {
     new ImageAssert(null).doesNotSatisfy(new NotNull());
   }
 
-  @Test public void shouldThrowErrorIfConditionIsNullWhenCheckingIfNotSatisfied() {
+  public void shouldThrowErrorIfConditionIsNullWhenCheckingIfNotSatisfied() {
     expectIllegalArgumentExceptionIfConditionIsNull().on(new CodeToTest() {
       public void run() {
         new ImageAssert(fivePixelBlueImage()).doesNotSatisfy(null);
@@ -165,7 +165,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailIfConditionSatisfied() {
+  public void shouldFailIfConditionSatisfied() {
     final BufferedImage image = fivePixelBlueImage();
     String message = concat("actual value:<", image, "> should not satisfy condition:<NotNull>");
     expectAssertionError(message).on(new CodeToTest() {
@@ -175,7 +175,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfConditionSatisfied() {
+  public void shouldFailShowingDescriptionIfConditionSatisfied() {
     final BufferedImage image = fivePixelBlueImage();
     String message = concat("[A Test] actual value:<", image, "> should not satisfy condition:<NotNull>");
     expectAssertionError(message).on(new CodeToTest() {
@@ -185,7 +185,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailIfConditionSatisfiedShowingDescriptionOfCondition() {
+  public void shouldFailIfConditionSatisfiedShowingDescriptionOfCondition() {
     final BufferedImage image = fivePixelBlueImage();
     String message = concat("actual value:<", image, "> should not satisfy condition:<Non-null>");
     expectAssertionError(message).on(new CodeToTest() {
@@ -195,7 +195,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfConditionSatisfiedShowingDescriptionOfCondition() {
+  public void shouldFailShowingDescriptionIfConditionSatisfiedShowingDescriptionOfCondition() {
     final BufferedImage image = fivePixelBlueImage();
     String message = concat("[A Test] actual value:<", image, "> should not satisfy condition:<Non-null>");
     expectAssertionError(message).on(new CodeToTest() {
@@ -205,15 +205,15 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldPassIfImagesAreEqual() {
+  public void shouldPassIfImagesAreEqual() {
     new ImageAssert(fivePixelBlueImage()).isEqualTo(fivePixelBlueImage());
   }
 
-  @Test public void shouldPassIfImagesNullAndCheckingEqual() {
+  public void shouldPassIfImagesNullAndCheckingEqual() {
     new ImageAssert(null).isEqualTo(null);
   }
 
-  @Test public void shouldFailIfExpectedIsNullWhenCheckingEqual() {
+  public void shouldFailIfExpectedIsNullWhenCheckingEqual() {
     final BufferedImage a = fivePixelBlueImage();
     expectAssertionError(concat("expected:<null> but was:<", a, ">")).on(new CodeToTest() {
       public void run() {
@@ -222,7 +222,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfExpectedIsNullWhenCheckingEqual() {
+  public void shouldFailShowingDescriptionIfExpectedIsNullWhenCheckingEqual() {
     final BufferedImage a = fivePixelBlueImage();
     expectAssertionError(concat("[A Test] expected:<null> but was:<", a, ">")).on(new CodeToTest() {
       public void run() {
@@ -231,7 +231,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailIfImageWidthsAreNotEqualAndExpectingEqual() {
+  public void shouldFailIfImageWidthsAreNotEqualAndExpectingEqual() {
     expectAssertionError("image size, expected:<(3, 5)> but was:<(5, 5)>").on(new CodeToTest() {
       public void run() {
         BufferedImage a = fivePixelBlueImage();
@@ -241,7 +241,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfImageWidthsAreNotEqualAndExpectingEqual() {
+  public void shouldFailShowingDescriptionIfImageWidthsAreNotEqualAndExpectingEqual() {
     expectAssertionError("[A Test] image size, expected:<(3, 5)> but was:<(5, 5)>").on(new CodeToTest() {
       public void run() {
         BufferedImage a = fivePixelBlueImage();
@@ -251,7 +251,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailIfImageHeightsAreNotEqualAndExpectingEqual() {
+  public void shouldFailIfImageHeightsAreNotEqualAndExpectingEqual() {
     expectAssertionError("image size, expected:<(5, 2)> but was:<(5, 5)>").on(new CodeToTest() {
       public void run() {
         BufferedImage a = fivePixelBlueImage();
@@ -261,7 +261,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfImageHeightsAreNotEqualAndExpectingEqual() {
+  public void shouldFailShowingDescriptionIfImageHeightsAreNotEqualAndExpectingEqual() {
     expectAssertionError("[A Test] image size, expected:<(5, 2)> but was:<(5, 5)>").on(new CodeToTest() {
       public void run() {
         BufferedImage a = fivePixelBlueImage();
@@ -271,7 +271,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailIfImageColorsAreNotEqualAndExpectingEqual() {
+  public void shouldFailIfImageColorsAreNotEqualAndExpectingEqual() {
     expectAssertionError("images do not have the same color(s)").on(new CodeToTest() {
       public void run() {
         BufferedImage a = fivePixelBlueImage();
@@ -281,7 +281,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfImageColorsAreNotEqualAndExpectingEqual() {
+  public void shouldFailShowingDescriptionIfImageColorsAreNotEqualAndExpectingEqual() {
     expectAssertionError("[A Test] images do not have the same color(s)").on(new CodeToTest() {
       public void run() {
         BufferedImage a = fivePixelBlueImage();
@@ -291,30 +291,30 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldPassIfImageWidthsAreNotEqual() {
+  public void shouldPassIfImageWidthsAreNotEqual() {
     BufferedImage a = image(3, 5, BLUE);
     BufferedImage e = fivePixelBlueImage();
     new ImageAssert(a).isNotEqualTo(e);
   }
 
-  @Test public void shouldPassIfActualIsNotNullAndExpectedIsNullWhenCheckingNotEqual() {
+  public void shouldPassIfActualIsNotNullAndExpectedIsNullWhenCheckingNotEqual() {
     BufferedImage a = fivePixelBlueImage();
     new ImageAssert(a).isNotEqualTo(null);
   }
 
-  @Test public void shouldPassIfImageHeightsAreNotEqual() {
+  public void shouldPassIfImageHeightsAreNotEqual() {
     BufferedImage a = image(5, 3, BLUE);
     BufferedImage e = fivePixelBlueImage();
     new ImageAssert(a).isNotEqualTo(e);
   }
 
-  @Test public void shouldPassIfImageColorsAreNotEqual() {
+  public void shouldPassIfImageColorsAreNotEqual() {
     BufferedImage a = fivePixelBlueImage();
     BufferedImage e = image(5, 5, YELLOW);
     new ImageAssert(a).isNotEqualTo(e);
   }
 
-  @Test public void shouldFailIfImagesAreNullAndExpectingNotEqual() {
+  public void shouldFailIfImagesAreNullAndExpectingNotEqual() {
     expectAssertionError("actual value:<null> should not be equal to:<null>").on(new CodeToTest() {
       public void run() {
         new ImageAssert(null).isNotEqualTo(null);
@@ -322,7 +322,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfImagesAreNullAndExpectingNotEqual() {
+  public void shouldFailShowingDescriptionIfImagesAreNullAndExpectingNotEqual() {
     expectAssertionError("[A Test] actual value:<null> should not be equal to:<null>").on(new CodeToTest() {
       public void run() {
         new ImageAssert(null).as("A Test").isNotEqualTo(null);
@@ -330,7 +330,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailIfImagesAreEqualAndExpectingNotEqual() {
+  public void shouldFailIfImagesAreEqualAndExpectingNotEqual() {
     expectAssertionError("images are equal").on(new CodeToTest() {
       public void run() {
         new ImageAssert(fivePixelBlueImage()).isNotEqualTo(fivePixelBlueImage());
@@ -338,7 +338,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfImagesAreEqualAndExpectingNotEqual() {
+  public void shouldFailShowingDescriptionIfImagesAreEqualAndExpectingNotEqual() {
     expectAssertionError("[A Test] images are equal").on(new CodeToTest() {
       public void run() {
         new ImageAssert(fivePixelBlueImage()).as("A Test").isNotEqualTo(fivePixelBlueImage());
@@ -346,12 +346,12 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldPassIfObjectsAreSame() {
+  public void shouldPassIfObjectsAreSame() {
     BufferedImage image = fivePixelBlueImage();
     new ImageAssert(image).isSameAs(image);
   }
 
-  @Test public void shouldFailIfObjectsAreNotSameAndExpectingSame() {
+  public void shouldFailIfObjectsAreNotSameAndExpectingSame() {
     final BufferedImage a = fivePixelBlueImage();
     final BufferedImage e = fivePixelBlueImage();
     expectAssertionError(concat("expected same instance but found:<", a, "> and:<", e, ">")).on(new CodeToTest() {
@@ -361,7 +361,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfObjectsAreNotSameAndExpectingSame() {
+  public void shouldFailShowingDescriptionIfObjectsAreNotSameAndExpectingSame() {
     final BufferedImage a = fivePixelBlueImage();
     final BufferedImage e = fivePixelBlueImage();
     expectAssertionError(concat("[A Test] expected same instance but found:<", a, "> and:<", e, ">")).on(
@@ -372,11 +372,11 @@ public class ImageAssertTest {
         });
   }
 
-  @Test public void shouldPassIfObjectsAreNotSame() {
+  public void shouldPassIfObjectsAreNotSame() {
     new ImageAssert(fivePixelBlueImage()).isNotSameAs(fivePixelBlueImage());
   }
 
-  @Test public void shouldFailIfObjectsAreSameAndExpectingNotSame() {
+  public void shouldFailIfObjectsAreSameAndExpectingNotSame() {
     final BufferedImage image = fivePixelBlueImage();
     expectAssertionError(concat("given objects are same:<", image, ">")).on(new CodeToTest() {
       public void run() {
@@ -385,7 +385,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfObjectsAreSameAndExpectingNotSame() {
+  public void shouldFailShowingDescriptionIfObjectsAreSameAndExpectingNotSame() {
     final BufferedImage image = fivePixelBlueImage();
     expectAssertionError(concat("[A Test] given objects are same:<", image, ">")).on(new CodeToTest() {
       public void run() {
@@ -394,11 +394,11 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldPassIfEqualSize() {
+  public void shouldPassIfEqualSize() {
     new ImageAssert(fivePixelBlueImage()).hasSize(new Dimension(5, 5));
   }
 
-  @Test public void shouldThrowErrorIfGivenSizeIsNull() {
+  public void shouldThrowErrorIfGivenSizeIsNull() {
     expectIllegalArgumentException("The size to compare to should not be null").on(new CodeToTest() {
       public void run() {
         new ImageAssert(fivePixelBlueImage()).hasSize(null);
@@ -406,7 +406,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailIfWidthNotEqual() {
+  public void shouldFailIfWidthNotEqual() {
     expectAssertionError("expected:<(3, 5)> but was:<(5, 5)>").on(new CodeToTest() {
       public void run() {
         new ImageAssert(fivePixelBlueImage()).hasSize(new Dimension(3, 5));
@@ -414,7 +414,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfWidthNotEqual() {
+  public void shouldFailShowingDescriptionIfWidthNotEqual() {
     expectAssertionError("[A Test] expected:<(3, 5)> but was:<(5, 5)>").on(new CodeToTest() {
       public void run() {
         new ImageAssert(fivePixelBlueImage()).as("A Test").hasSize(new Dimension(3, 5));
@@ -422,7 +422,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailIfHeightNotEqual() {
+  public void shouldFailIfHeightNotEqual() {
     expectAssertionError("expected:<(5, 3)> but was:<(5, 5)>").on(new CodeToTest() {
       public void run() {
         new ImageAssert(fivePixelBlueImage()).hasSize(new Dimension(5, 3));
@@ -430,7 +430,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfHeightNotEqual() {
+  public void shouldFailShowingDescriptionIfHeightNotEqual() {
     expectAssertionError("[A Test] expected:<(5, 3)> but was:<(5, 5)>").on(new CodeToTest() {
       public void run() {
         new ImageAssert(fivePixelBlueImage()).as("A Test").hasSize(new Dimension(5, 3));
@@ -438,11 +438,11 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldPassIfActualIsNull() {
+  public void shouldPassIfActualIsNull() {
     new ImageAssert(null).isNull();
   }
 
-  @Test public void shouldFailIfActualIsNotNullAndExpectingNull() {
+  public void shouldFailIfActualIsNotNullAndExpectingNull() {
     final BufferedImage a = fivePixelBlueImage();
     expectAssertionError(concat("<", a, "> should be null")).on(new CodeToTest() {
       public void run() {
@@ -451,7 +451,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfActualIsNotNullAndExpectingNull() {
+  public void shouldFailShowingDescriptionIfActualIsNotNullAndExpectingNull() {
     final BufferedImage a = fivePixelBlueImage();
     expectAssertionError(concat("[A Test] <", a, "> should be null")).on(new CodeToTest() {
       public void run() {
@@ -460,11 +460,11 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldPassIfActualIsNotNull() {
+  public void shouldPassIfActualIsNotNull() {
     new ImageAssert(fivePixelBlueImage()).isNotNull();
   }
 
-  @Test public void shouldFailIfActualIsNullAndExpectingNotNull() {
+  public void shouldFailIfActualIsNullAndExpectingNotNull() {
     expectAssertionErrorIfObjectIsNull(new CodeToTest() {
       public void run() {
         new ImageAssert(null).isNotNull();
@@ -472,7 +472,7 @@ public class ImageAssertTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfActualIsNullAndExpectingNotNull() {
+  public void shouldFailShowingDescriptionIfActualIsNullAndExpectingNotNull() {
     expectAssertionErrorWithDescriptionIfObjectIsNull(new CodeToTest() {
       public void run() {
         new ImageAssert(null).as("A Test").isNotNull();
