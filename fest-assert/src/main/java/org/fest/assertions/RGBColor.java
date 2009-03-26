@@ -26,48 +26,48 @@ import static org.fest.util.Strings.concat;
  */
 final class RGBColor {
 
-  private final int red;
-  private final int green;
-  private final int blue;
+  private final int r;
+  private final int g;
+  private final int b;
 
   RGBColor(int rgb) {
-    this(redIn(rgb), greenIn(rgb), blueIn(rgb));
+    this(r(rgb), g(rgb), b(rgb));
   }
 
-  RGBColor(int red, int green, int blue) {
-    this.red = red;
-    this.green = green;
-    this.blue = blue;
+  RGBColor(int r, int g, int b) {
+    this.r = r;
+    this.g = g;
+    this.b = b;
   }
 
-  private static int redIn(int rgb) {
+  private static int r(int rgb) {
     return (rgb >> 16) & 0xFF;
   }
 
-  private static int greenIn(int rgb) {
+  private static int g(int rgb) {
     return (rgb >> 8) & 0xFF;
   }
 
-  private static int blueIn(int rgb) {
+  private static int b(int rgb) {
     return (rgb >> 0) & 0xFF;
   }
 
-  int red() { return red; }
-  int green() { return green; }
-  int blue() { return blue; }
+  int r() { return r; }
+  int g() { return g; }
+  int b() { return b; }
 
   boolean isEqualTo(RGBColor color, int threshold) {
-    if (abs(red - color.red) > threshold) return false;
-    if (abs(green - color.green) > threshold) return false;
-    return abs(blue - color.blue) <= threshold;
+    if (abs(r - color.r) > threshold) return false;
+    if (abs(g - color.g) > threshold) return false;
+    return abs(b - color.b) <= threshold;
   }
 
   @Override public String toString() {
     return concat(
         "color[",
-        "r=", valueOf(red), ",",
-        "g=", valueOf(green), ",",
-        "b=", valueOf(blue), "]"
+        "r=", valueOf(r), ",",
+        "g=", valueOf(g), ",",
+        "b=", valueOf(b), "]"
         );
   }
 }

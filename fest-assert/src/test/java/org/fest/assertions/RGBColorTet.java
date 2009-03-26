@@ -28,54 +28,54 @@ import org.testng.annotations.*;
  */
 @Test public class RGBColorTet {
 
-  private int red;
-  private int green;
-  private int blue;
+  private int r;
+  private int g;
+  private int b;
   private RGBColor color;
 
   @BeforeClass public void setUpOnce() {
-    red = 6;
-    green = 8;
-    blue = 10;
+    r = 6;
+    g = 8;
+    b = 10;
   }
 
   @BeforeMethod public void setUp() {
-    color = new RGBColor(red, green, blue);
+    color = new RGBColor(r, g, b);
   }
 
   public void shouldSeparateRedGreenAndBlueWhenConstructed() {
-    Color awtColor = new Color(red, green, blue);
+    Color awtColor = new Color(r, g, b);
     color = new RGBColor(awtColor.getRGB());
-    assertEquals(color.red(), awtColor.getRed());
-    assertEquals(color.green(), awtColor.getGreen());
-    assertEquals(color.blue(), awtColor.getBlue());
+    assertEquals(color.r(), awtColor.getRed());
+    assertEquals(color.g(), awtColor.getGreen());
+    assertEquals(color.b(), awtColor.getBlue());
   }
 
   public void shouldReturnIsEqualIfComponentsAreExactlyEqual() {
-    assertTrue(color.isEqualTo(new RGBColor(red, green, blue), 0));
+    assertTrue(color.isEqualTo(new RGBColor(r, g, b), 0));
   }
 
   public void shouldReturnIsEqualIfRedsAreSimilarDueToThreshold() {
-    assertTrue(color.isEqualTo(new RGBColor(red++, green, blue), 1));
+    assertTrue(color.isEqualTo(new RGBColor(r++, g, b), 1));
   }
 
   public void shouldReturnIsEqualIfGreensAreSimilarDueToThreshold() {
-    assertTrue(color.isEqualTo(new RGBColor(red, green++, blue), 1));
+    assertTrue(color.isEqualTo(new RGBColor(r, g++, b), 1));
   }
 
   public void shouldReturnIsEqualIfBluesAreSimilarDueToThreshold() {
-    assertTrue(color.isEqualTo(new RGBColor(red, green, blue++), 1));
+    assertTrue(color.isEqualTo(new RGBColor(r, g, b++), 1));
   }
 
   public void shouldReturnIsNotEqualIfRedsNotEqual() {
-    assertFalse(color.isEqualTo(new RGBColor(0, green, blue), 0));
+    assertFalse(color.isEqualTo(new RGBColor(0, g, b), 0));
   }
 
   public void shouldReturnIsNotEqualIfGreensNotEqual() {
-    assertFalse(color.isEqualTo(new RGBColor(red, 0, blue), 0));
+    assertFalse(color.isEqualTo(new RGBColor(r, 0, b), 0));
   }
 
   public void shouldReturnIsNotEqualIfBluesNotEqual() {
-    assertFalse(color.isEqualTo(new RGBColor(red, green, 0), 0));
+    assertFalse(color.isEqualTo(new RGBColor(r, g, 0), 0));
   }
 }

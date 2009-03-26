@@ -206,11 +206,11 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
     int h = actual.getHeight();
     for (int x = 0; x < w; x++)
       for (int y = 0; y < h; y++) {
-        RGBColor actualRGB = new RGBColor(actual.getRGB(x, y));
-        RGBColor expectedRGB = new RGBColor(expected.getRGB(x, y));
-        if (actualRGB.isEqualTo(expectedRGB, threshold.value())) continue;
+        RGBColor actualColor = new RGBColor(actual.getRGB(x, y));
+        RGBColor expectedColor = new RGBColor(expected.getRGB(x, y));
+        if (actualColor.isEqualTo(expectedColor, threshold.value())) continue;
         fail(concat(
-            "expected:", inBrackets(actualRGB), " but was:", inBrackets(expectedRGB), " at pixel [", x, ",", y, "]"));
+            "expected:", inBrackets(actualColor), " but was:", inBrackets(expectedColor), " at pixel [", x, ",", y, "]"));
       }
   }
 
