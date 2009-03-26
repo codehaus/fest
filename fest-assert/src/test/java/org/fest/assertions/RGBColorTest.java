@@ -26,7 +26,7 @@ import org.testng.annotations.*;
  *
  * @author Alex Ruiz
  */
-@Test public class RGBColorTet {
+@Test public class RGBColorTest {
 
   private int r;
   private int g;

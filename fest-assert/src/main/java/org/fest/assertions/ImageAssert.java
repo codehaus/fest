@@ -15,6 +15,7 @@
  */
 package org.fest.assertions;
 
+import static java.lang.String.valueOf;
 import static org.fest.assertions.Fail.errorMessageIfEqual;
 import static org.fest.assertions.Fail.errorMessageIfNotEqual;
 import static org.fest.assertions.Formatting.inBrackets;
@@ -205,13 +206,14 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
     int w = actual.getWidth();
     int h = actual.getHeight();
     for (int x = 0; x < w; x++)
-      for (int y = 0; y < h; y++) {
-        RGBColor actualColor = new RGBColor(actual.getRGB(x, y));
-        RGBColor expectedColor = new RGBColor(expected.getRGB(x, y));
-        if (actualColor.isEqualTo(expectedColor, threshold.value())) continue;
-        fail(concat(
-            "expected:", inBrackets(actualColor), " but was:", inBrackets(expectedColor), " at pixel [", x, ",", y, "]"));
-      }
+      for (int y = 0; y < h; y++)
+        failIfNotEqual(new RGBColor(actual.getRGB(x, y)), new RGBColor(expected.getRGB(x, y)), threshold, x, y);
+  }
+
+  private void failIfNotEqual(RGBColor a, RGBColor e, Threshold threshold, int x, int y) {
+    if (a.isEqualTo(e, threshold.value())) return;
+    fail(concat(
+        "expected:", inBrackets(a), " but was:", inBrackets(e), " at pixel [", valueOf(x), ",", valueOf(y), "]"));
   }
 
   /**
