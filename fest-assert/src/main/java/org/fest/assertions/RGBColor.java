@@ -31,9 +31,13 @@ final class RGBColor {
   private final int blue;
 
   RGBColor(int rgb) {
-    red = redIn(rgb);
-    green = greenIn(rgb);
-    blue = blueIn(rgb);
+    this(redIn(rgb), greenIn(rgb), blueIn(rgb));
+  }
+
+  RGBColor(int red, int green, int blue) {
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
   }
 
   private static int redIn(int rgb) {
@@ -52,7 +56,7 @@ final class RGBColor {
   int green() { return green; }
   int blue() { return blue; }
 
-  boolean equals(RGBColor color, int threshold) {
+  boolean isEqualTo(RGBColor color, int threshold) {
     if (abs(red - color.red) > threshold) return false;
     if (abs(green - color.green) > threshold) return false;
     return abs(blue - color.blue) <= threshold;

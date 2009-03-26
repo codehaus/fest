@@ -15,30 +15,17 @@
  */
 package org.fest.assertions;
 
+import org.testng.annotations.Test;
+
 /**
- * Understands a threshold.
+ * Tests for <code>{@link Threshold}</code>.
  *
  * @author Alex Ruiz
- * @since 1.1
  */
-public final class Threshold {
+@Test public class ThresholdTest {
 
-  /**
-   * Creates a new <code>{@link Threshold}</code>.
-   * @param value the value of the threshold.
-   * @return the created instance.
-   * @throws IllegalArgumentException if the given value is less than zero.
-   */
-  public static Threshold threshold(int value) {
-    if (value < 0) throw new IllegalArgumentException("The value of the threshold should not be negative");
-    return new Threshold(value);
+  @Test(expectedExceptions = IllegalArgumentException.class)
+  public void shouldThrowErrorIfValueIsNegative() {
+    Threshold.threshold(-1);
   }
-
-  private final int value;
-
-  private Threshold(int value) {
-    this.value = value;
-  }
-
-  public int value() { return value; }
 }
