@@ -15,23 +15,7 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.Component;
-
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JList;
-
-import org.fest.assertions.Description;
-import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.cell.JComboBoxCellReader;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.LocationUnavailableException;
-
 import static javax.swing.text.DefaultEditorKit.selectAllAction;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.Fail.fail;
 import static org.fest.swing.driver.CommonValidations.validateCellReader;
@@ -41,12 +25,27 @@ import static org.fest.swing.driver.JComboBoxContentQuery.contents;
 import static org.fest.swing.driver.JComboBoxEditableQuery.isEditable;
 import static org.fest.swing.driver.JComboBoxItemIndexValidator.validateIndex;
 import static org.fest.swing.driver.JComboBoxMatchingItemQuery.matchingItemIndex;
-import static org.fest.swing.driver.JComboBoxSelectionValueQuery.*;
+import static org.fest.swing.driver.JComboBoxSelectionValueQuery.NO_SELECTION_VALUE;
+import static org.fest.swing.driver.JComboBoxSelectionValueQuery.selection;
 import static org.fest.swing.driver.JComboBoxSetPopupVisibleTask.setPopupVisible;
 import static org.fest.swing.driver.JComboBoxSetSelectedIndexTask.setSelectedIndex;
 import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.exception.ActionFailedException.actionFailure;
 import static org.fest.util.Arrays.format;
-import static org.fest.util.Strings.*;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
+import java.awt.Component;
+
+import javax.swing.*;
+
+import org.fest.assertions.Description;
+import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.cell.JComboBoxCellReader;
+import org.fest.swing.core.Robot;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
+import org.fest.swing.exception.*;
 
 /**
  * Understands simulation of user input on a <code>{@link JComboBox}</code>. Unlike <code>JComboBoxFixture</code>, this
@@ -182,7 +181,7 @@ public class JComboBoxDriver extends JComponentDriver {
     selectItemAtIndex(comboBox, index);
     hideDropDownListIfVisible(comboBox);
   }
-  
+
   @RunsInEDT
   private static void validateCanSelectItem(final JComboBox comboBox, final int index) {
     execute(new GuiTask() {
@@ -257,11 +256,11 @@ public class JComboBoxDriver extends JComponentDriver {
     return execute(new GuiQuery<Component>() {
       protected Component executeInEDT() {
         validateEditorIsAccessible(comboBox);
-        return comboBox.getEditor().getEditorComponent();
+        return editorComponentOf(comboBox);
       }
     });
   }
-  
+
   /**
    * Simulates a user entering the specified text in the <code>{@link JComboBox}</code>. This action is executed only
    * if the <code>{@link JComboBox}</code> is editable.
@@ -270,11 +269,15 @@ public class JComboBoxDriver extends JComponentDriver {
    * @throws IllegalStateException if the <code>JComboBox</code> is disabled.
    * @throws IllegalStateException if the <code>JComboBox</code> is not showing on the screen.
    * @throws IllegalStateException if the <code>JComboBox</code> is not editable.
+   * @throws ActionFailedException if the <code>JComboBox</code> does not have an editor.
    */
   @RunsInEDT
   public void enterText(JComboBox comboBox, String text) {
     inEdtValidateEditorIsAccessible(comboBox);
-    focus(comboBox);
+    Component editor = editorComponentOf(comboBox);
+    // this will never happen...at least in Sun's JVM
+    if (editor == null) throw actionFailure("JComboBox does not have an editor");
+    focus(editor);
     robot.enterText(text);
   }
 
@@ -283,6 +286,17 @@ public class JComboBoxDriver extends JComponentDriver {
     execute(new GuiTask() {
       protected void executeInEDT() {
         validateEditorIsAccessible(comboBox);
+      }
+    });
+  }
+
+  @RunsInEDT
+  private static Component editorComponentOf(final JComboBox comboBox) {
+    return execute(new GuiQuery<Component>() {
+      protected Component executeInEDT() {
+        ComboBoxEditor editor = comboBox.getEditor();
+        if (editor == null) return null;
+        return editor.getEditorComponent();
       }
     });
   }

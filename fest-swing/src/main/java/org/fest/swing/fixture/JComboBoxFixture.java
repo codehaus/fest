@@ -19,14 +19,10 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 
 import org.fest.swing.cell.JComboBoxCellReader;
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
-import org.fest.swing.core.Robot;
+import org.fest.swing.core.*;
 import org.fest.swing.driver.BasicJComboBoxCellReader;
 import org.fest.swing.driver.JComboBoxDriver;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.LocationUnavailableException;
+import org.fest.swing.exception.*;
 import org.fest.swing.timing.Timeout;
 
 /**
@@ -189,6 +185,7 @@ public class JComboBoxFixture extends JPopupMenuInvokerFixture<JComboBox> implem
    * @throws IllegalStateException if this fixture's <code>JComboBox</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JComboBox</code> is not showing on the screen.
    * @throws IllegalStateException if this fixture's <code>JComboBox</code> is not editable.
+   * @throws ActionFailedException if this fixture's <code>JComboBox</code> does not have an editor.
    */
   public JComboBoxFixture enterText(String text) {
     driver.enterText(target, text);
