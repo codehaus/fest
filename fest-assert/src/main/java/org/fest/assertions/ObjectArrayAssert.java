@@ -15,14 +15,14 @@
  */
 package org.fest.assertions;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import static org.fest.assertions.Fail.*;
+import static org.fest.assertions.Fail.errorMessageIfEqual;
+import static org.fest.assertions.Fail.errorMessageIfNotEqual;
 import static org.fest.assertions.Formatting.inBrackets;
-import static org.fest.util.Collections.*;
+import static org.fest.util.Collections.duplicatesFrom;
+import static org.fest.util.Collections.list;
 import static org.fest.util.Strings.concat;
+
+import java.util.*;
 
 /**
  * Understands assertions for <code>Object</code> arrays.  To create a new instance of this class use the
@@ -256,25 +256,25 @@ public final class ObjectArrayAssert extends ArrayAssert<Object[]> {
 
   /**
    * Verifies that the actual <code>Object</code> array is equal to the given array. Array equality is checked by
-   * <code>{@link Arrays#equals(Object[], Object[])}</code>.
+   * <code>{@link Arrays#deepEquals(Object[], Object[])}</code>.
    * @param expected the given array to compare the actual array to.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>Object</code> array is not equal to the given one.
    */
   public ObjectArrayAssert isEqualTo(Object[] expected) {
-    if (!Arrays.equals(actual, expected)) fail(errorMessageIfNotEqual(actual, expected));
+    if (!Arrays.deepEquals(actual, expected)) fail(errorMessageIfNotEqual(actual, expected));
     return this;
   }
 
   /**
    * Verifies that the actual <code>Object</code> array is not equal to the given array. Array equality is checked by
-   * <code>{@link Arrays#equals(Object[], Object[])}</code>.
+   * <code>{@link Arrays#deepEquals(Object[], Object[])}</code>.
    * @param array the given array to compare the actual array to.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>Object</code> array is equal to the given one.
    */
   public ObjectArrayAssert isNotEqualTo(Object[] array) {
-    if (Arrays.equals(actual, array)) fail(errorMessageIfEqual(actual, array));
+    if (Arrays.deepEquals(actual, array)) fail(errorMessageIfEqual(actual, array));
     return this;
   }
 
