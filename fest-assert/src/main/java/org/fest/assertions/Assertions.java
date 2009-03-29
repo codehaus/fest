@@ -156,6 +156,15 @@ public final class Assertions {
   }
 
   /**
+   * Creates a new instance of <code>{@link ListAssert}</code>.
+   * @param actual the value to be the target of the assertions methods.
+   * @return the created assertion object.
+   */
+  public static ListAssert assertThat(List<?> actual) {
+    return new ListAssert(actual);
+  }
+
+  /**
    * Creates a new instance of <code>{@link DoubleAssert}</code>.
    * @param actual the value to be the target of the assertions methods.
    * @return the created assertion object.
