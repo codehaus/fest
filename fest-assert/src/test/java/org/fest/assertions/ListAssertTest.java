@@ -1,5 +1,5 @@
 /*
- * Created on Jan 10, 2007
+ * Created on Mar 29, 2009
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -11,7 +11,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  *
- * Copyright @2007-2009 the original author or authors.
+ * Copyright @2009 the original author or authors.
  */
 package org.fest.assertions;
 
@@ -21,80 +21,80 @@ import static org.fest.util.Collections.list;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.fest.test.CodeToTest;
 import org.testng.annotations.Test;
 
 /**
- * Tests for <code>{@link CollectionAssert}</code>.
+ * Tests for <code>{@link ListAssert}</code>.
  *
- * @author Yvonne Wang
  * @author Alex Ruiz
  */
-@Test public class CollectionAssertTest {
+@Test public class ListAssertTest {
 
   private static final ArrayList<String> EMPTY_COLLECTION = new ArrayList<String>();
 
   public void shouldSetTextDescription() {
-    CollectionAssert assertion = new CollectionAssert(list("Anakin"));
+    ListAssert assertion = new ListAssert(list("Anakin"));
     assertNull(assertion.description());
     assertion.as("A Test");
     assertEquals(assertion.description(), "A Test");
   }
 
   public void shouldSetTextDescriptionSafelyForGroovy() {
-    CollectionAssert assertion = new CollectionAssert(list("Anakin"));
+    ListAssert assertion = new ListAssert(list("Anakin"));
     assertNull(assertion.description());
     assertion.describedAs("A Test");
     assertEquals(assertion.description(), "A Test");
   }
 
   public void shouldSetDescription() {
-    CollectionAssert assertion = new CollectionAssert(list("Anakin"));
+    ListAssert assertion = new ListAssert(list("Anakin"));
     assertNull(assertion.description());
     assertion.as(new BasicDescription("A Test"));
     assertEquals(assertion.description(), "A Test");
   }
 
   public void shouldSetDescriptionSafelyForGroovy() {
-    CollectionAssert assertion = new CollectionAssert(list("Anakin"));
+    ListAssert assertion = new ListAssert(list("Anakin"));
     assertNull(assertion.description());
     assertion.describedAs(new BasicDescription("A Test"));
     assertEquals(assertion.description(), "A Test");
   }
 
-  private static class EmptyCollection extends Condition<Collection<?>> {
-    @Override public boolean matches(Collection<?> c) {
+  private static class EmptyList extends Condition<List<?>> {
+    @Override public boolean matches(List<?> c) {
       return c != null && c.isEmpty();
     }
   }
 
   public void shouldPassIfConditionSatisfied() {
-    new CollectionAssert(EMPTY_COLLECTION).satisfies(new EmptyCollection());
+    new ListAssert(EMPTY_COLLECTION).satisfies(new EmptyList());
   }
 
   public void shouldThrowErrorIfConditionIsNullWhenCheckingIfSatisfied() {
     expectIllegalArgumentExceptionIfConditionIsNull().on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(EMPTY_COLLECTION).satisfies(null);
+        new ListAssert(EMPTY_COLLECTION).satisfies(null);
       }
     });
   }
 
   public void shouldFailIfConditionNotSatisfied() {
-    expectAssertionError("actual value:<['Han']> should satisfy condition:<EmptyCollection>").on(new CodeToTest() {
+    expectAssertionError("actual value:<['Han']> should satisfy condition:<EmptyList>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(list("Han")).satisfies(new EmptyCollection());
+        new ListAssert(list("Han")).satisfies(new EmptyList());
       }
     });
   }
 
   public void shouldFailShowingDescriptionIfConditionNotSatisfied() {
-    String message = "[A Test] actual value:<['Han']> should satisfy condition:<EmptyCollection>";
+    String message = "[A Test] actual value:<['Han']> should satisfy condition:<EmptyList>";
     expectAssertionError(message).on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(list("Han")).as("A Test").satisfies(new EmptyCollection());
+        new ListAssert(list("Han")).as("A Test").satisfies(new EmptyList());
       }
     });
   }
@@ -102,7 +102,7 @@ import org.testng.annotations.Test;
   public void shouldFailIfConditionNotSatisfiedShowingDescriptionOfCondition() {
     expectAssertionError("actual value:<['Han']> should satisfy condition:<Empty>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(list("Han")).satisfies(new EmptyCollection().as("Empty"));
+        new ListAssert(list("Han")).satisfies(new EmptyList().as("Empty"));
       }
     });
   }
@@ -110,36 +110,36 @@ import org.testng.annotations.Test;
   public void shouldFailShowingDescriptionIfConditionNotSatisfiedShowingDescriptionOfCondition() {
     expectAssertionError("[A Test] actual value:<['Han']> should satisfy condition:<Empty>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(list("Han")).as("A Test").satisfies(new EmptyCollection().as("Empty"));
+        new ListAssert(list("Han")).as("A Test").satisfies(new EmptyList().as("Empty"));
       }
     });
   }
 
   public void shouldPassIfConditionNotSatisfied() {
-    new CollectionAssert(list("Leia")).doesNotSatisfy(new EmptyCollection());
+    new ListAssert(list("Leia")).doesNotSatisfy(new EmptyList());
   }
 
   public void shouldThrowErrorIfConditionIsNullWhenCheckingIfNotSatisfied() {
     expectIllegalArgumentExceptionIfConditionIsNull().on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(EMPTY_COLLECTION).doesNotSatisfy(null);
+        new ListAssert(EMPTY_COLLECTION).doesNotSatisfy(null);
       }
     });
   }
 
   public void shouldFailIfConditionSatisfied() {
-    expectAssertionError("actual value:<[]> should not satisfy condition:<EmptyCollection>").on(new CodeToTest() {
+    expectAssertionError("actual value:<[]> should not satisfy condition:<EmptyList>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(EMPTY_COLLECTION).doesNotSatisfy(new EmptyCollection());
+        new ListAssert(EMPTY_COLLECTION).doesNotSatisfy(new EmptyList());
       }
     });
   }
 
   public void shouldFailShowingDescriptionIfConditionSatisfied() {
-    String message = "[A Test] actual value:<[]> should not satisfy condition:<EmptyCollection>";
+    String message = "[A Test] actual value:<[]> should not satisfy condition:<EmptyList>";
     expectAssertionError(message).on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(EMPTY_COLLECTION).as("A Test").doesNotSatisfy(new EmptyCollection());
+        new ListAssert(EMPTY_COLLECTION).as("A Test").doesNotSatisfy(new EmptyList());
       }
     });
   }
@@ -147,7 +147,7 @@ import org.testng.annotations.Test;
   public void shouldFailIfConditionSatisfiedShowingDescriptionOfCondition() {
     expectAssertionError("actual value:<[]> should not satisfy condition:<Empty>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(EMPTY_COLLECTION).doesNotSatisfy(new EmptyCollection().as("Empty"));
+        new ListAssert(EMPTY_COLLECTION).doesNotSatisfy(new EmptyList().as("Empty"));
       }
     });
   }
@@ -155,19 +155,19 @@ import org.testng.annotations.Test;
   public void shouldFailShowingDescriptionIfConditionSatisfiedShowingDescriptionOfCondition() {
     expectAssertionError("[A Test] actual value:<[]> should not satisfy condition:<Empty>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(EMPTY_COLLECTION).as("A Test").doesNotSatisfy(new EmptyCollection().as("Empty"));
+        new ListAssert(EMPTY_COLLECTION).as("A Test").doesNotSatisfy(new EmptyList().as("Empty"));
       }
     });
   }
 
   public void shouldPassIfActualIsNotNull() {
-    new CollectionAssert(EMPTY_COLLECTION).isNotNull();
+    new ListAssert(EMPTY_COLLECTION).isNotNull();
   }
 
   public void shouldFailIfActualIsNullAndExpectingNotNull() {
     shouldFailIfActualIsNull(new CodeToTest() {
       public void run() {
-        new CollectionAssert(null).isNotNull();
+        new ListAssert(null).isNotNull();
       }
     });
   }
@@ -175,23 +175,23 @@ import org.testng.annotations.Test;
   public void shouldFailShowingDescriptionIfActualIsNullAndExpectingNotNull() {
     shouldFailShowingDescriptionIfActualIsNull(new CodeToTest() {
       public void run() {
-        new CollectionAssert(null).as("A Test").isNotNull();
+        new ListAssert(null).as("A Test").isNotNull();
       }
     });
   }
 
   public void shouldPassIfActualContainsValue() {
-    new CollectionAssert(list("Luke", "Leia")).contains("Luke");
+    new ListAssert(list("Luke", "Leia")).contains("Luke");
   }
 
   public void shouldPassIfActualContainsValues() {
-    new CollectionAssert(list("Luke", "Leia", "Anakin")).contains("Luke", "Leia");
+    new ListAssert(list("Luke", "Leia", "Anakin")).contains("Luke", "Leia");
   }
 
   public void shouldFailIfActualIsNullWhenCheckingIfActualContainsObjects() {
     shouldFailIfActualIsNull(new CodeToTest() {
       public void run() {
-        new CollectionAssert(null).contains("Luke");
+        new ListAssert(null).contains("Luke");
       }
     });
   }
@@ -199,7 +199,7 @@ import org.testng.annotations.Test;
   public void shouldFailShowingDescriptionIfActualIsNullWhenCheckingIfActualContainsObjects() {
     shouldFailShowingDescriptionIfActualIsNull(new CodeToTest() {
       public void run() {
-        new CollectionAssert(null).as("A Test").contains("Luke");
+        new ListAssert(null).as("A Test").contains("Luke");
       }
     });
   }
@@ -208,7 +208,7 @@ import org.testng.annotations.Test;
     expectAssertionError("the given array of objects should not be null").on(new CodeToTest() {
       public void run() {
         Object[] objects = null;
-        new CollectionAssert(EMPTY_COLLECTION).contains(objects);
+        new ListAssert(EMPTY_COLLECTION).contains(objects);
       }
     });
   }
@@ -217,39 +217,39 @@ import org.testng.annotations.Test;
     expectAssertionError("[A Test] the given array of objects should not be null").on(new CodeToTest() {
       public void run() {
         Object[] objects = null;
-        new CollectionAssert(EMPTY_COLLECTION).as("A Test").contains(objects);
+        new ListAssert(EMPTY_COLLECTION).as("A Test").contains(objects);
       }
     });
   }
 
   public void shouldFailIfActualExcludesValueAndExpectingToContain() {
-    expectAssertionError("collection:<[]> does not contain element(s):<['Luke']>").on(new CodeToTest() {
+    expectAssertionError("list:<[]> does not contain element(s):<['Luke']>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(EMPTY_COLLECTION).contains("Luke");
+        new ListAssert(EMPTY_COLLECTION).contains("Luke");
       }
     });
   }
 
   public void shouldFailShowingDescriptionIfActualExcludesValueAndExpectingToContain() {
-    expectAssertionError("[A Test] collection:<[]> does not contain element(s):<['Luke']>").on(new CodeToTest() {
+    expectAssertionError("[A Test] list:<[]> does not contain element(s):<['Luke']>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(EMPTY_COLLECTION).as("A Test").contains("Luke");
+        new ListAssert(EMPTY_COLLECTION).as("A Test").contains("Luke");
       }
     });
   }
 
   public void shouldPassIfActualExcludesValue() {
-    new CollectionAssert(list("Luke", "Leia")).excludes("Anakin");
+    new ListAssert(list("Luke", "Leia")).excludes("Anakin");
   }
 
   public void shouldPassIfActualExcludesGivenValues() {
-    new CollectionAssert(list("Luke", "Leia", "Anakin")).excludes("Han", "Yoda");
+    new ListAssert(list("Luke", "Leia", "Anakin")).excludes("Han", "Yoda");
   }
 
   public void shouldFailIfActualIsNullWhenCheckingIfActualExcludesObjects() {
     shouldFailIfActualIsNull(new CodeToTest() {
       public void run() {
-        new CollectionAssert(null).excludes("Luke");
+        new ListAssert(null).excludes("Luke");
       }
     });
   }
@@ -257,7 +257,7 @@ import org.testng.annotations.Test;
   public void shouldFailShowingDescriptionIfActualIsNullWhenCheckingIfActualExcludesObjects() {
     shouldFailShowingDescriptionIfActualIsNull(new CodeToTest() {
       public void run() {
-        new CollectionAssert(null).as("A Test").excludes("Luke");
+        new ListAssert(null).as("A Test").excludes("Luke");
       }
     });
   }
@@ -266,7 +266,7 @@ import org.testng.annotations.Test;
     expectAssertionError("the given array of objects should not be null").on(new CodeToTest() {
       public void run() {
         Object[] objects = null;
-        new CollectionAssert(EMPTY_COLLECTION).excludes(objects);
+        new ListAssert(EMPTY_COLLECTION).excludes(objects);
       }
     });
   }
@@ -275,24 +275,24 @@ import org.testng.annotations.Test;
     expectAssertionError("[A Test] the given array of objects should not be null").on(new CodeToTest() {
       public void run() {
         Object[] objects = null;
-        new CollectionAssert(EMPTY_COLLECTION).as("A Test").excludes(objects);
+        new ListAssert(EMPTY_COLLECTION).as("A Test").excludes(objects);
       }
     });
   }
 
   public void shouldFailIfActualContainsValueAndExpectingToExclude() {
-    expectAssertionError("collection:<['Luke', 'Leia']> does not exclude element(s):<['Luke']>").on(new CodeToTest() {
+    expectAssertionError("list:<['Luke', 'Leia']> does not exclude element(s):<['Luke']>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(list("Luke", "Leia")).excludes("Luke");
+        new ListAssert(list("Luke", "Leia")).excludes("Luke");
       }
     });
   }
 
   public void shouldFailShowingDescriptionIfActualContainsValueAndExpectingToExclude() {
-    expectAssertionError("[A Test] collection:<['Luke', 'Leia']> does not exclude element(s):<['Luke']>").on(
+    expectAssertionError("[A Test] list:<['Luke', 'Leia']> does not exclude element(s):<['Luke']>").on(
         new CodeToTest() {
           public void run() {
-            new CollectionAssert(list("Luke", "Leia")).as("A Test").excludes("Luke");
+            new ListAssert(list("Luke", "Leia")).as("A Test").excludes("Luke");
           }
         });
   }
@@ -300,7 +300,7 @@ import org.testng.annotations.Test;
   public void shouldFailIfActualIsNullWhenCheckingItDoesNotHaveDuplicates() {
     shouldFailIfActualIsNull(new CodeToTest() {
       public void run() {
-        new CollectionAssert(null).doesNotHaveDuplicates();
+        new ListAssert(null).doesNotHaveDuplicates();
       }
     });
   }
@@ -308,60 +308,60 @@ import org.testng.annotations.Test;
   public void shouldFailShowingDescriptionIfActualIsNullWhenCheckingItDoesNotHaveDuplicates() {
     shouldFailShowingDescriptionIfActualIsNull(new CodeToTest() {
       public void run() {
-        new CollectionAssert(null).as("A Test").doesNotHaveDuplicates();
+        new ListAssert(null).as("A Test").doesNotHaveDuplicates();
       }
     });
   }
 
   public void shouldFailIfActualHasDuplicatesAndExpectingNoDuplicates() {
-    expectAssertionError("collection:<['Luke', 'Yoda', 'Luke']> contains duplicate(s):<['Luke']>").on(new CodeToTest() {
+    expectAssertionError("list:<['Luke', 'Yoda', 'Luke']> contains duplicate(s):<['Luke']>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(list("Luke", "Yoda", "Luke")).doesNotHaveDuplicates();
+        new ListAssert(list("Luke", "Yoda", "Luke")).doesNotHaveDuplicates();
       }
     });
   }
 
   public void shouldFailShowingDescriptionIfActualHasDuplicatesAndExpectingNoDuplicates() {
-    expectAssertionError("[A Test] collection:<['Luke', 'Yoda', 'Luke']> contains duplicate(s):<['Luke']>").on(
+    expectAssertionError("[A Test] list:<['Luke', 'Yoda', 'Luke']> contains duplicate(s):<['Luke']>").on(
         new CodeToTest() {
           public void run() {
-            new CollectionAssert(list("Luke", "Yoda", "Luke")).as("A Test").doesNotHaveDuplicates();
+            new ListAssert(list("Luke", "Yoda", "Luke")).as("A Test").doesNotHaveDuplicates();
           }
         });
   }
 
   public void shouldPassIfActualContainsNoDuplicates() {
-    new CollectionAssert(list("Luke", "Yoda")).doesNotHaveDuplicates();
+    new ListAssert(list("Luke", "Yoda")).doesNotHaveDuplicates();
   }
 
   public void shouldPassIfEmptyActualContainsNoDuplicates() {
-    new CollectionAssert(EMPTY_COLLECTION).doesNotHaveDuplicates();
+    new ListAssert(EMPTY_COLLECTION).doesNotHaveDuplicates();
   }
 
   public void shouldFailIfActualIsNotEmptyAndExpectingEmpty() {
-    expectAssertionError("expecting empty collection, but was:<['Yoda']>").on(new CodeToTest() {
+    expectAssertionError("expecting empty list, but was:<['Yoda']>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(list("Yoda")).isEmpty();
+        new ListAssert(list("Yoda")).isEmpty();
       }
     });
   }
 
   public void shouldFailShowingDescriptionIfActualIsNotEmptyAndExpectingEmpty() {
-    expectAssertionError("[A Test] expecting empty collection, but was:<['Yoda']>").on(new CodeToTest() {
+    expectAssertionError("[A Test] expecting empty list, but was:<['Yoda']>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(list("Yoda")).as("A Test").isEmpty();
+        new ListAssert(list("Yoda")).as("A Test").isEmpty();
       }
     });
   }
 
   public void shouldPassIfActualIsEmpty() {
-    new CollectionAssert(EMPTY_COLLECTION).isEmpty();
+    new ListAssert(EMPTY_COLLECTION).isEmpty();
   }
 
   public void shouldFailIfActualIsNullAndExpectingEmpty() {
     shouldFailIfActualIsNull(new CodeToTest() {
       public void run() {
-        new CollectionAssert(null).isEmpty();
+        new ListAssert(null).isEmpty();
       }
     });
   }
@@ -370,29 +370,29 @@ import org.testng.annotations.Test;
     shouldFailShowingDescriptionIfActualIsNull(new CodeToTest() {
       public void run() {
         List<String> nullList = null;
-        new CollectionAssert(nullList).as("A Test").isEmpty();
+        new ListAssert(nullList).as("A Test").isEmpty();
       }
     });
   }
 
   public void shouldPassIfActualHasExpectedSize() {
-    new CollectionAssert(list("Gandalf", "Frodo", "Sam")).hasSize(3);
+    new ListAssert(list("Gandalf", "Frodo", "Sam")).hasSize(3);
   }
 
   public void shouldFailIfActualDoesNotHaveExpectedSize() {
-    expectAssertionError("expected size:<2> but was:<1> for collection:<['Frodo']>").on(new CodeToTest() {
+    expectAssertionError("expected size:<2> but was:<1> for list:<['Frodo']>").on(new CodeToTest() {
       public void run() {
         List<String> names = list("Frodo");
-        new CollectionAssert(names).hasSize(2);
+        new ListAssert(names).hasSize(2);
       }
     });
   }
 
   public void shouldFailShowingDescriptionIfActualDoesNotHaveExpectedSize() {
-    expectAssertionError("[A Test] expected size:<2> but was:<1> for collection:<['Frodo']>").on(new CodeToTest() {
+    expectAssertionError("[A Test] expected size:<2> but was:<1> for list:<['Frodo']>").on(new CodeToTest() {
       public void run() {
         List<String> names = list("Frodo");
-        new CollectionAssert(names).as("A Test").hasSize(2);
+        new ListAssert(names).as("A Test").hasSize(2);
       }
     });
   }
@@ -400,7 +400,7 @@ import org.testng.annotations.Test;
   public void shouldFailIfActualIsNullAndExpectingSomeSize() {
     shouldFailIfActualIsNull(new CodeToTest() {
       public void run() {
-        new CollectionAssert(null).hasSize(0);
+        new ListAssert(null).hasSize(0);
       }
     });
   }
@@ -408,20 +408,20 @@ import org.testng.annotations.Test;
   public void shouldFailShowingDescriptionIfActualIsNullAndExpectingSomeSize() {
     shouldFailShowingDescriptionIfActualIsNull(new CodeToTest() {
       public void run() {
-        new CollectionAssert(null).as("A Test").hasSize(0);
+        new ListAssert(null).as("A Test").hasSize(0);
       }
     });
   }
 
   public void shouldPassIfActualIsNotEmpty() {
     List<String> names = list("Frodo", "Sam");
-    new CollectionAssert(names).isNotEmpty();
+    new ListAssert(names).isNotEmpty();
   }
 
   public void shouldFailIfActualIsNullAndExpectingNotEmpty() {
     shouldFailIfActualIsNull(new CodeToTest() {
       public void run() {
-        new CollectionAssert(null).isNotEmpty();
+        new ListAssert(null).isNotEmpty();
       }
     });
   }
@@ -429,35 +429,35 @@ import org.testng.annotations.Test;
   public void shouldFailShowingDescriptionIfActualIsNullAndExpectingNotEmpty() {
     shouldFailShowingDescriptionIfActualIsNull(new CodeToTest() {
       public void run() {
-        new CollectionAssert(null).as("A Test").isNotEmpty();
+        new ListAssert(null).as("A Test").isNotEmpty();
       }
     });
   }
 
   public void shouldFailIfActualIsEmptyAndExpectingNotEmpty() {
-    expectAssertionError("expecting a non-empty collection, but it was empty").on(new CodeToTest() {
+    expectAssertionError("expecting a non-empty list, but it was empty").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(EMPTY_COLLECTION).isNotEmpty();
+        new ListAssert(EMPTY_COLLECTION).isNotEmpty();
       }
     });
   }
 
   public void shouldFailShowingDescriptionIfActualIsEmptyAndExpectingNotEmpty() {
-    expectAssertionError("[A Test] expecting a non-empty collection, but it was empty").on(new CodeToTest() {
+    expectAssertionError("[A Test] expecting a non-empty list, but it was empty").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(EMPTY_COLLECTION).as("A Test").isNotEmpty();
+        new ListAssert(EMPTY_COLLECTION).as("A Test").isNotEmpty();
       }
     });
   }
 
   public void shouldPassIfActualIsNull() {
-    new CollectionAssert(null).isNull();
+    new ListAssert(null).isNull();
   }
 
   public void shouldFailIfActualIsNotNullAndExpectingNull() {
     expectAssertionError("<[]> should be null").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(EMPTY_COLLECTION).isNull();
+        new ListAssert(EMPTY_COLLECTION).isNull();
       }
     });
   }
@@ -465,62 +465,62 @@ import org.testng.annotations.Test;
   public void shouldFailShowingDescriptionIfActualIsNotNullAndExpectingNull() {
     expectAssertionError("[A Test] <[]> should be null").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(EMPTY_COLLECTION).as("A Test").isNull();
+        new ListAssert(EMPTY_COLLECTION).as("A Test").isNull();
       }
     });
   }
 
   public void shouldFailIfActualIsEmptyAndExpectingToContainValue() {
-    expectAssertionError("collection:<[]> does not contain element(s):<['Sam']>").on(new CodeToTest() {
+    expectAssertionError("list:<[]> does not contain element(s):<['Sam']>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(EMPTY_COLLECTION).containsOnly("Sam");
+        new ListAssert(EMPTY_COLLECTION).containsOnly("Sam");
       }
     });
   }
 
   public void shouldFailShowingDescriptionIfActualIsEmptyAndExpectingToContainValue() {
-    expectAssertionError("[A Test] collection:<[]> does not contain element(s):<['Sam']>").on(new CodeToTest() {
+    expectAssertionError("[A Test] list:<[]> does not contain element(s):<['Sam']>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(EMPTY_COLLECTION).as("A Test").containsOnly("Sam");
+        new ListAssert(EMPTY_COLLECTION).as("A Test").containsOnly("Sam");
       }
     });
   }
 
   public void shouldFailIfActualHasNotExpectedValues() {
-    expectAssertionError("unexpected element(s):<['Sam']> in collection:<['Gandalf', 'Frodo', 'Sam']>").on(new CodeToTest() {
+    expectAssertionError("unexpected element(s):<['Sam']> in list:<['Gandalf', 'Frodo', 'Sam']>").on(new CodeToTest() {
       public void run() {
         List<String> names = list("Gandalf", "Frodo", "Sam");
-        new CollectionAssert(names).containsOnly("Gandalf", "Frodo");
+        new ListAssert(names).containsOnly("Gandalf", "Frodo");
       }
     });
   }
 
   public void shouldFailShowingDescriptionIfActualHasNotExpectedValues() {
-    expectAssertionError("[A Test] unexpected element(s):<['Sam']> in collection:<['Gandalf', 'Frodo', 'Sam']>").on(
+    expectAssertionError("[A Test] unexpected element(s):<['Sam']> in list:<['Gandalf', 'Frodo', 'Sam']>").on(
         new CodeToTest() {
           public void run() {
             List<String> names = list("Gandalf", "Frodo", "Sam");
-            new CollectionAssert(names).as("A Test").containsOnly("Gandalf", "Frodo");
+            new ListAssert(names).as("A Test").containsOnly("Gandalf", "Frodo");
           }
         });
   }
 
   public void shouldFailIfActualDoesNotContainExpectedElement() {
-    expectAssertionError("collection:<['Gandalf', 'Frodo']> does not contain element(s):<['Sam']>").on(
+    expectAssertionError("list:<['Gandalf', 'Frodo']> does not contain element(s):<['Sam']>").on(
         new CodeToTest() {
           public void run() {
             List<String> names = list("Gandalf", "Frodo");
-            new CollectionAssert(names).containsOnly("Gandalf", "Frodo", "Sam");
+            new ListAssert(names).containsOnly("Gandalf", "Frodo", "Sam");
           }
         });
   }
 
   public void shouldFailShowingDescriptionIfActualDoesNotContainExpectedElement() {
-    expectAssertionError("[A Test] collection:<['Gandalf', 'Frodo']> does not contain element(s):<['Sam']>").on(
+    expectAssertionError("[A Test] list:<['Gandalf', 'Frodo']> does not contain element(s):<['Sam']>").on(
         new CodeToTest() {
           public void run() {
             List<String> names = list("Gandalf", "Frodo");
-            new CollectionAssert(names).as("A Test").containsOnly("Gandalf", "Frodo", "Sam");
+            new ListAssert(names).as("A Test").containsOnly("Gandalf", "Frodo", "Sam");
           }
         });
   }
@@ -528,7 +528,7 @@ import org.testng.annotations.Test;
   public void shouldFailIfActualIsNullWhenCheckingThatItContainsExpectedElement() {
     shouldFailIfActualIsNull(new CodeToTest() {
       public void run() {
-        new CollectionAssert(null).containsOnly("Gandalf", "Frodo", "Sam");
+        new ListAssert(null).containsOnly("Gandalf", "Frodo", "Sam");
       }
     });
   }
@@ -536,19 +536,19 @@ import org.testng.annotations.Test;
   public void shouldFailShowingDescriptionIfActualIsNullWhenCheckingThatItContainsExpectedElement() {
     shouldFailShowingDescriptionIfActualIsNull(new CodeToTest() {
       public void run() {
-        new CollectionAssert(null).as("A Test").containsOnly("Gandalf", "Frodo", "Sam");
+        new ListAssert(null).as("A Test").containsOnly("Gandalf", "Frodo", "Sam");
       }
     });
   }
 
   public void shouldPassIfArraysAreEqual() {
-    new CollectionAssert(list("Luke", "Leia")).isEqualTo(list("Luke", "Leia"));
+    new ListAssert(list("Luke", "Leia")).isEqualTo(list("Luke", "Leia"));
   }
 
   public void shouldFailIfArraysAreNotEqualAndExpectingEqual() {
     expectAssertionError("expected:<['Anakin']> but was:<['Luke', 'Leia']>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(list("Luke", "Leia")).isEqualTo(list("Anakin"));
+        new ListAssert(list("Luke", "Leia")).isEqualTo(list("Anakin"));
       }
     });
   }
@@ -556,20 +556,20 @@ import org.testng.annotations.Test;
   public void shouldFailShowingDescriptionIfArraysAreNotEqualAndExpectingEqual() {
     expectAssertionError("[A Test] expected:<['Anakin']> but was:<['Luke', 'Leia']>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(list("Luke", "Leia")).as("A Test").isEqualTo(list("Anakin"));
+        new ListAssert(list("Luke", "Leia")).as("A Test").isEqualTo(list("Anakin"));
       }
     });
   }
 
   public void shouldPassIfArraysAreNotEqual() {
-    new CollectionAssert(list("Luke", "Leia")).isNotEqualTo(list("Yoda"));
+    new ListAssert(list("Luke", "Leia")).isNotEqualTo(list("Yoda"));
   }
 
   public void shouldFailIfArraysAreEqualAndExpectingNotEqual() {
     expectAssertionError("actual value:<['Luke', 'Leia']> should not be equal to:<['Luke', 'Leia']>").on(
         new CodeToTest() {
           public void run() {
-            new CollectionAssert(list("Luke", "Leia")).isNotEqualTo(list("Luke", "Leia"));
+            new ListAssert(list("Luke", "Leia")).isNotEqualTo(list("Luke", "Leia"));
           }
         });
   }
@@ -578,20 +578,20 @@ import org.testng.annotations.Test;
     expectAssertionError("[A Test] actual value:<['Luke', 'Leia']> should not be equal to:<['Luke', 'Leia']>").on(
         new CodeToTest() {
           public void run() {
-            new CollectionAssert(list("Luke", "Leia")).as("A Test").isNotEqualTo(list("Luke", "Leia"));
+            new ListAssert(list("Luke", "Leia")).as("A Test").isNotEqualTo(list("Luke", "Leia"));
           }
         });
   }
 
   public void shouldPassIfCollectionsAreSame() {
     List<String> list = list("Leia");
-    new CollectionAssert(list).isSameAs(list);
+    new ListAssert(list).isSameAs(list);
   }
 
   public void shouldFailIfActualIsNotSameAsExpectedAndExpectingSame() {
     expectAssertionError("expected same instance but found:<['Leia']> and:<[]>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(list("Leia")).isSameAs(EMPTY_COLLECTION);
+        new ListAssert(list("Leia")).isSameAs(EMPTY_COLLECTION);
       }
     });
   }
@@ -599,7 +599,7 @@ import org.testng.annotations.Test;
   public void shouldFailShowingDescriptionIfActualIsNotSameAsExpectedAndExpectingSame() {
     expectAssertionError("[A Test] expected same instance but found:<['Leia']> and:<[]>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(list("Leia")).as("A Test").isSameAs(EMPTY_COLLECTION);
+        new ListAssert(list("Leia")).as("A Test").isSameAs(EMPTY_COLLECTION);
       }
     });
   }
@@ -608,7 +608,7 @@ import org.testng.annotations.Test;
     expectAssertionError("given objects are same:<['Leia']>").on(new CodeToTest() {
       public void run() {
         List<String> list = list("Leia");
-        new CollectionAssert(list).isNotSameAs(list);
+        new ListAssert(list).isNotSameAs(list);
       }
     });
   }
@@ -617,48 +617,48 @@ import org.testng.annotations.Test;
     expectAssertionError("[A Test] given objects are same:<['Leia']>").on(new CodeToTest() {
       public void run() {
         List<String> list = list("Leia");
-        new CollectionAssert(list).as("A Test").isNotSameAs(list);
+        new ListAssert(list).as("A Test").isNotSameAs(list);
       }
     });
   }
 
   public void shouldPassIfCollectionsAreNotSame() {
-    new CollectionAssert(list("Leia")).isNotSameAs(EMPTY_COLLECTION);
+    new ListAssert(list("Leia")).isNotSameAs(EMPTY_COLLECTION);
   }
 
   private void shouldFailIfActualIsNull(CodeToTest codeToTest) {
-    expectAssertionError("expecting a non-null collection, but it was null").on(codeToTest);
+    expectAssertionError("expecting a non-null list, but it was null").on(codeToTest);
   }
 
   private void shouldFailShowingDescriptionIfActualIsNull(CodeToTest codeToTest) {
-    expectAssertionError("[A Test] expecting a non-null collection, but it was null").on(codeToTest);
+    expectAssertionError("[A Test] expecting a non-null list, but it was null").on(codeToTest);
   }
 
   public void shouldPassIfActualHasExpectedElementsOnly() {
     List<String> names = list("Gandalf", "Frodo");
-    new CollectionAssert(names).containsOnly("Gandalf", "Frodo");
+    new ListAssert(names).containsOnly("Gandalf", "Frodo");
   }
 
   public void shouldPassIfArrayIsNullAndExpectingNullOrEmpty() {
-    new CollectionAssert(null).isNullOrEmpty();
+    new ListAssert(null).isNullOrEmpty();
   }
 
   public void shouldPassIfArrayIsEmptyAndExpectingNullOrEmpty() {
-    new CollectionAssert(EMPTY_COLLECTION).isNullOrEmpty();
+    new ListAssert(EMPTY_COLLECTION).isNullOrEmpty();
   }
 
   public void shouldFailIfArrayIsNotNullOrEmptyAndExpectingNullOrEmpty() {
-    expectAssertionError("expecting a null or empty collection, but was:<[8]>").on(new CodeToTest() {
+    expectAssertionError("expecting a null or empty list, but was:<[8]>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(list(8)).isNullOrEmpty();
+        new ListAssert(list(8)).isNullOrEmpty();
       }
     });
   }
 
   public void shouldFailShowingDescritptionIfArrayIsNotNullOrEmptyAndExpectingNullOrEmpty() {
-    expectAssertionError("[A Test] expecting a null or empty collection, but was:<[8]>").on(new CodeToTest() {
+    expectAssertionError("[A Test] expecting a null or empty list, but was:<[8]>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(list(8)).as("A Test").isNullOrEmpty();
+        new ListAssert(list(8)).as("A Test").isNullOrEmpty();
       }
     });
   }

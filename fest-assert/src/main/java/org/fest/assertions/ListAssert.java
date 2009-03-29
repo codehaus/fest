@@ -15,10 +15,13 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.Collections.found;
+import static org.fest.assertions.Collections.notFound;
 import static org.fest.assertions.Formatting.inBrackets;
+import static org.fest.util.Collections.duplicatesFrom;
 import static org.fest.util.Strings.concat;
 
-import java.util.List;
+import java.util.*;
 
 import org.fest.util.Collections;
 
@@ -32,6 +35,88 @@ public class ListAssert extends GroupAssert<List<?>> {
 
   ListAssert(List<?> actual) {
     super(actual);
+  }
+
+  /**
+   * Verifies that the actual <code>{@link List}</code> contains the given objects.
+   * @param objects the objects to look for.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>List</code> is <code>null</code>.
+   * @throws AssertionError if the given array is <code>null</code>.
+   * @throws AssertionError if the actual <code>List</code> does not contain the given objects.
+   */
+  public ListAssert contains(Object...objects) {
+    isNotNull();
+    failIfNull(objects);
+    Collection<Object> notFound = notFound(actual, objects);
+    if (!notFound.isEmpty()) failIfElementsNotFound(notFound);
+    return this;
+  }
+
+  /**
+   * Verifies that the actual <code>{@link List}</code> contains the given objects <strong>only</strong>.
+   * @param objects the objects to look for.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>List</code> is <code>null</code>.
+   * @throws AssertionError if the given array is <code>null</code>.
+   * @throws AssertionError if the actual <code>List</code> does not contain the given objects, or if the actual
+   * <code>List</code> contains elements other than the ones specified.
+   */
+  public ListAssert containsOnly(Object...objects) {
+    isNotNull();
+    failIfNull(objects);
+    List<Object> notFound = new ArrayList<Object>();
+    List<Object> copy = new ArrayList<Object>(actual);
+    for (Object o : objects) {
+      if (!copy.contains(o)) {
+        notFound.add(o);
+        continue;
+      }
+      copy.remove(o);
+    }
+    if (!notFound.isEmpty()) failIfElementsNotFound(notFound);
+    if (!copy.isEmpty())
+      fail(concat("unexpected element(s):", format(copy), " in list:", format(actual)));
+    return this;
+  }
+
+  private void failIfElementsNotFound(Collection<Object> notFound) {
+    fail(concat("list:", format(actual), " does not contain element(s):", format(notFound)));
+  }
+
+  /**
+   * Verifies that the actual <code>{@link List}</code> does not contain the given objects.
+   * @param objects the objects that the <code>List</code> should exclude.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>List</code> is <code>null</code>.
+   * @throws AssertionError if the given array is <code>null</code>.
+   * @throws AssertionError if the actual <code>List</code> contains any of the given objects.
+   */
+  public ListAssert excludes(Object...objects) {
+    isNotNull();
+    failIfNull(objects);
+    Collection<Object> found = found(actual, objects);
+    if (!found.isEmpty())
+      fail(concat("list:", format(actual), " does not exclude element(s):", format(found)));
+    return this;
+  }
+
+  private void failIfNull(Object[] objects) {
+    if (objects == null) fail("the given array of objects should not be null");
+  }
+
+  /**
+   * Verifies that the actual <code>{@link List}</code> does not have duplicates.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>List</code> is <code>null</code>.
+   * @throws AssertionError if the actual <code>List</code> has duplicates.
+   */
+  public ListAssert doesNotHaveDuplicates() {
+    isNotNull();
+    Collection<?> duplicates = duplicatesFrom(actual);
+    if (!duplicates.isEmpty())
+      fail(concat("list:", format(actual), " contains duplicate(s):", format(duplicates)));
+    return this;
   }
 
   /**
@@ -152,7 +237,7 @@ public class ListAssert extends GroupAssert<List<?>> {
     return actual.size();
   }
 
-  private String format(List<?> c) {
+  private String format(Collection<?> c) {
     return inBrackets(c);
   }
 
