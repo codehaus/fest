@@ -159,7 +159,7 @@ public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>boolean</code> array does not satisfy the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public BooleanArrayAssert satisfies(Condition<boolean[]> condition) {
     assertSatisfies(condition);
@@ -171,7 +171,7 @@ public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>boolean</code> array satisfies the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public BooleanArrayAssert doesNotSatisfy(Condition<boolean[]> condition) {
     assertDoesNotSatisfy(condition);

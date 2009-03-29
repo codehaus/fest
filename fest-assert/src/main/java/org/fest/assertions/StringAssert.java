@@ -108,7 +108,7 @@ public final class StringAssert extends GroupAssert<String> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>String</code> does not satisfy the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public StringAssert satisfies(Condition<String> condition) {
     assertSatisfies(condition);
@@ -120,7 +120,7 @@ public final class StringAssert extends GroupAssert<String> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>String</code> satisfies the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public StringAssert doesNotSatisfy(Condition<String> condition) {
     assertDoesNotSatisfy(condition);

@@ -61,7 +61,7 @@ public final class CollectionAssert extends GroupAssert<Collection<?>> {
    * @throws AssertionError if the actual collection is <code>null</code>.
    * @throws AssertionError if the given collection is <code>null</code>.
    * @throws AssertionError if the actual collection does not contain the given objects, or if the actual collection
-   *           contains elements other than the ones specified.
+   * contains elements other than the ones specified.
    */
   public CollectionAssert containsOnly(Object...objects) {
     isNotNull();
@@ -199,7 +199,7 @@ public final class CollectionAssert extends GroupAssert<Collection<?>> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual collection does not satisfy the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public CollectionAssert satisfies(Condition<Collection<?>> condition) {
     assertSatisfies(condition);
@@ -211,7 +211,7 @@ public final class CollectionAssert extends GroupAssert<Collection<?>> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual collection satisfies the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public CollectionAssert doesNotSatisfy(Condition<Collection<?>> condition) {
     assertDoesNotSatisfy(condition);

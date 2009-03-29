@@ -139,7 +139,7 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual image does not satisfy the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public ImageAssert satisfies(Condition<BufferedImage> condition) {
     assertSatisfies(condition);
@@ -151,7 +151,7 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual image satisfies the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public ImageAssert doesNotSatisfy(Condition<BufferedImage> condition) {
     assertDoesNotSatisfy(condition);

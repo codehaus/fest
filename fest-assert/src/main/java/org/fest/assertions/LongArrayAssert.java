@@ -159,7 +159,7 @@ public final class LongArrayAssert extends ArrayAssert<long[]> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>long</code> array does not satisfy the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public LongArrayAssert satisfies(Condition<long[]> condition) {
     assertSatisfies(condition);
@@ -171,7 +171,7 @@ public final class LongArrayAssert extends ArrayAssert<long[]> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>long</code> array satisfies the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public LongArrayAssert doesNotSatisfy(Condition<long[]> condition) {
     assertDoesNotSatisfy(condition);

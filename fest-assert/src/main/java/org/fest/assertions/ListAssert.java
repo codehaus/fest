@@ -109,7 +109,7 @@ public class ListAssert extends GroupAssert<List<?>> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>List</code> does not satisfy the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public ListAssert satisfies(Condition<List<?>> condition) {
     assertSatisfies(condition);
@@ -121,7 +121,7 @@ public class ListAssert extends GroupAssert<List<?>> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>List</code> satisfies the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public ListAssert doesNotSatisfy(Condition<List<?>> condition) {
     assertDoesNotSatisfy(condition);

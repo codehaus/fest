@@ -159,7 +159,7 @@ public final class ShortArrayAssert extends ArrayAssert<short[]> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>short</code> array does not satisfy the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public ShortArrayAssert satisfies(Condition<short[]> condition) {
     assertSatisfies(condition);
@@ -171,7 +171,7 @@ public final class ShortArrayAssert extends ArrayAssert<short[]> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>short</code> array satisfies the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public ShortArrayAssert doesNotSatisfy(Condition<short[]> condition) {
     assertDoesNotSatisfy(condition);

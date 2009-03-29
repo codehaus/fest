@@ -159,7 +159,7 @@ public final class IntArrayAssert extends ArrayAssert<int[]> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>int</code> array does not satisfy the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public IntArrayAssert satisfies(Condition<int[]> condition) {
     assertSatisfies(condition);
@@ -171,7 +171,7 @@ public final class IntArrayAssert extends ArrayAssert<int[]> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>int</code> array satisfies the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public IntArrayAssert doesNotSatisfy(Condition<int[]> condition) {
     assertDoesNotSatisfy(condition);

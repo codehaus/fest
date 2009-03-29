@@ -331,7 +331,7 @@ public final class MapAssert extends GroupAssert<Map<?, ?>> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>Map</code> does not satisfy the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public MapAssert satisfies(Condition<Map<?, ?>> condition) {
     assertSatisfies(condition);
@@ -343,7 +343,7 @@ public final class MapAssert extends GroupAssert<Map<?, ?>> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>Map</code> satisfies the given condition.
-   * @throws IllegalArgumentException if the given condition is null.
+   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public MapAssert doesNotSatisfy(Condition<Map<?, ?>> condition) {
     assertDoesNotSatisfy(condition);
