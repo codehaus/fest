@@ -15,16 +15,15 @@
  */
 package org.fest.assertions;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.fest.util.Collections;
-
-import static org.fest.assertions.Collections.*;
+import static org.fest.assertions.Collections.found;
+import static org.fest.assertions.Collections.notFound;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Collections.duplicatesFrom;
 import static org.fest.util.Strings.concat;
+
+import java.util.*;
+
+import org.fest.util.Collections;
 
 /**
  * Understands assertions for collections. To create a new instance of this class use the
@@ -223,7 +222,7 @@ public final class CollectionAssert extends GroupAssert<Collection<?>> {
    * Verifies that the actual collection is <code>null</code> or empty.
    * @throws AssertionError if the actual collection is not <code>null</code> or not empty.
    */
-  public final void isNullOrEmpty() {
+  public void isNullOrEmpty() {
     if (Collections.isEmpty(actual)) return;
     fail(concat("expecting a null or empty collection, but was:", format(actual)));
   }
@@ -241,7 +240,7 @@ public final class CollectionAssert extends GroupAssert<Collection<?>> {
   /**
    * Verifies that the actual collection is empty (not <code>null</code> with zero elements.)
    * @throws AssertionError if the actual collection is <code>null</code>.
-   * @throws AssertionError if the actual collection is <code>null</code> or not empty.
+   * @throws AssertionError if the actual collection is not empty.
    */
   public void isEmpty() {
     isNotNull();
