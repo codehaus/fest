@@ -542,11 +542,11 @@ import org.testng.annotations.Test;
     });
   }
 
-  public void shouldPassIfArraysAreEqual() {
+  public void shouldPassIfListsAreEqual() {
     new ListAssert(list("Luke", "Leia")).isEqualTo(list("Luke", "Leia"));
   }
 
-  public void shouldFailIfArraysAreNotEqualAndExpectingEqual() {
+  public void shouldFailIfListsAreNotEqualAndExpectingEqual() {
     expectAssertionError("expected:<['Anakin']> but was:<['Luke', 'Leia']>").on(new CodeToTest() {
       public void run() {
         new ListAssert(list("Luke", "Leia")).isEqualTo(list("Anakin"));
@@ -554,7 +554,7 @@ import org.testng.annotations.Test;
     });
   }
 
-  public void shouldFailShowingDescriptionIfArraysAreNotEqualAndExpectingEqual() {
+  public void shouldFailShowingDescriptionIfListsAreNotEqualAndExpectingEqual() {
     expectAssertionError("[A Test] expected:<['Anakin']> but was:<['Luke', 'Leia']>").on(new CodeToTest() {
       public void run() {
         new ListAssert(list("Luke", "Leia")).as("A Test").isEqualTo(list("Anakin"));
@@ -562,11 +562,11 @@ import org.testng.annotations.Test;
     });
   }
 
-  public void shouldPassIfArraysAreNotEqual() {
+  public void shouldPassIfListsAreNotEqual() {
     new ListAssert(list("Luke", "Leia")).isNotEqualTo(list("Yoda"));
   }
 
-  public void shouldFailIfArraysAreEqualAndExpectingNotEqual() {
+  public void shouldFailIfListsAreEqualAndExpectingNotEqual() {
     expectAssertionError("actual value:<['Luke', 'Leia']> should not be equal to:<['Luke', 'Leia']>").on(
         new CodeToTest() {
           public void run() {
@@ -575,7 +575,7 @@ import org.testng.annotations.Test;
         });
   }
 
-  public void shouldFailShowingDescriptionIfArraysAreEqualAndExpectingNotEqual() {
+  public void shouldFailShowingDescriptionIfListsAreEqualAndExpectingNotEqual() {
     expectAssertionError("[A Test] actual value:<['Luke', 'Leia']> should not be equal to:<['Luke', 'Leia']>").on(
         new CodeToTest() {
           public void run() {
@@ -640,15 +640,15 @@ import org.testng.annotations.Test;
     new ListAssert(names).containsOnly("Gandalf", "Frodo");
   }
 
-  public void shouldPassIfArrayIsNullAndExpectingNullOrEmpty() {
+  public void shouldPassIfListIsNullAndExpectingNullOrEmpty() {
     new ListAssert(null).isNullOrEmpty();
   }
 
-  public void shouldPassIfArrayIsEmptyAndExpectingNullOrEmpty() {
+  public void shouldPassIfListIsEmptyAndExpectingNullOrEmpty() {
     new ListAssert(EMPTY_LIST).isNullOrEmpty();
   }
 
-  public void shouldFailIfArrayIsNotNullOrEmptyAndExpectingNullOrEmpty() {
+  public void shouldFailIfListIsNotNullOrEmptyAndExpectingNullOrEmpty() {
     expectAssertionError("expecting a null or empty list, but was:<[8]>").on(new CodeToTest() {
       public void run() {
         new ListAssert(list(8)).isNullOrEmpty();
@@ -656,7 +656,7 @@ import org.testng.annotations.Test;
     });
   }
 
-  public void shouldFailShowingDescritptionIfArrayIsNotNullOrEmptyAndExpectingNullOrEmpty() {
+  public void shouldFailShowingDescritptionIfListIsNotNullOrEmptyAndExpectingNullOrEmpty() {
     expectAssertionError("[A Test] expecting a null or empty list, but was:<[8]>").on(new CodeToTest() {
       public void run() {
         new ListAssert(list(8)).as("A Test").isNullOrEmpty();
@@ -799,8 +799,6 @@ import org.testng.annotations.Test;
       }
     });
   }
-
-  ////
 
   public void shouldPassIfActualEndsWithSequence() {
     new ListAssert(list("Anakin", "Leia", "Han")).endsWith("Leia", "Han");
@@ -990,6 +988,44 @@ import org.testng.annotations.Test;
     expectAssertionError("[A Test] expecting <'Han'> at index <1> but found <'Leia'>").on(new CodeToTest() {
       public void run() {
         new ListAssert(list("Anakin", "Leia")).as("A Test").contains("Han", atIndex(1));
+      }
+    });
+  }
+
+  public void shouldPassIfActualContainsExactlyTheGivenObjects() {
+    new ListAssert(list("Anakin", "Leia")).containsExactly("Anakin", "Leia");
+  }
+
+  public void shouldFailIfArrayToCheckForEqualityIsNull() {
+    expectAssertionError("the given array of objects should not be null").on(new CodeToTest() {
+      public void run() {
+        Object[] objects = null;
+        new ListAssert(EMPTY_LIST).containsExactly(objects);
+      }
+    });
+  }
+
+  public void shouldFailShowingDescriptionIfArrayToCheckForEqualityIsNull() {
+    expectAssertionError("[A Test] the given array of objects should not be null").on(new CodeToTest() {
+      public void run() {
+        Object[] objects = null;
+        new ListAssert(EMPTY_LIST).as("A Test").containsExactly(objects);
+      }
+    });
+  }
+
+  public void shouldFailIfActualDoesNotContainExactlyTheGivenObjects() {
+    expectAssertionError("expected:<['Anakin']> but was:<['Luke', 'Leia']>").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list("Luke", "Leia")).containsExactly("Anakin");
+      }
+    });
+  }
+
+  public void shouldFailShowingDescriptionIfActualDoesNotContainExactlyTheGivenObjects() {
+    expectAssertionError("[A Test] expected:<['Anakin']> but was:<['Luke', 'Leia']>").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list("Luke", "Leia")).as("A Test").containsExactly("Anakin");
       }
     });
   }

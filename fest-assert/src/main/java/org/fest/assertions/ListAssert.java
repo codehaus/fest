@@ -19,6 +19,7 @@ import static org.fest.assertions.Collections.found;
 import static org.fest.assertions.Collections.notFound;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Collections.duplicatesFrom;
+import static org.fest.util.Collections.list;
 import static org.fest.util.Objects.areEqual;
 import static org.fest.util.Strings.concat;
 
@@ -400,6 +401,21 @@ public class ListAssert extends GroupAssert<List<?>> {
   public ListAssert isNotNull() {
     if (actual == null) fail("expecting a non-null list, but it was null");
     return this;
+  }
+
+  /**
+   * Verifies that the actual <code>{@link List}</code> contains the given objects, in the same order. This method works
+   * just like <code>{@link #isEqualTo(List)}</code>, with the difference that internally the given array is
+   * converted to a <code>List</code>.
+   * @param objects the objects to look for.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>List</code> is <code>null</code>.
+   * @throws AssertionError if the given array is <code>null</code>.
+   * @throws AssertionError if the actual <code>List</code> does not contain the given objects.
+   */
+  public ListAssert containsExactly(Object... objects) {
+    failIfNull(objects);
+    return isNotNull().isEqualTo(list(objects));
   }
 
   /**

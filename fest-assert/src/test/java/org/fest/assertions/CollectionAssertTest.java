@@ -541,11 +541,11 @@ import org.testng.annotations.Test;
     });
   }
 
-  public void shouldPassIfArraysAreEqual() {
+  public void shouldPassIfCollectionsAreEqual() {
     new CollectionAssert(list("Luke", "Leia")).isEqualTo(list("Luke", "Leia"));
   }
 
-  public void shouldFailIfArraysAreNotEqualAndExpectingEqual() {
+  public void shouldFailIfCollectionsAreNotEqualAndExpectingEqual() {
     expectAssertionError("expected:<['Anakin']> but was:<['Luke', 'Leia']>").on(new CodeToTest() {
       public void run() {
         new CollectionAssert(list("Luke", "Leia")).isEqualTo(list("Anakin"));
@@ -553,7 +553,7 @@ import org.testng.annotations.Test;
     });
   }
 
-  public void shouldFailShowingDescriptionIfArraysAreNotEqualAndExpectingEqual() {
+  public void shouldFailShowingDescriptionIfCollectionsAreNotEqualAndExpectingEqual() {
     expectAssertionError("[A Test] expected:<['Anakin']> but was:<['Luke', 'Leia']>").on(new CodeToTest() {
       public void run() {
         new CollectionAssert(list("Luke", "Leia")).as("A Test").isEqualTo(list("Anakin"));
@@ -561,11 +561,11 @@ import org.testng.annotations.Test;
     });
   }
 
-  public void shouldPassIfArraysAreNotEqual() {
+  public void shouldPassIfCollectionsAreNotEqual() {
     new CollectionAssert(list("Luke", "Leia")).isNotEqualTo(list("Yoda"));
   }
 
-  public void shouldFailIfArraysAreEqualAndExpectingNotEqual() {
+  public void shouldFailIfCollectionsAreEqualAndExpectingNotEqual() {
     expectAssertionError("actual value:<['Luke', 'Leia']> should not be equal to:<['Luke', 'Leia']>").on(
         new CodeToTest() {
           public void run() {
@@ -574,7 +574,7 @@ import org.testng.annotations.Test;
         });
   }
 
-  public void shouldFailShowingDescriptionIfArraysAreEqualAndExpectingNotEqual() {
+  public void shouldFailShowingDescriptionIfCollectionsAreEqualAndExpectingNotEqual() {
     expectAssertionError("[A Test] actual value:<['Luke', 'Leia']> should not be equal to:<['Luke', 'Leia']>").on(
         new CodeToTest() {
           public void run() {
@@ -639,15 +639,15 @@ import org.testng.annotations.Test;
     new CollectionAssert(names).containsOnly("Gandalf", "Frodo");
   }
 
-  public void shouldPassIfArrayIsNullAndExpectingNullOrEmpty() {
+  public void shouldPassIfCollectionIsNullAndExpectingNullOrEmpty() {
     new CollectionAssert(null).isNullOrEmpty();
   }
 
-  public void shouldPassIfArrayIsEmptyAndExpectingNullOrEmpty() {
+  public void shouldPassIfCollectionIsEmptyAndExpectingNullOrEmpty() {
     new CollectionAssert(EMPTY_COLLECTION).isNullOrEmpty();
   }
 
-  public void shouldFailIfArrayIsNotNullOrEmptyAndExpectingNullOrEmpty() {
+  public void shouldFailIfCollectionIsNotNullOrEmptyAndExpectingNullOrEmpty() {
     expectAssertionError("expecting a null or empty collection, but was:<[8]>").on(new CodeToTest() {
       public void run() {
         new CollectionAssert(list(8)).isNullOrEmpty();
@@ -655,7 +655,7 @@ import org.testng.annotations.Test;
     });
   }
 
-  public void shouldFailShowingDescritptionIfArrayIsNotNullOrEmptyAndExpectingNullOrEmpty() {
+  public void shouldFailShowingDescritptionIfCollectionIsNotNullOrEmptyAndExpectingNullOrEmpty() {
     expectAssertionError("[A Test] expecting a null or empty collection, but was:<[8]>").on(new CodeToTest() {
       public void run() {
         new CollectionAssert(list(8)).as("A Test").isNullOrEmpty();
