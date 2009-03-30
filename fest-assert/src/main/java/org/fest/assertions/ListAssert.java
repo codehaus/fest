@@ -54,9 +54,10 @@ public class ListAssert extends GroupAssert<List<?>> {
     if (sequenceSize == 0) return this;
     int indexOfFirst = actual.indexOf(sequence[0]);
     if (indexOfFirst == -1) failIfSequenceNotFound(sequence);
+    int listSize = actualGroupSize();
     for (int i = 0; i < sequenceSize; i++) {
       int actualIndex = indexOfFirst + i;
-      if (actualIndex > actualGroupSize() - 1) failIfSequenceNotFound(sequence);
+      if (actualIndex > listSize - 1) failIfSequenceNotFound(sequence);
       if (!areEqual(sequence[i], actual.get(actualIndex))) failIfSequenceNotFound(sequence);
     }
     return this;
@@ -68,7 +69,8 @@ public class ListAssert extends GroupAssert<List<?>> {
 
   /**
    * Verifies that the actual <code>{@link List}</code> starts with the given sequence of objects, without any other
-   * objects between them.
+   * objects between them. Same as <code>{@link #containsSequence}</code>, but verifies also that first given object is
+   * also first element of <code>List</code>.
    * @param sequence the sequence of objects to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>List</code> is <code>null</code>.
@@ -92,6 +94,38 @@ public class ListAssert extends GroupAssert<List<?>> {
 
   private void failIfNotStartingWithSequence(Object[] notFound) {
     fail(concat("list:", inBrackets(actual), " does not start with the sequence:", inBrackets(notFound)));
+  }
+
+  /**
+   * Verifies that the actual <code>{@link List}</code> ends with the given sequence of objects, without any other
+   * objects between them. Same as <code>{@link #containsSequence}</code>, but verifies also that last given object is
+   * also last element of <code>List</code>.
+   * @param sequence the sequence of objects to look for.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>List</code> is <code>null</code>.
+   * @throws AssertionError if the given array is <code>null</code>.
+   * @throws AssertionError if the actual <code>List</code> is not empty and with the given sequence of objects is
+   * empty.
+   * @throws AssertionError if the actual <code>List</code> does not end with the given sequence of objects.
+   */
+  public ListAssert endsWith(Object...sequence) {
+    isNotNull();
+    failIfNull(sequence);
+    int sequenceSize = sequence.length;
+    int listSize = actualGroupSize();
+    if (sequenceSize == 0 && listSize == 0) return this;
+    if (sequenceSize == 0 && listSize != 0) failIfNotEndingWithSequence(sequence);
+    if (listSize < sequenceSize) failIfNotEndingWithSequence(sequence);
+    for (int i = 0; i < sequenceSize; i++) {
+      int sequenceIndex = sequenceSize - 1 - i;
+      int listIndex = listSize - 1 - i;
+      if (!areEqual(sequence[sequenceIndex], actual.get(listIndex))) failIfNotEndingWithSequence(sequence);
+    }
+    return this;
+  }
+
+  private void failIfNotEndingWithSequence(Object[] notFound) {
+    fail(concat("list:", inBrackets(actual), " does not end with the sequence:", inBrackets(notFound)));
   }
 
   /**

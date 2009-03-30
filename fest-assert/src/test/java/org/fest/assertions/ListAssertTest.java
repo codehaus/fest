@@ -799,4 +799,76 @@ import org.testng.annotations.Test;
     });
   }
 
+  ////
+
+  public void shouldPassIfActualEndsWithSequence() {
+    new ListAssert(list("Anakin", "Leia", "Han")).endsWith("Leia", "Han");
+  }
+
+  public void shouldPassIfActualAndSequenceToEndWithAreEqual() {
+    new ListAssert(list("Anakin", "Leia", "Han")).endsWith("Anakin", "Leia", "Han");
+  }
+
+  public void shouldFailIfActualIsNotEmptyAndSequenceToEndWithIsEmpty() {
+    final Object[] sequence = {};
+    expectAssertionError("list:<['Anakin', 'Leia']> does not end with the sequence:<[]>").on(
+      new CodeToTest() {
+        public void run() {
+          new ListAssert(list("Anakin", "Leia")).endsWith(sequence);
+        }
+      });
+  }
+
+  public void shouldFailIfActualDoesNotEndWithSequence() {
+    expectAssertionError("list:<['Anakin', 'Leia']> does not end with the sequence:<['Leia', 'Anakin']>").on(
+      new CodeToTest() {
+        public void run() {
+          new ListAssert(list("Anakin", "Leia")).endsWith("Leia", "Anakin");
+        }
+      });
+  }
+
+  public void shouldFailShowingDescriptionIfActualDoesNotEndWithSequence() {
+    expectAssertionError("[A Test] list:<['Anakin', 'Leia']> does not end with the sequence:<['Leia', 'Anakin']>").on(
+      new CodeToTest() {
+        public void run() {
+          new ListAssert(list("Anakin", "Leia")).as("A Test").endsWith("Leia", "Anakin");
+        }
+      });
+  }
+
+  public void shouldFailIfActualIsNullWhenCheckingIfActualEndsWithSequence() {
+    shouldFailIfActualIsNull(new CodeToTest() {
+      public void run() {
+        new ListAssert(null).endsWith("Luke");
+      }
+    });
+  }
+
+  public void shouldFailShowingDescriptionIfActualIsNullWhenCheckingIfActualEndsWithSequence() {
+    shouldFailShowingDescriptionIfActualIsNull(new CodeToTest() {
+      public void run() {
+        new ListAssert(null).as("A Test").endsWith("Luke");
+      }
+    });
+  }
+
+  public void shouldFailIfSequenceToEndWithIsNull() {
+    expectAssertionError("the given array of objects should not be null").on(new CodeToTest() {
+      public void run() {
+        Object[] objects = null;
+        new ListAssert(EMPTY_LIST).endsWith(objects);
+      }
+    });
+  }
+
+  public void shouldFailShowingDescriptionIfSequenceToEndWithIsNull() {
+    expectAssertionError("[A Test] the given array of objects should not be null").on(new CodeToTest() {
+      public void run() {
+        Object[] objects = null;
+        new ListAssert(EMPTY_LIST).as("A Test").endsWith(objects);
+      }
+    });
+  }
+
 }
