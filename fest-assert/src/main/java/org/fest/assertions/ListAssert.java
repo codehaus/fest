@@ -19,6 +19,7 @@ import static org.fest.assertions.Collections.found;
 import static org.fest.assertions.Collections.notFound;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Collections.duplicatesFrom;
+import static org.fest.util.Objects.areEqual;
 import static org.fest.util.Strings.concat;
 
 import java.util.*;
@@ -38,7 +39,35 @@ public class ListAssert extends GroupAssert<List<?>> {
   }
 
   /**
-   * Verifies that the actual <code>{@link List}</code> contains the given objects.
+   * Verifies that the actual <code>{@link List}</code> contains the given sequence of objects, without any other
+   * objects between them.
+   * @param sequence the sequence of objects to look for.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>List</code> is <code>null</code>.
+   * @throws AssertionError if the given array is <code>null</code>.
+   * @throws AssertionError if the actual <code>List</code> does not contain the given sequence of objects.
+   */
+  public ListAssert containsSequence(Object...sequence) {
+    isNotNull();
+    failIfNull(sequence);
+    int sequenceSize = sequence.length;
+    if (sequenceSize == 0) return this;
+    int indexOfFirst = actual.indexOf(sequence[0]);
+    if (indexOfFirst == -1) failIfSequenceNotFound(sequence);
+    for (int i = 0; i < sequenceSize; i++) {
+      int actualIndex = indexOfFirst + i;
+      if (actualIndex > actualGroupSize() - 1) failIfSequenceNotFound(sequence);
+      if (!areEqual(sequence[i], actual.get(actualIndex))) failIfSequenceNotFound(sequence);
+    }
+    return this;
+  }
+
+  private void failIfSequenceNotFound(Object[] notFound) {
+    fail(concat("list:", inBrackets(actual), " does not contain the sequence:", inBrackets(notFound)));
+  }
+
+  /**
+   * Verifies that the actual <code>{@link List}</code> contains the given objects, in any order.
    * @param objects the objects to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>List</code> is <code>null</code>.
@@ -76,12 +105,12 @@ public class ListAssert extends GroupAssert<List<?>> {
     }
     if (!notFound.isEmpty()) failIfElementsNotFound(notFound);
     if (!copy.isEmpty())
-      fail(concat("unexpected element(s):", format(copy), " in list:", format(actual)));
+      fail(concat("unexpected element(s):", inBrackets(copy), " in list:", inBrackets(actual)));
     return this;
   }
 
   private void failIfElementsNotFound(Collection<Object> notFound) {
-    fail(concat("list:", format(actual), " does not contain element(s):", format(notFound)));
+    fail(concat("list:", inBrackets(actual), " does not contain element(s):", inBrackets(notFound)));
   }
 
   /**
@@ -97,7 +126,7 @@ public class ListAssert extends GroupAssert<List<?>> {
     failIfNull(objects);
     Collection<Object> found = found(actual, objects);
     if (!found.isEmpty())
-      fail(concat("list:", format(actual), " does not exclude element(s):", format(found)));
+      fail(concat("list:", inBrackets(actual), " does not exclude element(s):", inBrackets(found)));
     return this;
   }
 
@@ -115,7 +144,7 @@ public class ListAssert extends GroupAssert<List<?>> {
     isNotNull();
     Collection<?> duplicates = duplicatesFrom(actual);
     if (!duplicates.isEmpty())
-      fail(concat("list:", format(actual), " contains duplicate(s):", format(duplicates)));
+      fail(concat("list:", inBrackets(actual), " contains duplicate(s):", inBrackets(duplicates)));
     return this;
   }
 
@@ -224,7 +253,7 @@ public class ListAssert extends GroupAssert<List<?>> {
     int actualSize = actualGroupSize();
     if (actualSize != expected)
       fail(concat(
-          "expected size:", inBrackets(expected)," but was:", inBrackets(actualSize), " for list:", format(actual)));
+          "expected size:", inBrackets(expected)," but was:", inBrackets(actualSize), " for list:", inBrackets(actual)));
     return this;
   }
 
@@ -237,10 +266,6 @@ public class ListAssert extends GroupAssert<List<?>> {
     return actual.size();
   }
 
-  private String format(Collection<?> c) {
-    return inBrackets(c);
-  }
-
   /**
    * Verifies that the actual <code>{@link List}</code> is empty (not <code>null</code> with zero elements.)
    * @throws AssertionError if the actual <code>List</code> is <code>null</code>.
@@ -248,7 +273,7 @@ public class ListAssert extends GroupAssert<List<?>> {
    */
   public void isEmpty() {
     isNotNull();
-    if (!Collections.isEmpty(actual)) fail(concat("expecting empty list, but was:", format(actual)));
+    if (!Collections.isEmpty(actual)) fail(concat("expecting empty list, but was:", inBrackets(actual)));
   }
 
   /**
@@ -269,7 +294,7 @@ public class ListAssert extends GroupAssert<List<?>> {
    */
   public void isNullOrEmpty() {
     if (Collections.isEmpty(actual)) return;
-    fail(concat("expecting a null or empty list, but was:", format(actual)));
+    fail(concat("expecting a null or empty list, but was:", inBrackets(actual)));
   }
 
   /**

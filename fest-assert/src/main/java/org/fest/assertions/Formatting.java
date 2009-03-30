@@ -22,9 +22,8 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Map;
 
-import org.fest.util.Arrays;
+import org.fest.util.*;
 import org.fest.util.Collections;
-import org.fest.util.Maps;
 
 /**
  * Understands utility methods related to formatting.
@@ -41,7 +40,7 @@ final class Formatting {
   }
 
   static String inBrackets(Object o) {
-    if (isOneDimensionalArray(o)) return doBracketAround(Arrays.format(o));
+    if (isOneDimensionalArray(o)) return doBracketAround(Arrays.format(o)); // TODO just check for array, since format supports multi-dimensional arrays now
     if (o instanceof Class<?>) return doBracketAround((Class<?>)o);
     if (o instanceof Collection<?>) return doBracketAround((Collection<?>)o);
     if (o instanceof Map<?, ?>) return doBracketAround((Map<?, ?>)o);
