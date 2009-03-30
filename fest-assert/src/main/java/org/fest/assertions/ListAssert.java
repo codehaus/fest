@@ -30,6 +30,7 @@ import org.fest.util.Collections;
 /**
  * Understands assertions for <code>{@link List}</code>s. To create a new instance of this class use the
  * method <code>{@link Assertions#assertThat(List)}</code>.
+ * @since 1.1
  *
  * @author Alex Ruiz
  */

@@ -159,6 +159,7 @@ public final class Assertions {
    * Creates a new instance of <code>{@link ListAssert}</code>.
    * @param actual the value to be the target of the assertions methods.
    * @return the created assertion object.
+   * @since 1.1
    */
   public static ListAssert assertThat(List<?> actual) {
     return new ListAssert(actual);
