@@ -1,7 +1,6 @@
 package org.fest.assertions;
 
 import static java.lang.Math.abs;
-
 import static org.fest.assertions.Fail.errorMessageIfNotEqual;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.assertions.PrimitiveFail.*;
@@ -192,6 +191,8 @@ public final class DoubleAssert extends PrimitiveAssert {
    * @param delta the given delta.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>double</code> value is not equal to the given one.
+   * @deprecated use method <code>{@link #isEqualTo(double, org.fest.assertions.Delta)}</code> instead. This method will
+   * be removed in version 2.0.
    */
   public DoubleAssert isEqualTo(double expected, Delta delta) {
     if (Double.compare(expected, actual) == 0) return this;
@@ -201,10 +202,26 @@ public final class DoubleAssert extends PrimitiveAssert {
   }
 
   /**
+   * Verifies that the actual <code>double</code> value is equal to the given one, within a positive delta.
+   * @param expected the value to compare the actual one to.
+   * @param delta the given delta.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>double</code> value is not equal to the given one.
+   */
+  public DoubleAssert isEqualTo(double expected, org.fest.assertions.Delta delta) {
+    if (Double.compare(expected, actual) == 0) return this;
+    if (!(abs(expected - actual) <= delta.value()))
+      fail(concat(errorMessageIfNotEqual(actual, expected), " using delta:", inBrackets(delta.value())));
+    return this;
+  }
+
+  /**
    * Creates a new holder for a delta value to be used in
    * <code>{@link DoubleAssert#isEqualTo(double, org.fest.assertions.DoubleAssert.Delta)}</code>.
    * @param d the delta value.
    * @return a new delta value holder.
+   * @deprecated use method <code>{@link org.fest.assertions.Delta#delta(double)}</code> instead. This method will be
+   * removed in version 2.0.
    */
   public static Delta delta(double d) {
     return new Delta(d);
@@ -213,6 +230,8 @@ public final class DoubleAssert extends PrimitiveAssert {
   /**
    * Holds a delta value to be used in
    * <code>{@link DoubleAssert#isEqualTo(double, org.fest.assertions.DoubleAssert.Delta)}</code>.
+   * @deprecated use top-level class <code>{@link org.fest.assertions.Delta}</code> instead. This class will be removed
+   * in version 2.0.
    */
   public static class Delta {
     final double value;

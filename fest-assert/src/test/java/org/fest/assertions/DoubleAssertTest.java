@@ -1,13 +1,12 @@
 package org.fest.assertions;
 
-import org.testng.annotations.Test;
+import static org.fest.assertions.Delta.delta;
+import static org.fest.test.ExpectedFailure.expectAssertionError;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 
 import org.fest.test.CodeToTest;
-
-import static org.fest.assertions.DoubleAssert.delta;
-import static org.fest.test.ExpectedFailure.expectAssertionError;
-
-import static org.testng.Assert.*;
+import org.testng.annotations.Test;
 
 /**
  * Test for <code>{@link DoubleAssert}</code>.
