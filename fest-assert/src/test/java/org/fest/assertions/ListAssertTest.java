@@ -728,4 +728,75 @@ import org.testng.annotations.Test;
       }
     });
   }
+
+  public void shouldPassIfActualStartsWithSequence() {
+    new ListAssert(list("Anakin", "Leia", "Han")).startsWith("Anakin", "Leia");
+  }
+
+  public void shouldPassIfActualAndSequenceToStartWithAreEqual() {
+    new ListAssert(list("Anakin", "Leia", "Han")).startsWith("Anakin", "Leia", "Han");
+  }
+
+  public void shouldFailIfActualIsNotEmptyAndSequenceToStartWithIsEmpty() {
+    final Object[] sequence = {};
+    expectAssertionError("list:<['Anakin', 'Leia']> does not start with the sequence:<[]>").on(
+      new CodeToTest() {
+        public void run() {
+          new ListAssert(list("Anakin", "Leia")).startsWith(sequence);
+        }
+      });
+  }
+
+  public void shouldFailIfActualDoesNotStartWithSequence() {
+    expectAssertionError("list:<['Anakin', 'Leia']> does not start with the sequence:<['Leia', 'Anakin']>").on(
+      new CodeToTest() {
+        public void run() {
+          new ListAssert(list("Anakin", "Leia")).startsWith("Leia", "Anakin");
+        }
+      });
+  }
+
+  public void shouldFailShowingDescriptionIfActualDoesNotStartWithSequence() {
+    expectAssertionError("[A Test] list:<['Anakin', 'Leia']> does not start with the sequence:<['Leia', 'Anakin']>").on(
+      new CodeToTest() {
+        public void run() {
+          new ListAssert(list("Anakin", "Leia")).as("A Test").startsWith("Leia", "Anakin");
+        }
+      });
+  }
+
+  public void shouldFailIfActualIsNullWhenCheckingIfActualStartsWithSequence() {
+    shouldFailIfActualIsNull(new CodeToTest() {
+      public void run() {
+        new ListAssert(null).startsWith("Luke");
+      }
+    });
+  }
+
+  public void shouldFailShowingDescriptionIfActualIsNullWhenCheckingIfActualStartsWithSequence() {
+    shouldFailShowingDescriptionIfActualIsNull(new CodeToTest() {
+      public void run() {
+        new ListAssert(null).as("A Test").startsWith("Luke");
+      }
+    });
+  }
+
+  public void shouldFailIfSequenceToStartWithIsNull() {
+    expectAssertionError("the given array of objects should not be null").on(new CodeToTest() {
+      public void run() {
+        Object[] objects = null;
+        new ListAssert(EMPTY_LIST).startsWith(objects);
+      }
+    });
+  }
+
+  public void shouldFailShowingDescriptionIfSequenceToStartWithIsNull() {
+    expectAssertionError("[A Test] the given array of objects should not be null").on(new CodeToTest() {
+      public void run() {
+        Object[] objects = null;
+        new ListAssert(EMPTY_LIST).as("A Test").startsWith(objects);
+      }
+    });
+  }
+
 }

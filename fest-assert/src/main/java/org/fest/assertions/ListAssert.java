@@ -67,6 +67,34 @@ public class ListAssert extends GroupAssert<List<?>> {
   }
 
   /**
+   * Verifies that the actual <code>{@link List}</code> starts with the given sequence of objects, without any other
+   * objects between them.
+   * @param sequence the sequence of objects to look for.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>List</code> is <code>null</code>.
+   * @throws AssertionError if the given array is <code>null</code>.
+   * @throws AssertionError if the actual <code>List</code> is not empty and with the given sequence of objects is
+   * empty.
+   * @throws AssertionError if the actual <code>List</code> does not start with the given sequence of objects.
+   */
+  public ListAssert startsWith(Object...sequence) {
+    isNotNull();
+    failIfNull(sequence);
+    int sequenceSize = sequence.length;
+    int listSize = actualGroupSize();
+    if (sequenceSize == 0 && listSize == 0) return this;
+    if (sequenceSize == 0 && listSize != 0) failIfNotStartingWithSequence(sequence);
+    if (listSize < sequenceSize) failIfNotStartingWithSequence(sequence);
+    for (int i = 0; i < sequenceSize; i++)
+      if (!areEqual(sequence[i], actual.get(i))) failIfNotStartingWithSequence(sequence);
+    return this;
+  }
+
+  private void failIfNotStartingWithSequence(Object[] notFound) {
+    fail(concat("list:", inBrackets(actual), " does not start with the sequence:", inBrackets(notFound)));
+  }
+
+  /**
    * Verifies that the actual <code>{@link List}</code> contains the given objects, in any order.
    * @param objects the objects to look for.
    * @return this assertion object.
