@@ -39,6 +39,32 @@ public class ListAssert extends GroupAssert<List<?>> {
   }
 
   /**
+   * Verifies that the actual <code>{@link List}</code> contains the given object at the given index.
+   * @param o the object to look for.
+   * @param index the index where the object should be stored in the actual <code>List</code>.
+   * @return this assertion object.
+   * @throws NullPointerException if the given <code>Index</code> is <code>null</code>.
+   * @throws IndexOutOfBoundsException if the value of the given <code>Index</code> is negative, or equal to or
+   * greater than the size of the actual <code>List</code>.
+   * @throws AssertionError if the given <code>List</code> does not contain the given object at the given index.
+   */
+  public ListAssert contains(Object o, Index index) {
+    if (index == null) throw new NullPointerException("The given index should not be null");
+    isNotNull().isNotEmpty();
+    int indexValue = index.value();
+    int listSize = actualGroupSize();
+    if (indexValue < 0 || indexValue >= listSize)
+      throw new IndexOutOfBoundsException(
+          concat("The given index ", indexValue, " should be greater or equal than zero and less than ", listSize));
+    Object actualElement = actual.get(indexValue);
+    if (!areEqual(actualElement, o))
+      throw new AssertionError(
+          concat("expecting ", inBrackets(o), " at index ", inBrackets(indexValue), " but found ",
+              inBrackets(actualElement)));
+    return this;
+  }
+
+  /**
    * Verifies that the actual <code>{@link List}</code> contains the given sequence of objects, without any other
    * objects between them.
    * @param sequence the sequence of objects to look for.
@@ -145,7 +171,7 @@ public class ListAssert extends GroupAssert<List<?>> {
   }
 
   /**
-   * Verifies that the actual <code>{@link List}</code> contains the given objects <strong>only</strong>.
+   * Verifies that the actual <code>{@link List}</code> contains the given objects <strong>only</strong>, in any order.
    * @param objects the objects to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>List</code> is <code>null</code>.
