@@ -56,15 +56,19 @@ public class ListAssert extends GroupAssert<List<?>> {
     isNotNull().isNotEmpty();
     int indexValue = index.value();
     int listSize = actualGroupSize();
-    if (indexValue < 0 || indexValue >= listSize)
-      fail(
-          concat("The index ", inBrackets(indexValue), " should be greater than or equal to zero and less than ", listSize));
+    if (indexValue < 0 || indexValue >= listSize) failIndexOutOfBounds(indexValue);
     Object actualElement = actual.get(indexValue);
-    if (!areEqual(actualElement, o))
-      fail(
-          concat("expecting ", inBrackets(o), " at index ", inBrackets(indexValue), " but found ",
-              inBrackets(actualElement)));
+    if (!areEqual(actualElement, o)) failElementNotFound(o, actualElement, indexValue);
     return this;
+  }
+
+  private void failElementNotFound(Object e, Object a, int index) {
+    fail(concat("expecting ", inBrackets(e), " at index ", inBrackets(index), " but found ", inBrackets(a)));
+  }
+
+  private void failIndexOutOfBounds(int index) {
+    fail(concat(
+        "The index ", inBrackets(index), " should be greater than or equal to zero and less than ", actualGroupSize()));
   }
 
   /**
