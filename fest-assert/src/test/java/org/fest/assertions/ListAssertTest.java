@@ -16,6 +16,7 @@
 package org.fest.assertions;
 
 import static org.fest.assertions.CommonFailures.expectIllegalArgumentExceptionIfConditionIsNull;
+import static org.fest.assertions.Index.atIndex;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import static org.fest.util.Collections.list;
 import static org.testng.Assert.assertEquals;
@@ -871,4 +872,125 @@ import org.testng.annotations.Test;
     });
   }
 
+  public void shouldPassIfActualContainsObjectAtIndex() {
+    new ListAssert(list("Anakin", "Leia")).contains("Anakin", atIndex(0))
+                                          .contains("Leia", atIndex(1));
+  }
+
+  public void shouldFailIfIndexIsNull() {
+    final Index index = null;
+    expectAssertionError("The given index should not be null").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list("Anakin", "Leia")).contains("Anakin", index);
+      }
+    });
+  }
+
+  public void shouldFailShowingDescriptionIfIndexIsNull() {
+    final Index index = null;
+    expectAssertionError("[A Test] The given index should not be null").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list("Anakin", "Leia")).as("A Test").contains("Anakin", index);
+      }
+    });
+  }
+
+  public void shouldFailIfIndexIsNegative() {
+    expectAssertionError("The index <-1> should be greater than or equal to zero and less than 2").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list("Anakin", "Leia")).contains("Anakin", atIndex(-1));
+      }
+    });
+  }
+
+  public void shouldFailIfActualIsNullWhenCheckingIfActualContainsElement() {
+    shouldFailIfActualIsNull(new CodeToTest() {
+      public void run() {
+        new ListAssert(null).contains("Anakin", atIndex(3));
+      }
+    });
+  }
+
+  public void shouldFailShowingDescriptionIfActualIsNullWhenCheckingIfActualContainsElement() {
+    shouldFailShowingDescriptionIfActualIsNull(new CodeToTest() {
+      public void run() {
+        new ListAssert(null).as("A Test").contains("Anakin", atIndex(3));
+      }
+    });
+  }
+
+  public void shouldFailIfActualIsEmptyWhenCheckingItContainsElementAtIndex() {
+    expectAssertionError("expecting a non-empty list, but it was empty").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(EMPTY_LIST).contains("Anakin", atIndex(3));
+      }
+    });
+  }
+
+  public void shouldFailShowingDescriptionIfActualIsEmptyWhenCheckingItContainsElementAtIndex() {
+    expectAssertionError("[A Test] expecting a non-empty list, but it was empty").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(EMPTY_LIST).as("A Test").contains("Anakin", atIndex(3));
+      }
+    });
+  }
+
+  public void shouldFailShowingDescriptionIfIndexIsNegative() {
+    String msg = "[A Test] The index <-1> should be greater than or equal to zero and less than 2";
+    expectAssertionError(msg).on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list("Anakin", "Leia")).as("A Test").contains("Anakin", atIndex(-1));
+      }
+    });
+  }
+
+  public void shouldFailIfIndexIsEqualToListSize() {
+    expectAssertionError("The index <2> should be greater than or equal to zero and less than 2").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list("Anakin", "Leia")).contains("Anakin", atIndex(2));
+      }
+    });
+  }
+
+  public void shouldFailShowingDescriptionIfIndexIsEqualToListSize() {
+    String msg = "[A Test] The index <2> should be greater than or equal to zero and less than 2";
+    expectAssertionError(msg).on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list("Anakin", "Leia")).as("A Test").contains("Anakin", atIndex(2));
+      }
+    });
+  }
+
+  public void shouldFailIfIndexIsGreaterThanListSize() {
+    expectAssertionError("The index <3> should be greater than or equal to zero and less than 2").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list("Anakin", "Leia")).contains("Anakin", atIndex(3));
+      }
+    });
+  }
+
+  public void shouldFailShowingDescriptionIfIndexIsGreaterThanListSize() {
+    String msg = "[A Test] The index <3> should be greater than or equal to zero and less than 2";
+    expectAssertionError(msg).on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list("Anakin", "Leia")).as("A Test").contains("Anakin", atIndex(3));
+      }
+    });
+  }
+
+  public void shouldFailIfActualDoesNotContainElementAtIndex() {
+    expectAssertionError("expecting <'Han'> at index <1> but found <'Leia'>").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list("Anakin", "Leia")).contains("Han", atIndex(1));
+      }
+    });
+  }
+
+  public void shouldFailShowingDescriptionIfActualDoesNotContainElementAtIndex() {
+    expectAssertionError("[A Test] expecting <'Han'> at index <1> but found <'Leia'>").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list("Anakin", "Leia")).as("A Test").contains("Han", atIndex(1));
+      }
+    });
+  }
 }

@@ -43,22 +43,25 @@ public class ListAssert extends GroupAssert<List<?>> {
    * @param o the object to look for.
    * @param index the index where the object should be stored in the actual <code>List</code>.
    * @return this assertion object.
-   * @throws NullPointerException if the given <code>Index</code> is <code>null</code>.
-   * @throws IndexOutOfBoundsException if the value of the given <code>Index</code> is negative, or equal to or
-   * greater than the size of the actual <code>List</code>.
+   * @throws AssertionError if the given <code>Index</code> is <code>null</code>.
+   * @throws AssertionError if the value of the given <code>Index</code> is negative, or equal to or greater than the
+   * size of the actual <code>List</code>.
    * @throws AssertionError if the given <code>List</code> does not contain the given object at the given index.
    */
   public ListAssert contains(Object o, Index index) {
-    if (index == null) throw new NullPointerException("The given index should not be null");
+    if (index == null) {
+      fail("The given index should not be null");
+      return this; // to satisfy Eclipse compiler. In reality we'll never get to this point.
+    }
     isNotNull().isNotEmpty();
     int indexValue = index.value();
     int listSize = actualGroupSize();
     if (indexValue < 0 || indexValue >= listSize)
-      throw new IndexOutOfBoundsException(
-          concat("The given index ", indexValue, " should be greater or equal than zero and less than ", listSize));
+      fail(
+          concat("The index ", inBrackets(indexValue), " should be greater than or equal to zero and less than ", listSize));
     Object actualElement = actual.get(indexValue);
     if (!areEqual(actualElement, o))
-      throw new AssertionError(
+      fail(
           concat("expecting ", inBrackets(o), " at index ", inBrackets(indexValue), " but found ",
               inBrackets(actualElement)));
     return this;
