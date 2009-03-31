@@ -17,6 +17,7 @@ package org.fest.assertions;
 
 /**
  * Understands a finite increment in a variable.
+ * @since 1.1
  *
  * @author Alex Ruiz
  */

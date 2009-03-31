@@ -207,6 +207,7 @@ public final class DoubleAssert extends PrimitiveAssert {
    * @param delta the given delta.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>double</code> value is not equal to the given one.
+   * @since 1.1
    */
   public DoubleAssert isEqualTo(double expected, org.fest.assertions.Delta delta) {
     if (Double.compare(expected, actual) == 0) return this;

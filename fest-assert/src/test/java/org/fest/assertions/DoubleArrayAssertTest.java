@@ -14,14 +14,14 @@
  */
 package org.fest.assertions;
 
-import org.testng.annotations.Test;
+import static org.fest.assertions.CommonFailures.*;
+import static org.fest.assertions.Delta.delta;
+import static org.fest.test.ExpectedFailure.expectAssertionError;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 
 import org.fest.test.CodeToTest;
-
-import static org.fest.assertions.CommonFailures.*;
-import static org.fest.test.ExpectedFailure.expectAssertionError;
-
-import static org.testng.Assert.*;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link DoubleArrayAssert}</code>.
@@ -156,7 +156,7 @@ public class DoubleArrayAssertTest {
     });
   }
 
-  @Test public void shouldPassIfGivenObjectsIsInArray() {
+  @Test public void shouldPassIfGivenDoublesIsInArray() {
     new DoubleArrayAssert(55.03, 4345.91).contains(55.03, 4345.91);
   }
 
@@ -176,7 +176,7 @@ public class DoubleArrayAssertTest {
     });
   }
 
-  @Test public void shouldFailIfGivenObjectIsNotInArray() {
+  @Test public void shouldFailIfGivenDoubleIsNotInArray() {
     expectAssertionError("array:<[]> does not contain element(s):<[55.03, 4345.91]>").on(new CodeToTest() {
       public void run() {
         new DoubleArrayAssert(EMPTY_ARRAY).contains(55.03, 4345.91);
@@ -184,7 +184,7 @@ public class DoubleArrayAssertTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfGivenObjectIsNotInArray() {
+  @Test public void shouldFailShowingDescriptionIfGivenDoubleIsNotInArray() {
     expectAssertionError("[A Test] array:<[]> does not contain element(s):<[55.03, 4345.91]>").on(new CodeToTest() {
       public void run() {
         new DoubleArrayAssert(EMPTY_ARRAY).as("A Test").contains(55.03, 4345.91);
@@ -192,7 +192,7 @@ public class DoubleArrayAssertTest {
     });
   }
 
-  @Test public void shouldPassIfGivenObjectsAreNotInArray() {
+  @Test public void shouldPassIfGivenDoublesAreNotInArray() {
     new DoubleArrayAssert(55.03, 4345.91).excludes(5323.2);
   }
 
@@ -540,6 +540,53 @@ public class DoubleArrayAssertTest {
         new DoubleArrayAssert(66.88).as("A Test").isNullOrEmpty();
       }
     });
+  }
+
+  @Test public void shouldPassIfArraysAreEqualUsingDelta() {
+    new DoubleArrayAssert(55.03, 4345.91).isEqualTo(array(55.00, 4345.0), delta(1.0));
+  }
+
+  @Test public void shouldPassIfArraysAreTheSameUsingDelta() {
+    double[] array = array(55.00, 4345.0);
+    new DoubleArrayAssert(array).isEqualTo(array, delta(0.0));
+  }
+
+  @Test public void shouldPassIfArraysAreEqualAndNullUsingDelta() {
+    new DoubleArrayAssert(NULL_ARRAY).isEqualTo(null);
+  }
+
+  @Test public void shouldFailIfArraysDoNotHaveEqualSizeAndExpectingEqualUsingDelta() {
+    expectAssertionError("expected:<[5323.2]> but was:<[55.03, 4345.91]> using delta:<0.1>").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(55.03, 4345.91).isEqualTo(array(5323.2), delta(0.1));
+      }
+    });
+  }
+
+  @Test public void shouldFailShowingDescriptionIfArraysDoNotHaveEqualSizeAndExpectingEqualUsingDelta() {
+    expectAssertionError("[A Test] expected:<[5323.2]> but was:<[55.03, 4345.91]> using delta:<0.1>").on(
+      new CodeToTest() {
+        public void run() {
+          new DoubleArrayAssert(55.03, 4345.91).as("A Test").isEqualTo(array(5323.2), delta(0.1));
+        }
+      });
+  }
+
+  @Test public void shouldFailIfArraysAreNotEqualAndExpectingEqualUsingDelta() {
+    expectAssertionError("expected:<[55.0, 4345.0]> but was:<[55.03, 4345.91]> using delta:<0.1>").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(55.03, 4345.91).isEqualTo(array(55.0, 4345.0), delta(0.1));
+      }
+    });
+  }
+
+  @Test public void shouldFailShowingDescriptionIfArraysAreNotEqualAndExpectingEqualUsingDelta() {
+    expectAssertionError("[A Test] expected:<[55.0, 4345.0]> but was:<[55.03, 4345.91]> using delta:<0.1>").on(
+      new CodeToTest() {
+        public void run() {
+          new DoubleArrayAssert(55.03, 4345.91).as("A Test").isEqualTo(array(55.0, 4345.0), delta(0.1));
+        }
+      });
   }
 
   private double[] array(double... args) {

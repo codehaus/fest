@@ -1,29 +1,30 @@
 /*
  * Created on Feb 14, 2008
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  *
  * Copyright @2008-2009 the original author or authors.
  */
 package org.fest.assertions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import static java.lang.Math.abs;
+import static org.fest.assertions.Fail.errorMessageIfEqual;
+import static org.fest.assertions.Fail.errorMessageIfNotEqual;
+import static org.fest.assertions.Formatting.inBrackets;
+import static org.fest.util.Strings.concat;
 
-import static org.fest.assertions.Fail.*;
+import java.util.*;
 
 /**
- * Understands assertion methods for <code>double</code> arrays. To create a new instance of this class use the
- * method <code>{@link Assertions#assertThat(double[])}</code>.
+ * Understands assertion methods for <code>double</code> arrays. To create a new instance of this class use the method
+ * <code>{@link Assertions#assertThat(double[])}</code>.
  *
  * @author Yvonne Wang
  * @author Alex Ruiz
@@ -40,9 +41,11 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * failure will not show the provided description.
    * <p>
    * For example:
+   *
    * <pre>
-   * assertThat(values).<strong>as</strong>(&quot;Some values&quot;).isNotEmpty();
+   * assertThat(values).&lt;strong&gt;as&lt;/strong&gt;(&quot;Some values&quot;).isNotEmpty();
    * </pre>
+   *
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
@@ -53,14 +56,16 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
   }
 
   /**
-   * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in
-   * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
+   * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in <a href="http://groovy.codehaus.org/"
+   * target="_blank">Groovy</a>. This method should be called before any assertion method, otherwise any assertion
+   * failure will not show the provided description.
    * <p>
    * For example:
+   *
    * <pre>
-   * assertThat(values).<strong>describedAs</strong>(&quot;Some values&quot;).isNotEmpty();
+   * assertThat(values).&lt;strong&gt;describedAs&lt;/strong&gt;(&quot;Some values&quot;).isNotEmpty();
    * </pre>
+   *
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
@@ -75,9 +80,11 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * failure will not show the provided description.
    * <p>
    * For example:
+   *
    * <pre>
-   * assertThat(values).<strong>as</strong>(new BasicDescription(&quot;Some values&quot;)).isNotEmpty();
+   * assertThat(values).&lt;strong&gt;as&lt;/strong&gt;(new BasicDescription(&quot;Some values&quot;)).isNotEmpty();
    * </pre>
+   *
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
@@ -88,14 +95,16 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
   }
 
   /**
-   * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in
-   * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
+   * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in <a
+   * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
    * For example:
+   *
    * <pre>
-   * assertThat(values).<strong>describedAs</strong>(new BasicDescription(&quot;Some values&quot;)).isNotEmpty();
+   * assertThat(values).&lt;strong&gt;describedAs&lt;/strong&gt;(new BasicDescription(&quot;Some values&quot;)).isNotEmpty();
    * </pre>
+   *
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
@@ -110,7 +119,7 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>double</code> array does not contain the given values.
    */
-  public DoubleArrayAssert contains(double...values) {
+  public DoubleArrayAssert contains(double... values) {
     isNotNull();
     assertContains(list(values));
     return this;
@@ -121,10 +130,10 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * @param values the values to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>double</code> array is <code>null</code>.
-   * @throws AssertionError if the actual <code>double</code> array does not contain the given objects, or if the
-   *          actual <code>double</code> array contains elements other than the ones specified.
+   * @throws AssertionError if the actual <code>double</code> array does not contain the given objects, or if the actual
+   *           <code>double</code> array contains elements other than the ones specified.
    */
-  public DoubleArrayAssert containsOnly(double...values) {
+  public DoubleArrayAssert containsOnly(double... values) {
     isNotNull();
     assertContainsOnly(list(values));
     return this;
@@ -137,7 +146,7 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * @throws AssertionError if the actual <code>double</code> array is <code>null</code>.
    * @throws AssertionError if the actual <code>double</code> array contains any of the given values.
    */
-  public DoubleArrayAssert excludes(double...values) {
+  public DoubleArrayAssert excludes(double... values) {
     isNotNull();
     assertExcludes(list(values));
     return this;
@@ -149,7 +158,8 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
 
   private List<Object> list(double[] values) {
     List<Object> list = new ArrayList<Object>();
-    for (double value : values) list.add(value);
+    for (double value : values)
+      list.add(value);
     return list;
   }
 
@@ -211,6 +221,33 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
   }
 
   /**
+   * Verifies that the actual <code>double</code> array is equal to the given array, within a positive delta.
+   * @param expected the given array to compare the actual array to.
+   * @param delta the given delta.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>double</code> array is not equal to the given one.
+   * @since 1.1
+   */
+  public DoubleArrayAssert isEqualTo(double[] expected, Delta delta) {
+    if (actual == expected) return this;
+    if (actual == null || expected == null) failNotEquals(expected, delta);
+    int length = expected.length;
+    if (actual.length != length) failNotEquals(expected, delta);
+    for (int i = 0; i < length; i++)
+      if (!equals(expected[i], actual[i], delta)) failNotEquals(expected, delta);
+    return this;
+  }
+
+  private void failNotEquals(double[] expected, Delta delta) {
+    fail(concat(errorMessageIfNotEqual(actual, expected), " using delta:", inBrackets(delta.value())));
+  }
+
+  private boolean equals(double e, double a, Delta delta) {
+    if (Double.compare(e, a) == 0) return true;
+    return abs(e - a) <= delta.value();
+  }
+
+  /**
    * Verifies that the actual <code>double</code> array is not equal to the given array. Array equality is checked by
    * <code>{@link Arrays#equals(double[], double[])}</code>.
    * @param array the given array to compare the actual array to.
@@ -228,7 +265,7 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>double</code> array is <code>null</code>.
    * @throws AssertionError if the number of elements in the actual <code>double</code> array is not equal to the given
-   *          one.
+   *           one.
    */
   public DoubleArrayAssert hasSize(int expected) {
     assertHasSize(expected);
