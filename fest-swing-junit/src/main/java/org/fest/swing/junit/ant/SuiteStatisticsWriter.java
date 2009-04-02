@@ -1,5 +1,5 @@
 /*
- * Created on Apr 1, 2009
+ * Created on Apr 2, 2009
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -15,32 +15,24 @@
  */
 package org.fest.swing.junit.ant;
 
-import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.TIMESTAMP;
-
-import java.util.Date;
+import static java.lang.String.valueOf;
+import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.*;
 
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Understands the current date and time as an attribute of an XML element..
+ * Understands writing the execution statistics of a JUnit suite to an XML element.
  *
  * @author Alex Ruiz
  */
-class TimestampWriter extends XmlElementWriter {
-
-  private final TimestampFormatter formatter;
-
-  TimestampWriter() {
-    this(new TimestampFormatter());
-  }
-
-  TimestampWriter(TimestampFormatter formatter) {
-    this.formatter = formatter;
-  }
+class SuiteStatisticsWriter extends XmlElementWriter {
 
   void doWrite(Document document, Element target, JUnitTest suite) {
-    target.setAttribute(TIMESTAMP, formatter.format(new Date()));
+    target.setAttribute(ATTR_TESTS, valueOf(suite.runCount()));
+    target.setAttribute(ATTR_FAILURES, valueOf(suite.failureCount()));
+    target.setAttribute(ATTR_ERRORS, valueOf(suite.errorCount()));
+    target.setAttribute(ATTR_TIME, valueOf(suite.getRunTime() / 1000.0));
   }
 }

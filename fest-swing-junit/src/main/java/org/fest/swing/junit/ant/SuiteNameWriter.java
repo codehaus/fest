@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
  *
  * @author Alex Ruiz
  */
-class SuiteNameWriter extends XmlWriter {
+class SuiteNameWriter extends XmlElementWriter {
 
   private static final String UNKNOWN = "unknown";
 

@@ -19,7 +19,7 @@ import static org.fest.swing.junit.ant.Tests.testClassNameFrom;
 import static org.fest.swing.junit.ant.Tests.testMethodNameFrom;
 import static org.fest.util.Strings.isEmpty;
 
-import java.io.*;
+import java.io.OutputStream;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -31,8 +31,6 @@ import junit.framework.Test;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.taskdefs.optional.junit.*;
-import org.apache.tools.ant.util.DOMElementWriter;
-import org.apache.tools.ant.util.FileUtils;
 import org.w3c.dom.*;
 
 /**
@@ -71,7 +69,9 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
   /** Where to write the log to. */
   private OutputStream out;
 
-  private final XmlWriter startTestSuiteXmlWriter;
+  private final XmlElementWriter startTestSuiteXmlWriter;
+  private final XmlElementWriter endTestSuiteXmlWriter;
+  private final XmlDocumentWriter documentWriter;
 
   /**
    * Creates a new </code>{@link XmlJUnitResultFormatter}</code>.
@@ -81,16 +81,33 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
                                 new TimestampWriter().then(
                                     new HostNameWriter().then(
                                         new SuitePropertiesWriter())));
+    endTestSuiteXmlWriter = new SuiteStatisticsWriter();
+    documentWriter = new XmlDocumentWriter();
   }
 
-  /** {@inheritDoc}. */
-  public final void setOutput(OutputStream out) { this.out = out; }
+  /**
+   * Sets the stream the formatter is supposed to write its results to.
+   * @param out the output stream to use.
+   */
+  public final void setOutput(OutputStream out) {
+    this.out = out;
+  }
 
-  /** {@inheritDoc}. */
-  public final void setSystemOutput(String out) { formatOutput(SYSTEM_OUT, out); }
+  /**
+   * This is what the test has written to <code>System.out</code>,
+   * @param out the <code>String</code> to write.
+   */
+  public final void setSystemOutput(String out) {
+     formatOutput(SYSTEM_OUT, out);
+  }
 
-  /** {@inheritDoc}. */
-  public final void setSystemError(String out) { formatOutput(SYSTEM_ERR, out); }
+  /**
+   * This is what the test has written to <code>System.err</code>.
+   * @param out the <code>String</code> to write.
+   */
+  public final void setSystemError(String out) {
+    formatOutput(SYSTEM_ERR, out);
+  }
 
   private void formatOutput(String type, String output) {
     Element nested = document.createElement(type);
@@ -120,22 +137,9 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
    * @throws BuildException on error.
    */
   public final void endTestSuite(JUnitTest suite) throws BuildException {
-    rootElement.setAttribute(ATTR_TESTS, "" + suite.runCount());
-    rootElement.setAttribute(ATTR_FAILURES, "" + suite.failureCount());
-    rootElement.setAttribute(ATTR_ERRORS, "" + suite.errorCount());
-    rootElement.setAttribute(ATTR_TIME, "" + (suite.getRunTime() / 1000.0));
+    endTestSuiteXmlWriter.write(document, rootElement, suite);
     if (out == null) return;
-    Writer writer = null;
-    try {
-      writer = new BufferedWriter(new OutputStreamWriter(out, "UTF8"));
-      writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-      (new DOMElementWriter()).write(rootElement, writer, 0, "  ");
-      writer.flush();
-    } catch (IOException e) {
-      throw new BuildException("Unable to write log file", e);
-    } finally {
-      if (out != System.out && out != System.err) FileUtils.close(writer);
-    }
+    documentWriter.write(rootElement, out);
   }
 
   /**

@@ -24,9 +24,9 @@ import org.w3c.dom.Element;
  *
  * @author Alex Ruiz
  */
-abstract class XmlWriter {
+abstract class XmlElementWriter {
 
-  private XmlWriter next;
+  private XmlElementWriter next;
 
   final void write(Document document, Element target, JUnitTest suite) {
     doWrite(document, target, suite);
@@ -35,7 +35,7 @@ abstract class XmlWriter {
 
   abstract void doWrite(Document document, Element target, JUnitTest suite);
 
-  final XmlWriter then(XmlWriter nextCommand) {
+  final XmlElementWriter then(XmlElementWriter nextCommand) {
     next = nextCommand;
     return next;
   }

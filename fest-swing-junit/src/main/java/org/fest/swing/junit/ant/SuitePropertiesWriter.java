@@ -29,7 +29,7 @@ import org.w3c.dom.Element;
  *
  * @author Alex Ruiz
  */
-public class SuitePropertiesWriter extends XmlWriter {
+public class SuitePropertiesWriter extends XmlElementWriter {
 
   void doWrite(Document document, Element target, JUnitTest suite) {
     Element propertiesElement = document.createElement(PROPERTIES);

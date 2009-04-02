@@ -28,7 +28,7 @@ import org.w3c.dom.Element;
  *
  * @author Alex Ruiz
  */
-class HostNameWriter extends XmlWriter {
+class HostNameWriter extends XmlElementWriter {
 
   private static final String LOCALHOST = "localhost";
 
