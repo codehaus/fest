@@ -20,9 +20,6 @@ import static org.fest.swing.junit.ant.Tests.testMethodNameFrom;
 import static org.fest.util.Strings.isEmpty;
 
 import java.io.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -34,7 +31,8 @@ import junit.framework.Test;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.taskdefs.optional.junit.*;
-import org.apache.tools.ant.util.*;
+import org.apache.tools.ant.util.DOMElementWriter;
+import org.apache.tools.ant.util.FileUtils;
 import org.w3c.dom.*;
 
 /**
@@ -44,7 +42,7 @@ import org.w3c.dom.*;
  */
 public class XmlJUnitResultFormatter implements JUnitResultFormatter {
 
-  /** Constant for unnnamed test suites/cases */
+  /** Constant for unnamed test suites/cases */
   private static final String UNKNOWN = "unknown";
 
   private static DocumentBuilder documentBuilder() {
@@ -73,6 +71,18 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
   /** Where to write the log to. */
   private OutputStream out;
 
+  private final XmlWriter startTestSuiteXmlWriter;
+
+  /**
+   * Creates a new </code>{@link XmlJUnitResultFormatter}</code>.
+   */
+  public XmlJUnitResultFormatter() {
+    startTestSuiteXmlWriter = new SuiteNameWriter().then(
+                                new TimestampWriter().then(
+                                    new HostNameWriter().then(
+                                        new SuitePropertiesWriter())));
+  }
+
   /** {@inheritDoc}. */
   public final void setOutput(OutputStream out) { this.out = out; }
 
@@ -98,45 +108,8 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
   public final void startTestSuite(JUnitTest suite) {
     document = documentBuilder().newDocument();
     rootElement = document.createElement(TESTSUITE);
-    writeSuiteName(suite.getName());
-    writeTimestamp();
-    writeHostname();
-    writeProperties(suite);
+    startTestSuiteXmlWriter.write(document, rootElement, suite);
     onStartTestSuite(suite);
-  }
-
-  private void writeSuiteName(String suiteName) {
-    rootElement.setAttribute(ATTR_NAME, suiteName == null ? UNKNOWN : suiteName);
-  }
-
-  private void writeHostname() {
-    String hostName = null;
-    try {
-      hostName = InetAddress.getLocalHost().getHostName();
-    } catch (UnknownHostException e) {
-      hostName = "localhost";
-    }
-    rootElement.setAttribute(HOSTNAME, hostName);
-  }
-
-  private void writeTimestamp() {
-    String timestamp = DateUtils.format(new Date(), DateUtils.ISO8601_DATETIME_PATTERN);
-    rootElement.setAttribute(TIMESTAMP, timestamp);
-  }
-
-  private void writeProperties(JUnitTest suite) {
-    Element propertiesElement = document.createElement(PROPERTIES);
-    rootElement.appendChild(propertiesElement);
-    Properties properties = suite.getProperties();
-    if (properties == null) return;
-    Enumeration<?> propertyNames = properties.propertyNames();
-    while (propertyNames.hasMoreElements()) {
-      String name = (String) propertyNames.nextElement();
-      Element propertyElement = document.createElement(PROPERTY);
-      propertyElement.setAttribute(ATTR_NAME, name);
-      propertyElement.setAttribute(ATTR_VALUE, properties.getProperty(name));
-      propertiesElement.appendChild(propertyElement);
-    }
   }
 
   protected void onStartTestSuite(JUnitTest suite) {}
