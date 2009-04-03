@@ -16,6 +16,7 @@
 package org.fest.swing.junit.ant;
 
 import static org.apache.tools.ant.util.FileUtils.close;
+import static org.fest.swing.util.System.LINE_SEPARATOR;
 
 import java.io.*;
 
@@ -31,20 +32,35 @@ import org.w3c.dom.Element;
 class XmlDocumentWriter {
 
   private static final String CHARSET = "UTF8";
-  private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
+  private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
   private static final String INDENT = "  ";
 
+  private final StandardOutputStreams outputStreams;
+
+  XmlDocumentWriter() {
+    this(new StandardOutputStreams());
+  }
+
+  XmlDocumentWriter(StandardOutputStreams outputStreams) {
+    this.outputStreams = outputStreams;
+  }
+
   void write(Element e, OutputStream out) {
+    write(e, out, new DOMElementWriter());
+  }
+
+  void write(Element e, OutputStream out, DOMElementWriter xmlWriter) {
     Writer writer = null;
     try {
       writer = new BufferedWriter(new OutputStreamWriter(out, CHARSET));
       writer.write(XML_HEADER);
-      (new DOMElementWriter()).write(e, writer, 0, INDENT);
+      writer.write(LINE_SEPARATOR);
+      xmlWriter.write(e, writer, 0, INDENT);
       writer.flush();
     } catch (IOException ex) {
       throw new BuildException("Unable to write log file", ex);
     } finally {
-      if (out != System.out && out != System.err) close(writer);
+      if (!outputStreams.isStandardOutOrErr(out)) close(writer);
     }
   }
 }

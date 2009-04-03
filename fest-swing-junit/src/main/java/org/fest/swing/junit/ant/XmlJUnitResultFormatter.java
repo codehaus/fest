@@ -119,7 +119,7 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
   protected final Element rootElement() { return rootElement; }
 
   /**
-   * The whole test suite started.
+   * The whole test suite started. This method starts creation of the XML report.
    * @param suite the test suite.
    */
   public final void startTestSuite(JUnitTest suite) {
@@ -129,14 +129,19 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
     onStartTestSuite(suite);
   }
 
+  /**
+   * Hook for subclasses to add extra functionality after the whole test suite started.
+   * @param suite the test suite.
+   */
   protected void onStartTestSuite(JUnitTest suite) {}
 
   /**
-   * The whole test suite ended.
+   * The whole test suite ended. This method finishes writing the XML report and writes its contents to this
+   * formatter's <code>{@link OutputStream}</code>.
    * @param suite the test suite.
    * @throws BuildException on error.
    */
-  public final void endTestSuite(JUnitTest suite) throws BuildException {
+  public final void endTestSuite(JUnitTest suite) {
     endTestSuiteXmlWriter.write(document, rootElement, suite);
     if (out == null) return;
     documentWriter.write(rootElement, out);
