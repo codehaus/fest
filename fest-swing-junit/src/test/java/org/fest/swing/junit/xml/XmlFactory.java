@@ -22,15 +22,18 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Understands an XML document.
+ * Understands a factory DOM-based XML elements.
  *
  * @author Alex Ruiz
  */
-public class XmlDocument {
+public class XmlFactory {
 
   private final Document document;
 
-  public XmlDocument() {
+  /**
+   * Creates a new </code>{@link XmlFactory}</code>.
+   */
+  public XmlFactory() {
     try {
       document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
     } catch (ParserConfigurationException e) {
@@ -38,21 +41,19 @@ public class XmlDocument {
     }
   }
 
-  public XmlDocument(Document target) {
-    document = target;
-  }
-
-  public XmlNode addNode(String name) {
+  /**
+   * Creates a new DOM-based XML element.
+   * @param name the name of the XML element to create.
+   * @return the created XML element.
+   */
+  public XmlElement newElement(String name) {
     Element e = document.createElement(name);
-    document.appendChild(e);
-    return new XmlNode(e);
+    return new XmlElement(e);
   }
 
+  /**
+   * Returns the underlying DOM document.
+   * @return the underlying DOM document.
+   */
   public Document target() { return document; }
-
-  public XmlNode root() {
-    Element root = document.getDocumentElement();
-    if (root == null) throw new NullPointerException("document does not have a root node");
-    return new XmlNode(root);
-  }
 }

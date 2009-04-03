@@ -30,23 +30,23 @@ import org.easymock.IArgumentMatcher;
 import org.easymock.internal.matchers.Equals;
 import org.easymock.internal.matchers.Same;
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.junit.xml.XmlDocument;
-import org.fest.swing.junit.xml.XmlNode;
+import org.fest.swing.junit.xml.XmlFactory;
+import org.fest.swing.junit.xml.XmlElement;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 
 /**
- * Tests for <code>{@link XmlDocumentWriter}</code>.
+ * Tests for <code>{@link XmlOutputWriter}</code>.
  *
  * @author Alex Ruiz
  */
-@Test public class XmlDocumentWriterTest {
+@Test public class XmlOutputWriterTest {
 
-  private XmlDocumentWriter writer;
+  private XmlOutputWriter writer;
 
   @BeforeMethod public void setUp() {
-    writer = new XmlDocumentWriter();
+    writer = new XmlOutputWriter();
   }
 
   public void shouldWriteXmlToOutputStream() {
@@ -62,9 +62,8 @@ import org.w3c.dom.Element;
   }
 
   private Element xml() {
-    XmlDocument document = new XmlDocument();
-    XmlNode root = document.addNode("root");
-    root.addNode("child");
+    XmlElement root = new XmlFactory().newElement("root");
+    root.addElement("child");
     return root.target();
   }
 

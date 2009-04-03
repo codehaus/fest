@@ -29,7 +29,7 @@ import org.w3c.dom.Element;
  *
  * @author Alex Ruiz
  */
-class XmlDocumentWriter {
+class XmlOutputWriter {
 
   private static final String CHARSET = "UTF8";
   private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
@@ -37,11 +37,11 @@ class XmlDocumentWriter {
 
   private final StandardOutputStreams outputStreams;
 
-  XmlDocumentWriter() {
+  XmlOutputWriter() {
     this(new StandardOutputStreams());
   }
 
-  XmlDocumentWriter(StandardOutputStreams outputStreams) {
+  XmlOutputWriter(StandardOutputStreams outputStreams) {
     this.outputStreams = outputStreams;
   }
 

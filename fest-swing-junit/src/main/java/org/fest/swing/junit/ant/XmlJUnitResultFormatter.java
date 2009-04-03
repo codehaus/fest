@@ -14,14 +14,14 @@
  */
 package org.fest.swing.junit.ant;
 
+import static java.lang.String.valueOf;
+import static java.lang.System.currentTimeMillis;
 import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.*;
 import static org.fest.swing.junit.ant.Tests.testClassNameFrom;
 import static org.fest.swing.junit.ant.Tests.testMethodNameFrom;
 import static org.fest.util.Strings.isEmpty;
 
 import java.io.OutputStream;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -57,32 +57,25 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
   /** The wrapper for the whole test suite. */
   private Element rootElement;
 
-  /** Element for the current test. */
-  private final ConcurrentMap<Test, Element> testElements = new ConcurrentHashMap<Test, Element>();
-
-  /** Tests that failed. */
-  private final ConcurrentMap<Test, Test> failedTests = new ConcurrentHashMap<Test, Test>();
-
-  /** Timing helper. */
-  private final ConcurrentMap<Test, Long> testStarts = new ConcurrentHashMap<Test, Long>();
-
   /** Where to write the log to. */
   private OutputStream out;
 
-  private final XmlElementWriter startTestSuiteXmlWriter;
-  private final XmlElementWriter endTestSuiteXmlWriter;
-  private final XmlDocumentWriter documentWriter;
+  private final TestCollection tests;
+  private final XmlElementWriter startSuiteXmlWriter;
+  private final XmlElementWriter endSuiteXmlWriter;
+  private final XmlOutputWriter xmlOutputWriter;
 
   /**
    * Creates a new </code>{@link XmlJUnitResultFormatter}</code>.
    */
   public XmlJUnitResultFormatter() {
-    startTestSuiteXmlWriter = new SuiteNameWriter().then(
-                                new TimestampWriter().then(
-                                    new HostNameWriter().then(
-                                        new SuitePropertiesWriter())));
-    endTestSuiteXmlWriter = new SuiteStatisticsWriter();
-    documentWriter = new XmlDocumentWriter();
+    tests = new TestCollection();
+    startSuiteXmlWriter = new SuiteNameWriter().then(
+                            new TimestampWriter().then(
+                                new HostNameWriter().then(
+                                    new SuitePropertiesWriter())));
+    endSuiteXmlWriter = new SuiteStatisticsWriter();
+    xmlOutputWriter = new XmlOutputWriter();
   }
 
   /**
@@ -125,7 +118,7 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
   public final void startTestSuite(JUnitTest suite) {
     document = documentBuilder().newDocument();
     rootElement = document.createElement(TESTSUITE);
-    startTestSuiteXmlWriter.write(document, rootElement, suite);
+    startSuiteXmlWriter.write(document, rootElement, suite);
     onStartTestSuite(suite);
   }
 
@@ -142,9 +135,9 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
    * @throws BuildException on error.
    */
   public final void endTestSuite(JUnitTest suite) {
-    endTestSuiteXmlWriter.write(document, rootElement, suite);
+    endSuiteXmlWriter.write(document, rootElement, suite);
     if (out == null) return;
-    documentWriter.write(rootElement, out);
+    xmlOutputWriter.write(rootElement, out);
   }
 
   /**
@@ -152,7 +145,7 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
    * @param test the test.
    */
   public final void startTest(Test test) {
-    testStarts.put(test, System.currentTimeMillis());
+    tests.started(test);
   }
 
   /**
@@ -160,27 +153,28 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
    * @param test the test.
    */
   public final void endTest(Test test) {
-    if (!testStarts.containsKey(test)) startTest(test);
-    Element currentTest = null;
-    if (!failedTests.containsKey(test)) currentTest = createAndAddCurrentTest(test);
-    else currentTest = testElements.get(test);
-    writeExecutionTime(test, currentTest);
+    if (!tests.wasStarted(test)) startTest(test);
+    writeExecutionTime(test, xmlForFinished(test));
+  }
+
+  private Element xmlForFinished(Test test) {
+    if (!tests.wasFailed(test)) return createAndAddCurrentTest(test);
+    return tests.xmlFor(test);
   }
 
   private Element createAndAddCurrentTest(Test test) {
-    Element currentTest = document.createElement(TESTCASE);
+    Element e = document.createElement(TESTCASE);
     String methodName = testMethodNameFrom(test);
-    currentTest.setAttribute(ATTR_NAME, methodName == null ? UNKNOWN : methodName);
-    currentTest.setAttribute(ATTR_CLASSNAME, testClassNameFrom(test));
-    rootElement.appendChild(currentTest);
-    testElements.put(test, currentTest);
-    return currentTest;
+    e.setAttribute(ATTR_NAME, methodName == null ? UNKNOWN : methodName);
+    e.setAttribute(ATTR_CLASSNAME, testClassNameFrom(test));
+    rootElement.appendChild(e);
+    return tests.addXml(test, e);
   }
 
   private void writeExecutionTime(Test test, Element currentTest) {
-    long startTime = testStarts.get(test);
-    double executionTime = (System.currentTimeMillis() - startTime) / 1000.0;
-    currentTest.setAttribute(ATTR_TIME, String.valueOf(executionTime));
+    long s = tests.startTimeOf(test);
+    double executionTime = (currentTimeMillis() - s) / 1000.0;
+    currentTest.setAttribute(ATTR_TIME, valueOf(executionTime));
   }
 
   /**
@@ -215,15 +209,17 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
   private Element formatError(String type, Test test, Throwable error) {
     if (test != null) {
       endTest(test);
-      failedTests.put(test, test);
+      tests.failed(test);
     }
     Element errorElement = document.createElement(type);
-    Element currentTest = null;
-    if (test != null) currentTest = testElements.get(test);
-    else currentTest = rootElement;
-    currentTest.appendChild(errorElement);
+    xmlForFailed(test).appendChild(errorElement);
     writeErrorAndStackTrace(error, errorElement);
     return errorElement;
+  }
+
+  private Element xmlForFailed(Test test) {
+    if (test != null) return tests.xmlFor(test);
+    return rootElement;
   }
 
   protected final void writeErrorAndStackTrace(Throwable error, Element errorElement) {

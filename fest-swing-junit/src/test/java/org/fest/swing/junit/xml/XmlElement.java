@@ -23,58 +23,58 @@ import org.fest.assertions.AssertExtension;
 import org.w3c.dom.*;
 
 /**
- * Understands a node in a XML document.
+ * Understands a DOM-based XML element.
  *
  * @author Alex Ruiz
  */
-public class XmlNode implements AssertExtension {
+public class XmlElement implements AssertExtension {
 
   private final Element element;
 
-  public XmlNode(Element e) {
+  public XmlElement(Element e) {
     element = e;
   }
 
-  public XmlNode addNode(String name) {
+  public XmlElement addElement(String name) {
     Document document = element.getOwnerDocument();
     Element e = document.createElement(name);
     element.appendChild(e);
-    return new XmlNode(e);
+    return new XmlElement(e);
   }
 
   public Element target() { return element; }
 
-  public XmlNode hasSize(int expected) {
-    assertThat(nodes().getLength()).as("children count").isEqualTo(expected);
+  public XmlElement hasSize(int expected) {
+    assertThat(elements().getLength()).as("children count").isEqualTo(expected);
     return this;
   }
 
-  public XmlNode isSameAs(XmlNode expected) {
+  public XmlElement isSameAs(XmlElement expected) {
     assertThat(element).as("target element").isSameAs(expected.target());
     return this;
   }
 
-  public XmlNode node(int index) {
-    NodeList nodes = nodes();
-    assertThat(index).as("node index").isLessThan(nodes.getLength());
-    return new XmlNode((Element)nodes.item(index));
+  public XmlElement element(int index) {
+    NodeList elements = elements();
+    assertThat(index).as("node index").isLessThan(elements.getLength());
+    return new XmlElement((Element)elements.item(index));
   }
 
-  private NodeList nodes() {
+  private NodeList elements() {
     return element.getChildNodes();
   }
 
-  public XmlNode hasName(String expected) {
+  public XmlElement hasName(String expected) {
     assertThat(element.getNodeName()).as("name").isEqualTo(expected);
     return this;
   }
 
-  public XmlNode hasText(String expected) {
+  public XmlElement hasText(String expected) {
     assertThat(element.getTextContent()).as("text").isEqualTo(expected);
     return this;
   }
 
-  public XmlNode hasAttribute(XmlAttribute attribute) {
+  public XmlElement hasAttribute(XmlAttribute attribute) {
     String value = element.getAttribute(attribute.name);
     assertThat(value).as(concat("value of attribute ", quote(attribute.name))).isEqualTo(attribute.value);
     return this;

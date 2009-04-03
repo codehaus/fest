@@ -29,8 +29,8 @@ import junit.framework.TestResult;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.image.ScreenshotTaker;
-import org.fest.swing.junit.xml.XmlDocument;
-import org.fest.swing.junit.xml.XmlNode;
+import org.fest.swing.junit.xml.XmlFactory;
+import org.fest.swing.junit.xml.XmlElement;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -41,21 +41,21 @@ import org.testng.annotations.Test;
  */
 @Test public class ScreenshotXmlWriterTest {
 
-  private XmlNode root;
-  private XmlNode errorNode;
+  private XmlElement root;
+  private XmlElement errorNode;
   private ScreenshotTaker screenshotTaker;
   private GUITestRecognizer guiTestRecognizer;
   private MyTest test;
   private ScreenshotXmlWriter writer;
 
   @BeforeMethod public void setUp() throws Exception {
-    XmlDocument document = new XmlDocument();
-    root = document.addNode("root");
-    errorNode = root.addNode("error");
+    XmlFactory xmlFactory = new XmlFactory();
+    root = xmlFactory.newElement("root");
+    errorNode = root.addElement("error");
     screenshotTaker = createMock(ScreenshotTaker.class);
     guiTestRecognizer = createMock(GUITestRecognizer.class);
     test = new MyTest();
-    writer = new ScreenshotXmlWriter(document.target(), screenshotTaker, guiTestRecognizer);
+    writer = new ScreenshotXmlWriter(xmlFactory.target(), screenshotTaker, guiTestRecognizer);
   }
 
   public void shouldAddScreenshotElementToParentOfErrorElementIfTestIsGUITest() {
@@ -69,8 +69,8 @@ import org.testng.annotations.Test;
       protected void codeToTest() {
         writer.addScreenshotToXmlElement(test, errorNode.target());
         assertThat(root).hasSize(2);
-        assertThat(root.node(0)).isSameAs(errorNode);
-        assertThat(root.node(1)).hasName("screenshot")
+        assertThat(root.element(0)).isSameAs(errorNode);
+        assertThat(root.element(1)).hasName("screenshot")
                                 .hasText(encodeBase64(image));
       }
     }.run();
@@ -85,7 +85,7 @@ import org.testng.annotations.Test;
       protected void codeToTest() {
         writer.addScreenshotToXmlElement(test, errorNode.target());
         assertThat(root).hasSize(1);
-        assertThat(root.node(0)).isSameAs(errorNode);
+        assertThat(root.element(0)).isSameAs(errorNode);
       }
     }.run();
   }

@@ -28,7 +28,7 @@ import java.security.PrivilegedAction;
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.image.ImageException;
-import org.fest.swing.junit.xml.XmlNode;
+import org.fest.swing.junit.xml.XmlElement;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Element;
@@ -52,9 +52,9 @@ import org.w3c.dom.Element;
     headlessAWT(true); // force an ImageException to be thrown
     try {
       formatter.startTestSuite(new JUnitTest());
-      XmlNode root = new XmlNode(formatter.rootElement());
+      XmlElement root = new XmlElement(formatter.rootElement());
       assertThat(root).hasSize(2);
-      XmlNode errorNode = root.node(1);
+      XmlElement errorNode = root.element(1);
       assertThat(errorNode).hasName("error")
                            .hasAttribute(name("message").value("Unable to create AWT Robot"))
                            .hasAttribute(name("type").value(ImageException.class.getName()));
