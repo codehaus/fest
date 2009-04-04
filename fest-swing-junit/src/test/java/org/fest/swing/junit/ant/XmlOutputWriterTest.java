@@ -93,13 +93,13 @@ import org.w3c.dom.Element;
   private DOMElementWriter mockXmlWriter(final Element e) {
     final DOMElementWriter xmlWriter = createMock(DOMElementWriter.class);
     reportMatcher(new Same(e));
-    reportMatcher(new WriterArgumentMatcher());
+    reportMatcher(new AnyWriterArgumentMatcher());
     reportMatcher(new Equals(0));
     reportMatcher(new Equals("  "));
     return xmlWriter;
   }
 
-  private static class WriterArgumentMatcher implements IArgumentMatcher {
+  private static class AnyWriterArgumentMatcher implements IArgumentMatcher {
     public boolean matches(Object argument) {
       return argument instanceof Writer;
     }

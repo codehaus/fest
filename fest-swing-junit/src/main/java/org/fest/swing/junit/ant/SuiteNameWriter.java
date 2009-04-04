@@ -18,7 +18,6 @@ package org.fest.swing.junit.ant;
 import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.ATTR_NAME;
 
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
@@ -30,7 +29,7 @@ class SuiteNameWriter extends XmlElementWriter {
 
   private static final String UNKNOWN = "unknown";
 
-  void doWrite(Document document, Element target, JUnitTest suite) {
+  void doWrite(Element target, JUnitTest suite) {
     String suiteName = suite.getName();
     target.setAttribute(ATTR_NAME, suiteName == null ? UNKNOWN : suiteName);
   }

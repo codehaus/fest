@@ -118,7 +118,8 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
   public final void startTestSuite(JUnitTest suite) {
     document = documentBuilder().newDocument();
     rootElement = document.createElement(TESTSUITE);
-    startSuiteXmlWriter.write(document, rootElement, suite);
+    document.appendChild(rootElement);
+    startSuiteXmlWriter.write(rootElement, suite);
     onStartTestSuite(suite);
   }
 
@@ -135,7 +136,7 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
    * @throws BuildException on error.
    */
   public final void endTestSuite(JUnitTest suite) {
-    endSuiteXmlWriter.write(document, rootElement, suite);
+    endSuiteXmlWriter.write(rootElement, suite);
     if (out == null) return;
     xmlOutputWriter.write(rootElement, out);
   }

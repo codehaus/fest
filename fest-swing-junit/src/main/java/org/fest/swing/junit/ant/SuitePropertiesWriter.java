@@ -31,7 +31,8 @@ import org.w3c.dom.Element;
  */
 public class SuitePropertiesWriter extends XmlElementWriter {
 
-  void doWrite(Document document, Element target, JUnitTest suite) {
+  void doWrite(Element target, JUnitTest suite) {
+    Document document = target.getOwnerDocument();
     Element propertiesElement = document.createElement(PROPERTIES);
     target.appendChild(propertiesElement);
     Properties properties = suite.getProperties();

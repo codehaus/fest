@@ -61,7 +61,7 @@ import org.w3c.dom.Element;
       }
 
       protected void codeToTest() {
-        writer.doWrite(null, target, suite);
+        writer.doWrite(target, suite);
       }
     }.run();
   }

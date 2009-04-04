@@ -24,7 +24,6 @@ import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
 import org.fest.mocks.EasyMockTemplate;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
@@ -34,17 +33,15 @@ import org.w3c.dom.Element;
  */
 @Test public class XmlElementWriterTest {
 
-  private Document d;
   private Element e;
   private JUnitTest suite;
   private XmlElementWriter writer;
 
   @BeforeMethod public void setUp() throws Exception {
-    d = createMock(Document.class);
     e = createMock(Element.class);
     suite = createMock(JUnitTest.class);
     Class<XmlElementWriter> target = XmlElementWriter.class;
-    Method doWrite = target.getDeclaredMethod("doWrite", Document.class, Element.class, JUnitTest.class);
+    Method doWrite = target.getDeclaredMethod("doWrite", Element.class, JUnitTest.class);
     writer = createMock(target, new Method[] { doWrite });
   }
 
@@ -53,14 +50,14 @@ import org.w3c.dom.Element;
     writer.then(next);
     new EasyMockTemplate(writer) {
       protected void expectations() {
-        writer.doWrite(d, e, suite);
+        writer.doWrite(e, suite);
         expectLastCall().once();
-        next.write(d, e, suite);
+        next.write(e, suite);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        writer.write(d, e, suite);
+        writer.write(e, suite);
       }
     }.run();
   }

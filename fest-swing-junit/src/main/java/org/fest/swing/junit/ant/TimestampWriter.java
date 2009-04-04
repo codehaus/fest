@@ -20,7 +20,6 @@ import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.TIMESTAM
 import java.util.Date;
 
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
@@ -40,7 +39,7 @@ class TimestampWriter extends XmlElementWriter {
     this.formatter = formatter;
   }
 
-  void doWrite(Document document, Element target, JUnitTest suite) {
+  void doWrite(Element target, JUnitTest suite) {
     target.setAttribute(TIMESTAMP, formatter.format(new Date()));
   }
 }

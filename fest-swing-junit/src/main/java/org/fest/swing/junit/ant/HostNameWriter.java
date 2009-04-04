@@ -20,7 +20,6 @@ import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.HOSTNAME
 import java.net.UnknownHostException;
 
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
@@ -42,7 +41,7 @@ class HostNameWriter extends XmlElementWriter {
     this.reader = reader;
   }
 
-  void doWrite(Document document, Element target, JUnitTest suite) {
+  void doWrite(Element target, JUnitTest suite) {
     String hostName = null;
     try {
       hostName = reader.hostName();

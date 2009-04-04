@@ -16,7 +16,6 @@
 package org.fest.swing.junit.ant;
 
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
@@ -28,12 +27,12 @@ abstract class XmlElementWriter {
 
   private XmlElementWriter next;
 
-  final void write(Document document, Element target, JUnitTest suite) {
-    doWrite(document, target, suite);
-    if (next != null) next.write(document, target, suite);
+  final void write(Element target, JUnitTest suite) {
+    doWrite(target, suite);
+    if (next != null) next.write(target, suite);
   }
 
-  abstract void doWrite(Document document, Element target, JUnitTest suite);
+  abstract void doWrite(Element target, JUnitTest suite);
 
   final XmlElementWriter then(XmlElementWriter nextCommand) {
     next = nextCommand;

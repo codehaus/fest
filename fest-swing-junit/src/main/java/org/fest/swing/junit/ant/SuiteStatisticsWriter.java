@@ -19,7 +19,6 @@ import static java.lang.String.valueOf;
 import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.*;
 
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
@@ -29,7 +28,7 @@ import org.w3c.dom.Element;
  */
 class SuiteStatisticsWriter extends XmlElementWriter {
 
-  void doWrite(Document document, Element target, JUnitTest suite) {
+  void doWrite(Element target, JUnitTest suite) {
     target.setAttribute(ATTR_TESTS, valueOf(suite.runCount()));
     target.setAttribute(ATTR_FAILURES, valueOf(suite.failureCount()));
     target.setAttribute(ATTR_ERRORS, valueOf(suite.errorCount()));
