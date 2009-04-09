@@ -25,7 +25,7 @@ import java.net.UnknownHostException;
  */
 class HostNameReader {
 
-  String hostName() throws UnknownHostException {
+  String localHostName() throws UnknownHostException {
     return InetAddress.getLocalHost().getHostName();
   }
 }

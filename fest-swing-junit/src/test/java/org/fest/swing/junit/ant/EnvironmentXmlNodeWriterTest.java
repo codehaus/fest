@@ -76,7 +76,7 @@ import org.testng.annotations.Test;
     final String hostName = "myHost";
     new EasyMockTemplate(timeStampFormatter, hostNameReader, targetNode) {
       protected void expectations() throws Exception {
-        expect(hostNameReader.hostName()).andReturn(hostName);
+        expect(hostNameReader.localHostName()).andReturn(hostName);
         targetNode.addAttribute(name(HOSTNAME).value(hostName));
         expectLastCall().once();
       }
@@ -91,7 +91,7 @@ import org.testng.annotations.Test;
     final UnknownHostException e = new UnknownHostException();
     new EasyMockTemplate(timeStampFormatter, hostNameReader, targetNode) {
       protected void expectations() throws Exception {
-        expect(hostNameReader.hostName()).andThrow(e);
+        expect(hostNameReader.localHostName()).andThrow(e);
         targetNode.addAttribute(name(HOSTNAME).value("localhost"));
         expectLastCall().once();
       }

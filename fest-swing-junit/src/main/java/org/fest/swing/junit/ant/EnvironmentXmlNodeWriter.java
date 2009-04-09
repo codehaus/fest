@@ -53,7 +53,7 @@ class EnvironmentXmlNodeWriter {
   EnvironmentXmlNodeWriter writeHostName(XmlNode target) {
     String hostName = null;
     try {
-      hostName = hostNameReader.hostName();
+      hostName = hostNameReader.localHostName();
     } catch (UnknownHostException e) {
       hostName = LOCALHOST;
     }
