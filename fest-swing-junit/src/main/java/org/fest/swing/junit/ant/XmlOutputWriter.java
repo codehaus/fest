@@ -22,7 +22,7 @@ import java.io.*;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.util.DOMElementWriter;
-import org.w3c.dom.Element;
+import org.fest.swing.junit.xml.XmlNode;
 
 /**
  * Understands writing the contents of an XML document to an <code>{@link OutputStream}</code>.
@@ -45,17 +45,17 @@ class XmlOutputWriter {
     this.outputStreams = outputStreams;
   }
 
-  void write(Element e, OutputStream out) {
-    write(e, out, new DOMElementWriter());
+  void write(XmlNode xml, OutputStream out) {
+    write(xml, out, new DOMElementWriter());
   }
 
-  void write(Element e, OutputStream out, DOMElementWriter xmlWriter) {
+  void write(XmlNode xml, OutputStream out, DOMElementWriter xmlWriter) {
     Writer writer = null;
     try {
       writer = new BufferedWriter(new OutputStreamWriter(out, CHARSET));
       writer.write(XML_HEADER);
       writer.write(LINE_SEPARATOR);
-      xmlWriter.write(e, writer, 0, INDENT);
+      xmlWriter.write(xml.target(), writer, 0, INDENT);
       writer.flush();
     } catch (IOException ex) {
       throw new BuildException("Unable to write log file", ex);

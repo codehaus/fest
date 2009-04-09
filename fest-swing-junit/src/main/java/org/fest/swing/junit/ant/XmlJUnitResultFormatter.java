@@ -14,24 +14,18 @@
  */
 package org.fest.swing.junit.ant;
 
-import static java.lang.String.valueOf;
-import static java.lang.System.currentTimeMillis;
 import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.*;
-import static org.fest.swing.junit.ant.Tests.testClassNameFrom;
-import static org.fest.swing.junit.ant.Tests.testMethodNameFrom;
-import static org.fest.util.Strings.isEmpty;
 
 import java.io.OutputStream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.Test;
 
 import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.taskdefs.optional.junit.*;
-import org.w3c.dom.*;
+import org.apache.tools.ant.taskdefs.optional.junit.JUnitResultFormatter;
+import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
+import org.fest.swing.junit.xml.XmlDocument;
+import org.fest.swing.junit.xml.XmlNode;
 
 /**
  * Understands a copy of the original <code>XMLJUnitResultFormatter</code>, with flexibility for extension.
@@ -40,29 +34,16 @@ import org.w3c.dom.*;
  */
 public class XmlJUnitResultFormatter implements JUnitResultFormatter {
 
-  /** Constant for unnamed test suites/cases */
-  private static final String UNKNOWN = "unknown";
+  private XmlNode xmlRoot;
 
-  private static DocumentBuilder documentBuilder() {
-    try {
-      return DocumentBuilderFactory.newInstance().newDocumentBuilder();
-    } catch (Exception exc) {
-      throw new ExceptionInInitializerError(exc);
-    }
-  }
-
-  /** The XML document. */
-  private Document document;
-
-  /** The wrapper for the whole test suite. */
-  private Element rootElement;
-
-  /** Where to write the log to. */
-  private OutputStream out;
+  private OutputStream out;  // where to write the log to
 
   private final TestCollection tests;
-  private final XmlElementWriter startSuiteXmlWriter;
-  private final XmlElementWriter endSuiteXmlWriter;
+
+  private final SuiteXmlNodeWriter suiteXmlNodeWriter;
+  private final EnvironmentXmlNodeWriter environmentXmlNodeWriter;
+  private final TestXmlNodeWriter testXmlNodeWriter;
+
   private final XmlOutputWriter xmlOutputWriter;
 
   /**
@@ -70,11 +51,9 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
    */
   public XmlJUnitResultFormatter() {
     tests = new TestCollection();
-    startSuiteXmlWriter = new SuiteNameWriter().then(
-                            new TimestampWriter().then(
-                                new HostNameWriter().then(
-                                    new SuitePropertiesWriter())));
-    endSuiteXmlWriter = new SuiteStatisticsWriter();
+    suiteXmlNodeWriter = new SuiteXmlNodeWriter();
+    environmentXmlNodeWriter = new EnvironmentXmlNodeWriter();
+    testXmlNodeWriter = new TestXmlNodeWriter();
     xmlOutputWriter = new XmlOutputWriter();
   }
 
@@ -103,24 +82,23 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
   }
 
   private void formatOutput(String type, String output) {
-    Element nested = document.createElement(type);
-    rootElement.appendChild(nested);
-    nested.appendChild(document.createCDATASection(output));
+    xmlRoot.addNewNode(type).addCdata(output);
   }
 
-  protected final Document document() { return document; }
-  protected final Element rootElement() { return rootElement; }
+  protected final XmlNode xmlRootNode() { return xmlRoot; }
 
   /**
    * The whole test suite started. This method starts creation of the XML report.
    * @param suite the test suite.
+   * @throws ExceptionInInitializerError if the underlying XML document could not be created.
    */
   public final void startTestSuite(JUnitTest suite) {
-    document = documentBuilder().newDocument();
-    rootElement = document.createElement(TESTSUITE);
-    document.appendChild(rootElement);
-    startSuiteXmlWriter.write(rootElement, suite);
-    onStartTestSuite(suite);
+    XmlDocument document = new XmlDocument();
+    xmlRoot = document.newRoot(TESTSUITE);
+    suiteXmlNodeWriter.writeSuiteName(xmlRoot, suite)
+                      .writeSuiteProperties(xmlRoot, suite);
+    environmentXmlNodeWriter.writeHostName(xmlRoot)
+                            .writeTimestamp(xmlRoot);
   }
 
   /**
@@ -136,9 +114,9 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
    * @throws BuildException on error.
    */
   public final void endTestSuite(JUnitTest suite) {
-    endSuiteXmlWriter.write(rootElement, suite);
+    suiteXmlNodeWriter.writeSuiteStatistics(xmlRoot, suite);
     if (out == null) return;
-    xmlOutputWriter.write(rootElement, out);
+    xmlOutputWriter.write(xmlRoot, out);
   }
 
   /**
@@ -155,27 +133,13 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
    */
   public final void endTest(Test test) {
     if (!tests.wasStarted(test)) startTest(test);
-    writeExecutionTime(test, xmlForFinished(test));
+    XmlNode testNode = xmlNodeForFinished(test);
+    testXmlNodeWriter.writeTestExecutionTime(testNode, tests.startTimeOf(test));
   }
 
-  private Element xmlForFinished(Test test) {
-    if (!tests.wasFailed(test)) return createAndAddCurrentTest(test);
-    return tests.xmlFor(test);
-  }
-
-  private Element createAndAddCurrentTest(Test test) {
-    Element e = document.createElement(TESTCASE);
-    String methodName = testMethodNameFrom(test);
-    e.setAttribute(ATTR_NAME, methodName == null ? UNKNOWN : methodName);
-    e.setAttribute(ATTR_CLASSNAME, testClassNameFrom(test));
-    rootElement.appendChild(e);
-    return tests.addXml(test, e);
-  }
-
-  private void writeExecutionTime(Test test, Element currentTest) {
-    long s = tests.startTimeOf(test);
-    double executionTime = (currentTimeMillis() - s) / 1000.0;
-    currentTest.setAttribute(ATTR_TIME, valueOf(executionTime));
+  private XmlNode xmlNodeForFinished(Test test) {
+    if (tests.wasFailed(test)) return tests.xmlNodeFor(test);
+    return tests.addXmlNode(test, testXmlNodeWriter.addNewTestXmlNode(xmlRoot, test));
   }
 
   /**
@@ -184,8 +148,8 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
    * @param error the exception.
    */
   public final void addFailure(Test test, Throwable error) {
-    Element errorElement = formatError(FAILURE, test, error);
-    onFailureOrError(test, error, errorElement);
+    XmlNode errorXmlNode = formatError(FAILURE, test, error);
+    onFailureOrError(test, error, errorXmlNode);
   }
 
   /**
@@ -203,46 +167,39 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
    * @param error the error.
    */
   public final void addError(Test test, Throwable error) {
-    Element errorElement = formatError(ERROR, test, error);
-    onFailureOrError(test, error, errorElement);
+    XmlNode errorXmlNode = formatError(ERROR, test, error);
+    onFailureOrError(test, error, errorXmlNode);
   }
 
-  private Element formatError(String type, Test test, Throwable error) {
+  private XmlNode formatError(String type, Test test, Throwable error) {
     if (test != null) {
       endTest(test);
       tests.failed(test);
     }
-    Element errorElement = document.createElement(type);
-    xmlForFailed(test).appendChild(errorElement);
-    writeErrorAndStackTrace(error, errorElement);
-    return errorElement;
+    XmlNode errorXmlNode = xmlForFailed(test).addNewNode(type);
+    writeErrorAndStackTrace(error, errorXmlNode);
+    return errorXmlNode;
   }
 
-  private Element xmlForFailed(Test test) {
-    if (test != null) return tests.xmlFor(test);
-    return rootElement;
+  private XmlNode xmlForFailed(Test test) {
+    if (test != null) return tests.xmlNodeFor(test);
+    return xmlRoot;
   }
 
-  protected final void writeErrorAndStackTrace(Throwable error, Element errorElement) {
-    writeError(error, errorElement);
-    writeStackTrace(error, errorElement);
+  /**
+   * Writes the stack trace and message of the given error to the given XML node.
+   * @param error the given error.
+   * @param errorXmlNode the XML node to write to.
+   */
+  protected final void writeErrorAndStackTrace(Throwable error, XmlNode errorXmlNode) {
+    testXmlNodeWriter.writeErrorAndStackTrace(errorXmlNode, error);
   }
 
-  private void writeError(Throwable error, Element destination) {
-    String message = error.getMessage();
-    if (!isEmpty(message)) destination.setAttribute(ATTR_MESSAGE, error.getMessage());
-    destination.setAttribute(ATTR_TYPE, error.getClass().getName());
-  }
-
-  private final void writeStackTrace(Throwable error, Element destination) {
-    String stackTrace = JUnitTestRunner.getFilteredTrace(error);
-    writeText(stackTrace, destination);
-  }
-
-  protected final void writeText(String text, Element destination) {
-    Text textNode = document.createTextNode(text);
-    destination.appendChild(textNode);
-  }
-
-  protected void onFailureOrError(Test test, Throwable error, Element errorElement) {}
+  /**
+   * Hook for subclasses to add extra functionality after a test failure or a test execution error.
+   * @param test the executing test.
+   * @param error the reason of the failure or error.
+   * @param errorXmlNode the XML element containing information about the test failure or error.
+   */
+  protected void onFailureOrError(Test test, Throwable error, XmlNode errorXmlNode) {}
 }

@@ -1,5 +1,5 @@
 /*
- * Created on Mar 21, 2009
+ * Created on Apr 5, 2009
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,36 +13,17 @@
  *
  * Copyright @2009 the original author or authors.
  */
-package org.fest.swing.junit.xml;
+package org.fest.swing.junit.ant;
 
 /**
- * Understands an XML attribute.
+ * Understands common constants used in this package.
  *
  * @author Alex Ruiz
  */
-public class XmlAttribute {
+final class CommonConstants {
 
-  final String name;
-  final String value;
+  static final String UNKNOWN = "unknown";
 
-  public static XmlAttributeBuilder name(String name) {
-    return new XmlAttributeBuilder(name);
-  }
+  private CommonConstants() {}
 
-  public static class XmlAttributeBuilder {
-    private final String name;
-
-    XmlAttributeBuilder(String name) {
-      this.name = name;
-    }
-
-    public XmlAttribute value(String value) {
-      return new XmlAttribute(name, value);
-    }
-  }
-
-  XmlAttribute(String name, String value) {
-    this.name = name;
-    this.value = value;
-  }
 }

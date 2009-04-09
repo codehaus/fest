@@ -29,6 +29,6 @@ import org.apache.tools.ant.util.DateUtils;
 class TimestampFormatter {
 
   String format(Date date) {
-    return DateUtils.format(date, ISO8601_DATETIME_PATTERN);
+    return DateUtils.format(new Date(), ISO8601_DATETIME_PATTERN);
   }
 }

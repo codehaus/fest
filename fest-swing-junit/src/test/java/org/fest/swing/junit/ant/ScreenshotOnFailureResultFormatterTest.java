@@ -21,17 +21,14 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.reflect.core.Reflection.field;
-import static org.fest.swing.junit.xml.XmlAttribute.name;
 
 import java.security.PrivilegedAction;
 
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.image.ImageException;
-import org.fest.swing.junit.xml.XmlElement;
+import org.fest.swing.junit.xml.XmlNode;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.w3c.dom.Element;
 
 /**
  * Tests for <code>{@link ScreenshotOnFailureResultFormatter}</code>.
@@ -54,12 +51,10 @@ import org.w3c.dom.Element;
     headlessAWT(true); // force an ImageException to be thrown
     try {
       formatter.startTestSuite(new JUnitTest());
-      XmlElement root = new XmlElement(formatter.rootElement());
-      assertThat(root).hasSize(2);
-      XmlElement errorNode = root.element(1);
-      assertThat(errorNode).hasName("error")
-                           .hasAttribute(name("message").value("Unable to create AWT Robot"))
-                           .hasAttribute(name("type").value(ImageException.class.getName()));
+      XmlNode root = formatter.xmlRootNode();
+      assertThat(root.size()).isEqualTo(2);
+      XmlNode errorNode = root.child(1);
+      assertThat(errorNode.name()).isEqualTo("error");
     } finally {
       headlessAWT(false);
     }
@@ -78,10 +73,10 @@ import org.w3c.dom.Element;
     final ScreenshotXmlWriter writer = createMock(ScreenshotXmlWriter.class);
     updateWriterInFormatter(writer);
     final junit.framework.Test test = failingTest();
-    final Element errorElement = errorElement();
+    final XmlNode errorElement = mockXmlNode();
     new EasyMockTemplate(writer) {
       protected void expectations() {
-        writer.addScreenshotToXmlElement(test, errorElement);
+        writer.writeScreenshot(errorElement, test);
         expectLastCall().once();
       }
 
@@ -93,7 +88,7 @@ import org.w3c.dom.Element;
 
   public void shouldNotTakeScreenshotWhenTestFailsIfScreenshotWriterIsNull() {
     updateWriterInFormatter(null);
-    formatter.onFailureOrError(failingTest(), new Throwable(), errorElement());
+    formatter.onFailureOrError(failingTest(), new Throwable(), mockXmlNode());
     // no assertions to be made...are we sure this test is meaningful?
   }
 
@@ -101,8 +96,8 @@ import org.w3c.dom.Element;
     field("screenshotXmlWriter").ofType(ScreenshotXmlWriter.class).in(formatter).set(writer);
   }
 
-  private Element errorElement() {
-    return createMock(Element.class);
+  private XmlNode mockXmlNode() {
+    return createMock(XmlNode.class);
   }
 
   private junit.framework.Test failingTest() {

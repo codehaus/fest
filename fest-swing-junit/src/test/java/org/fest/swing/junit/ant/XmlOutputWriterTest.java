@@ -15,8 +15,6 @@
  */
 package org.fest.swing.junit.ant;
 
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.reportMatcher;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.Fail.fail;
@@ -26,12 +24,8 @@ import java.io.*;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.util.DOMElementWriter;
-import org.easymock.IArgumentMatcher;
-import org.easymock.internal.matchers.Equals;
-import org.easymock.internal.matchers.Same;
-import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.junit.xml.XmlFactory;
-import org.fest.swing.junit.xml.XmlElement;
+import org.fest.swing.junit.xml.XmlDocument;
+import org.fest.swing.junit.xml.XmlNode;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Element;
@@ -49,7 +43,7 @@ import org.w3c.dom.Element;
     writer = new XmlOutputWriter();
   }
 
-  public void shouldWriteXmlToOutputStream() {
+  public void shouldWriteXmlToOutputStream() throws Exception {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     writer.write(xml(), out);
     String actual = new String(out.toByteArray());
@@ -61,51 +55,29 @@ import org.w3c.dom.Element;
     assertThat(actual).isEqualTo(expected.toString());
   }
 
-  private Element xml() {
-    XmlElement root = new XmlFactory().newElement("root");
-    root.addElement("child");
-    return root.target();
+  private XmlNode xml() throws Exception {
+    XmlNode root = new XmlDocument().newRoot("root");
+    root.addNewNode("child");
+    return root;
   }
 
   public void shouldThrowBuildExceptionIfSomethingGoesWrong() {
-    final Element e = createMock(Element.class);
-    final Writer anyWriter = createMock(Writer.class);
-    final DOMElementWriter xmlWriter = mockXmlWriter(e);
-    final IOException error = new IOException();
-    new EasyMockTemplate(xmlWriter, e, anyWriter) {
-      protected void expectations() throws Throwable {
-        xmlWriter.write(e, anyWriter, 0, "  ");
-        expectLastCall().andThrow(error);
-      }
-
-      protected void codeToTest() {
-        try {
-          writer.write(e, new ByteArrayOutputStream(), xmlWriter);
-          fail("expecting exception");
-        } catch (BuildException expected) {
-          assertThat(expected.getMessage()).isEqualTo("Unable to write log file");
-          assertThat(expected.getCause()).isSameAs(error);
-        }
-      }
-    }.run();
-  }
-
-  private DOMElementWriter mockXmlWriter(final Element e) {
-    final DOMElementWriter xmlWriter = createMock(DOMElementWriter.class);
-    reportMatcher(new Same(e));
-    reportMatcher(new AnyWriterArgumentMatcher());
-    reportMatcher(new Equals(0));
-    reportMatcher(new Equals("  "));
-    return xmlWriter;
-  }
-
-  private static class AnyWriterArgumentMatcher implements IArgumentMatcher {
-    public boolean matches(Object argument) {
-      return argument instanceof Writer;
+    XmlNode xmlNode = createMock(XmlNode.class);
+    MyDOMElementWriter xmlWriter = new MyDOMElementWriter();
+    try {
+      writer.write(xmlNode, new ByteArrayOutputStream(), xmlWriter);
+      fail("expecting exception");
+    } catch (BuildException expected) {
+      assertThat(expected.getMessage()).isEqualTo("Unable to write log file");
+      assertThat(expected.getCause()).isSameAs(xmlWriter.error);
     }
+  }
+  private static class MyDOMElementWriter extends DOMElementWriter {
+    final IOException error = new IOException("Thrown on purpose");
 
-    public void appendTo(StringBuffer buffer) {
-      buffer.append("[A java.io.Writer]");
+    @Override
+    public void write(Element element, Writer out, int indent, String indentWith) throws IOException {
+      throw error;
     }
   }
 }

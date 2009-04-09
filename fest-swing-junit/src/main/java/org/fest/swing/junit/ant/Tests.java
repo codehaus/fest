@@ -15,6 +15,7 @@
 package org.fest.swing.junit.ant;
 
 import static org.fest.reflect.core.Reflection.method;
+import static org.fest.swing.junit.ant.CommonConstants.UNKNOWN;
 
 import java.lang.reflect.Method;
 
@@ -29,8 +30,6 @@ import junit.framework.TestCase;
 final class Tests {
 
   private static final String JUNIT4_TEST_CASE_FACADE_TYPE = "junit.framework.JUnit4TestCaseFacade";
-
-  private static final String UNKNOWN = "unknown";
 
   private static Method testCaseName = nameMethodIn(TestCase.class);
 

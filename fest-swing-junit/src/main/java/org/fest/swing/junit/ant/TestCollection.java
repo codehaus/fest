@@ -24,7 +24,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import junit.framework.Test;
 
-import org.w3c.dom.Element;
+import org.fest.swing.junit.xml.XmlNode;
 
 /**
  * Understands a collection of executed tests in a suite.
@@ -33,7 +33,7 @@ import org.w3c.dom.Element;
  */
 class TestCollection {
 
-  final Map<Test, Element> testXml = new ConcurrentHashMap<Test, Element>();
+  final Map<Test, XmlNode> testXml = new ConcurrentHashMap<Test, XmlNode>();
   final List<Test> failed = new CopyOnWriteArrayList<Test>();
   final Map<Test, Long> started = new ConcurrentHashMap<Test, Long>();
 
@@ -49,12 +49,12 @@ class TestCollection {
     return started.get(test);
   }
 
-  Element addXml(Test test, Element e) {
+  XmlNode addXmlNode(Test test, XmlNode e) {
     testXml.put(test, e);
     return e;
   }
 
-  Element xmlFor(Test test) {
+  XmlNode xmlNodeFor(Test test) {
     return testXml.get(test);
   }
 

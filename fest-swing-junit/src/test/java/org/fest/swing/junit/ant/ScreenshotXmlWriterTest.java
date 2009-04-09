@@ -29,8 +29,8 @@ import junit.framework.TestResult;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.image.ScreenshotTaker;
-import org.fest.swing.junit.xml.XmlFactory;
-import org.fest.swing.junit.xml.XmlElement;
+import org.fest.swing.junit.xml.XmlDocument;
+import org.fest.swing.junit.xml.XmlNode;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -41,21 +41,21 @@ import org.testng.annotations.Test;
  */
 @Test public class ScreenshotXmlWriterTest {
 
-  private XmlElement root;
-  private XmlElement errorNode;
+  private XmlNode root;
+  private XmlNode errorNode;
   private ScreenshotTaker screenshotTaker;
   private GUITestRecognizer guiTestRecognizer;
   private MyTest test;
   private ScreenshotXmlWriter writer;
 
-  @BeforeMethod public void setUp() throws Exception {
-    XmlFactory xmlFactory = new XmlFactory();
-    root = xmlFactory.newElement("root");
-    errorNode = root.addElement("error");
+  @BeforeMethod public void setUp() {
+    XmlDocument document = new XmlDocument();
+    root = document.newRoot("root");
+    errorNode = root.addNewNode("error");
     screenshotTaker = createMock(ScreenshotTaker.class);
     guiTestRecognizer = createMock(GUITestRecognizer.class);
     test = new MyTest();
-    writer = new ScreenshotXmlWriter(xmlFactory.target(), screenshotTaker, guiTestRecognizer);
+    writer = new ScreenshotXmlWriter(screenshotTaker, guiTestRecognizer);
   }
 
   public void shouldAddScreenshotElementToParentOfErrorElementIfTestIsGUITest() {
@@ -67,25 +67,26 @@ import org.testng.annotations.Test;
       }
 
       protected void codeToTest() {
-        writer.addScreenshotToXmlElement(test, errorNode.target());
-        assertThat(root).hasSize(2);
-        assertThat(root.element(0)).isSameAs(errorNode);
-        assertThat(root.element(1)).hasName("screenshot")
-                                .hasText(encodeBase64(image));
+        writer.writeScreenshot(errorNode, test);
+        assertThat(root.size()).isEqualTo(2);
+        assertThat(root.child(0)).isEqualTo(errorNode);
+        XmlNode secondChild = root.child(1);
+        assertThat(secondChild.name()).isEqualTo("screenshot");
+        assertThat(secondChild.text()).isEqualTo(encodeBase64(image));
       }
     }.run();
   }
 
-  public void shouldMNotAddScreenshotElementToParentOfErrorElementIfTestIsNotGUITest() {
+  public void shouldNotAddScreenshotElementToParentOfErrorElementIfTestIsNotGUITest() {
     new EasyMockTemplate(screenshotTaker, guiTestRecognizer) {
       protected void expectations() {
         expect(guiTestRecognizer.isGUITest(testClassNameFrom(test), testMethodNameFrom(test))).andReturn(false);
       }
 
       protected void codeToTest() {
-        writer.addScreenshotToXmlElement(test, errorNode.target());
-        assertThat(root).hasSize(1);
-        assertThat(root.element(0)).isSameAs(errorNode);
+        writer.writeScreenshot(errorNode, test);
+        assertThat(root.size()).isEqualTo(1);
+        assertThat(root.child(0)).isEqualTo(errorNode);
       }
     }.run();
   }

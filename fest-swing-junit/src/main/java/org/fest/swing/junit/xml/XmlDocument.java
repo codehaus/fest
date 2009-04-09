@@ -1,5 +1,5 @@
 /*
- * Created on Mar 20, 2009
+ * Created on Apr 3, 2009
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -19,41 +19,38 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
- * Understands a factory DOM-based XML elements.
+ * Understands a DOM-based XML document. This class is intended for internal use only. It is just a thin wrapper around
+ * a DOM <code>{@link Document}</code>. It only provides the necessary functionality needed by the FEST-Swing JUnit
+ * extension.
  *
  * @author Alex Ruiz
  */
-public class XmlFactory {
+public class XmlDocument {
 
   private final Document document;
 
   /**
-   * Creates a new </code>{@link XmlFactory}</code>.
+   * Creates a new </code>{@link XmlDocument}</code>.
+   * @throws ExceptionInInitializerError if the XML document could not be created.
    */
-  public XmlFactory() {
+  public XmlDocument() {
     try {
       document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
     } catch (ParserConfigurationException e) {
-      throw new AssertionError("Unable to create XML document");
+      throw new ExceptionInInitializerError(e);
     }
   }
 
   /**
-   * Creates a new DOM-based XML element.
-   * @param name the name of the XML element to create.
-   * @return the created XML element.
+   * Creates and adds a new XML root node.
+   * @param name the name of the XML node to create.
+   * @return the created root node.
    */
-  public XmlElement newElement(String name) {
-    Element e = document.createElement(name);
-    return new XmlElement(e);
+  public XmlNode newRoot(String name) {
+    XmlNode root = new XmlNode(document.createElement(name));
+    document.appendChild(root.target());
+    return root;
   }
-
-  /**
-   * Returns the underlying DOM document.
-   * @return the underlying DOM document.
-   */
-  public Document target() { return document; }
 }

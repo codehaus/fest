@@ -18,6 +18,7 @@ import static org.fest.swing.image.ScreenshotTaker.PNG_EXTENSION;
 import static org.fest.swing.junit.ant.ImageHandler.encodeBase64;
 import static org.fest.swing.junit.ant.Tests.testClassNameFrom;
 import static org.fest.swing.junit.ant.Tests.testMethodNameFrom;
+import static org.fest.swing.junit.xml.XmlAttribute.name;
 import static org.fest.util.Strings.isEmpty;
 import static org.fest.util.Strings.join;
 
@@ -26,7 +27,7 @@ import java.awt.image.BufferedImage;
 import junit.framework.Test;
 
 import org.fest.swing.image.ScreenshotTaker;
-import org.w3c.dom.*;
+import org.fest.swing.junit.xml.XmlNode;
 
 /**
  * Understands taking a screenshot of the desktop and, encoding and writing the resulting image into a XML element.
@@ -38,27 +39,25 @@ class ScreenshotXmlWriter {
   private static final String SCREENSHOT_ELEMENT = "screenshot";
   private static final String SCREENSHOT_FILE_ATTRIBUTE = "file";
 
-  private final Document document;
   private final ScreenshotTaker screenshotTaker;
   private final GUITestRecognizer guiTestRecognizer;
 
-  ScreenshotXmlWriter(Document document) {
-    this(document, new ScreenshotTaker(), new GUITestRecognizer());
+  ScreenshotXmlWriter() {
+    this(new ScreenshotTaker(), new GUITestRecognizer());
   }
 
-  ScreenshotXmlWriter(Document document, ScreenshotTaker screenshotTaker, GUITestRecognizer guiTestRecognizer) {
+  ScreenshotXmlWriter(ScreenshotTaker screenshotTaker, GUITestRecognizer guiTestRecognizer) {
     this.screenshotTaker = screenshotTaker;
     this.guiTestRecognizer = guiTestRecognizer;
-    this.document = document;
   }
 
-  void addScreenshotToXmlElement(Test test, Element errorElement) {
+  void writeScreenshot(XmlNode target, Test test) {
     String testClass = testClassNameFrom(test);
     String testMethod = testMethodNameFrom(test);
     if (!guiTestRecognizer.isGUITest(testClass, testMethod)) return;
     String image = takeScreenshotAndReturnEncoded();
     if (isEmpty(image)) return;
-    writeScreenshotFileName(image, imageFileName(testClass, testMethod), errorElement);
+    writeScreenshotFileName(target, image, imageFileName(testClass, testMethod));
   }
 
   private String takeScreenshotAndReturnEncoded() {
@@ -66,16 +65,10 @@ class ScreenshotXmlWriter {
     return encodeBase64(image);
   }
 
-  private void writeScreenshotFileName(String encodedImage, String imageFileName, Element errorElement) {
-    Element screenshotElement = document.createElement(SCREENSHOT_ELEMENT);
-    screenshotElement.setAttribute(SCREENSHOT_FILE_ATTRIBUTE, imageFileName);
-    writeText(encodedImage, screenshotElement);
-    errorElement.getParentNode().appendChild(screenshotElement);
-  }
-
-  private void writeText(String text, Element destination) {
-    Text textNode = document.createTextNode(text);
-    destination.appendChild(textNode);
+  private void writeScreenshotFileName(XmlNode target, String encodedImage, String imageFileName) {
+    XmlNode screenshotNode = target.parentNode().addNewNode(SCREENSHOT_ELEMENT);
+    screenshotNode.addAttribute(name(SCREENSHOT_FILE_ATTRIBUTE).value(imageFileName));
+    screenshotNode.addText(encodedImage);
   }
 
   private String imageFileName(String testClass, String testMethod) {
