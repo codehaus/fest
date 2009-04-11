@@ -23,6 +23,9 @@ import static org.fest.util.Arrays.isEmpty;
  */
 public final class Objects {
 
+  /** Prime number used to calculate the hash code of objects. */
+  public static final int HASH_CODE_PRIME = 31;
+
   /**
    * Returns <code>true</code> if the given objects are equal or if both objects are <code>null</code>.
    * @param o1 one of the objects to compare.
