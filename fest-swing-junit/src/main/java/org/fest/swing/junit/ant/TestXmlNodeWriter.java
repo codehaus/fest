@@ -16,7 +16,6 @@
 package org.fest.swing.junit.ant;
 
 import static java.lang.System.currentTimeMillis;
-import static org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.getFilteredTrace;
 import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.*;
 import static org.fest.swing.junit.ant.CommonConstants.UNKNOWN;
 import static org.fest.swing.junit.ant.Tests.testClassNameFrom;
@@ -34,6 +33,16 @@ import org.fest.swing.junit.xml.XmlNode;
  * @author Alex Ruiz
  */
 class TestXmlNodeWriter {
+
+  private final StackTraceFilter stackTraceFilter;
+
+  TestXmlNodeWriter() {
+    this(new StackTraceFilter());
+  }
+
+  TestXmlNodeWriter(StackTraceFilter stackTraceFilter) {
+    this.stackTraceFilter = stackTraceFilter;
+  }
 
   XmlNode addNewTestXmlNode(XmlNode target, Test test) {
     String methodName = testMethodNameFrom(test);
@@ -60,7 +69,8 @@ class TestXmlNodeWriter {
   }
 
   TestXmlNodeWriter writeStackTrace(XmlNode target, Throwable error) {
-    target.addText(getFilteredTrace(error));
+    String stackTrace = stackTraceFilter.filter(error);
+    target.addText(stackTrace);
     return this;
   }
 }

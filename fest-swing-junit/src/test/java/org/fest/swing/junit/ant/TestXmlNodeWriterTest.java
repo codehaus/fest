@@ -15,6 +15,7 @@
  */
 package org.fest.swing.junit.ant;
 
+import static java.lang.Double.parseDouble;
 import static java.lang.System.currentTimeMillis;
 import static org.apache.tools.ant.taskdefs.optional.junit.XMLConstants.*;
 import static org.easymock.EasyMock.expect;
@@ -26,8 +27,7 @@ import static org.fest.swing.junit.xml.XmlAttributes.attributes;
 import junit.framework.TestResult;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.junit.xml.XmlAttributes;
-import org.fest.swing.junit.xml.XmlNode;
+import org.fest.swing.junit.xml.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -62,18 +62,59 @@ import org.testng.annotations.Test;
   }
 
   public void shouldAddTestExecutionTimeAsAttribute() {
-    final long startTime = currentTimeMillis() - 3000;
+    XmlNode root = new XmlDocument().newRoot("root");
+    assertThat(writer.writeTestExecutionTime(root, currentTimeMillis() - 3000)).isSameAs(writer);
+    double time = parseDouble(root.valueOfAttribute(ATTR_TIME));
+    assertThat(time).isGreaterThan(0);
+  }
+
+  public void shouldWriteErrorTypeAndMessageAsAttributes() {
+    final String errorMsg = "Thrown on purpose";
+    final Exception e = new Exception(errorMsg);
     new EasyMockTemplate(targetNode) {
       protected void expectations() {
-        double executionTime = (currentTimeMillis() - startTime) / 1000.0;
-        targetNode.addAttribute(name(ATTR_TIME).value(executionTime));
+        targetNode.addAttribute(name(ATTR_MESSAGE).value(errorMsg));
+        expectLastCall().once();
+        targetNode.addAttribute(name(ATTR_TYPE).value(Exception.class.getName()));
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        writer.writeTestExecutionTime(targetNode, startTime);
+        assertThat(writer.writeError(targetNode, e)).isSameAs(writer);
       }
     }.run();
+  }
+
+  public void shouldWriteOnlyErrorTypeAsAttributeWhenErrorMessageIsEmpty() {
+    final Exception e = new Exception("");
+    new EasyMockTemplate(targetNode) {
+      protected void expectations() {
+        targetNode.addAttribute(name(ATTR_TYPE).value(Exception.class.getName()));
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThat(writer.writeError(targetNode, e)).isSameAs(writer);
+      }
+    }.run();
+  }
+
+  public void shouldWriteStackTraceAsTextNode() {
+    final Exception error = new Exception();
+    final StackTraceFilter filter = createMock(StackTraceFilter.class);
+    writer = new TestXmlNodeWriter(filter);
+    new EasyMockTemplate(filter, targetNode) {
+      protected void expectations() {
+        expect(filter.filter(error)).andReturn("Hello");
+        targetNode.addText("Hello");
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThat(writer.writeStackTrace(targetNode, error)).isSameAs(writer);
+      }
+    }.run();
+
   }
 
   private XmlNode mockXmlNode() {

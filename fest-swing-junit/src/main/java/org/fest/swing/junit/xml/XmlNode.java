@@ -147,6 +147,17 @@ public class XmlNode {
   }
 
   /**
+   * Returns the value of the given attribute, or an empty <code>String</code> if this node does not contain an
+   * attribute with the given name.
+   * @param name the name of the attribute we are looking for.
+   * @return the value of the attribute with the given name, or an empty <code>String</code> if this node does not
+   * contain a matching attribute.
+   */
+  public String valueOfAttribute(String name) {
+    return target.getAttribute(name);
+  }
+
+  /**
    * Returns the name of this node.
    * @return the name of this node.
    */
