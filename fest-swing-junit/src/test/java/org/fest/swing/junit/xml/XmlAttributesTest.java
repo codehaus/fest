@@ -89,4 +89,9 @@ import org.testng.annotations.*;
   public void shouldNotBeEqualToObjectNotBeingOfSameClass() {
     assertThat(attributes.equals("Hello")).isFalse();
   }
+
+  public void shouldOverrideToString() {
+    String expected = "XmlAttributes[attributes=[XmlAttribute[name='firstName',value='Leia'], XmlAttribute[name='lastName',value='Organa']]]";
+    assertThat(attributes.toString()).isEqualTo(expected);
+  }
 }
