@@ -15,12 +15,11 @@
  */
 package org.fest.swing.data;
 
-import javax.swing.JTable;
-
 import static java.lang.String.valueOf;
-
-import static org.fest.swing.util.Objects.HASH_CODE_PRIME;
+import static org.fest.util.Objects.HASH_CODE_PRIME;
 import static org.fest.util.Strings.concat;
+
+import javax.swing.JTable;
 
 /**
  * Understands a cell in a <code>{@link JTable}</code>.
@@ -28,7 +27,7 @@ import static org.fest.util.Strings.concat;
  * @author Alex Ruiz
  */
 public class TableCell {
-  
+
   /** The row of the cell. */
   public final int row;
 
@@ -56,12 +55,12 @@ public class TableCell {
    */
   public static class TableCellBuilder {
     private final int row;
-    
+
     TableCellBuilder(int row) { this.row = row; }
-    
+
     /**
-     * Creates a new table cell using the row index specified in <code>{@link TableCellBuilder#row(int)}</code> and the 
-     * column index specified as the argument in this method. 
+     * Creates a new table cell using the row index specified in <code>{@link TableCellBuilder#row(int)}</code> and the
+     * column index specified as the argument in this method.
      * @param column the column index of the table cell to create.
      * @return the created table cell.
      */
@@ -77,7 +76,7 @@ public class TableCell {
     this.row = row;
     this.column = column;
   }
-  
+
   /** ${@inheritDoc} */
   @Override public boolean equals(Object obj) {
     if (this == obj) return true;
@@ -87,7 +86,7 @@ public class TableCell {
     if (row != other.row) return false;
     return column == other.column;
   }
-  
+
   /** ${@inheritDoc} */
   @Override public int hashCode() {
     int result = 1;
