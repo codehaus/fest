@@ -18,9 +18,11 @@ package org.fest.swing.junit.xml;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.junit.xml.XmlAttribute.name;
 import static org.fest.swing.junit.xml.XmlAttributes.attributes;
+import static org.fest.test.EqualsHashCodeContractAssert.*;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.fest.test.EqualsHashCodeContractTestCase;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.*;
@@ -30,7 +32,7 @@ import org.w3c.dom.*;
  *
  * @author Alex Ruiz
  */
-@Test public class XmlNodeTest {
+@Test public class XmlNodeTest implements EqualsHashCodeContractTestCase {
 
   private Element target;
   private XmlNode node;
@@ -141,6 +143,45 @@ import org.w3c.dom.*;
   public void shouldReturnText() {
     node.addText("Hello");
     assertThat(node.text()).isEqualTo("Hello");
+  }
+
+  public void shouldHaveConsistentEquals() {
+    XmlNode child1 = node.addNewNode("child", attributes(name("name1").value("value1"), name("name2").value("value2")));
+    XmlNode child2 = node.addNewNode("child", attributes(name("name1").value("value1"), name("name2").value("value2")));
+    assertThat(child1.equals(child2)).isTrue();
+    child1.addAttribute(name("name3").value("value3"));
+    assertThat(child1.equals(child2)).isFalse();
+  }
+
+  public void shouldHaveReflexiveEquals() {
+    assertEqualsIsReflexive(node);
+  }
+
+  public void shouldHaveSymmetricEquals() {
+    XmlNode child1 = node.addNewNode("child", attributes(name("name1").value("value1"), name("name2").value("value2")));
+    XmlNode child2 = node.addNewNode("child", attributes(name("name1").value("value1"), name("name2").value("value2")));
+    assertEqualsIsSymmetric(child1, child2);
+  }
+
+  public void shouldHaveTransitiveEquals() {
+    XmlNode child1 = node.addNewNode("child", attributes(name("name1").value("value1"), name("name2").value("value2")));
+    XmlNode child2 = node.addNewNode("child", attributes(name("name1").value("value1"), name("name2").value("value2")));
+    XmlNode child3 = node.addNewNode("child", attributes(name("name1").value("value1"), name("name2").value("value2")));
+    assertEqualsIsTransitive(child1, child2, child3);
+  }
+
+  public void shouldMaintainEqualsAndHashCodeContract() {
+    XmlNode child1 = node.addNewNode("child", attributes(name("name1").value("value1"), name("name2").value("value2")));
+    XmlNode child2 = node.addNewNode("child", attributes(name("name1").value("value1"), name("name2").value("value2")));
+    assertMaintainsEqualsAndHashCodeContract(child1, child2);
+  }
+
+  public void shouldNotBeEqualToNull() {
+    assertThat(node.equals(null)).isFalse();
+  }
+
+  public void shouldNotBeEqualToObjectNotBeingOfSameClass() {
+    assertThat(node.equals("Hello")).isFalse();
   }
 
   public void shouldOverrideToString() {

@@ -15,7 +15,8 @@
  */
 package org.fest.swing.junit.xml;
 
-import static org.fest.util.Objects.*;
+import static org.fest.util.Objects.HASH_CODE_PRIME;
+import static org.fest.util.Objects.hashCodeFor;
 import static org.fest.util.Strings.concat;
 
 import org.w3c.dom.*;
@@ -176,12 +177,12 @@ public class XmlNode {
     if (obj == null) return false;
     if (getClass() != obj.getClass()) return false;
     XmlNode other = (XmlNode) obj;
-    return areEqual(target, other.target);
+    return target.isEqualNode(other.target);
   }
 
   @Override public int hashCode() {
     int result = 1;
-    result = HASH_CODE_PRIME * result + hashCodeFor(target);
+    result = HASH_CODE_PRIME * result + hashCodeFor(name());
     return result;
   }
 
