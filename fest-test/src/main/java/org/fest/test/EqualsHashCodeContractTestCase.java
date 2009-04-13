@@ -26,13 +26,13 @@ public interface EqualsHashCodeContractTestCase {
   /**
    * If two objects are equal, they must remain equal as long as they are not modified.
    */
-  void equalsShouldBeConsistent();
+  void shouldHaveConsistentEquals();
 
   /**
    * The object must be equal to itself, which it would be at any given instance; unless you intentionally override the
    * equals method to behave otherwise.
    */
-  void equalsShouldBeReflexive();
+  void shouldHaveReflexiveEquals();
 
   /**
    * If object of one class is equal to another class object, the other class object must be equal to this class object.
@@ -40,7 +40,7 @@ public interface EqualsHashCodeContractTestCase {
    * consequently the classes to which they belong, must bilaterally decide if they are equal or not. They BOTH must
    * agree.
    */
-  void equalsShouldBeSymmetric();
+  void shouldHaveSymmetricEquals();
 
   /**
    * If the first object is equal to the second object and the second object is equal to the third object; then the
@@ -48,7 +48,7 @@ public interface EqualsHashCodeContractTestCase {
    * symmetry principle, one of them can not decide to have a similar contract with another object of different class.
    * All three must agree and follow symmetry principle for various permutations of these three classes.
    */
-  void equalsShouldBeTransitive();
+  void shouldHaveTransitiveEquals();
 
   /**
    * If two objects are equal, then they must have the same hash code, however the opposite is NOT true.

@@ -33,14 +33,14 @@ public final class EqualsHashCodeContractAssert {
   }
 
   /**
-   * @see EqualsHashCodeContractTestCase#equalsShouldBeReflexive()
+   * @see EqualsHashCodeContractTestCase#shouldHaveReflexiveEquals()
    */
   public static void assertEqualsIsReflexive(Object obj) {
     assertEquals(obj, obj);
   }
 
   /**
-   * @see EqualsHashCodeContractTestCase#equalsShouldBeSymmetric()
+   * @see EqualsHashCodeContractTestCase#shouldHaveSymmetricEquals()
    */
   public static void assertEqualsIsSymmetric(Object obj1, Object obj2) {
     assertEquals(obj1, obj2);
@@ -48,7 +48,7 @@ public final class EqualsHashCodeContractAssert {
   }
 
   /**
-   * @see EqualsHashCodeContractTestCase#equalsShouldBeTransitive()
+   * @see EqualsHashCodeContractTestCase#shouldHaveTransitiveEquals()
    */
   public static void assertEqualsIsTransitive(Object obj1, Object obj2, Object obj3) {
     assertEquals(obj1, obj2);
