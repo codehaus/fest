@@ -139,7 +139,7 @@ public class XmlNode {
     return xmlNodeFrom(target.getChildNodes().item(index));
   }
 
-  private XmlNode xmlNodeFrom(Node n) {
+  private static XmlNode xmlNodeFrom(Node n) {
     if (!(n instanceof Element)) return null;
     return new XmlNode((Element)n);
   }

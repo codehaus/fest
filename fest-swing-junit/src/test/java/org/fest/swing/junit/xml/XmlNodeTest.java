@@ -23,8 +23,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.w3c.dom.*;
 
 /**
  * Tests for <code>{@link XmlNode}</code>.
@@ -43,20 +42,62 @@ import org.w3c.dom.Element;
   }
 
   public void shouldAddNewChildWithoutAttributes() {
-    XmlNode child = node.addNewNode("name");
-    Element childTarget = child.target();
-    assertThat(childTarget.getNodeName()).isEqualTo("name");
-    assertThat(childTarget.getParentNode()).isSameAs(node.target());
-    assertThat(childTarget.getAttributes().getLength()).isEqualTo(0);
+    Element child = node.addNewNode("name").target();
+    assertThat(nameOf(child)).isEqualTo("name");
+    assertThat(parentOf(child)).isSameAs(node.target());
+    assertThat(attributeCountOf(child)).isEqualTo(0);
   }
 
   public void shouldAddNewChildWithAttributes() {
-    XmlNode child = node.addNewNode("name", attributes(name("first").value("Leia"), name("last").value("Organa")));
-    Element childTarget = child.target();
-    assertThat(childTarget.getNodeName()).isEqualTo("name");
-    assertThat(childTarget.getAttributes().getLength()).isEqualTo(2);
-    assertThat(childTarget.getAttribute("first")).isEqualTo("Leia");
-    assertThat(childTarget.getAttribute("last")).isEqualTo("Organa");
-    assertThat(childTarget.getParentNode()).isSameAs(node.target());
+    Element child = node.addNewNode("name", attributes(name("first").value("Leia"),
+                                                       name("last").value("Organa"))).target();
+    assertThat(nameOf(child)).isEqualTo("name");
+    assertThat(attributeCountOf(child)).isEqualTo(2);
+    assertThat(child.getAttribute("first")).isEqualTo("Leia");
+    assertThat(child.getAttribute("last")).isEqualTo("Organa");
+    assertThat(parentOf(child)).isSameAs(node.target());
+  }
+
+  private static String nameOf(Element e) {
+    return e.getNodeName();
+  }
+
+  private static Node parentOf(Element e) {
+    return e.getParentNode();
+  }
+
+  public void shouldAddCDataNode() {
+    node.addCdata("My CDATA");
+    Element target = node.target();
+    assertThat(childCountOf(target)).isEqualTo(1);
+    Node child = target.getFirstChild();
+    assertThat(child).isInstanceOf(CDATASection.class);
+    CDATASection cdata = (CDATASection)child;
+    assertThat(cdata.getData()).isEqualTo("My CDATA");
+  }
+
+  public void shouldAddTextNode() {
+    node.addText("Hello World");
+    Element target = node.target();
+    assertThat(childCountOf(target)).isEqualTo(1);
+    Node child = target.getFirstChild();
+    assertThat(child).isInstanceOf(Text.class);
+    Text text = (Text)child;
+    assertThat(text.getData()).isEqualTo("Hello World");
+  }
+
+  public void shouldAddAttribute() {
+    node.addAttribute(name("first").value("Leia"));
+    Element target = node.target();
+    assertThat(attributeCountOf(target)).isEqualTo(1);
+    assertThat(target.getAttribute("first")).isEqualTo("Leia");
+  }
+
+  private int childCountOf(Element e) {
+    return e.getChildNodes().getLength();
+  }
+
+  private static int attributeCountOf(Element childTarget) {
+    return childTarget.getAttributes().getLength();
   }
 }
