@@ -15,12 +15,11 @@
  */
 package org.fest.swing.junit.xml;
 
+import static org.fest.util.Collections.list;
 import static org.fest.util.Objects.*;
 import static org.fest.util.Strings.concat;
 
 import java.util.*;
-
-import org.fest.util.Collections;
 
 /**
  * Understands a collection of attributes of a <code>{@link XmlNode}</code>. This class is intended for internal use
@@ -42,7 +41,7 @@ public class XmlAttributes implements Iterable<XmlAttribute> {
   }
 
   private XmlAttributes(XmlAttribute...attributes) {
-    this.attributes.addAll(Collections.list(attributes));
+    this.attributes.addAll(list(attributes));
   }
 
   /**
