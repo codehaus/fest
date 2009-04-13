@@ -10,24 +10,24 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  *
- * Copyright @2008 the original author or authors.
+ * Copyright @2008-2009 the original author or authors.
  */
 package org.fest.test;
 
-import org.testng.annotations.Test;
-
 import static org.fest.test.ExpectedFailure.expect;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.fail;
 
-import static org.testng.Assert.*;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link ExpectedFailure}</code>.
  *
  * @author Alex Ruiz
  */
-public class ExpectedFailureTest {
+@Test public class ExpectedFailureTest {
 
-  @Test public void shouldPassIfErrorTypeAndMessageMatchExpected() {
+  public void shouldPassIfErrorTypeAndMessageMatchExpected() {
     expect(IllegalArgumentException.class).withMessage("A Test").on(new CodeToTest() {
       public void run() throws Exception {
         throw new IllegalArgumentException("A Test");
@@ -35,7 +35,7 @@ public class ExpectedFailureTest {
     });
   }
 
-  @Test public void shouldFailIfErrorTypeIsNotEqualToExpected() {
+  public void shouldFailIfErrorTypeIsNotEqualToExpected() {
     try {
       expect(IndexOutOfBoundsException.class).withMessage("A Test").on(new CodeToTest() {
         public void run() throws Exception {
@@ -49,7 +49,7 @@ public class ExpectedFailureTest {
     }
   }
 
-  @Test public void shouldFailIfMessageIsNotEqualToExpected() {
+  public void shouldFailIfMessageIsNotEqualToExpected() {
     try {
       expect(IllegalArgumentException.class).withMessage("Some Test").on(new CodeToTest() {
         public void run() throws Exception {

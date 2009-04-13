@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.easytesting</groupId>
   <artifactId>fest-test</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
   <name>FEST Testing</name>
   <description>Utility methods for testing FEST modules</description>
   <inceptionYear>2008</inceptionYear>
@@ -36,7 +36,7 @@
     <dependency>
       <groupId>org.easytesting</groupId>
       <artifactId>fest-util</artifactId>
-      <version>1.0</version>
+      <version>1.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
