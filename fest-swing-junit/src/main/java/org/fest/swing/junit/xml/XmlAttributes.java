@@ -15,9 +15,7 @@
  */
 package org.fest.swing.junit.xml;
 
-import static org.fest.swing.util.Objects.HASH_CODE_PRIME;
-import static org.fest.util.Objects.areEqual;
-import static org.fest.util.Objects.hashCodeFor;
+import static org.fest.util.Objects.*;
 import static org.fest.util.Strings.concat;
 
 import java.util.*;
