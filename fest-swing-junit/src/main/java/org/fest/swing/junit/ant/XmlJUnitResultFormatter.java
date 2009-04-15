@@ -57,6 +57,9 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
     xmlOutputWriter = new XmlOutputWriter();
   }
 
+  // for testing only
+  final TestCollection tests() { return tests; }
+
   /**
    * Sets the stream the formatter is supposed to write its results to.
    * @param out the output stream to use.
@@ -70,7 +73,7 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
    * @param out the <code>String</code> to write.
    */
   public final void setSystemOutput(String out) {
-     formatOutput(SYSTEM_OUT, out);
+    formatOutput(SYSTEM_OUT, out);
   }
 
   /**
@@ -99,6 +102,7 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
                       .writeSuiteProperties(xmlRoot, suite);
     environmentXmlNodeWriter.writeHostName(xmlRoot)
                             .writeTimestamp(xmlRoot);
+    onStartTestSuite(suite);
   }
 
   /**
@@ -139,7 +143,9 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
 
   private XmlNode xmlNodeForFinished(Test test) {
     if (tests.wasFailed(test)) return tests.xmlNodeFor(test);
-    return tests.addXmlNode(test, testXmlNodeWriter.addNewTestXmlNode(xmlRoot, test));
+    XmlNode newTestXmlNode = testXmlNodeWriter.addNewTestXmlNode(xmlRoot, test);
+    tests.addXmlNode(test, newTestXmlNode);
+    return newTestXmlNode;
   }
 
   /**

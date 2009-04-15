@@ -172,6 +172,14 @@ public class XmlNode {
     return target.getTextContent();
   }
 
+  /**
+   * Returns the number of attributes in this node.
+   * @return the number of attributes in this node.
+   */
+  public int attributeCount() {
+    return target.getAttributes().getLength();
+  }
+
   @Override public boolean equals(Object obj) {
     if (this == obj) return true;
     if (obj == null) return false;
