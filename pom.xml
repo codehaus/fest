@@ -434,6 +434,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
+        <version>2.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -446,7 +447,10 @@
         <configuration>
           <xmlPath>${basedir}/src/site/changes.xml</xmlPath>
           <issueLinkTemplate>
+            <!--
             http://code.google.com/p/fest/issues/detail?id=%ISSUE%
+            -->
+            http://jira.codehaus.org/browse/%ISSUE%
           </issueLinkTemplate>
         </configuration>
         <reportSets>
