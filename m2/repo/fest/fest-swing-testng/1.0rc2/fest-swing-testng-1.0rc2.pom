@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="htt//maven.apache.org/POM/4.0.0" xmlns:xsi="htt//www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="htt//maven.apache.org/POM/4.0.0 htt//maven.apache.org/maven-v4_0_0.xsd ">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>fest</groupId>
+  <artifactId>fest-swing-testng</artifactId>
+  <version>1.0rc2</version>
+  <name>FEST Swing - TestNG Extension</name>
+  <description>TestNG-specific extension for FEST-Swing</description>
+  <inceptionYear>2007</inceptionYear>
+  <url>http://fest.easytesting.org/swing</url>
+  <mailingLists>
+    <mailingList>
+      <name>Easy Testing Group</name>
+      <post>http://groups.google.com/group/easytesting</post>
+      <subscribe>http://groups.google.com/group/easytesting</subscribe>
+      <unsubscribe>http://groups.google.com/group/easytesting</unsubscribe>
+    </mailingList>
+  </mailingLists>
+  <scm>
+    <developerConnection>scm:svn:https://fest.googlecode.com/svn/trunk/</developerConnection>
+    <connection>scm:svn:http://fest.googlecode.com/svn/trunk/</connection>
+    <url>http://fisheye2.cenqua.com/browse/fest</url>
+  </scm>
+  <issueManagement>
+    <system>Google Code</system>
+    <url>http://code.google.com/p/fest/issues</url>
+  </issueManagement>
+  <!--parent> 
+    <groupId>fest</groupId>
+    <artifactId>pom-template</artifactId> 
+    <version>1.0</version>
+    <relativePath>../pom-template</relativePath> 
+  </parent-->
+  <dependencies>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>5.7</version>
+      <classifier>jdk15</classifier>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>fest</groupId>
+      <artifactId>fest-swing</artifactId>
+      <version>1.0rc2</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>fest</groupId>
+      <artifactId>fest-reflect</artifactId>
+      <version>1.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>fest</groupId>
+      <artifactId>fest-assert</artifactId>
+      <version>1.0</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

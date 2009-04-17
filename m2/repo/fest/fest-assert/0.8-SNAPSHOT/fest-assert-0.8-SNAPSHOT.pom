@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd ">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>fest</groupId>
+	<artifactId>fest-assert</artifactId>
+	<version>0.8-SNAPSHOT</version>
+	<name>FEST Fluent Assertions</name>
+	<description>'Flexible' or 'fluent' assertions for testing</description>
+	<inceptionYear>2007</inceptionYear>
+	<url>http://code.google.com/p/fest/</url>
+	<mailingLists>
+		<mailingList>
+			<name>Easy Testing Group</name>
+			<post>http://groups.google.com/group/easytesting</post>
+			<subscribe>http://groups.google.com/group/easytesting</subscribe>
+			<unsubscribe>http://groups.google.com/group/easytesting</unsubscribe>
+		</mailingList>
+	</mailingLists>
+	<scm>
+		<developerConnection>scm:svn:https://fest.googlecode.com/svn/trunk/</developerConnection>
+		<connection>scm:svn:http://fest.googlecode.com/svn/trunk/</connection>
+		<url>http://fisheye2.cenqua.com/browse/fest</url>
+	</scm>
+	<issueManagement>
+		<system>Google Code</system>
+		<url>http://code.google.com/p/fest/issues</url>
+	</issueManagement>
+	<!--parent>
+		<groupId>fest</groupId>
+		<artifactId>pom-template</artifactId>
+		<version>1.0</version>
+		<relativePath>../pom-template</relativePath>
+	</parent-->
+	<dependencies>
+		<dependency>
+			<groupId>fest</groupId>
+			<artifactId>fest-util</artifactId>
+			<version>0.2-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>velocity-tools</groupId>
+			<artifactId>velocity-tools</artifactId>
+			<version>1.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>5.5</version>
+			<classifier>jdk15</classifier>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
