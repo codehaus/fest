@@ -285,10 +285,11 @@
       </plugin>
       <plugin>
         <groupId>com.atlassian.maven.plugins</groupId>
-        <artifactId>maven-clover-plugin</artifactId>
+        <artifactId>maven-clover2-plugin</artifactId>
         <configuration>
           <licenseLocation>../clover.license</licenseLocation>
           <includesTestSourceRoots>false</includesTestSourceRoots>
+          <jdk>1.5</jdk>
         </configuration>
         <executions>
           <execution>
@@ -386,10 +387,14 @@
     <plugins>
       <plugin>
         <groupId>com.atlassian.maven.plugins</groupId>
-        <artifactId>maven-clover-plugin</artifactId>
+        <artifactId>maven-clover2-plugin</artifactId>
         <configuration>
           <licenseLocation>../clover.license</licenseLocation>
           <includesTestSourceRoots>false</includesTestSourceRoots>
+          <methodContexts>
+           <private-constructor-noparam-nothrows>(.* )?private +[a-zA-Z0-9_$]+ *\( *\).*</private-constructor-noparam-nothrows>
+          </methodContexts>
+          <contextFilters>@deprecated,private-constructor-noparam-nothrows</contextFilters>
         </configuration>
       </plugin>
       <plugin>
