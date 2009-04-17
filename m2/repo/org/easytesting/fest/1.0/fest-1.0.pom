@@ -186,6 +186,10 @@
       <name>Viet Nguyen</name>
     </contributor>
     <contributor>
+      <name>Stanislaw Osinski</name>
+      <url>http://stanislaw.osinski.name/</url>
+    </contributor>
+    <contributor>
       <name>Matthias Otterbach</name>
     </contributor>
     <contributor>
@@ -281,10 +285,11 @@
       </plugin>
       <plugin>
         <groupId>com.atlassian.maven.plugins</groupId>
-        <artifactId>maven-clover-plugin</artifactId>
+        <artifactId>maven-clover2-plugin</artifactId>
         <configuration>
           <licenseLocation>../clover.license</licenseLocation>
           <includesTestSourceRoots>false</includesTestSourceRoots>
+          <jdk>1.5</jdk>
         </configuration>
         <executions>
           <execution>
@@ -382,10 +387,14 @@
     <plugins>
       <plugin>
         <groupId>com.atlassian.maven.plugins</groupId>
-        <artifactId>maven-clover-plugin</artifactId>
+        <artifactId>maven-clover2-plugin</artifactId>
         <configuration>
           <licenseLocation>../clover.license</licenseLocation>
           <includesTestSourceRoots>false</includesTestSourceRoots>
+          <methodContexts>
+           <private-constructor-noparam-nothrows>(.* )?private +[a-zA-Z0-9_$]+ *\( *\).*</private-constructor-noparam-nothrows>
+          </methodContexts>
+          <contextFilters>@deprecated,private-constructor-noparam-nothrows</contextFilters>
         </configuration>
       </plugin>
       <plugin>
@@ -430,6 +439,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
+        <version>2.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -442,7 +452,10 @@
         <configuration>
           <xmlPath>${basedir}/src/site/changes.xml</xmlPath>
           <issueLinkTemplate>
+            <!--
             http://code.google.com/p/fest/issues/detail?id=%ISSUE%
+            -->
+            http://jira.codehaus.org/browse/%ISSUE%
           </issueLinkTemplate>
         </configuration>
         <reportSets>
