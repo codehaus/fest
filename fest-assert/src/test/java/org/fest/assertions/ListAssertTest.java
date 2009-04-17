@@ -687,6 +687,24 @@ import org.testng.annotations.Test;
       });
   }
 
+  public void shouldFailIfActualDoesNotContainCompletelyDifferentSequence() {
+    expectAssertionError("list:<['Anakin', 'Leia']> does not contain the sequence:<['Han', 'Luke']>").on(
+      new CodeToTest() {
+        public void run() {
+          new ListAssert(list("Anakin", "Leia")).containsSequence("Han", "Luke");
+        }
+      });
+  }
+
+  public void shouldFailIfActualDoesNotContainSomeElementsInSequence() {
+    expectAssertionError("list:<['Anakin', 'Leia']> does not contain the sequence:<['Anakin', 'Han']>").on(
+      new CodeToTest() {
+        public void run() {
+          new ListAssert(list("Anakin", "Leia")).containsSequence("Anakin", "Han");
+        }
+      });
+  }
+
   public void shouldFailShowingDescriptionIfActualDoesNotContainSequence() {
     expectAssertionError("[A Test] list:<['Anakin', 'Leia']> does not contain the sequence:<['Leia', 'Anakin']>").on(
       new CodeToTest() {
@@ -734,8 +752,21 @@ import org.testng.annotations.Test;
     new ListAssert(list("Anakin", "Leia", "Han")).startsWith("Anakin", "Leia");
   }
 
+  public void shouldPassIfActualIsEmptyAndExpectedSequenceToStartWithIsEmpty() {
+    new ListAssert(list()).startsWith();
+  }
+
   public void shouldPassIfActualAndSequenceToStartWithAreEqual() {
     new ListAssert(list("Anakin", "Leia", "Han")).startsWith("Anakin", "Leia", "Han");
+  }
+
+  public void shouldFailIfActualIsSmallerThanExpectedSequenceToStartWith() {
+    expectAssertionError("list:<['Anakin', 'Leia']> does not start with the sequence:<['Anakin', 'Leia', 'Han']>").on(
+      new CodeToTest() {
+        public void run() {
+          new ListAssert(list("Anakin", "Leia")).startsWith("Anakin", "Leia", "Han");
+        }
+      });
   }
 
   public void shouldFailIfActualIsNotEmptyAndSequenceToStartWithIsEmpty() {
@@ -804,8 +835,21 @@ import org.testng.annotations.Test;
     new ListAssert(list("Anakin", "Leia", "Han")).endsWith("Leia", "Han");
   }
 
+  public void shouldPassIfActualIsEmptyAndExpectedSequenceToEndWithIsEmpty() {
+    new ListAssert(list()).endsWith();
+  }
+
   public void shouldPassIfActualAndSequenceToEndWithAreEqual() {
     new ListAssert(list("Anakin", "Leia", "Han")).endsWith("Anakin", "Leia", "Han");
+  }
+
+  public void shouldFailIfActualIsSmallerThanExpectedSequenceToEndWith() {
+    expectAssertionError("list:<['Anakin', 'Leia']> does not end with the sequence:<['Han', 'Anakin', 'Leia']>").on(
+      new CodeToTest() {
+        public void run() {
+          new ListAssert(list("Anakin", "Leia")).endsWith("Han", "Anakin", "Leia");
+        }
+      });
   }
 
   public void shouldFailIfActualIsNotEmptyAndSequenceToEndWithIsEmpty() {

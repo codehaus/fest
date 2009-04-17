@@ -546,6 +546,10 @@ public class DoubleArrayAssertTest {
     new DoubleArrayAssert(55.03, 4345.91).isEqualTo(array(55.00, 4345.0), delta(1.0));
   }
 
+  @Test public void shouldPassIfValuesInArraysAreExactlyEqualWhenUsingDelta() {
+    new DoubleArrayAssert(55.03, 4345.91).isEqualTo(array(55.03, 4345.91), delta(1.0));
+  }
+
   @Test public void shouldPassIfArraysAreTheSameUsingDelta() {
     double[] array = array(55.00, 4345.0);
     new DoubleArrayAssert(array).isEqualTo(array, delta(0.0));
@@ -553,6 +557,14 @@ public class DoubleArrayAssertTest {
 
   @Test public void shouldPassIfArraysAreEqualAndNullUsingDelta() {
     new DoubleArrayAssert(NULL_ARRAY).isEqualTo(null);
+  }
+
+  @Test public void shouldFailIfExpectedArrayIsNullWhenCheckingForEqualityUsingDelta() {
+    expectAssertionError("expected:<null> but was:<[55.03, 4345.91]> using delta:<0.1>").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(55.03, 4345.91).isEqualTo(null, delta(0.1));
+      }
+    });
   }
 
   @Test public void shouldFailIfArraysDoNotHaveEqualSizeAndExpectingEqualUsingDelta() {

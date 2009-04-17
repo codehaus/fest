@@ -16,7 +16,8 @@
 package org.fest.assertions;
 
 import static org.fest.assertions.ComparisonFailureFactory.comparisonFailure;
-import static org.fest.assertions.Formatting.*;
+import static org.fest.assertions.Formatting.format;
+import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Objects.areEqual;
 import static org.fest.util.Strings.concat;
 
@@ -79,9 +80,10 @@ public final class Fail {
   /**
    * Fails with the given message.
    * @param message error message.
+   * @returns the thrown <code>AssertionError</code>.
    * @throws AssertionError with the given message.
    */
-  public static void fail(String message) {
+  public static AssertionError fail(String message) {
     throw new AssertionError(message);
   }
 
@@ -120,7 +122,7 @@ public final class Fail {
   static String errorMessageIfNotLessThan(String message, Object actual, Object value) {
     return concat(format(message), errorMessageIfNotLessThan(actual, value));
   }
-  
+
   static String errorMessageIfNotLessThan(Object actual, Object value) {
     return comparisonFailed(actual, " should be less than:", value);
   }
@@ -140,6 +142,6 @@ public final class Fail {
   private static String comparisonFailed(String message, Object actual, String reason, Object expected) {
     return concat(format(message), "actual value:", inBrackets(actual), reason, inBrackets(expected));
   }
-  
+
   private Fail() {}
 }

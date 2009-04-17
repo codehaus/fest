@@ -16,7 +16,8 @@
 package org.fest.assertions;
 
 import static org.fest.assertions.Fail.*;
-import static org.fest.assertions.Formatting.*;
+import static org.fest.assertions.Formatting.format;
+import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Strings.concat;
 
 /**
@@ -200,7 +201,7 @@ public abstract class GenericAssert<T> extends Assert {
   /**
    * Verifies that the actual value is equal to the given one.
    * @param expected the value to compare the actual value to.
-   * @throws AssertionError if the actual value is not equal to the given one. 
+   * @throws AssertionError if the actual value is not equal to the given one.
    */
   protected final void assertEqualTo(T expected) {
     failIfNotEqual(description(), actual, expected);
@@ -209,7 +210,7 @@ public abstract class GenericAssert<T> extends Assert {
   /**
    * Verifies that the actual value is not equal to the given one.
    * @param obj the value to compare the actual value to.
-   * @throws AssertionError if the actual value is equal to the given one. 
+   * @throws AssertionError if the actual value is equal to the given one.
    */
   protected final void assertNotEqualTo(T obj) {
     failIfEqual(description(), actual, obj);
@@ -226,7 +227,7 @@ public abstract class GenericAssert<T> extends Assert {
   /**
    * Verifies that the actual value is the same as the given one.
    * @param expected the value to compare the actual value to.
-   * @throws AssertionError if the actual value is not the same as the given one. 
+   * @throws AssertionError if the actual value is not the same as the given one.
    */
   protected final void assertSameAs(T expected) {
     failIfNotSame(description(), actual, expected);
@@ -235,7 +236,7 @@ public abstract class GenericAssert<T> extends Assert {
   /**
    * Verifies that the actual value is not the same as the given one.
    * @param expected the value to compare the actual value to.
-   * @throws AssertionError if the actual value is the same as the given one. 
+   * @throws AssertionError if the actual value is the same as the given one.
    */
   protected final void assertNotSameAs(T expected) {
     failIfSame(description(), actual, expected);
@@ -244,9 +245,11 @@ public abstract class GenericAssert<T> extends Assert {
   /**
    * Fails by throwing an <code>{@link AssertionError}</code>.
    * @param reason the reason for the failure, used as the message for the thrown exception.
+   * @returns the thrown <code>AssertionError</code>.
+   * @throws AssertionError using the given reason as the message.
    */
-  protected final void fail(String reason) {
-    Fail.fail(formatted(reason));
+  protected final AssertionError fail(String reason) {
+    throw Fail.fail(formatted(reason));
   }
 
   /**
