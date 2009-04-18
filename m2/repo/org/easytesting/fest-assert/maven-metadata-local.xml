@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><metadata>
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xsi:schemaLocation="http://maven.apache.org/METADATA/1.0.0 http://maven.apache.org/xsd/metadata-1.0.0.xsd" xmlns="http://maven.apache.org/METADATA/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <groupId>org.easytesting</groupId>
   <artifactId>fest-assert</artifactId>
   <version>1.0</version>
@@ -8,6 +10,6 @@
       <version>1.1-SNAPSHOT</version>
       <version>1.1</version>
     </versions>
-    <lastUpdated>20090411070945</lastUpdated>
+    <lastUpdated>20090418065519</lastUpdated>
   </versioning>
 </metadata>
