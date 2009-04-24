@@ -15,13 +15,13 @@
       <action dev="alruiz" type="add" issue="FEST-65" due-to="Stanislaw Osinski">
         Added method 'isEqualTo(double[], Delta)' to DoubleArrayAssert.
       </action>
-      <action dev="alruiz" type="fix" issue="FEST-66" due-to="Juhos Csaba-Zsolt">
-        Method 'isEqualTo(Object[])' in ObjectArrayAssert now uses java.util.Arrays.deepEquals(Object[], Object[])
-        to compare two arrays. 
-      </action>
       <action dev="alruiz" type="remove" issue="FEST-65" due-to="Stanislaw Osinski">
         Converted inner class Delta in DoubleArrayAssert to a top-level class. Inner class Delta has been deprecated and 
         it will be removed in v. 2.0. 
+      </action>
+      <action dev="alruiz" type="fix" issue="FEST-66" due-to="Juhos Csaba-Zsolt">
+        Method 'isEqualTo(Object[])' in ObjectArrayAssert now uses java.util.Arrays.deepEquals(Object[], Object[])
+        to compare two arrays. 
       </action>
       <action dev="alruiz" type="add" issue="FEST-107" due-to="Jean-Francois Poilpret">
         Added method 'isEqualTo(BufferedImage, Threshold)' which tolerates a certain amount of color differences
