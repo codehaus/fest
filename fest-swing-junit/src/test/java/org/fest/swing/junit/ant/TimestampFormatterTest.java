@@ -18,6 +18,7 @@ package org.fest.swing.junit.ant;
 import static java.util.Calendar.*;
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.testng.annotations.BeforeClass;
@@ -41,9 +42,9 @@ import org.testng.annotations.Test;
     assertThat(formatted).isEqualTo("2009-06-13T15:06:10");
   }
 
-  private GregorianCalendar due() {
+  private Calendar due() {
     // June 13th 2009 08:06:10 AM
-    GregorianCalendar calendar = new GregorianCalendar(2009, JUNE, 13, 8, 6, 10);
+    Calendar calendar = new GregorianCalendar(2009, JUNE, 13, 8, 6, 10);
     calendar.set(MILLISECOND, 0);
     calendar.set(AM_PM, AM);
     return calendar;

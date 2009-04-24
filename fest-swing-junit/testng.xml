@@ -5,6 +5,7 @@
     <packages>
       <package name="org.fest.swing.junit.ant"/>
       <package name="org.fest.swing.junit.runner"/>
+      <package name="org.fest.swing.junit.xml"/>
     </packages>
   </test>
 </suite>

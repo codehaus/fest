@@ -42,6 +42,8 @@ import org.testng.annotations.Test;
  */
 @Test public class XmlJUnitResultFormatterTest {
 
+  private static final String ERROR_OR_FAILURE_MESSAGE = "Thrown on purpose";
+
   private ByteArrayOutputStream output;
   private BasicXmlJUnitResultFormatter formatter;
   private TestCollection tests;
@@ -134,13 +136,30 @@ import org.testng.annotations.Test;
     assertTestCaseNodeWasAddedTo(root());
   }
 
-  public void shouldWriteExecutionTimeForFailedAndNotStartedTestWhenTestFinished() {
+  public void shouldWriteTestExecutionEndWhenTestFails() {
     startSuite();
     junit.framework.Test test = mockTest();
-    formatter.addFailure(test, new AssertionFailedError());
-    formatter.endTest(test);
-    assertTestWasStarted(test);
-    assertTestCaseNodeWasAddedTo(root());
+    AssertionFailedError error = errorOrFailure();
+    formatter.addFailure(test, error);
+    XmlNode root = root();
+    assertTestCaseNodeWasAddedTo(root);
+    XmlNode failureNode = firstTestCaseNodeIn(root).child(0);
+    assertThat(failureNode.name()).isEqualTo("failure");
+    assertErrorOrFailureWrittenTo(failureNode);
+    assertThat(formatter.onFailureOrErrorMethod).wasCalledPassing(test, error, failureNode);
+  }
+
+  public void shouldWriteTestExecutionEndWhenErrorThrown() {
+    startSuite();
+    junit.framework.Test test = mockTest();
+    AssertionFailedError error = errorOrFailure();
+    formatter.addError(test, error);
+    XmlNode root = root();
+    assertTestCaseNodeWasAddedTo(root);
+    XmlNode errorNode = firstTestCaseNodeIn(root).child(0);
+    assertThat(errorNode.name()).isEqualTo("error");
+    assertErrorOrFailureWrittenTo(errorNode);
+    assertThat(formatter.onFailureOrErrorMethod).wasCalledPassing(test, error, errorNode);
   }
 
   private JUnitTest startSuite() {
@@ -159,20 +178,36 @@ import org.testng.annotations.Test;
     assertThat(startedTests.keySet()).containsOnly(test);
   }
 
+  private AssertionFailedError errorOrFailure() {
+    return new AssertionFailedError(ERROR_OR_FAILURE_MESSAGE);
+  }
+
   private XmlNode root() {
     return formatter.xmlRootNode();
   }
 
   private void assertTestCaseNodeWasAddedTo(XmlNode root) {
-    XmlNode testNode = root.child(1);
+    XmlNode testNode = firstTestCaseNodeIn(root);
+    assertThat(testNode.name()).isEqualTo("testcase");
     assertThat(testNode.valueOfAttribute("classname")).startsWith("$Proxy");
     assertThat(testNode.valueOfAttribute("name")).isEqualTo("unknown");
     double executionTime = Double.parseDouble(testNode.valueOfAttribute("time"));
     assertThat(executionTime).isGreaterThanOrEqualTo(0);
   }
 
+  private XmlNode firstTestCaseNodeIn(XmlNode root) {
+    return root.child(1);
+  }
+
+  private static void assertErrorOrFailureWrittenTo(XmlNode errorNode) {
+    assertThat(errorNode.valueOfAttribute("message")).isEqualTo(ERROR_OR_FAILURE_MESSAGE);
+    assertThat(errorNode.valueOfAttribute("type")).isEqualTo("junit.framework.AssertionFailedError");
+    assertThat(errorNode.text()).startsWith("junit.framework.AssertionFailedError: " + ERROR_OR_FAILURE_MESSAGE);
+  }
+
   private static class BasicXmlJUnitResultFormatter extends XmlJUnitResultFormatter implements AssertExtension {
     final OnStartTestSuiteAssert onStartTestSuiteMethod = new OnStartTestSuiteAssert();
+    final OnFailureOrErrorAssert onFailureOrErrorMethod = new OnFailureOrErrorAssert();
 
     @Override
     protected void onStartTestSuite(JUnitTest suite) {
@@ -180,7 +215,9 @@ import org.testng.annotations.Test;
     }
 
     @Override
-    protected void onFailureOrError(junit.framework.Test test, Throwable error, XmlNode errorXmlNode) {}
+    protected void onFailureOrError(junit.framework.Test test, Throwable error, XmlNode errorXmlNode) {
+      onFailureOrErrorMethod.calledWith(test, error, errorXmlNode);
+    }
   }
 
   private static class OnStartTestSuiteAssert implements AssertExtension {
@@ -192,9 +229,30 @@ import org.testng.annotations.Test;
       suite = suitePassed;
     }
 
-    void wasCalledPassing(JUnitTest expected) {
+    void wasCalledPassing(JUnitTest expectedSuite) {
       assertThat(called).isTrue();
-      assertThat(suite).isSameAs(expected);
+      assertThat(suite).isSameAs(expectedSuite);
+    }
+  }
+
+  private static class OnFailureOrErrorAssert implements AssertExtension {
+    private boolean called;
+    private junit.framework.Test test;
+    private Throwable error;
+    private XmlNode errorXmlNode;
+
+    void calledWith(junit.framework.Test testPassed, Throwable errorPassed, XmlNode errorXmlNodePassed) {
+      errorXmlNode = errorXmlNodePassed;
+      called = true;
+      test = testPassed;
+      error = errorPassed;
+    }
+
+    void wasCalledPassing(junit.framework.Test expectedTest, Throwable expectedError, XmlNode expectedErrorXmlNode) {
+      assertThat(called).isTrue();
+      assertThat(test).isSameAs(expectedTest);
+      assertThat(error).isSameAs(expectedError);
+      assertThat(errorXmlNode).isEqualTo(expectedErrorXmlNode);
     }
   }
 }

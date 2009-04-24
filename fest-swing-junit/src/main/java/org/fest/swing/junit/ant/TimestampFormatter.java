@@ -22,13 +22,13 @@ import java.util.Date;
 import org.apache.tools.ant.util.DateUtils;
 
 /**
- * Understands SOMETHING DUMMY.
+ * Understands formatting a date using ISO8601-like pattern: <tt>yyyy-MM-ddTHH:mm:ss</tt>. It does not support timezone.
  *
  * @author Alex Ruiz
  */
 class TimestampFormatter {
 
   String format(Date date) {
-    return DateUtils.format(new Date(), ISO8601_DATETIME_PATTERN);
+    return DateUtils.format(date, ISO8601_DATETIME_PATTERN);
   }
 }
