@@ -49,8 +49,8 @@ class TestCollection {
     return started.get(test);
   }
 
-  void addXmlNode(Test test, XmlNode e) {
-    testXml.put(test, e);
+  void addXmlNode(Test test, XmlNode n) {
+    testXml.put(test, n);
   }
 
   XmlNode xmlNodeFor(Test test) {

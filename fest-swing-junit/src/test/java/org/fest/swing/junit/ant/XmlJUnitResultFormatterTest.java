@@ -26,7 +26,10 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
 
+import junit.framework.AssertionFailedError;
+
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
+import org.apache.tools.ant.util.DOMElementWriter;
 import org.fest.assertions.AssertExtension;
 import org.fest.swing.junit.xml.XmlNode;
 import org.testng.annotations.BeforeMethod;
@@ -53,7 +56,7 @@ import org.testng.annotations.Test;
   public void shouldWriteSuiteAndEnvironmentInfoAndCallSubclassHookWhenStartingTestSuite() {
     JUnitTest suite = new JUnitTest("test");
     formatter.startTestSuite(suite);
-    XmlNode root = formatter.xmlRootNode();
+    XmlNode root = root();
     assertThat(root.attributeCount()).isEqualTo(3);
     assertSuiteAndEnvironmentInfoAddedTo(root);
     assertNoPropertiesIn(root);
@@ -64,7 +67,7 @@ import org.testng.annotations.Test;
     JUnitTest suite = startSuite();
     suite.setCounts(18, 8, 6);
     formatter.endTestSuite(suite);
-    XmlNode root = formatter.xmlRootNode();
+    XmlNode root = root();
     assertThat(root.attributeCount()).isEqualTo(7);
     assertThat(root.valueOfAttribute("errors")).isEqualTo("6");
     assertThat(root.valueOfAttribute("failures")).isEqualTo("8");
@@ -73,6 +76,17 @@ import org.testng.annotations.Test;
     assertThat(time).isGreaterThanOrEqualTo(0);
     assertSuiteAndEnvironmentInfoAddedTo(root);
     assertNoPropertiesIn(root);
+    assertThat(textIn(output)).isEqualTo(textOf(root));
+  }
+
+  private static String textOf(XmlNode xml) {
+    ByteArrayOutputStream o = new ByteArrayOutputStream();
+    new XmlOutputWriter().write(xml, o, new DOMElementWriter());
+    return textIn(o);
+  }
+
+  private static String textIn(ByteArrayOutputStream o) {
+    return new String(o.toByteArray());
   }
 
   private static void assertNoPropertiesIn(XmlNode root) {
@@ -117,6 +131,16 @@ import org.testng.annotations.Test;
     junit.framework.Test test = mockTest();
     formatter.endTest(test);
     assertTestWasStarted(test);
+    assertTestCaseNodeWasAddedTo(root());
+  }
+
+  public void shouldWriteExecutionTimeForFailedAndNotStartedTestWhenTestFinished() {
+    startSuite();
+    junit.framework.Test test = mockTest();
+    formatter.addFailure(test, new AssertionFailedError());
+    formatter.endTest(test);
+    assertTestWasStarted(test);
+    assertTestCaseNodeWasAddedTo(root());
   }
 
   private JUnitTest startSuite() {
@@ -135,15 +159,19 @@ import org.testng.annotations.Test;
     assertThat(startedTests.keySet()).containsOnly(test);
   }
 
+  private XmlNode root() {
+    return formatter.xmlRootNode();
+  }
 
-//  private void toString(XmlNode node) {
-//    ByteArrayOutputStream o = new ByteArrayOutputStream();
-//    new XmlOutputWriter().write(node, o);
-//    System.out.println(new String(o.toByteArray()));
-//  }
+  private void assertTestCaseNodeWasAddedTo(XmlNode root) {
+    XmlNode testNode = root.child(1);
+    assertThat(testNode.valueOfAttribute("classname")).startsWith("$Proxy");
+    assertThat(testNode.valueOfAttribute("name")).isEqualTo("unknown");
+    double executionTime = Double.parseDouble(testNode.valueOfAttribute("time"));
+    assertThat(executionTime).isGreaterThanOrEqualTo(0);
+  }
 
   private static class BasicXmlJUnitResultFormatter extends XmlJUnitResultFormatter implements AssertExtension {
-
     final OnStartTestSuiteAssert onStartTestSuiteMethod = new OnStartTestSuiteAssert();
 
     @Override
@@ -152,8 +180,7 @@ import org.testng.annotations.Test;
     }
 
     @Override
-    protected void onFailureOrError(junit.framework.Test test, Throwable error, XmlNode errorXmlNode) {
-    }
+    protected void onFailureOrError(junit.framework.Test test, Throwable error, XmlNode errorXmlNode) {}
   }
 
   private static class OnStartTestSuiteAssert implements AssertExtension {

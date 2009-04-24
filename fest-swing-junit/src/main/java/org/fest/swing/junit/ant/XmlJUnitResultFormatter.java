@@ -151,20 +151,20 @@ public class XmlJUnitResultFormatter implements JUnitResultFormatter {
   /**
    * A test failed.
    * @param test the test.
-   * @param error the exception.
+   * @param failedAssertion the failed assertion.
    */
-  public final void addFailure(Test test, Throwable error) {
-    XmlNode errorXmlNode = formatError(FAILURE, test, error);
-    onFailureOrError(test, error, errorXmlNode);
+  public final void addFailure(Test test, AssertionFailedError failedAssertion) {
+    addFailure(test, (Throwable)failedAssertion);
   }
 
   /**
    * A test failed.
    * @param test the test.
-   * @param failedAssertion the failed assertion.
+   * @param error the exception.
    */
-  public final void addFailure(Test test, AssertionFailedError failedAssertion) {
-    addFailure(test, (Throwable)failedAssertion);
+  public final void addFailure(Test test, Throwable error) {
+    XmlNode errorXmlNode = formatError(FAILURE, test, error);
+    onFailureOrError(test, error, errorXmlNode);
   }
 
   /**

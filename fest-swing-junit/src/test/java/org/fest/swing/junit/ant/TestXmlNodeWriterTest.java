@@ -51,7 +51,8 @@ import org.testng.annotations.Test;
     final XmlNode newNode = mockXmlNode();
     new EasyMockTemplate(targetNode) {
       protected void expectations() {
-        XmlAttributes attributes = attributes(name(ATTR_NAME).value("hello"), name(ATTR_CLASSNAME).value(TestStub.class.getName()));
+        XmlAttributes attributes = attributes(name(ATTR_NAME).value("hello"),
+                                              name(ATTR_CLASSNAME).value(TestStub.class.getName()));
         expect(targetNode.addNewNode(TESTCASE, attributes)).andReturn(newNode);
       }
 
