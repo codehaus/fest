@@ -43,6 +43,7 @@ import org.testng.annotations.Test;
 @Test public class XmlJUnitResultFormatterTest {
 
   private static final String ERROR_OR_FAILURE_MESSAGE = "Thrown on purpose";
+  private static final String CONSOLE_OUTPUT = "Hello World!";
 
   private ByteArrayOutputStream output;
   private BasicXmlJUnitResultFormatter formatter;
@@ -53,6 +54,22 @@ import org.testng.annotations.Test;
     tests = formatter.tests();
     output = new ByteArrayOutputStream();
     formatter.setOutput(output);
+  }
+
+  public void shouldAddSystemOutputToXml() {
+    formatter.startTestSuite(new JUnitTest("test"));
+    formatter.setSystemOutput(CONSOLE_OUTPUT);
+    XmlNode systemOutNode = root().child(1);
+    assertThat(systemOutNode.name()).isEqualTo("system-out");
+    assertThat(systemOutNode.text()).isEqualTo(CONSOLE_OUTPUT);
+  }
+
+  public void shouldAddSystemErrorToXml() {
+    formatter.startTestSuite(new JUnitTest("test"));
+    formatter.setSystemError(CONSOLE_OUTPUT);
+    XmlNode systemErrNode = root().child(1);
+    assertThat(systemErrNode.name()).isEqualTo("system-err");
+    assertThat(systemErrNode.text()).isEqualTo(CONSOLE_OUTPUT);
   }
 
   public void shouldWriteSuiteAndEnvironmentInfoAndCallSubclassHookWhenStartingTestSuite() {
@@ -66,9 +83,23 @@ import org.testng.annotations.Test;
   }
 
   public void shouldWriteSuiteStatisticsAndWriteXmlToOutputStreamWhenEndingTestSuite() {
-    JUnitTest suite = startSuite();
-    suite.setCounts(18, 8, 6);
+    JUnitTest suite = startTestSuiteWithStatistics();
     formatter.endTestSuite(suite);
+    XmlNode root = assertStatisticsAddedToXml();
+    assertNoPropertiesIn(root);
+    assertThat(textIn(output)).isEqualTo(textOf(root));
+  }
+
+  public void shouldNotThrowErrorIfOutputIsNull() {
+    formatter.setOutput(null);
+    JUnitTest suite = startTestSuiteWithStatistics();
+    formatter.endTestSuite(suite);
+    XmlNode root = assertStatisticsAddedToXml();
+    assertNoPropertiesIn(root);
+    assertThat(output.toByteArray()).isEmpty();
+  }
+
+  private XmlNode assertStatisticsAddedToXml() {
     XmlNode root = root();
     assertThat(root.attributeCount()).isEqualTo(7);
     assertThat(root.valueOfAttribute("errors")).isEqualTo("6");
@@ -77,8 +108,13 @@ import org.testng.annotations.Test;
     double time = parseDouble(root.valueOfAttribute("time"));
     assertThat(time).isGreaterThanOrEqualTo(0);
     assertSuiteAndEnvironmentInfoAddedTo(root);
-    assertNoPropertiesIn(root);
-    assertThat(textIn(output)).isEqualTo(textOf(root));
+    return root;
+  }
+
+  private JUnitTest startTestSuiteWithStatistics() {
+    JUnitTest suite = startSuite();
+    suite.setCounts(18, 8, 6);
+    return suite;
   }
 
   private static String textOf(XmlNode xml) {

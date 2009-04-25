@@ -62,6 +62,22 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  public void shouldAddTestNodeAsChildAndSetTestNameAsUnknownIfNull() {
+    final TestStub test = new TestStub(null);
+    final XmlNode newNode = mockXmlNode();
+    new EasyMockTemplate(targetNode) {
+      protected void expectations() {
+        XmlAttributes attributes = attributes(name(ATTR_NAME).value("unknown"),
+                                              name(ATTR_CLASSNAME).value(TestStub.class.getName()));
+        expect(targetNode.addNewNode(TESTCASE, attributes)).andReturn(newNode);
+      }
+
+      protected void codeToTest() {
+        assertThat(writer.addNewTestXmlNode(targetNode, test)).isSameAs(newNode);
+      }
+    }.run();
+  }
+
   public void shouldAddTestExecutionTimeAsAttribute() {
     XmlNode root = new XmlDocument().newRoot("root");
     assertThat(writer.writeTestExecutionTime(root, currentTimeMillis() - 3000)).isSameAs(writer);

@@ -16,7 +16,6 @@
 package org.fest.swing.junit.runner;
 
 import static java.io.File.separator;
-import static org.fest.util.Files.currentFolder;
 import static org.fest.util.Files.delete;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
@@ -34,7 +33,7 @@ class FolderCreator {
 
   File createFolder(File parent, String name) {
     try {
-      String canonicalPath = currentFolder().getCanonicalPath();
+      String canonicalPath = parent.getCanonicalPath();
       File imageFolder = new File(concat(canonicalPath, separator, name));
       delete(imageFolder);
       imageFolder.mkdir();

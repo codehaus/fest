@@ -1,5 +1,5 @@
 /*
- * Created on Apr 2, 2009
+ * Created on Apr 24, 2009
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -15,17 +15,16 @@
  */
 package org.fest.swing.junit.ant;
 
-import java.io.OutputStream;
+import org.fest.swing.annotation.GUITest;
 
 /**
- * Understands utility methods related to <code>{@link OutputStream}</code>s.
+ * Understands a test case with GUI tests and regular non-GUI tests.
  *
  * @author Alex Ruiz
  */
-class StandardOutputStreams {
+public class SomeTest {
 
-  boolean isStandardOutOrErr(OutputStream out) {
-    return out == System.out || out == System.err;
-  }
+  @GUITest public void guiTest() {}
 
+  public void nonGuiTest() {}
 }

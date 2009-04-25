@@ -15,6 +15,7 @@
  */
 package org.fest.swing.junit.ant;
 
+import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.Fail.fail;
@@ -24,6 +25,7 @@ import java.io.*;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.util.DOMElementWriter;
+import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.junit.xml.XmlDocument;
 import org.fest.swing.junit.xml.XmlNode;
 import org.testng.annotations.BeforeMethod;
@@ -44,15 +46,11 @@ import org.w3c.dom.Element;
   }
 
   public void shouldWriteXmlToOutputStream() throws Exception {
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    MyOutputStream out = new MyOutputStream();
     writer.write(xml(), out);
     String actual = new String(out.toByteArray());
-    StringBuilder expected = new StringBuilder();
-    expected.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>").append(LINE_SEPARATOR)
-            .append("<root>").append(LINE_SEPARATOR)
-            .append("  <child />").append(LINE_SEPARATOR)
-            .append("</root>").append(LINE_SEPARATOR);
-    assertThat(actual).isEqualTo(expected.toString());
+    assertThat(actual).isEqualTo(expectedXml());
+    assertThat(out.closed).isTrue();
   }
 
   private XmlNode xml() throws Exception {
@@ -72,12 +70,49 @@ import org.w3c.dom.Element;
       assertThat(expected.getCause()).isSameAs(xmlWriter.error);
     }
   }
+
+  public void shouldNotCloseOutputStreamIfSystemOutOrErr() {
+    final StandardOutputStreams streams = createMock(StandardOutputStreams.class);
+    writer = new XmlOutputWriter(streams);
+    final MyOutputStream out = new MyOutputStream();
+    new EasyMockTemplate(streams) {
+      protected void expectations() {
+        expect(streams.isStandardOutOrErr(out)).andReturn(true);
+      }
+
+      protected void codeToTest() throws Exception {
+        writer.write(xml(), out);
+      }
+    }.run();
+    String actual = new String(out.toByteArray());
+    assertThat(actual).isEqualTo(expectedXml());
+    assertThat(out.closed).isFalse();
+  }
+
+  private String expectedXml() {
+    StringBuilder expected = new StringBuilder();
+    expected.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>").append(LINE_SEPARATOR)
+            .append("<root>").append(LINE_SEPARATOR)
+            .append("  <child />").append(LINE_SEPARATOR)
+            .append("</root>").append(LINE_SEPARATOR);
+    return expected.toString();
+  }
+
   private static class MyDOMElementWriter extends DOMElementWriter {
     final IOException error = new IOException("Thrown on purpose");
 
     @Override
     public void write(Element element, Writer out, int indent, String indentWith) throws IOException {
       throw error;
+    }
+  }
+
+  private static class MyOutputStream extends ByteArrayOutputStream {
+    boolean closed;
+
+    @Override public void close() throws IOException {
+      closed = true;
+      super.close();
     }
   }
 }
