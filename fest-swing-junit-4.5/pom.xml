@@ -8,7 +8,7 @@
   <version>1.2a1-SNAPSHOT</version>
   <name>FEST Swing - JUnit 4.5 Extension</name>
   <description>JUnit 4.5-specific extension for FEST-Swing</description>
-  <inceptionYear>2007</inceptionYear>
+  <inceptionYear>2009</inceptionYear>
   <url>http://fest.easytesting.org/swing</url>
   <parent>
     <groupId>org.easytesting</groupId>
