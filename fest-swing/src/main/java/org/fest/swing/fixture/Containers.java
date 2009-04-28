@@ -21,6 +21,8 @@ import java.awt.Container;
 
 import javax.swing.JFrame;
 
+import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiQuery;
 
 /**
@@ -31,9 +33,17 @@ import org.fest.swing.edt.GuiQuery;
  */
 public final class Containers {
 
+  /** Name of the <code>JFrame</code>s created by this class. */
+  public static final String CREATED_FRAME_NAME = "org.fest.swing.CreatedFrameForContainer";
+
   /**
    * Creates a new <code>{@link JFrame}</code> and uses the given <code>{@link Container}</code> as its content pane.
    * The created <code>JFrame</code> is wrapped and displayed by a <code>{@link FrameFixture}</code>.
+   * <p>
+   * <strong>Note:</strong>This method creates a new <code>{@link Robot}</code>. When using this method, please do not
+   * create any additional instances of <code>Robot</code>. Only one instance of <code>Robot</code> can exist per
+   * test class.
+   * </p>
    * @param contentPane the <code>Container</code> to use as content pane for the <code>JFrame</code> to create.
    * @return the created <code>FrameFixture</code>.
    */
@@ -48,6 +58,11 @@ public final class Containers {
    * The created <code>JFrame</code> is wrapped by a <code>{@link FrameFixture}</code>. Unlike
    * <code>{@link #showInFrame(Container)}</code>, this method does <strong>not</strong> display the created
    * <code>JFrame</code>.
+   * <p>
+   * <strong>Note:</strong>This method creates a new <code>{@link Robot}</code>. When using this method, please do not
+   * create any additional instances of <code>Robot</code>. Only one instance of <code>Robot</code> can exist per
+   * test class.
+   * </p>
    * @param contentPane the <code>Container</code> to use as content pane for the <code>JFrame</code> to create.
    * @return the created <code>FrameFixture</code>.
    */
@@ -55,11 +70,19 @@ public final class Containers {
     return new FrameFixture(frameFor(contentPane));
   }
 
-  private static JFrame frameFor(final Container contentPane) {
+  /**
+   * Creates a new <code>{@link JFrame}</code> and uses the given <code>{@link Container}</code> as its content pane.
+   * The created <code>JFrame</code> has the name specified by <code>{@link #CREATED_FRAME_NAME}</code>. This method
+   * is executed in the Event Dispatch Thread (EDT.)
+   * @param contentPane the <code>Container</code> to use as content pane for the <code>JFrame</code> to create.
+   * @return the created <code>JFrame</code>.
+   */
+  @RunsInEDT
+  public static JFrame frameFor(final Container contentPane) {
     return execute(new GuiQuery<JFrame>() {
       protected JFrame executeInEDT() throws Throwable {
         JFrame frame = new JFrame("Created by FEST");
-        frame.setName("org.fest.swing.FrameFixtureForContainer");
+        frame.setName(CREATED_FRAME_NAME);
         frame.setContentPane(contentPane);
         return frame;
       }
