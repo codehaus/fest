@@ -58,7 +58,7 @@ import org.testng.annotations.*;
     final ImageEncoder encoder = createMock(ImageEncoder.class);
     new EasyMockTemplate(encoder) {
       protected void expectations() throws Throwable {
-        expect(encoder.encodeBase64(image)).andThrow(new IOException("Thrown on purpose"));
+        expect(encoder.encodeBase64(image)).andThrow(thrownOnPurpose());
       }
 
       protected void codeToTest() {
@@ -72,7 +72,7 @@ import org.testng.annotations.*;
     final ImageDecoder decoder = mockImageDecoder();
     new EasyMockTemplate(decoder) {
       protected void expectations() throws Throwable {
-        expect(decoder.decodeBase64(encoded)).andThrow(new IOException("Thrown on purpose"));
+        expect(decoder.decodeBase64(encoded)).andThrow(thrownOnPurpose());
       }
 
       protected void codeToTest() {
@@ -115,13 +115,17 @@ import org.testng.annotations.*;
       protected void expectations() throws Throwable {
         expect(decoder.decodeBase64(encoded)).andReturn(image);
         writer.saveAsPng(image, path);
-        expectLastCall().once();
+        expectLastCall().andThrow(thrownOnPurpose());
       }
 
       protected void codeToTest() {
         assertThat(ImageHandler.decodeBase64AndSaveAsPng(encoded, path, decoder, writer)).isEmpty();
       }
     }.run();
+  }
+
+  private static IOException thrownOnPurpose() {
+    return new IOException("Thrown on purpose");
   }
 
   private static BufferedImage mockImage() {
