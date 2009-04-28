@@ -13,7 +13,7 @@
  *
  * Copyright @2009 the original author or authors.
  */
-package org.fest.swing.junit45.runner;
+package org.fest.swing.junit.v4_5.runner;
 
 import org.fest.swing.annotation.GUITest;
 import org.fest.swing.junit.v4_5.runner.GUITestRunner;
@@ -26,17 +26,12 @@ import org.junit.runner.RunWith;
  * @author Alex Ruiz
  */
 @RunWith(GUITestRunner.class)
-public class TestWithGUITestMethods {
+@GUITest
+public class SomeGUITest {
 
-  @GUITest @Test public void successfulGUITest() {}
+  @Test public void successfulGUITest() {}
 
-  @GUITest @Test public void failedGUITest() {
-    throw new RuntimeException("Failed on purpose");
-  }
-
-  @Test public void successfulNonGUITest() {}
-
-  @Test public void failedNonGUITest() {
+  @Test public void failedGUITest() {
     throw new RuntimeException("Failed on purpose");
   }
 }
