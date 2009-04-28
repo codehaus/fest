@@ -46,9 +46,11 @@ public final class Containers {
    * </p>
    * @param contentPane the <code>Container</code> to use as content pane for the <code>JFrame</code> to create.
    * @return the created <code>FrameFixture</code>.
+   * @see #frameFor(Container)
    */
+  @RunsInEDT
   public static FrameFixture showInFrame(Container contentPane) {
-    FrameFixture frameFixture = createFrameFor(contentPane);
+    FrameFixture frameFixture = frameFixtureFor(contentPane);
     frameFixture.show();
     return frameFixture;
   }
@@ -65,8 +67,10 @@ public final class Containers {
    * </p>
    * @param contentPane the <code>Container</code> to use as content pane for the <code>JFrame</code> to create.
    * @return the created <code>FrameFixture</code>.
+   * @see #frameFor(Container)
    */
-  public static FrameFixture createFrameFor(Container contentPane) {
+  @RunsInEDT
+  public static FrameFixture frameFixtureFor(Container contentPane) {
     return new FrameFixture(frameFor(contentPane));
   }
 

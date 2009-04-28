@@ -60,7 +60,7 @@ public class ContainersTest {
   public void shouldPlaceContainerInJFrameWithoutSowing() {
     FrameFixture frameFixture = null;
     try {
-      frameFixture = Containers.createFrameFor(panel);
+      frameFixture = Containers.frameFixtureFor(panel);
       frameFixture.requireNotVisible();
     } finally {
       cleanUp(frameFixture);
