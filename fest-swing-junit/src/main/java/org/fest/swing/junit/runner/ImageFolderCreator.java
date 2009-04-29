@@ -43,6 +43,7 @@ public class ImageFolderCreator {
   /**
    * Creates the folder where to save screenshots of failing GUI tests. The name of the folder to create is
    * 'failed-gui-tests'. If the folder already exists, it is deleted and recreated again.
+   * @return the created folder.
    * @throws FilesException if any error occurs when creating the folder.
    */
   public File createImageFolder() {
