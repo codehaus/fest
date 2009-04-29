@@ -15,32 +15,7 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.Dimension;
-import java.awt.Point;
-
-import javax.swing.JList;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
-import org.fest.swing.exception.LocationUnavailableException;
-import org.fest.swing.test.core.MethodInvocations;
-import org.fest.swing.test.recorder.ClickRecorder;
-import org.fest.swing.test.swing.TestList;
-import org.fest.swing.test.swing.TestWindow;
-
 import static javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.core.MouseButton.RIGHT_BUTTON;
@@ -52,8 +27,24 @@ import static org.fest.swing.test.core.CommonAssertions.*;
 import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
 import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
-import static org.fest.swing.util.Range.*;
+import static org.fest.swing.util.Range.from;
+import static org.fest.swing.util.Range.to;
 import static org.fest.util.Arrays.array;
+
+import java.awt.Dimension;
+import java.awt.Point;
+
+import javax.swing.*;
+
+import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.core.Robot;
+import org.fest.swing.edt.*;
+import org.fest.swing.exception.LocationUnavailableException;
+import org.fest.swing.test.core.MethodInvocations;
+import org.fest.swing.test.recorder.ClickRecorder;
+import org.fest.swing.test.swing.TestList;
+import org.fest.swing.test.swing.TestWindow;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JListDriver}</code>.
@@ -388,14 +379,14 @@ public class JListDriverTest {
     assertCellReaderWasCalled();
   }
 
-  public void shouldPassIfSelectionIsEqualToExpectedOne() {
+  public void shouldPassIfSelectionValueIsEqualToExpectedOne() {
     setSelectedIndex(dragList, 0);
     robot.waitForIdle();
     driver.requireSelection(dragList, "one");
     assertCellReaderWasCalled();
   }
 
-  public void shouldFailIfExpectingSelectionButThereIsNone() {
+  public void shouldFailIfExpectingSelectionValueButThereIsNone() {
     setSelectedIndex(dragList, (-1));
     robot.waitForIdle();
     try {
@@ -406,7 +397,7 @@ public class JListDriverTest {
     }
   }
 
-  public void shouldFailIfSelectionIsNotEqualToExpectedOne() {
+  public void shouldFailIfSelectionValueIsNotEqualToExpectedOne() {
     setSelectedIndex(dragList, 1);
     robot.waitForIdle();
     try {
@@ -414,6 +405,34 @@ public class JListDriverTest {
       failWhenExpectingException();
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("expected:<'one'> but was:<'two'>");
+    }
+  }
+
+  public void shouldPassIfSelectionIndexIsEqualToExpectedOne() {
+    setSelectedIndex(dragList, 0);
+    robot.waitForIdle();
+    driver.requireSelection(dragList, 0);
+  }
+
+  public void shouldFailIfExpectingSelectionIndexButThereIsNone() {
+    setSelectedIndex(dragList, (-1));
+    robot.waitForIdle();
+    try {
+      driver.requireSelection(dragList, 0);
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("No selection");
+    }
+  }
+
+  public void shouldFailIfSelectionIndexIsNotEqualToExpectedOne() {
+    setSelectedIndex(dragList, 1);
+    robot.waitForIdle();
+    try {
+      driver.requireSelection(dragList, 0);
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("expected:<0> but was:<1>");
     }
   }
 
@@ -521,7 +540,7 @@ public class JListDriverTest {
     }
     assertThat(recorder).wasNotClicked();
   }
-  
+
   public void shouldShowPopupMenuAtItemWithIndex() {
     JPopupMenu popupMenu = setJPopupMenuInDragList();
     ClickRecorder recorder = ClickRecorder.attachTo(dragList);
@@ -707,7 +726,7 @@ public class JListDriverTest {
     disable(dragList);
     robot.waitForIdle();
   }
-  
+
   @RunsInEDT
   private void disableDropList() {
     disable(dropList);

@@ -15,6 +15,26 @@
  */
 package org.fest.swing.driver;
 
+import static java.awt.event.KeyEvent.VK_SHIFT;
+import static java.lang.String.valueOf;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.Fail.fail;
+import static org.fest.swing.awt.AWT.visibleCenterOf;
+import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
+import static org.fest.swing.driver.CommonValidations.validateCellReader;
+import static org.fest.swing.driver.JListContentQuery.contents;
+import static org.fest.swing.driver.JListItemValueQuery.itemValue;
+import static org.fest.swing.driver.JListMatchingItemQuery.centerOfMatchingItemCell;
+import static org.fest.swing.driver.JListMatchingItemQuery.matchingItemIndex;
+import static org.fest.swing.driver.JListScrollToItemTask.*;
+import static org.fest.swing.driver.JListSelectedIndexQuery.selectedIndexOf;
+import static org.fest.swing.driver.JListSelectionValueQuery.NO_SELECTION_VALUE;
+import static org.fest.swing.driver.JListSelectionValueQuery.singleSelectionValue;
+import static org.fest.swing.driver.JListSelectionValuesQuery.selectionValues;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
 import java.awt.Point;
 
 import javax.swing.JList;
@@ -26,31 +46,11 @@ import org.fest.swing.cell.JListCellReader;
 import org.fest.swing.core.MouseButton;
 import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.LocationUnavailableException;
+import org.fest.swing.exception.*;
 import org.fest.swing.util.Pair;
 import org.fest.swing.util.Range.From;
 import org.fest.swing.util.Range.To;
 import org.fest.util.Arrays;
-
-import static java.awt.event.KeyEvent.VK_SHIFT;
-import static java.lang.String.valueOf;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.Fail.fail;
-import static org.fest.swing.awt.AWT.visibleCenterOf;
-import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
-import static org.fest.swing.driver.CommonValidations.validateCellReader;
-import static org.fest.swing.driver.JListContentQuery.contents;
-import static org.fest.swing.driver.JListItemValueQuery.itemValue;
-import static org.fest.swing.driver.JListMatchingItemQuery.*;
-import static org.fest.swing.driver.JListScrollToItemTask.*;
-import static org.fest.swing.driver.JListSelectedIndexQuery.selectedIndexOf;
-import static org.fest.swing.driver.JListSelectionValueQuery.*;
-import static org.fest.swing.driver.JListSelectionValuesQuery.selectionValues;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.util.Strings.*;
 
 /**
  * Understands simulation of user input on a <code>{@link JList}</code>. Unlike <code>JListFixture</code>, this
@@ -103,11 +103,11 @@ public class JListDriver extends JComponentDriver {
     if (values == null) throw new NullPointerException("Array of values should not be null");
     if (Arrays.isEmpty(values)) throw new IllegalArgumentException("Array of values should not be empty");
     new MultipleSelectionTemplate(robot) {
-      int elementCount() { 
-        return values.length; 
+      int elementCount() {
+        return values.length;
       }
-      void selectElement(int index) { 
-        selectItem(list, values[index]); 
+      void selectElement(int index) {
+        selectItem(list, values[index]);
       }
     }.multiSelect();
   }
@@ -250,6 +250,20 @@ public class JListDriver extends JComponentDriver {
   }
 
   /**
+   * Verifies that the selected index in the <code>{@link JList}</code> matches the given value.
+   * @param list the target <code>JList</code>.
+   * @param index the selection index to match.
+   * @throws AssertionError if the selected index does not match the value.
+   * @since 1.2
+   */
+  @RunsInEDT
+  public void requireSelection(final JList list, int index) {
+    int selectedIndex = selectedIndexOf(list);
+    if (selectedIndex == -1) failNoSelection(list);
+    assertThat(selectedIndex).as(selectedIndexProperty(list)).isEqualTo(index);
+  }
+
+  /**
    * Verifies that the selected items in the <code>{@link JList}</code> match the given values.
    * @param list the target <code>JList</code>.
    * @param items the values to match.
@@ -261,7 +275,7 @@ public class JListDriver extends JComponentDriver {
     if (items == null) throw new NullPointerException("The array of items should not be null");
     requireEqualSelection(list, items, selectionOf(list));
   }
-  
+
   /**
    * Returns an array of <code>String</code>s that represents the selection in the given <code>{@link JList}</code>,
    * using this driver's <code>{@link JListCellReader}</code>.
@@ -343,7 +357,7 @@ public class JListDriver extends JComponentDriver {
    * @param index the given index.
    * @throws IllegalStateException if the <code>JList</code> is disabled.
    * @throws IllegalStateException if the <code>JList</code> is not showing on the screen.
-   * @throws IndexOutOfBoundsException if the given index is negative or greater than the index of the last item in the 
+   * @throws IndexOutOfBoundsException if the given index is negative or greater than the index of the last item in the
    * <code>JList</code>.
    */
   @RunsInEDT
@@ -352,14 +366,14 @@ public class JListDriver extends JComponentDriver {
     robot.waitForIdle();
     super.drag(list, cellCenter);
   }
-  
+
   /**
    * Ends a drag operation at the location of the given index.
    * @param list the target <code>JList</code>.
    * @param index the given index.
    * @throws IllegalStateException if the <code>JList</code> is disabled.
    * @throws IllegalStateException if the <code>JList</code> is not showing on the screen.
-   * @throws IndexOutOfBoundsException if the given index is negative or greater than the index of the last item in the 
+   * @throws IndexOutOfBoundsException if the given index is negative or greater than the index of the last item in the
    * <code>JList</code>.
    * @throws ActionFailedException if there is no drag action in effect.
    */

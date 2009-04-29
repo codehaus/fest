@@ -15,30 +15,6 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.Component;
-
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListModel;
-import javax.swing.text.JTextComponent;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.BasicRobot;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
-import org.fest.swing.exception.LocationUnavailableException;
-import org.fest.swing.test.core.MethodInvocations;
-import org.fest.swing.test.swing.TestWindow;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.driver.JComboBoxSelectedIndexQuery.selectedIndexOf;
 import static org.fest.swing.driver.JComboBoxSetEditableTask.setEditable;
@@ -49,6 +25,20 @@ import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
 import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
 import static org.fest.util.Arrays.array;
+
+import java.awt.Component;
+
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
+
+import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.core.BasicRobot;
+import org.fest.swing.core.Robot;
+import org.fest.swing.edt.*;
+import org.fest.swing.exception.LocationUnavailableException;
+import org.fest.swing.test.core.MethodInvocations;
+import org.fest.swing.test.swing.TestWindow;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JComboBoxDriver}</code>.
@@ -191,20 +181,47 @@ public class JComboBoxDriverTest {
         ListModel model = list.getModel();
         int elementCount = model.getSize();
         Object[] elements = new Object[elementCount];
-        for (int i = 0; i < elementCount; i++) 
+        for (int i = 0; i < elementCount; i++)
           elements[i] = model.getElementAt(i);
         return elements;
       }
     });
   }
 
-  public void shouldPassIfItHasExpectedSelection() {
+  public void shouldPassIfItHasExpectedSelectionIndex() {
+    selectFirstItemInComboBox();
+    driver.requireSelection(comboBox, 0);
+  }
+
+  public void shouldFailIfItDoesNotHaveExpectedSelectionIndex() {
+    selectFirstItemInComboBox();
+    try {
+      driver.requireSelection(comboBox, 1);
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("property:'selectedIndex'")
+                                .contains("expected:<1> but was:<0>");
+    }
+  }
+
+  public void shouldFailIfItDoesNotHaveAnySelectionAndExpectingSelectionIndex() {
+    clearSelectionInComboBox();
+    try {
+      driver.requireSelection(comboBox, 1);
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("property:'selectedIndex'")
+                                .contains("No selection");
+    }
+  }
+
+  public void shouldPassIfItHasExpectedSelectionValue() {
     selectFirstItemInComboBox();
     driver.requireSelection(comboBox, "first");
     assertCellReaderWasCalled();
   }
 
-  public void shouldFailIfItDoesNotHaveExpectedSelection() {
+  public void shouldFailIfItDoesNotHaveExpectedSelectionValue() {
     selectFirstItemInComboBox();
     try {
       driver.requireSelection(comboBox, "second");
@@ -215,7 +232,7 @@ public class JComboBoxDriverTest {
     }
   }
 
-  public void shouldFailIfItDoesNotHaveAnySelectionAndExpectingSelection() {
+  public void shouldFailIfItDoesNotHaveAnySelectionAndExpectingSelectionValue() {
     clearSelectionInComboBox();
     try {
       driver.requireSelection(comboBox, "second");
@@ -226,12 +243,12 @@ public class JComboBoxDriverTest {
     }
   }
 
-  public void shouldPassIfItIsEditableAndHasExpectedSelection() {
+  public void shouldPassIfItIsEditableAndHasExpectedSelectionValue() {
     makeComboBoxEditableAndSelectItem("Hello World");
     driver.requireSelection(comboBox, "Hello World");
   }
 
-  public void shouldFailIfItIsEditableAndDoesNotHaveExpectedSelection() {
+  public void shouldFailIfItIsEditableAndDoesNotHaveExpectedSelectionValue() {
     makeComboBoxEditableAndSelectItem("Hello World");
     try {
       driver.requireSelection(comboBox, "second");
@@ -241,13 +258,13 @@ public class JComboBoxDriverTest {
                                 .contains("expected:<'second'> but was:<'Hello World'>");
     }
   }
-  
+
   @RunsInEDT
   private void makeComboBoxEditableAndSelectItem(Object itemToSelect) {
     setEditableAndSetSelectedItem(comboBox, itemToSelect);
     robot.waitForIdle();
   }
-  
+
   @RunsInEDT
   private static void setEditableAndSetSelectedItem(final JComboBox comboBox, final Object itemToSelect) {
     execute(new GuiTask() {
@@ -269,7 +286,7 @@ public class JComboBoxDriverTest {
                                 .contains("No selection");
     }
   }
-  
+
   @RunsInEDT
   private static void setEditableAndClearSelection(final JComboBox comboBox) {
     execute(new GuiTask() {
@@ -360,7 +377,7 @@ public class JComboBoxDriverTest {
     JTextComponent textBox = (JTextComponent)editor;
     assertThat(selectedTextOf(textBox)).isEqualTo(expected);
   }
-  
+
   @RunsInEDT
   private static String selectedTextOf(final JTextComponent textBox) {
     return execute(new GuiQuery<String>() {
@@ -538,7 +555,7 @@ public class JComboBoxDriverTest {
     clearSelectionAndDisable(comboBox);
     robot.waitForIdle();
   }
-  
+
   @RunsInEDT
   private static void clearSelectionAndDisable(final JComboBox comboBox) {
     execute(new GuiTask() {
@@ -589,7 +606,7 @@ public class JComboBoxDriverTest {
 
   private static class JComboBoxCellReaderStub extends BasicJComboBoxCellReader {
     private final MethodInvocations methodInvocations = new MethodInvocations();
-    
+
     JComboBoxCellReaderStub() {}
 
     @Override public String valueAt(JComboBox comboBox, int index) {

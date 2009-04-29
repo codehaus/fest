@@ -408,6 +408,19 @@ public class JComboBoxFixture extends JPopupMenuInvokerFixture<JComboBox> implem
   }
 
   /**
+   * Verifies that the index of the selected item in this fixture's <code>{@link JComboBox}</code> is equal to the given
+   * value.
+   * @param index the expected selection index.
+   * @return this fixture.
+   * @throws AssertionError if the selected index is not equal to the given one.
+   * @since 1.2
+   */
+  public JComboBoxFixture requireSelection(int index) {
+    driver.requireSelection(target, index);
+    return this;
+  }
+
+  /**
    * Verifies that this fixture's <code>{@link JComboBox}</code> does not have any selection.
    * @return this fixture.
    * @throws AssertionError if this fixture's <code>JComboBox</code> has a selection.

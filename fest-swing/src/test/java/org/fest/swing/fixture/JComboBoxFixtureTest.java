@@ -222,7 +222,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldRequireSelection() {
+  public void shouldRequireSelectionValue() {
     final String value = "Hello";
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -232,6 +232,20 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         assertThatReturnsThis(fixture.requireSelection(value));
+      }
+    }.run();
+  }
+
+  public void shouldRequireSelectionIndex() {
+    final int index = 6;
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.requireSelection(target, index);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireSelection(index));
       }
     }.run();
   }

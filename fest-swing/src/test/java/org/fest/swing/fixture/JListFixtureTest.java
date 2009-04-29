@@ -190,7 +190,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldRequireSelection() {
+  public void shouldRequireSelectionValue() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.requireSelection(target, "Frodo");
@@ -199,6 +199,19 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         assertThatReturnsThis(fixture.requireSelection("Frodo"));
+      }
+    }.run();
+  }
+
+  public void shouldRequireSelectionIndex() {
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.requireSelection(target, 6);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireSelection(6));
       }
     }.run();
   }
