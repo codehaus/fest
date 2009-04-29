@@ -26,6 +26,11 @@ import static org.testng.Assert.assertFalse;
 public final class EqualsHashCodeContractAssert {
 
   /**
+   * Verifies that the "equals" implementation of the given object returns <code>false</code> when the object is
+   * compared to <code>null</code>.
+   * @param obj the object to verify.
+   * @throws AssertionError if the "equals" implementation of the given objects returns <code>true</code> when the
+   * object compared to <code>null</code>.
    * @see EqualsHashCodeContractTestCase#shouldNotBeEqualToNull()
    */
   public static void assertIsNotEqualToNull(Object obj) {
@@ -33,6 +38,9 @@ public final class EqualsHashCodeContractAssert {
   }
 
   /**
+   * Verifies that the "equals" implementation of the given object is reflexive.
+   * @param obj the object to verify.
+   * @throws AssertionError if the "equals" implementation of the given object is reflexive.
    * @see EqualsHashCodeContractTestCase#shouldHaveReflexiveEquals()
    */
   public static void assertEqualsIsReflexive(Object obj) {
@@ -40,6 +48,10 @@ public final class EqualsHashCodeContractAssert {
   }
 
   /**
+   * Verifies that the "equals" implementation of the given objects is symmetric.
+   * @param obj1 the object to verify.
+   * @param obj2 the object to compare to.
+   * @throws AssertionError if the "equals" implementation of the given object is not symmetric.
    * @see EqualsHashCodeContractTestCase#shouldHaveSymmetricEquals()
    */
   public static void assertEqualsIsSymmetric(Object obj1, Object obj2) {
@@ -48,6 +60,11 @@ public final class EqualsHashCodeContractAssert {
   }
 
   /**
+   * Verifies that the "equals" implementation of the given objects is transitive.
+   * @param obj1 the object to verify.
+   * @param obj2 an object to compare to.
+   * @param obj3 an object to compare to.
+   * @throws AssertionError if the "equals" implementation of the given objects is not transitive.
    * @see EqualsHashCodeContractTestCase#shouldHaveTransitiveEquals()
    */
   public static void assertEqualsIsTransitive(Object obj1, Object obj2, Object obj3) {
@@ -57,6 +74,10 @@ public final class EqualsHashCodeContractAssert {
   }
 
   /**
+   * Verifies that the "equals/hashCode" contract of the given objects is implemented correctly.
+   * @param obj1 the object to verify.
+   * @param obj2 the object to compare to.
+   * @throws AssertionError if the "equals/hashCode" contract of the given objects is not implemented correctly.
    * @see EqualsHashCodeContractTestCase#shouldMaintainEqualsAndHashCodeContract()
    */
   public static void assertMaintainsEqualsAndHashCodeContract(Object obj1, Object obj2) {
