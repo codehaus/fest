@@ -14,27 +14,50 @@
  */
 package org.fest.swing.core;
 
+import static java.awt.event.InputEvent.*;
+import static java.awt.event.KeyEvent.*;
+import static java.awt.event.WindowEvent.WINDOW_CLOSING;
+import static java.lang.System.currentTimeMillis;
+import static javax.swing.SwingUtilities.getWindowAncestor;
+import static javax.swing.SwingUtilities.isEventDispatchThread;
+import static org.fest.assertions.Fail.fail;
+import static org.fest.swing.awt.AWT.centerOf;
+import static org.fest.swing.awt.AWT.visibleCenterOf;
+import static org.fest.swing.core.ActivateWindowTask.activateWindow;
+import static org.fest.swing.core.ComponentRequestFocusTask.giveFocusTo;
+import static org.fest.swing.core.FocusOwnerFinder.focusOwner;
+import static org.fest.swing.core.FocusOwnerFinder.inEdtFocusOwner;
+import static org.fest.swing.core.InputModifiers.unify;
+import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
+import static org.fest.swing.core.MouseButton.RIGHT_BUTTON;
+import static org.fest.swing.core.WindowAncestorFinder.windowAncestorOf;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.exception.ActionFailedException.actionFailure;
+import static org.fest.swing.format.Formatting.format;
+import static org.fest.swing.format.Formatting.inEdtFormat;
+import static org.fest.swing.hierarchy.NewHierarchy.ignoreExistingComponents;
+import static org.fest.swing.keystroke.KeyStrokeMap.keyStrokeFor;
+import static org.fest.swing.query.ComponentShowingQuery.isShowing;
+import static org.fest.swing.timing.Pause.pause;
+import static org.fest.swing.util.Modifiers.keysFor;
+import static org.fest.swing.util.Modifiers.updateModifierWithKeyCode;
+import static org.fest.swing.util.TimeoutWatch.startWatchWithTimeoutOf;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.isEmpty;
+
 import java.applet.Applet;
 import java.awt.*;
-import java.awt.event.InvocationEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.awt.event.*;
+import java.util.*;
 import java.util.List;
 
-import javax.swing.JMenu;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.WaitTimedOutError;
+import org.fest.swing.exception.*;
 import org.fest.swing.hierarchy.ComponentHierarchy;
 import org.fest.swing.hierarchy.ExistingHierarchy;
 import org.fest.swing.input.InputState;
@@ -42,31 +65,6 @@ import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.monitor.WindowMonitor;
 import org.fest.swing.util.Pair;
 import org.fest.swing.util.TimeoutWatch;
-
-import static java.awt.event.InputEvent.*;
-import static java.awt.event.KeyEvent.*;
-import static java.awt.event.WindowEvent.WINDOW_CLOSING;
-import static java.lang.System.currentTimeMillis;
-import static javax.swing.SwingUtilities.*;
-
-import static org.fest.assertions.Fail.fail;
-import static org.fest.swing.awt.AWT.*;
-import static org.fest.swing.core.ActivateWindowTask.activateWindow;
-import static org.fest.swing.core.ComponentRequestFocusTask.giveFocusTo;
-import static org.fest.swing.core.FocusOwnerFinder.*;
-import static org.fest.swing.core.InputModifiers.unify;
-import static org.fest.swing.core.MouseButton.*;
-import static org.fest.swing.core.WindowAncestorFinder.windowAncestorOf;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.exception.ActionFailedException.actionFailure;
-import static org.fest.swing.format.Formatting.*;
-import static org.fest.swing.hierarchy.NewHierarchy.ignoreExistingComponents;
-import static org.fest.swing.keystroke.KeyStrokeMap.keyStrokeFor;
-import static org.fest.swing.query.ComponentShowingQuery.isShowing;
-import static org.fest.swing.timing.Pause.pause;
-import static org.fest.swing.util.Modifiers.*;
-import static org.fest.swing.util.TimeoutWatch.startWatchWithTimeoutOf;
-import static org.fest.util.Strings.*;
 
 /**
  * Understands simulation of user events on a GUI <code>{@link Component}</code>.
@@ -105,7 +103,7 @@ public class BasicRobot implements Robot {
 
   /**
    * Creates a new <code>{@link Robot}</code> with a new AWT hierarchy. The created <code>Robot</code> will not be able
-   * to access any components that were created before it. 
+   * to access any components that were created before it.
    * @return the created <code>Robot</code>.
    */
   public static Robot robotWithNewAwtHierarchy() {
@@ -308,7 +306,7 @@ public class BasicRobot implements Robot {
       }
     });
   }
-  
+
   @RunsInCurrentThread
   private static void dispose(final ComponentHierarchy hierarchy, Window w) {
     hierarchy.dispose(w);
@@ -361,7 +359,7 @@ public class BasicRobot implements Robot {
   /** {@inheritDoc} */
   @RunsInEDT
   public void click(Component c, Point where, MouseButton button, int times) {
-    if (c != null) focus(c);
+    if (c != null && (!(c instanceof JMenuItem))) focus(c);
     int mask = button.mask;
     int modifierMask = mask & ~BUTTON_MASK;
     mask &= BUTTON_MASK;
@@ -419,12 +417,12 @@ public class BasicRobot implements Robot {
     eventGenerator.moveMouse(c, x, y);
     waitForIdle();
   }
-  
+
   /** {@inheritDoc} */
   public void moveMouse(Point p) {
     moveMouse(p.x, p.y);
   }
-  
+
   /** {@inheritDoc} */
   public void moveMouse(int x, int y) {
     eventGenerator.moveMouse(x, y);
@@ -500,7 +498,7 @@ public class BasicRobot implements Robot {
     while (!isReadyForInput(c)) {
       if (c instanceof JPopupMenu) {
         // wiggle the mouse over the parent menu item to ensure the sub-menu shows
-        Pair<Component, Point> invokerAndCenterOfInvoker = invokerAndCenterOfInvoker((JPopupMenu)c); 
+        Pair<Component, Point> invokerAndCenterOfInvoker = invokerAndCenterOfInvoker((JPopupMenu)c);
         Component invoker = invokerAndCenterOfInvoker.i;
         if (invoker instanceof JMenu) jitter(invoker, invokerAndCenterOfInvoker.ii);
       }
@@ -509,7 +507,7 @@ public class BasicRobot implements Robot {
     }
     return true;
   }
-  
+
   @RunsInEDT
   private static Pair<Component, Point> invokerAndCenterOfInvoker(final JPopupMenu popupMenu) {
     return execute(new GuiQuery<Pair<Component, Point>>() {
@@ -699,7 +697,7 @@ public class BasicRobot implements Robot {
   /**
    * Indicates whether the given <code>{@link Component}</code> is ready for input.
    * <p>
-   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param c the given <code>Component</code>.

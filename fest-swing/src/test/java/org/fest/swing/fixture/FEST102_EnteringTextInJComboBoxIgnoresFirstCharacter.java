@@ -16,6 +16,8 @@ package org.fest.swing.fixture;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.TestGroups.BUG;
+import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.util.Collections.list;
 
 import java.util.Vector;
@@ -27,6 +29,7 @@ import javax.swing.text.JTextComponent;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.BasicRobot;
 import org.fest.swing.core.Robot;
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.test.swing.TestWindow;
 import org.testng.annotations.*;
@@ -36,9 +39,14 @@ import org.testng.annotations.*;
  *
  * @author Alex Ruiz
  */
-@Test public class FEST102_EnteringTextInJComboBoxIgnoresFirstCharacter {
+@Test(groups = { BUG, GUI })
+public class FEST102_EnteringTextInJComboBoxIgnoresFirstCharacter {
 
   private Robot robot;
+
+  @BeforeClass public void setUpOnce() {
+    FailOnThreadViolationRepaintManager.install();
+  }
 
   @BeforeMethod public void setUp() {
     robot = BasicRobot.robotWithNewAwtHierarchy();
