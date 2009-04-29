@@ -15,23 +15,22 @@
  */
 package org.fest.swing.core.matcher;
 
+import static java.lang.String.valueOf;
+import static org.fest.util.Strings.concat;
+
 import javax.swing.text.JTextComponent;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static java.lang.String.valueOf;
-
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands matching a <code>{@link JTextComponent}</code> by type, name or text.
  *
  * @author Alex Ruiz
  */
-public class JTextComponentMatcher extends NamedComponentMatcherTemplate<JTextComponent> {
+public final class JTextComponentMatcher extends NamedComponentMatcherTemplate<JTextComponent> {
 
   private Object text;
-  
+
   /**
    * Creates a new <code>{@link JTextComponentMatcher}</code> that matches a <code>{@link JTextComponent}</code> that:
    * <ol>
@@ -42,14 +41,14 @@ public class JTextComponentMatcher extends NamedComponentMatcherTemplate<JTextCo
    * The following code listing shows how to match a <code>{@link JTextComponent}</code> by name and text:
    * <pre>
    * JTextComponentMatcher m = {@link #withName(String) withName}("ok").{@link #andText(String) andText}("OK");
-   * </pre> 
+   * </pre>
    * </p>
    * <p>
    * The following code listing shows how to match a <code>{@link JTextComponent}</code>, that should be showing on the screen,
    * by name and text:
    * <pre>
    * JTextComponentMatcher m = {@link #withName(String) withName}("ok").{@link #andText(String) andText}("OK").{@link #andShowing() andShowing}();
-   * </pre> 
+   * </pre>
    * </p>
    * @param name the id to match.
    * @return the created matcher.
@@ -57,24 +56,24 @@ public class JTextComponentMatcher extends NamedComponentMatcherTemplate<JTextCo
   public static JTextComponentMatcher withName(String name) {
     return new JTextComponentMatcher(name, ANY);
   }
-  
+
   /**
-   * Creates a new <code>{@link JTextComponentMatcher}</code> that matches a <code>{@link JTextComponent}</code> by its text. 
+   * Creates a new <code>{@link JTextComponentMatcher}</code> that matches a <code>{@link JTextComponent}</code> by its text.
    * @param text the text to match.
    * @return the created matcher.
    */
   public static JTextComponentMatcher withText(String text) {
     return new JTextComponentMatcher(ANY, text);
   }
-  
+
   /**
-   * Creates a new <code>{@link JTextComponentMatcher}</code> that matches any <code>{@link JTextComponent}</code>. 
+   * Creates a new <code>{@link JTextComponentMatcher}</code> that matches any <code>{@link JTextComponent}</code>.
    * @return the created matcher.
    */
   public static JTextComponentMatcher any() {
     return new JTextComponentMatcher(ANY, ANY);
   }
-  
+
   private JTextComponentMatcher(Object name, Object text) {
     super(JTextComponent.class, name);
     this.text = text;
@@ -90,7 +89,7 @@ public class JTextComponentMatcher extends NamedComponentMatcherTemplate<JTextCo
     text = newText;
     return this;
   }
-  
+
   /**
    * Indicates that the <code>{@link JTextComponent}</code> to match should be showing on the screen.
    * @return this matcher.
@@ -103,11 +102,11 @@ public class JTextComponentMatcher extends NamedComponentMatcherTemplate<JTextCo
   /**
    * Indicates whether the text of the given <code>{@link JTextComponent}</code> is equal to the text in this matcher.
    * <p>
-   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param button the <code>JTextComponent</code> to match.
-   * @return <code>true</code> if the text in the <code>JTextComponent</code> is equal to the text in this matcher, 
+   * @return <code>true</code> if the text in the <code>JTextComponent</code> is equal to the text in this matcher,
    * <code>false</code> otherwise.
    */
   @RunsInCurrentThread
@@ -121,7 +120,7 @@ public class JTextComponentMatcher extends NamedComponentMatcherTemplate<JTextCo
         getClass().getName(), "[",
         "name=", quotedName(), ", ",
         "text=", quoted(text), ", ",
-        "requireShowing=", valueOf(requireShowing()), 
+        "requireShowing=", valueOf(requireShowing()),
         "]"
     );
   }

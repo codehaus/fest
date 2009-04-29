@@ -15,23 +15,22 @@
  */
 package org.fest.swing.core.matcher;
 
+import static java.lang.String.valueOf;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Frame;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static java.lang.String.valueOf;
-
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands matching a <code>{@link Frame}</code>  by type, name or title.
  *
  * @author Alex Ruiz
  */
-public class FrameMatcher extends NamedComponentMatcherTemplate<Frame> {
+public final class FrameMatcher extends NamedComponentMatcherTemplate<Frame> {
 
   private Object title;
-  
+
   /**
    * Creates a new <code>{@link FrameMatcher}</code> that matches a <code>{@link Frame}</code> that:
    * <ol>
@@ -42,14 +41,14 @@ public class FrameMatcher extends NamedComponentMatcherTemplate<Frame> {
    * The following code listing shows how to match a <code>{@link Frame}</code> by name and title:
    * <pre>
    * FrameMatcher m = {@link #withName(String) withName}("ok").{@link #andTitle(String) andTitle}("OK");
-   * </pre> 
+   * </pre>
    * </p>
    * <p>
    * The following code listing shows how to match a <code>{@link Frame}</code>, that should be showing on the screen,
    * by name and title:
    * <pre>
    * FrameMatcher m = {@link #withName(String) withName}("ok").{@link #andTitle(String) andTitle}("OK").{@link #andShowing() andShowing}();
-   * </pre> 
+   * </pre>
    * </p>
    * @param name the id to match.
    * @return the created matcher.
@@ -57,24 +56,24 @@ public class FrameMatcher extends NamedComponentMatcherTemplate<Frame> {
   public static FrameMatcher withName(String name) {
     return new FrameMatcher(name, ANY);
   }
-  
+
   /**
-   * Creates a new <code>{@link FrameMatcher}</code> that matches a <code>{@link Frame}</code> by its title. 
+   * Creates a new <code>{@link FrameMatcher}</code> that matches a <code>{@link Frame}</code> by its title.
    * @param title the title to match.
    * @return the created matcher.
    */
   public static FrameMatcher withTitle(String title) {
     return new FrameMatcher(ANY, title);
   }
-  
+
   /**
-   * Creates a new <code>{@link FrameMatcher}</code> that matches any <code>{@link Frame}</code>. 
+   * Creates a new <code>{@link FrameMatcher}</code> that matches any <code>{@link Frame}</code>.
    * @return the created matcher.
    */
   public static FrameMatcher any() {
     return new FrameMatcher(ANY, ANY);
   }
-  
+
   private FrameMatcher(Object name, Object title) {
     super(Frame.class, name);
     this.title = title;
@@ -90,7 +89,7 @@ public class FrameMatcher extends NamedComponentMatcherTemplate<Frame> {
     title = newTitle;
     return this;
   }
-  
+
   /**
    * Indicates that the <code>{@link Frame}</code> to match should be showing on the screen.
    * @return this matcher.
@@ -103,11 +102,11 @@ public class FrameMatcher extends NamedComponentMatcherTemplate<Frame> {
   /**
    * Indicates whether the title of the given <code>{@link Frame}</code> is equal to the title in this matcher.
    * <p>
-   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param frame the <code>Frame</code> to match.
-   * @return <code>true</code> if the title in the <code>Frame</code> is equal to the title in this matcher, 
+   * @return <code>true</code> if the title in the <code>Frame</code> is equal to the title in this matcher,
    * <code>false</code> otherwise.
    */
   @RunsInCurrentThread
@@ -121,7 +120,7 @@ public class FrameMatcher extends NamedComponentMatcherTemplate<Frame> {
         getClass().getName(), "[",
         "name=", quotedName(), ", ",
         "title=", quoted(title), ", ",
-        "requireShowing=", valueOf(requireShowing()), 
+        "requireShowing=", valueOf(requireShowing()),
         "]"
     );
   }
