@@ -15,15 +15,15 @@
  */
 package org.fest.swing.core;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.TestGroups.GUI;
+
 import java.awt.Component;
 import java.util.Collection;
 
 import javax.swing.*;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
@@ -31,11 +31,7 @@ import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link BasicComponentFinder}</code>.
@@ -47,7 +43,7 @@ import static org.fest.swing.test.core.TestGroups.GUI;
 public class BasicComponentFinderTest {
 
   private static final String LABEL = "Label";
-  
+
   private BasicComponentFinder finder;
   private MyWindow windowOne;
   private MyWindow windowTwo;
@@ -248,7 +244,7 @@ public class BasicComponentFinderTest {
                                 .contains("type=javax.swing.JLabel");
     }
   }
-  
+
   public void shouldFindComponentUsingGenericTypeMatcher() {
     JButton foundButton = finder.find(new GenericTypeMatcher<JButton>(JButton.class) {
       protected boolean isMatching(JButton button) {
@@ -323,7 +319,7 @@ public class BasicComponentFinderTest {
     }
   }
 
-  public void shouldReturnAllMatchingComponents() {
+  public void shouldReturnAllComponentsMatchingComponentMatcher() {
     Collection<Component> found = finder.findAll(new ComponentMatcher() {
       public boolean matches(Component c) {
         return c instanceof JTextField;
@@ -332,11 +328,30 @@ public class BasicComponentFinderTest {
     assertThat(found).containsOnly(windowOne.textField, windowOne.anotherTextField);
   }
 
-  public void shouldReturnAllMatchingComponentsInGivenRoot() {
+  public void shouldReturnAllComponentsInGivenRootMatchingComponentMatcher() {
     windowTwo = MyWindow.createAndShow();
     Collection<Component> found = finder.findAll(windowTwo, new ComponentMatcher() {
       public boolean matches(Component c) {
         return c instanceof JButton;
+      }
+    });
+    assertThat(found).containsOnly(windowTwo.button);
+  }
+
+  public void shouldReturnAllComponentsMatchingGenericTypeMatcher() {
+    Collection<JTextField> found = finder.findAll(new GenericTypeMatcher<JTextField>(JTextField.class) {
+      protected boolean isMatching(JTextField c) {
+        return true;
+      }
+    });
+    assertThat(found).containsOnly(windowOne.textField, windowOne.anotherTextField);
+  }
+
+  public void shouldReturnAllComponentsInGivenRootMatchingGenericTypeMatcher() {
+    windowTwo = MyWindow.createAndShow();
+    Collection<JButton> found = finder.findAll(windowTwo, new GenericTypeMatcher<JButton>(JButton.class) {
+      public boolean isMatching(JButton c) {
+        return true;
       }
     });
     assertThat(found).containsOnly(windowTwo.button);

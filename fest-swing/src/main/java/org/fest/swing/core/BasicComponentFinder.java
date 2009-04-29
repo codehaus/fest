@@ -14,6 +14,13 @@
  */
 package org.fest.swing.core;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.format.Formatting.format;
+import static org.fest.swing.hierarchy.NewHierarchy.ignoreExistingComponents;
+import static org.fest.swing.util.System.LINE_SEPARATOR;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.io.ByteArrayOutputStream;
@@ -25,16 +32,7 @@ import javax.swing.JLabel;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.hierarchy.ComponentHierarchy;
-import org.fest.swing.hierarchy.ExistingHierarchy;
-import org.fest.swing.hierarchy.SingleComponentHierarchy;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.format.Formatting.format;
-import static org.fest.swing.hierarchy.NewHierarchy.ignoreExistingComponents;
-import static org.fest.swing.util.System.LINE_SEPARATOR;
-import static org.fest.util.Strings.concat;
+import org.fest.swing.hierarchy.*;
 
 /**
  * Understands GUI <code>{@link java.awt.Component}</code> lookup.
@@ -47,7 +45,7 @@ public final class BasicComponentFinder implements ComponentFinder {
   private final ComponentPrinter printer;
 
   private final FinderDelegate finderDelegate = new FinderDelegate();
-  
+
   private boolean includeHierarchyInComponentLookupException;
 
   /**
@@ -306,6 +304,16 @@ public final class BasicComponentFinder implements ComponentFinder {
 
   /** {@inheritDoc} */
   public Collection<Component> findAll(Container root, ComponentMatcher m) {
+    return finderDelegate.find(hierarchy(root), m);
+  }
+
+  /** {@inheritDoc} */
+  public <T extends Component> Collection<T> findAll(GenericTypeMatcher<T> m) {
+    return finderDelegate.find(hierarchy, m);
+  }
+
+  /** {@inheritDoc} */
+  public <T extends Component> Collection<T> findAll(Container root, GenericTypeMatcher<T> m) {
     return finderDelegate.find(hierarchy(root), m);
   }
 
