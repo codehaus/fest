@@ -1,5 +1,5 @@
 /*
- * Created on Mar 27, 2008
+ * Created on Apr 28, 2009
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -10,10 +10,11 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  *
- * Copyright @2008-2009 the original author or authors.
+ * Copyright @2009 the original author or authors.
  */
 package org.fest.swing.keystroke;
 
+import static java.awt.event.InputEvent.ALT_GRAPH_MASK;
 import static java.awt.event.InputEvent.SHIFT_MASK;
 import static java.awt.event.KeyEvent.*;
 import static org.fest.swing.keystroke.KeyStrokeMapping.mapping;
@@ -24,63 +25,72 @@ import javax.swing.KeyStroke;
 
 /**
  * Understands mapping characters to <code>{@link KeyStroke}</code>s for locale
- * <code>{@link java.util.Locale#ENGLISH ENGLISH}</code>.
+ * <code>{@link java.util.Locale#GERMAN GERMAN}</code>.
  *
- * @author Alex Ruiz
+ * @author Uli Schrempp
  */
-public class KeyStrokeMappingProvider_en implements KeyStrokeMappingProvider {
+public class KeyStrokeMappingProvider_de implements KeyStrokeMappingProvider {
 
   /**
    * Returns the mapping between characters and <code>{@link KeyStroke}</code>s for locale
-   * <code>{@link java.util.Locale#ENGLISH ENGLISH}</code>.
-   * @return the mapping between characters and <code>KeyStroke</code>s for locale <code>ENGLISH</code>.
+   * <code>{@link java.util.Locale#GERMAN GERMAN}</code>.
+   * @return the mapping between characters and <code>KeyStroke</code>s for locale <code>GERMAN</code>.
    */
   public Collection<KeyStrokeMapping> keyStrokeMappings() {
-    List<KeyStrokeMapping> mappings = new ArrayList<KeyStrokeMapping>(100);
+    List<KeyStrokeMapping> mappings = new ArrayList<KeyStrokeMapping>(111);
     mappings.add(mapping('0', VK_0, NO_MASK));
-    mappings.add(mapping(')', VK_0, SHIFT_MASK));
+    mappings.add(mapping('=', VK_0, SHIFT_MASK));
+    mappings.add(mapping('}', VK_0, ALT_GRAPH_MASK));
     mappings.add(mapping('1', VK_1, NO_MASK));
     mappings.add(mapping('!', VK_1, SHIFT_MASK));
     mappings.add(mapping('2', VK_2, NO_MASK));
-    mappings.add(mapping('@', VK_2, SHIFT_MASK));
+    mappings.add(mapping('"', VK_2, SHIFT_MASK));
+    mappings.add(mapping('²', VK_2, ALT_GRAPH_MASK));
     mappings.add(mapping('3', VK_3, NO_MASK));
-    mappings.add(mapping('#', VK_3, SHIFT_MASK));
+    mappings.add(mapping('§', VK_3, SHIFT_MASK));
+    mappings.add(mapping('³', VK_0, ALT_GRAPH_MASK));
     mappings.add(mapping('4', VK_4, NO_MASK));
     mappings.add(mapping('$', VK_4, SHIFT_MASK));
     mappings.add(mapping('5', VK_5, NO_MASK));
     mappings.add(mapping('%', VK_5, SHIFT_MASK));
     mappings.add(mapping('6', VK_6, NO_MASK));
-    mappings.add(mapping('^', VK_6, SHIFT_MASK));
+    mappings.add(mapping('&', VK_6, SHIFT_MASK));
     mappings.add(mapping('7', VK_7, NO_MASK));
-    mappings.add(mapping('&', VK_7, SHIFT_MASK));
+    mappings.add(mapping('/', VK_7, SHIFT_MASK));
+    mappings.add(mapping('{', VK_7, ALT_GRAPH_MASK));
     mappings.add(mapping('8', VK_8, NO_MASK));
-    mappings.add(mapping('*', VK_8, SHIFT_MASK));
+    mappings.add(mapping('(', VK_8, SHIFT_MASK));
+    mappings.add(mapping('[', VK_8, ALT_GRAPH_MASK));
     mappings.add(mapping('9', VK_9, NO_MASK));
-    mappings.add(mapping('(', VK_9, SHIFT_MASK));
+    mappings.add(mapping(')', VK_9, SHIFT_MASK));
+    mappings.add(mapping(']', VK_9, ALT_GRAPH_MASK));
     mappings.add(mapping('a', VK_A, NO_MASK));
     mappings.add(mapping('A', VK_A, SHIFT_MASK));
     mappings.add(mapping('b', VK_B, NO_MASK));
     mappings.add(mapping('B', VK_B, SHIFT_MASK));
-    mappings.add(mapping('`', VK_BACK_QUOTE, NO_MASK));
-    mappings.add(mapping('~', VK_BACK_QUOTE, SHIFT_MASK));
-    mappings.add(mapping('\\', VK_BACK_SLASH, NO_MASK));
-    mappings.add(mapping('|', VK_BACK_SLASH, SHIFT_MASK));
+    mappings.add(mapping('^', VK_BACK_QUOTE, NO_MASK));
+    mappings.add(mapping('°', VK_BACK_QUOTE, SHIFT_MASK));
+    mappings.add(mapping('<', VK_BACK_SLASH, NO_MASK));
+    mappings.add(mapping('>', VK_BACK_SLASH, SHIFT_MASK));
+    mappings.add(mapping('|', VK_BACK_SLASH, ALT_GRAPH_MASK));
     mappings.add(mapping('\b', VK_BACK_SPACE, NO_MASK));
     mappings.add(mapping('c', VK_C, NO_MASK));
     mappings.add(mapping('C', VK_C, SHIFT_MASK));
-    mappings.add(mapping(']', VK_CLOSE_BRACKET, NO_MASK));
-    mappings.add(mapping('}', VK_CLOSE_BRACKET, SHIFT_MASK));
+    mappings.add(mapping('+', VK_CLOSE_BRACKET, NO_MASK));
+    mappings.add(mapping('*', VK_CLOSE_BRACKET, SHIFT_MASK));
+    mappings.add(mapping('~', VK_CLOSE_BRACKET, ALT_GRAPH_MASK));
     mappings.add(mapping(',', VK_COMMA, NO_MASK));
-    mappings.add(mapping('<', VK_COMMA, SHIFT_MASK));
+    mappings.add(mapping(';', VK_COMMA, SHIFT_MASK));
     mappings.add(mapping('d', VK_D, NO_MASK));
     mappings.add(mapping('D', VK_D, SHIFT_MASK));
     mappings.add(mapping('', VK_DELETE, NO_MASK));
     mappings.add(mapping('e', VK_E, NO_MASK));
     mappings.add(mapping('E', VK_E, SHIFT_MASK));
+    mappings.add(mapping('€', VK_E, ALT_GRAPH_MASK));
     mappings.add(mapping('\n', VK_ENTER, NO_MASK));
     mappings.add(mapping('\r', VK_ENTER, NO_MASK));
-    mappings.add(mapping('=', VK_EQUALS, NO_MASK));
-    mappings.add(mapping('+', VK_EQUALS, SHIFT_MASK));
+    mappings.add(mapping('´', VK_EQUALS, NO_MASK));
+    mappings.add(mapping('`', VK_EQUALS, SHIFT_MASK));
     mappings.add(mapping('', VK_ESCAPE, NO_MASK));
     mappings.add(mapping('f', VK_F, NO_MASK));
     mappings.add(mapping('F', VK_F, SHIFT_MASK));
@@ -98,30 +108,33 @@ public class KeyStrokeMappingProvider_en implements KeyStrokeMappingProvider {
     mappings.add(mapping('L', VK_L, SHIFT_MASK));
     mappings.add(mapping('m', VK_M, NO_MASK));
     mappings.add(mapping('M', VK_M, SHIFT_MASK));
-    mappings.add(mapping('-', VK_MINUS, NO_MASK));
-    mappings.add(mapping('_', VK_MINUS, SHIFT_MASK));
+    mappings.add(mapping('µ', VK_M, ALT_GRAPH_MASK));
+    mappings.add(mapping('ß', VK_MINUS, NO_MASK));
+    mappings.add(mapping('?', VK_MINUS, SHIFT_MASK));
+    mappings.add(mapping('\\', VK_MINUS, ALT_GRAPH_MASK));
     mappings.add(mapping('n', VK_N, NO_MASK));
     mappings.add(mapping('N', VK_N, SHIFT_MASK));
     mappings.add(mapping('o', VK_O, NO_MASK));
     mappings.add(mapping('O', VK_O, SHIFT_MASK));
-    mappings.add(mapping('[', VK_OPEN_BRACKET, NO_MASK));
-    mappings.add(mapping('{', VK_OPEN_BRACKET, SHIFT_MASK));
+    mappings.add(mapping('ü', VK_OPEN_BRACKET, NO_MASK));
+    mappings.add(mapping('Ü', VK_OPEN_BRACKET, SHIFT_MASK));
     mappings.add(mapping('p', VK_P, NO_MASK));
     mappings.add(mapping('P', VK_P, SHIFT_MASK));
     mappings.add(mapping('.', VK_PERIOD, NO_MASK));
-    mappings.add(mapping('>', VK_PERIOD, SHIFT_MASK));
+    mappings.add(mapping(':', VK_PERIOD, SHIFT_MASK));
     mappings.add(mapping('q', VK_Q, NO_MASK));
     mappings.add(mapping('Q', VK_Q, SHIFT_MASK));
-    mappings.add(mapping('\'', VK_QUOTE, NO_MASK));
-    mappings.add(mapping('"', VK_QUOTE, SHIFT_MASK));
+    mappings.add(mapping('@', VK_Q, ALT_GRAPH_MASK));
+    mappings.add(mapping('ä', VK_QUOTE, NO_MASK));
+    mappings.add(mapping('Ä', VK_QUOTE, SHIFT_MASK));
     mappings.add(mapping('r', VK_R, NO_MASK));
     mappings.add(mapping('R', VK_R, SHIFT_MASK));
     mappings.add(mapping('s', VK_S, NO_MASK));
     mappings.add(mapping('S', VK_S, SHIFT_MASK));
-    mappings.add(mapping(';', VK_SEMICOLON, NO_MASK));
-    mappings.add(mapping(':', VK_SEMICOLON, SHIFT_MASK));
-    mappings.add(mapping('/', VK_SLASH, NO_MASK));
-    mappings.add(mapping('?', VK_SLASH, SHIFT_MASK));
+    mappings.add(mapping('ö', VK_SEMICOLON, NO_MASK));
+    mappings.add(mapping('Ö', VK_SEMICOLON, SHIFT_MASK));
+    mappings.add(mapping('-', VK_SLASH, NO_MASK));
+    mappings.add(mapping('_', VK_SLASH, SHIFT_MASK));
     mappings.add(mapping(' ', VK_SPACE, NO_MASK));
     mappings.add(mapping('t', VK_T, NO_MASK));
     mappings.add(mapping('T', VK_T, SHIFT_MASK));
@@ -139,4 +152,5 @@ public class KeyStrokeMappingProvider_en implements KeyStrokeMappingProvider {
     mappings.add(mapping('Z', VK_Z, SHIFT_MASK));
     return mappings;
   }
+
 }

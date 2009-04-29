@@ -14,13 +14,12 @@
  */
 package org.fest.swing.keystroke;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.KeyStroke;
-
 import static java.awt.event.InputEvent.SHIFT_MASK;
 import static java.awt.event.KeyEvent.CHAR_UNDEFINED;
+
+import java.util.*;
+
+import javax.swing.KeyStroke;
 
 /**
  * Understands a collection of <code>{@link KeyStrokeMapping}</code>.
@@ -30,6 +29,8 @@ import static java.awt.event.KeyEvent.CHAR_UNDEFINED;
  */
 public class KeyStrokeMap {
 
+  private static final String GERMAN = "de";
+
   private static final Map<Character, KeyStroke> CHAR_TO_KEY_STROKE = new HashMap<Character, KeyStroke>();
   private static final Map<KeyStroke, Character> KEY_STROKE_TO_CHAR = new HashMap<KeyStroke, Character>();
 
@@ -37,19 +38,29 @@ public class KeyStrokeMap {
     initialize();
   }
 
+  public static void main(String[] args) {
+    System.out.println(Locale.GERMAN.getLanguage());
+    System.out.println(Locale.GERMAN.getDisplayLanguage());
+  }
+
   private static void initialize() {
+    Locale locale = Locale.getDefault();
+    if (GERMAN.equalsIgnoreCase(locale.getDisplayLanguage())) {
+      addKeyStrokesFrom(new KeyStrokeMappingProvider_de());
+      return;
+    }
     // for now by default is the "English" keyboard mapping.
     // we'll support for other languages when users request it.
     addKeyStrokesFrom(new KeyStrokeMappingProvider_en());
   }
-  
+
   /**
    * Adds the collection of <code>{@link KeyStrokeMapping}</code>s from the given
    * <code>{@link KeyStrokeMappingProvider}</code> to this map.
    * @param provider the given <code>KeyStrokeMappingProvider</code>.
    */
   public static synchronized void addKeyStrokesFrom(KeyStrokeMappingProvider provider) {
-    for (KeyStrokeMapping entry : provider.keyStrokeMappings()) 
+    for (KeyStrokeMapping entry : provider.keyStrokeMappings())
       add(entry.character(), entry.keyStroke());
   }
 
@@ -57,15 +68,15 @@ public class KeyStrokeMap {
     CHAR_TO_KEY_STROKE.put(character, keyStroke);
     KEY_STROKE_TO_CHAR.put(keyStroke, character);
   }
-  
+
   /**
    * Removes all the character-<code>{@link KeyStroke}</code> mappings.
    */
   public static synchronized void clearKeyStrokes() {
     CHAR_TO_KEY_STROKE.clear();
-    KEY_STROKE_TO_CHAR.clear();    
+    KEY_STROKE_TO_CHAR.clear();
   }
-  
+
   /**
    * Returns the <code>{@link KeyStroke}</code> corresponding to the given character, as best we can guess it, or
    * <code>null</code> if we don't know how to generate it.
