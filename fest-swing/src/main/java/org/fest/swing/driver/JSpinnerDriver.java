@@ -15,6 +15,17 @@
  */
 package org.fest.swing.driver;
 
+import static javax.swing.text.DefaultEditorKit.selectAllAction;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
+import static org.fest.swing.driver.JSpinnerSetValueTask.setValue;
+import static org.fest.swing.driver.JSpinnerValueQuery.valueOf;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.exception.ActionFailedException.actionFailure;
+import static org.fest.swing.format.Formatting.format;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
 import java.awt.Component;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -28,20 +39,7 @@ import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
 import org.fest.swing.core.TypeMatcher;
 import org.fest.swing.edt.GuiTask;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.UnexpectedException;
-
-import static javax.swing.text.DefaultEditorKit.selectAllAction;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
-import static org.fest.swing.driver.JSpinnerSetValueTask.setValue;
-import static org.fest.swing.driver.JSpinnerValueQuery.valueOf;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.exception.ActionFailedException.actionFailure;
-import static org.fest.swing.format.Formatting.format;
-import static org.fest.util.Strings.*;
+import org.fest.swing.exception.*;
 
 /**
  * Understands simulation of user input on a <code>{@link JSpinner}</code>. Unlike <code>JSpinnerFixture</code>, this
@@ -55,7 +53,7 @@ public class JSpinnerDriver extends JComponentDriver {
 
   private static final TypeMatcher EDITOR_MATCHER = new TypeMatcher(JTextComponent.class, true);
   private static final String VALUE_PROPERTY = "value";
-  
+
   /**
    * Creates a new </code>{@link JSpinnerDriver}</code>.
    * @param robot the robot to use to simulate user input.
@@ -97,7 +95,7 @@ public class JSpinnerDriver extends JComponentDriver {
       spinner.setValue(newValue);
     }
   }
-  
+
   /**
    * Increments the value of the <code>{@link JSpinner}</code>.
    * @param spinner the target <code>JSpinner</code>.
@@ -120,7 +118,7 @@ public class JSpinnerDriver extends JComponentDriver {
       }
     });
   }
-  
+
   /**
    * Decrements the value of the <code>{@link JSpinner}</code> the given number of times.
    * @param spinner the target <code>JSpinner</code>.
@@ -185,6 +183,23 @@ public class JSpinnerDriver extends JComponentDriver {
   }
 
   /**
+   * Returns the text displayed in the given <code>{@link JSpinner}</code>. This method first tries to get the text
+   * displayed in the <code>JSpinner</code>'s editor, assuming it is a <code>{@link JTextComponent}</code>. If the
+   * text from the editor cannot be retrieved, it will return the <code>String</code> representation of the value
+   * in the <code>JSpinner</code>'s model.
+   * @param spinner the target <code>JSpinner</code>.
+   * @return the text displayed in the given <code>JSpinner</code>.
+   * @since 1.2
+   */
+  @RunsInEDT
+  public String textOf(JSpinner spinner) {
+    JTextComponent editor = findEditor(spinner);
+    if (editor != null) return JTextComponentTextQuery.textOf(editor);
+    Object value = valueOf(spinner);
+    return value != null ? value.toString() : null;
+  }
+
+  /**
    * Enters and commits the given text in the <code>{@link JSpinner}</code>, assuming its editor has a
    * <code>{@link JTextComponent}</code> under it.
    * @param spinner the target <code>JSpinner</code>.
@@ -230,10 +245,10 @@ public class JSpinnerDriver extends JComponentDriver {
     validate(spinner, editor);
     robot.waitForIdle();
     robot.focusAndWaitForFocusGain(editor);
-    invokeAction(editor, selectAllAction);    
+    invokeAction(editor, selectAllAction);
     robot.enterText(text);
   }
-  
+
   @RunsInEDT
   private JTextComponent findEditor(JSpinner spinner) {
     List<Component> found = new ArrayList<Component>(robot.finder().findAll(spinner, EDITOR_MATCHER));
@@ -253,7 +268,7 @@ public class JSpinnerDriver extends JComponentDriver {
   }
 
   /**
-   * Selects the given value in the given <code>{@link JSpinner}</code>. 
+   * Selects the given value in the given <code>{@link JSpinner}</code>.
    * @param spinner the target <code>JSpinner</code>.
    * @param value the value to select.
    * @throws IllegalStateException if the <code>JSpinner</code> is disabled.

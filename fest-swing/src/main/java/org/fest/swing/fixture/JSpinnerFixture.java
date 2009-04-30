@@ -18,14 +18,9 @@ package org.fest.swing.fixture;
 import javax.swing.JSpinner;
 import javax.swing.text.JTextComponent;
 
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
-import org.fest.swing.core.Robot;
+import org.fest.swing.core.*;
 import org.fest.swing.driver.JSpinnerDriver;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.UnexpectedException;
+import org.fest.swing.exception.*;
 import org.fest.swing.timing.Timeout;
 
 /**
@@ -371,5 +366,17 @@ public class JSpinnerFixture extends JPopupMenuInvokerFixture<JSpinner> implemen
   public JSpinnerFixture requireValue(Object value) {
     driver.requireValue(target, value);
     return this;
+  }
+
+  /**
+   * Returns the text displayed by this fixture's <code>{@link JSpinner}</code>. This method first tries to get the text
+   * displayed in the <code>JSpinner</code>'s editor, assuming it is a <code>{@link JTextComponent}</code>. If the
+   * text from the editor cannot be retrieved, it will return the <code>String</code> representation of the value
+   * in the <code>JSpinner</code>'s model.
+   * @return the text displayed by this fixture's <code>JSpinner</code>.
+   * @since 1.2
+   */
+  public String text() {
+    return driver.textOf(target);
   }
 }

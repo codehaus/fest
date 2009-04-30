@@ -15,28 +15,6 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.Dimension;
-
-import javax.swing.JLabel;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerListModel;
-import javax.swing.text.JTextComponent;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.test.data.ZeroAndNegativeProvider;
-import org.fest.swing.test.swing.TestWindow;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.driver.JSpinnerSetValueTask.setValue;
@@ -49,6 +27,20 @@ import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
 import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
 import static org.fest.util.Arrays.array;
 import static org.fest.util.Strings.concat;
+
+import java.awt.Dimension;
+
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
+
+import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.core.Robot;
+import org.fest.swing.edt.*;
+import org.fest.swing.exception.ActionFailedException;
+import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.test.data.ZeroAndNegativeProvider;
+import org.fest.swing.test.swing.TestWindow;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JSpinnerDriver}</code>.
@@ -66,7 +58,7 @@ public class JSpinnerDriverTest {
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
   }
-  
+
   @BeforeMethod public void setUp() {
     robot = robotWithNewAwtHierarchy();
     driver = new JSpinnerDriver(robot);
@@ -104,7 +96,7 @@ public class JSpinnerDriverTest {
       assertActionFailureDueToNotShowingComponent(e);
     }
   }
-  
+
   public void shouldIncrementValueTheGivenTimes() {
     assertFirstValueIsSelected();
     driver.increment(spinner, 2);
@@ -225,15 +217,6 @@ public class JSpinnerDriverTest {
     driver.editor(spinner);
   }
 
-  @RunsInEDT
-  private static void setJLabelAsEditorIn(final JSpinner spinner) {
-    execute(new GuiTask() {
-      protected void executeInEDT() {
-        spinner.setEditor(new JLabel());
-      }
-    });
-  }
-
   public void shouldEnterTextAndCommit() {
     driver.enterTextAndCommit(spinner, "Gandalf");
     assertLastValueIsSelected();
@@ -257,6 +240,29 @@ public class JSpinnerDriverTest {
     } catch (IllegalStateException e) {
       assertActionFailureDueToNotShowingComponent(e);
     }
+  }
+
+  public void shouldReturnTextFromEditorIfTextComponent() {
+    setValue(spinner, "Frodo");
+    robot.waitForIdle();
+    assertThat(driver.textOf(spinner)).isEqualTo("Frodo");
+  }
+
+  public void shouldReturnTextRepresentationOfValueFromModelIfEditorIsNotTextComponent() {
+    setValue(spinner, "Frodo");
+    robot.waitForIdle();
+    setJLabelAsEditorIn(spinner);
+    robot.waitForIdle();
+    assertThat(driver.textOf(spinner)).isEqualTo("Frodo");
+  }
+
+  @RunsInEDT
+  private static void setJLabelAsEditorIn(final JSpinner spinner) {
+    execute(new GuiTask() {
+      protected void executeInEDT() {
+        spinner.setEditor(new JLabel());
+      }
+    });
   }
 
   public void shouldEnterText() {
@@ -338,7 +344,7 @@ public class JSpinnerDriverTest {
     disable(spinner);
     robot.waitForIdle();
   }
-  
+
   @RunsInEDT
   private void hideWindow() {
     hide(window);

@@ -15,8 +15,10 @@
  */
 package org.fest.swing.fixture;
 
+import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JSpinners.spinner;
 
 import javax.swing.JSpinner;
@@ -117,6 +119,19 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         assertThatReturnsThis(fixture.decrement());
+      }
+    }.run();
+  }
+
+  public void shouldReturnText() {
+    final String text = "Some Text";
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        expect(driver.textOf(target)).andReturn(text);
+      }
+
+      protected void codeToTest() {
+        assertThat(fixture.text()).isEqualTo(text);
       }
     }.run();
   }
