@@ -272,6 +272,17 @@ public class JComboBoxFixture extends JPopupMenuInvokerFixture<JComboBox> implem
   }
 
   /**
+   * Clears the selection in this fixture's <code>{@link JComboBox}</code>. Since this method does not simulate user
+   * input, it does not verifies that this fixture's <code>JComboBox</code> is enabled and showing.
+   * @return this fixture.
+   * @since 1.2
+   */
+  public JComboBoxFixture clearSelection() {
+    driver.clearSelection(target);
+    return this;
+  }
+
+  /**
    * Simulates a user selecting an item in this fixture's <code>{@link JComboBox}</code>.
    * @param index the index of the item to select.
    * @return this fixture.

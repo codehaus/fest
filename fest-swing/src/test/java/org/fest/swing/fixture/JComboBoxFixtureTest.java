@@ -130,6 +130,19 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  public void shouldClearSelection() {
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.clearSelection(target);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.clearSelection());
+      }
+    }.run();
+  }
+
   public void shouldSelectItemUnderIndex() {
     new EasyMockTemplate(driver) {
       protected void expectations() {

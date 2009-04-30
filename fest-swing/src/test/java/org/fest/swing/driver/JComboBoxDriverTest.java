@@ -79,6 +79,12 @@ public class JComboBoxDriverTest {
     assertCellReaderWasCalled();
   }
 
+  public void shouldClearSelection() {
+    selectFirstItemInComboBox();
+    driver.clearSelection(comboBox);
+    assertThat(selectedIndexOf(comboBox)).isEqualTo(-1);
+  }
+
   public void shouldSelectItemAtGivenIndex() {
     clearSelectionInComboBox();
     driver.selectItem(comboBox, 2);

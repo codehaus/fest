@@ -33,6 +33,13 @@ public interface ItemGroupFixture {
   String[] contents();
 
   /**
+   * Clears the selection in this fixture's <code>{@link Component}</code>.
+   * @return this fixture.
+   * @since 1.2
+   */
+  ItemGroupFixture clearSelection();
+
+  /**
    * Simulates a user selecting an item in this fixture's <code>{@link Component}</code>.
    * @param index the index of the item to select.
    * @return this fixture.

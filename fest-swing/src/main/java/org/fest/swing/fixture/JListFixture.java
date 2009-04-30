@@ -137,6 +137,17 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
   }
 
   /**
+   * Clears the selection in this fixture's <code>{@link JList}</code>. Since this method does not simulate user input,
+   * it does not verifies that this fixture's <code>JList</code> is enabled and showing.
+   * @return this fixture.
+   * @since 1.2
+   */
+  public JListFixture clearSelection() {
+    driver.clearSelection(target);
+    return this;
+  }
+
+  /**
    * Simulates a user selecting the items (in the specified range) in this fixture's <code>{@link JList}</code>.
    * @param from the starting point of the selection.
    * @param to the last item to select (inclusive.)

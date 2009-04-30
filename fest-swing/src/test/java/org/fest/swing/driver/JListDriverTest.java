@@ -151,6 +151,13 @@ public class JListDriverTest {
     });
   }
 
+  public void shouldClearSelection() {
+    setSelectedIndex(dragList, 1);
+    robot.waitForIdle();
+    driver.clearSelection(dragList);
+    assertThat(selectedIndexOf(dragList)).isEqualTo(-1);
+  }
+
   public void shouldSelectItemAtGivenIndex() {
     driver.selectItem(dragList, 2);
     assertThat(selectedValue(dragList)).isEqualTo("three");

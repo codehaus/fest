@@ -46,6 +46,7 @@ import org.fest.swing.cell.JListCellReader;
 import org.fest.swing.core.MouseButton;
 import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.*;
 import org.fest.swing.util.Pair;
 import org.fest.swing.util.Range.From;
@@ -167,6 +168,25 @@ public class JListDriver extends JComponentDriver {
   }
 
   private boolean isEmptyArray(int[] array) { return array == null || array.length == 0; }
+
+  /**
+   * Clears the selection in the given <code>{@link JList}</code>. Since this method does not simulate user input, it
+   * does not verifies that the <code>JList</code> is enabled and showing.
+   * @param list the target <code>JList</code>.
+   * @since 1.2
+   */
+  public void clearSelection(JList list) {
+    clearSelectionOf(list);
+    robot.waitForIdle();
+  }
+
+  private static void clearSelectionOf(final JList list) {
+    execute(new GuiTask() {
+      protected void executeInEDT() {
+        list.clearSelection();
+      }
+    });
+  }
 
   /**
    * Selects the items in the specified range.

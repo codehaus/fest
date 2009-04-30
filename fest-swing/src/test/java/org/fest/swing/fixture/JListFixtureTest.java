@@ -95,6 +95,19 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  public void shouldClearSelection() {
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.clearSelection(target);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.clearSelection());
+      }
+    }.run();
+  }
+
   public void shouldSelectItemsInRange() {
     final From from = from(6);
     final To to = to(8);

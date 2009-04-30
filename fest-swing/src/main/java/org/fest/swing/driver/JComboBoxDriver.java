@@ -184,6 +184,18 @@ public class JComboBoxDriver extends JComponentDriver {
     return propertyName(comboBox, SELECTED_INDEX_PROPERTY);
   }
 
+
+  /**
+   * Clears the selection in the given <code>{@link JComboBox}</code>. Since this method does not simulate user input,
+   * it does not verifies that the <code>JComboBox</code> is enabled and showing.
+   * @param comboBox the target <code>JComboBox</code>.
+   * @since 1.2
+   */
+  public void clearSelection(JComboBox comboBox) {
+    setSelectedIndex(comboBox, -1);
+    robot.waitForIdle();
+  }
+
   /**
    * Selects the item under the given index in the <code>{@link JComboBox}</code>.
    * @param comboBox the target <code>JComboBox</code>.
