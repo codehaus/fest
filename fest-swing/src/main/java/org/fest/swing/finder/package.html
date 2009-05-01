@@ -70,9 +70,9 @@ FrameFixture mainFrame = findFrame(MainFrame.class).using(loginDialog.robot);</p
 <p>
   Something that you may find weird in the code examples is &quot;<code>using(loginDialog.robot)</code>.&quot; 
   This is necessary because, in a given test, only one instance of 
-  <code>{@link org.fest.swing.core.RobotFixture RobotFixture}</code> can be 
+  <code>{@link org.fest.swing.core.Robot Robot}</code> can be 
   running, to prevent GUI tests from blocking each other on the screen. In another words, in a test class you can 
-  only use one and only one instance of <code>RobotFixture</code>.
+  only use one and only one instance of <code>Robot</code>.
 </p>    
 </body>
 </html>

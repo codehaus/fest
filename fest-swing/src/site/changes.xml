@@ -5,6 +5,56 @@
     <author email="alex.ruiz.05@gmail.com">Alex Ruiz</author>
   </properties>
   <body>
+    <release version="1.2" date="2009-05-04" description="Subsequent release">
+      <action dev="alruiz" type="add" issue="FEST-29" due-to="Christian Dähn">
+        Rewrote org.fest.swing.junit.runner.GUITestRunner in module 'fest-swing-junit' and moved it as 
+        org.fest.junit.v_4_3_1.runner.GUITestRunner in module 'fest-swing-junit-4.3.1.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-29" due-to="Christian Dähn">
+        Create Runner for JUnit 4.5 as org.fest.swing.junit.v4_5.runner.GUITestRunner, in the project 
+        'fest-swing-junit-4.5'.
+      </action>
+      <action dev="alruiz" type="fix" issue="FEST-37" due-to="Ondrej Medek">
+        Marked as 'final' all concrete classes in package org.fest.swing.core.finder. 
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-46" due-to="Hayden Shorter">
+        Created class Containers, which allows to places a given container inside a JFrame.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-38" due-to="Ondrej Medek">
+        Added methods 'findAll(GenericTypeMatcher)' and 'findAll(Container, GenericTypeMatcher)' to 
+        class org.fest.swing.core.ComponentMatcher.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-85" due-to="Andriy Tsykholyas">
+        Added protected final method 'driver' to all fixtures to allow replacement of component drivers.
+      </action>
+      <action dev="alruiz" type="fix" issue="FEST-102" due-to="Stephen Neal">
+        JComboBoxDriver now sets the focus in the actual editor before entering text.
+      </action>
+      <action dev="alruiz" type="fix" issue="FEST-104" due-to="Tony Eichelberger, Martin Bachmann">
+        JMenuItems no longer receive input focus when being clicked.
+      </action>
+      <action dev="alruiz" type="fix" issue="FEST-106" due-to="Jean-Francois Poilpret">
+        Screenshots of desktop/GUI components are taken in the EDT, only when the EDT is idle.
+      </action>
+      <action dev="alruiz" type="fix" issue="FEST-114" due-to="Eitan Suez">
+        Method 'setUpOnce' (marked with @BeforeClass) in class FestSwingJUnitTestCase is now static.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-115" due-to="Jeanette (Kleopatra)">
+        Added method 'requireSelection(int)' to ItemGroupFixture and its implementations (JComboBoxFixture and 
+        JListFixture.) 
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-117" due-to="Uli Schrempp">
+        Added class org.fest.swing.keystroke.KeyStrokeMappingProvider_de. KeyStrokeMapping now uses this provider if the 
+        language of the default Locale is German.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-120" due-to="Olivier DOREMIEUX">
+        Added method 'text' to JSpinnerFixture.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-121" due-to="Olivier DOREMIEUX">
+        Added method 'clearSelection' to JComboBoxFixture and JListFixture.      
+      </action>
+    </release>
+  
     <release version="1.1" date="2009-02-23" description="Subsequent release">
       <action dev="wanghy" type="fix" issue="FEST-3">
         When cancelling or stopping cell editing, JTableTextComponentEditorCellWriter and JTableComboBoxEditorCellWriter
