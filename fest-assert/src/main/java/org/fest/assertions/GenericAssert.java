@@ -245,7 +245,7 @@ public abstract class GenericAssert<T> extends Assert {
   /**
    * Fails by throwing an <code>{@link AssertionError}</code>.
    * @param reason the reason for the failure, used as the message for the thrown exception.
-   * @returns the thrown <code>AssertionError</code>.
+   * @return the thrown <code>AssertionError</code>.
    * @throws AssertionError using the given reason as the message.
    */
   protected final AssertionError fail(String reason) {

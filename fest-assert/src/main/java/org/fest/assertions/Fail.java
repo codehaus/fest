@@ -80,7 +80,7 @@ public final class Fail {
   /**
    * Fails with the given message.
    * @param message error message.
-   * @returns the thrown <code>AssertionError</code>.
+   * @return the thrown <code>AssertionError</code>.
    * @throws AssertionError with the given message.
    */
   public static AssertionError fail(String message) {
