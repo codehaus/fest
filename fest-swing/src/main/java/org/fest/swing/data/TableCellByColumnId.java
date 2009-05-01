@@ -16,14 +16,11 @@
 package org.fest.swing.data;
 
 import static java.lang.String.valueOf;
-import static org.fest.util.Objects.HASH_CODE_PRIME;
-import static org.fest.util.Objects.hashCodeFor;
+import static org.fest.util.Objects.*;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
 
 import javax.swing.JTable;
-
-import org.fest.util.Objects;
 
 /**
  * Understands a cell in a <code>{@link JTable}</code>.
@@ -96,7 +93,7 @@ public class TableCellByColumnId {
     if (obj == null) return false;
     if (!(obj instanceof TableCellByColumnId)) return false;
     TableCellByColumnId other = (TableCellByColumnId) obj;
-    if (!Objects.areEqual(columnId, other.columnId)) return false;
+    if (!areEqual(columnId, other.columnId)) return false;
     return row == other.row;
   }
 
