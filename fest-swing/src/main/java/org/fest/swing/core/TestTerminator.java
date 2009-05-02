@@ -1,21 +1,19 @@
 /*
  * Created on Jul 19, 2008
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * Copyright @2008-2009 the original author or authors.
  */
 package org.fest.swing.core;
-
-import java.awt.Frame;
 
 /**
  * Understands terminating running FEST-Swing tests.
@@ -24,16 +22,28 @@ import java.awt.Frame;
  */
 class TestTerminator {
 
+  private final ThreadsSource threadsSource;
+  private final FrameDisposer frameDisposer;
+
+  TestTerminator() {
+    this(new ThreadsSource(), new FrameDisposer());
+  }
+
+  TestTerminator(ThreadsSource threadsSource, FrameDisposer frameDisposer) {
+    this.threadsSource = threadsSource;
+    this.frameDisposer = frameDisposer;
+  }
+
   /*
-   * We do three things to signal an abort. 
-   * 1) sent an interrupt signal to main thread 
+   * We do three things to signal an abort.
+   * 1) sent an interrupt signal to main thread
    * 2) dispose all available frames.
    * 3) throw RuntimeException on AWT event thread
-   */  
+   */
   void terminateTests() {
     pokeMainThread();
-    disposeFrames();
-    throw new RuntimeException("User aborted FEST-Swing tests.");
+    frameDisposer.disposeFrames();
+    throw new RuntimeException("User aborted FEST-Swing tests");
   }
 
   /*
@@ -41,21 +51,8 @@ class TestTerminator {
    * if it is in a {@link Object#wait()} or {@link Thread#sleep(long)} method.
    */
   private void pokeMainThread() {
-    for (Thread t : allThreads()) if (isMain(t)) t.interrupt();
-  }
-
-  private Thread[] allThreads() {
-    Thread[] all = new Thread[Thread.activeCount()];
-    Thread.enumerate(all);
-    return all;
-  }
-  
-  private boolean isMain(Thread thread) {
-    return "main".equalsIgnoreCase(thread.getName());
-  }
-
-  private void disposeFrames() {
-    for (Frame f : Frame.getFrames()) f.dispose();
+    Thread mainThread = threadsSource.mainThread();
+    if (mainThread != null) mainThread.interrupt();
   }
 
   static {
