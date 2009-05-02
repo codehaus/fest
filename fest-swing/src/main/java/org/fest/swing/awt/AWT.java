@@ -14,27 +14,20 @@
  */
 package org.fest.swing.awt;
 
+import static java.awt.event.InputEvent.BUTTON2_MASK;
+import static java.awt.event.InputEvent.BUTTON3_MASK;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.util.Platform.isWindows;
+import static org.fest.util.Strings.concat;
+
 import java.awt.*;
 import java.awt.event.InputEvent;
 
-import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.util.MouseEventTarget;
-
-import static java.awt.event.InputEvent.*;
-import static javax.swing.SwingUtilities.convertPoint;
-
-import static org.fest.reflect.core.Reflection.method;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.query.ComponentParentQuery.parentOf;
-import static org.fest.swing.util.Platform.isWindows;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands utility methods related to AWT.
@@ -52,7 +45,7 @@ public class AWT {
   /**
    * Translates the given coordinates to the location on screen of the given <code>{@link Component}</code>.
    * <p>
-   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param c the given <code>Component</code>.
@@ -69,7 +62,7 @@ public class AWT {
     return p;
   }
 
-  
+
   /**
    * Returns a point at the center of the visible area of the given <code>{@link Component}</code>.
    * @param c the given <code>Component</code>.
@@ -86,9 +79,9 @@ public class AWT {
   }
 
   /**
-   * Returns a point at the center of the given <code>{@link Component}</code>.   
+   * Returns a point at the center of the given <code>{@link Component}</code>.
    * <p>
-   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param c the given <code>Component</code>.
@@ -103,7 +96,7 @@ public class AWT {
   /**
    * Returns a point at the center of the visible rectangle of the given <code>{@link JComponent}</code>.
    * <p>
-   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param c the given <code>JComponent</code>.
@@ -127,7 +120,7 @@ public class AWT {
   /**
    * Returns the insets of the given <code>{@link Container}</code>, or an empty one if no insets can be found.
    * <p>
-   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param c the given <code>Container</code>.
@@ -167,7 +160,7 @@ public class AWT {
    * Returns the invoker, if any, of the given <code>{@link Component}</code>; or <code>null</code>, if the
    * <code>Component</code> is not on a pop-up of any sort.
    * <p>
-   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param c the given <code>Component</code>.
@@ -183,10 +176,10 @@ public class AWT {
 
   /**
    * Safe version of <code>{@link Component#getLocationOnScreen}</code>, which avoids lockup if an AWT pop-up menu is
-   * showing. The AWT pop-up holds the AWT tree lock when showing, which lock is required by 
+   * showing. The AWT pop-up holds the AWT tree lock when showing, which lock is required by
    * <code>getLocationOnScreen</code>.
    * <p>
-   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param c the given <code>Component</code>.
@@ -207,35 +200,6 @@ public class AWT {
   }
 
   /**
-   * Returns whether there is an AWT pop-up menu currently showing.
-   * @return <code>true</code> if an AWT pop-up menu is currently showing, <code>false</code> otherwise.
-   */
-  public static boolean isAWTPopupMenuBlocking() {
-    // Abbot: For now, just do a quick check to see if a PopupMenu is active on w32. Extend it if we find other common
-    // situations that might block the EDT, but for now, keep it simple and restricted to what we've run into.
-    return /* Bugs.showAWTPopupMenuBlocks() && */isAWTTreeLockHeld();
-  }
-
-  /**
-   * If a <code>Component</code> does not have mouse events enabled, use the first ancestor which does.
-   * @param c the given <code>Component</code>.
-   * @param eventId the id of the mouse event to verify.
-   * @param where the x,y coordinates relative to the given <code>Component</code>.
-   * @return the new target for the mouse event.
-   */
-  @RunsInEDT
-  public static MouseEventTarget retargetMouseEvent(final Component c, int eventId, final Point where) {
-    Component source = c;
-    Point coordinates = where;
-    while (!(c instanceof Window) && !eventTypeEnabled(source, eventId)) {
-      Container parent = parentOf(source);
-      coordinates = convertPoint(source, coordinates.x, coordinates.y, parent);
-      source = parent;
-    }
-    return new MouseEventTarget(source, coordinates);
-  }
-
-  /**
    * Returns whether the platform registers a pop-up on mouse press.
    * @return <code>true</code> if the platform registers a pop-up on mouse press, <code>false</code> otherwise.
    */
@@ -250,25 +214,6 @@ public class AWT {
    */
   public static int popupMask() {
     return POPUP_ON_BUTTON2 ? BUTTON2_MASK : BUTTON3_MASK;
-  }
-
-  private static boolean eventTypeEnabled(Component c, int eventId) {
-    // certain AWT components should have events enabled, even if they claim not to.
-    if (c instanceof Choice) return true;
-    try {
-      AWTEvent event = fakeAWTEventFrom(c, eventId);
-      return method("eventEnabled").withReturnType(boolean.class)
-                                   .withParameterTypes(AWTEvent.class)
-                                   .in(c).invoke(event);
-    } catch (RuntimeException e) {
-      return true;
-    }
-  }
-
-  private static AWTEvent fakeAWTEventFrom(Component c, int eventId) {
-    return new AWTEvent(c, eventId) {
-      private static final long serialVersionUID = 1L;
-    };
   }
 
   /**

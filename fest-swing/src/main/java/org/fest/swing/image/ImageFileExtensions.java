@@ -1,5 +1,5 @@
 /*
- * Created on Apr 27, 2009
+ * Created on May 1, 2009
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,28 +13,17 @@
  *
  * Copyright @2009 the original author or authors.
  */
-package org.fest.swing.junit.ant;
-
-import static org.fest.swing.image.ScreenshotTaker.PNG_EXTENSION;
-import static org.fest.util.Files.newFile;
-
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+package org.fest.swing.image;
 
 /**
- * Understands how to write an image as a file in the file system.
+ * Understands common image file extensions.
  *
  * @author Alex Ruiz
  */
-class ImageFileWriter {
+public final class ImageFileExtensions {
 
-  void saveAsPng(BufferedImage image, String path) throws IOException {
-    File newFile = new File(path);
-    if (newFile.exists()) return;
-    newFile = newFile(path);
-    ImageIO.write(image, PNG_EXTENSION, newFile);
-  }
+  /** PNG file extension */
+  public static final String PNG = "png";
+
+  private ImageFileExtensions() {}
 }

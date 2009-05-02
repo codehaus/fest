@@ -17,7 +17,7 @@ package org.fest.swing.junit.runner;
 
 import static java.io.File.separator;
 import static java.util.logging.Level.WARNING;
-import static org.fest.swing.image.ScreenshotTaker.PNG_EXTENSION;
+import static org.fest.swing.image.ImageFileExtensions.PNG;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
 
@@ -57,7 +57,7 @@ public class FailureScreenshotTaker {
    */
   public void saveScreenshot(String failedTest) {
     try {
-      String fileName = concat(imageFolder.getCanonicalPath(), separator, failedTest, ".",  PNG_EXTENSION);
+      String fileName = concat(imageFolder.getCanonicalPath(), separator, failedTest, ".", PNG);
       screenshotTaker.saveDesktopAsPng(fileName);
       logger.info(concat("Screenshot of failed test saved as ", quote(fileName)));
     } catch (Exception e) {

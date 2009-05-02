@@ -15,22 +15,20 @@
  */
 package org.fest.swing.core.matcher;
 
-import javax.swing.JTextField;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.builder.JDialogs.dialog;
+import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.swing.test.core.TestGroups.GUI;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import javax.swing.JTextField;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.builder.JTextFields.textField;
-import static org.fest.swing.test.core.TestGroups.GUI;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JTextComponentMatcher}</code>.
@@ -42,6 +40,16 @@ import static org.fest.swing.test.core.TestGroups.GUI;
 
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
+  }
+
+  public void shouldReturnTrueIfMatchingAnyJTextComponent() {
+    JTextComponentMatcher matcher = JTextComponentMatcher.any();
+    assertThat(matcher.matches(textField().createNew())).isTrue();
+  }
+
+  public void shouldReturnFalseIfComponentIsNotJTextComponent() {
+    JTextComponentMatcher matcher = JTextComponentMatcher.any();
+    assertThat(matcher.matches(dialog().createNew())).isFalse();
   }
 
   public void shouldReturnTrueIfNameIsEqualToExpected() {
@@ -71,7 +79,7 @@ import static org.fest.swing.test.core.TestGroups.GUI;
     JTextField textField = textField().withName(name).withText(text).createNew();
     assertThat(matcher.matches(textField)).isFalse();
   }
-  
+
   @DataProvider(name = "notMatchingNameAndText")
   public Object[][] notMatchingNameAndText() {
     return new Object[][] {

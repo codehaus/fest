@@ -15,22 +15,20 @@
  */
 package org.fest.swing.core.matcher;
 
-import javax.swing.JButton;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.builder.JButtons.button;
+import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.swing.test.core.TestGroups.GUI;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import javax.swing.JButton;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.builder.JButtons.button;
-import static org.fest.swing.test.core.TestGroups.GUI;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JButtonMatcher}</code>.
@@ -42,6 +40,16 @@ import static org.fest.swing.test.core.TestGroups.GUI;
 
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
+  }
+
+  public void shouldReturnTrueIfMatchingAnyJButton() {
+    JButtonMatcher matcher = JButtonMatcher.any();
+    assertThat(matcher.matches(button().createNew())).isTrue();
+  }
+
+  public void shouldReturnFalseIfComponentIsNotJButton() {
+    JButtonMatcher matcher = JButtonMatcher.any();
+    assertThat(matcher.matches(textField().createNew())).isFalse();
   }
 
   public void shouldReturnTrueIfNameIsEqualToExpected() {
@@ -71,7 +79,7 @@ import static org.fest.swing.test.core.TestGroups.GUI;
     JButton button = button().withName(name).withText(text).createNew();
     assertThat(matcher.matches(button)).isFalse();
   }
-  
+
   @DataProvider(name = "notMatchingNameAndText")
   public Object[][] notMatchingNameAndText() {
     return new Object[][] {

@@ -15,32 +15,33 @@
  */
 package org.fest.swing.image;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.ImageAssert.read;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.TestGroups.GUI;
+import static org.fest.swing.test.swing.TestWindow.createAndShowNewWindow;
+import static org.fest.util.Files.temporaryFolderPath;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.UUID;
 
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
+import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.ImageAssert.read;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
-import static org.fest.swing.test.core.TestGroups.GUI;
-import static org.fest.swing.test.swing.TestWindow.createAndShowNewWindow;
-import static org.fest.util.Files.temporaryFolderPath;
-import static org.fest.util.Strings.concat;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link ScreenshotTaker}</code>.
@@ -93,6 +94,28 @@ import static org.fest.util.Strings.concat;
     taker.saveComponentAsPng(frame, imagePath);
     assertThat(read(imagePath)).hasSize(sizeOf(frame));
     frame.destroy();
+  }
+
+  public void shouldRethrowExceptionAsImageExceptionWhenWritingImageToFile() {
+    final BufferedImage image = createMock(BufferedImage.class);
+    final String path = "image.png";
+    final ImageFileWriter writer = createMock(ImageFileWriter.class);
+    taker = new ScreenshotTaker(writer);
+    final IOException error = new IOException("On Purpose");
+    new EasyMockTemplate(writer) {
+      protected void expectations() throws Throwable {
+        expect(writer.writeAsPng(image, path)).andThrow(error);
+      }
+
+      protected void codeToTest() {
+        try {
+          taker.saveImage(image, path);
+          failWhenExpectingException();
+        } catch (ImageException e) {
+          assertThat(e.getCause()).isSameAs(error);
+        }
+      }
+    }.run();
   }
 
   @Test(groups = GUI)

@@ -15,11 +15,10 @@
  */
 package org.fest.swing.timing;
 
-import org.testng.annotations.Test;
+import static org.fest.assertions.Assertions.assertThat;
 
 import org.fest.assertions.Description;
-
-import static org.fest.assertions.Assertions.assertThat;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link Condition}</code>.
@@ -46,6 +45,12 @@ import static org.fest.assertions.Assertions.assertThat;
   public void shouldReturnTextDescriptionIfLazyLoadedConditionNotSpecified() {
     condition = new MyCondition(DESCRIPTION);
     assertThat(condition.toString()).isEqualTo(DESCRIPTION);
+  }
+
+  public void shouldReturnDefaultNoDescriptionTextIfDescriptionIsNull() {
+    Description noDescription = null;
+    condition = new MyCondition(noDescription);
+    assertThat(condition.toString()).isEmpty();
   }
 
   private static class MyCondition extends Condition {

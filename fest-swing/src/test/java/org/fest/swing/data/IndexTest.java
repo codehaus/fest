@@ -75,6 +75,11 @@ import org.testng.annotations.Test;
     assertThat(index.equals("Hello")).isFalse();
   }
 
+  public void shouldReturnNotEqualIfIndexValuesAreNotEqual() {
+    Index other = Index.atIndex(6);
+    assertThat(index.equals(other)).isFalse();
+  }
+
   public void shouldImplementToString() {
     assertThat(index.toString()).isEqualTo("org.fest.swing.data.Index[value=8]");
   }

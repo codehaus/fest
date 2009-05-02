@@ -15,22 +15,20 @@
  */
 package org.fest.swing.core.matcher;
 
-import javax.swing.JLabel;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.builder.JLabels.label;
+import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.swing.test.core.TestGroups.GUI;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import javax.swing.JLabel;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.builder.JLabels.label;
-import static org.fest.swing.test.core.TestGroups.GUI;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JLabelMatcher}</code>.
@@ -38,6 +36,16 @@ import static org.fest.swing.test.core.TestGroups.GUI;
  * @author Alex Ruiz
  */
 @Test public class JLabelMatcherTest {
+
+  public void shouldReturnTrueIfMatchingAnyJLabel() {
+    JLabelMatcher matcher = JLabelMatcher.any();
+    assertThat(matcher.matches(label().createNew())).isTrue();
+  }
+
+  public void shouldReturnFalseIfComponentIsNotJLabel() {
+    JLabelMatcher matcher = JLabelMatcher.any();
+    assertThat(matcher.matches(textField().createNew())).isFalse();
+  }
 
   public void shouldReturnTrueIfNameIsEqualToExpected() {
     String name = "label";
@@ -66,7 +74,7 @@ import static org.fest.swing.test.core.TestGroups.GUI;
     JLabel label = label().withName(name).withText(text).createNew();
     assertThat(matcher.matches(label)).isFalse();
   }
-  
+
   @DataProvider(name = "notMatchingNameAndText")
   public Object[][] notMatchingNameAndText() {
     return new Object[][] {

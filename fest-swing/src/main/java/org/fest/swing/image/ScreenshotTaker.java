@@ -17,17 +17,15 @@ package org.fest.swing.image;
 
 import static org.fest.swing.core.FocusOwnerFinder.focusOwner;
 import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.image.ImageFileExtensions.PNG;
 import static org.fest.swing.query.ComponentLocationOnScreenQuery.locationOnScreen;
 import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
-import static org.fest.util.Files.newFile;
 import static org.fest.util.Strings.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Locale;
 
-import javax.imageio.ImageIO;
 import javax.swing.text.Caret;
 import javax.swing.text.JTextComponent;
 
@@ -43,16 +41,25 @@ import org.fest.swing.edt.GuiTask;
  */
 public class ScreenshotTaker {
 
-  /** Extension of the image files containing the screenshots taken by instances of this class (png). */
-  public static final String PNG_EXTENSION = "png";
+  /**
+   * Extension of the image files containing the screenshots taken by instances of this class (png).
+   * @deprecated use <code>{@link ImageFileExtensions#PNG}</code> instead.
+   */
+  @Deprecated public static final String PNG_EXTENSION = "png";
 
   private final Robot robot;
+  private final ImageFileWriter writer;
 
   /**
    * Creates a new <code>{@link ScreenshotTaker}</code>.
    * @throws ImageException if a AWT Robot (the responsible for taking screenshots) cannot be instantiated.
    */
   public ScreenshotTaker() {
+    this(new ImageFileWriter());
+  }
+
+  ScreenshotTaker(ImageFileWriter writer) {
+    this.writer = writer;
     try {
       robot = new Robot();
     } catch (AWTException e) {
@@ -169,15 +176,15 @@ public class ScreenshotTaker {
   public void saveImage(BufferedImage image, String filePath) {
     validate(filePath);
     try {
-      ImageIO.write(image, PNG_EXTENSION, newFile(filePath));
-    } catch (IOException e) {
+      writer.writeAsPng(image, filePath);
+    } catch (Exception e) {
       throw new ImageException(concat("Unable to save image as ", quote(filePath)), e);
     }
   }
 
   private void validate(String imageFilePath) {
     if (isEmpty(imageFilePath)) throw new ImageException("The image path cannot be empty");
-    if (!imageFilePath.endsWith(PNG_EXTENSION))
-      throw new ImageException(concat("The image file should be a ", PNG_EXTENSION.toUpperCase(Locale.getDefault())));
+    if (!imageFilePath.endsWith(PNG))
+      throw new ImageException(concat("The image file should be a ", PNG.toUpperCase(Locale.getDefault())));
   }
 }

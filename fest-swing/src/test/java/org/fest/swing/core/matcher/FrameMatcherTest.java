@@ -15,19 +15,17 @@
  */
 package org.fest.swing.core.matcher;
 
-import javax.swing.JFrame;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.test.builder.JFrames.frame;
+import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.swing.test.core.TestGroups.GUI;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import javax.swing.JFrame;
 
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.test.builder.JFrames.frame;
-import static org.fest.swing.test.core.TestGroups.GUI;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link FrameMatcher}</code>.
@@ -40,7 +38,17 @@ import static org.fest.swing.test.core.TestGroups.GUI;
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
   }
-  
+
+  public void shouldReturnTrueIfMatchingAnyFrame() {
+    FrameMatcher matcher = FrameMatcher.any();
+    assertThat(matcher.matches(frame().createNew())).isTrue();
+  }
+
+  public void shouldReturnFalseIfComponentIsNotFrame() {
+    FrameMatcher matcher = FrameMatcher.any();
+    assertThat(matcher.matches(textField().createNew())).isFalse();
+  }
+
   public void shouldReturnTrueIfNameIsEqualToExpected() {
     String name = "frame";
     FrameMatcher matcher = FrameMatcher.withName(name);
@@ -68,7 +76,7 @@ import static org.fest.swing.test.core.TestGroups.GUI;
     JFrame frame = frame().withName(name).withTitle(title).createNew();
     assertThat(matcher.matches(frame)).isFalse();
   }
-  
+
   @DataProvider(name = "notMatchingNameAndTitle")
   public Object[][] notMatchingNameAndTitle() {
     return new Object[][] {

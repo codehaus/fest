@@ -14,7 +14,7 @@
  */
 package org.fest.swing.junit.ant;
 
-import static org.fest.swing.image.ScreenshotTaker.PNG_EXTENSION;
+import static org.fest.swing.image.ImageFileExtensions.PNG;
 import static org.fest.swing.junit.ant.ImageHandler.encodeBase64;
 import static org.fest.swing.junit.ant.Tests.testClassNameFrom;
 import static org.fest.swing.junit.ant.Tests.testMethodNameFrom;
@@ -72,6 +72,6 @@ class ScreenshotXmlWriter {
   }
 
   private String imageFileName(String testClass, String testMethod) {
-    return join(testClass, testMethod, PNG_EXTENSION).with(".");
+    return join(testClass, testMethod, PNG).with(".");
   }
 }

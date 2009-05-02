@@ -7,7 +7,7 @@
   <body>
     <release version="1.2" date="2009-05-04" description="Subsequent release">
       <action dev="alruiz" type="add" issue="FEST-29" due-to="Christian Dähn">
-        Rewrote org.fest.swing.junit.runner.GUITestRunner in module 'fest-swing-junit' and moved it as 
+        Deprecated org.fest.swing.junit.runner.GUITestRunner in module 'fest-swing-junit' and rewrote it as 
         org.fest.junit.v_4_3_1.runner.GUITestRunner in module 'fest-swing-junit-4.3.1.
       </action>
       <action dev="alruiz" type="add" issue="FEST-29" due-to="Christian Dähn">
@@ -17,12 +17,12 @@
       <action dev="alruiz" type="fix" issue="FEST-37" due-to="Ondrej Medek">
         Marked as 'final' all concrete classes in package org.fest.swing.core.finder. 
       </action>
-      <action dev="alruiz" type="add" issue="FEST-46" due-to="Hayden Shorter">
-        Created class Containers, which allows to places a given container inside a JFrame.
-      </action>
       <action dev="alruiz" type="add" issue="FEST-38" due-to="Ondrej Medek">
         Added methods 'findAll(GenericTypeMatcher)' and 'findAll(Container, GenericTypeMatcher)' to 
         class org.fest.swing.core.ComponentMatcher.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-46" due-to="Hayden Shorter">
+        Created class Containers, which allows to places a given container inside a JFrame.
       </action>
       <action dev="alruiz" type="add" issue="FEST-85" due-to="Andriy Tsykholyas">
         Added protected final method 'driver' to all fixtures to allow replacement of component drivers.

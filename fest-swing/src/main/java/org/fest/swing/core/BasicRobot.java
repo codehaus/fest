@@ -80,6 +80,8 @@ public class BasicRobot implements Robot {
 
   private static final ComponentMatcher POPUP_MATCHER = new TypeMatcher(JPopupMenu.class, true);
 
+  private volatile boolean active;
+
   private static final Runnable EMPTY_RUNNABLE = new Runnable() {
     public void run() {}
   };
@@ -129,6 +131,7 @@ public class BasicRobot implements Robot {
     eventGenerator = new RobotEventGenerator(settings);
     eventPoster = new AWTEventPoster(toolkit, inputState, windowMonitor, settings);
     finder = new BasicComponentFinder(this.hierarchy);
+    active = true;
   }
 
   /** {@inheritDoc} */
@@ -294,6 +297,7 @@ public class BasicRobot implements Robot {
       if (disposeWindows) disposeWindows(hierarchy);
       releaseMouseButtons();
     } finally {
+      active = false;
       ScreenLock.instance().release(this);
     }
   }
@@ -761,4 +765,7 @@ public class BasicRobot implements Robot {
   public ComponentHierarchy hierarchy() {
     return hierarchy;
   }
+
+  /** {@inheritDoc} */
+  public boolean isActive() { return active; }
 }

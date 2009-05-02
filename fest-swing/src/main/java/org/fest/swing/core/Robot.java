@@ -1,9 +1,6 @@
 package org.fest.swing.core;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Window;
+import java.awt.*;
 
 import javax.swing.JPopupMenu;
 
@@ -258,7 +255,7 @@ public interface Robot {
    * while positive values indicate movement down/towards the user.
    */
   void rotateMouseWheel(Component c, int amount);
-  
+
   /**
    * Rotates the scroll wheel on wheel-equipped mice.
    * @param amount number of "notches" to move the mouse wheel. Negative values indicate movement up/away from the user,
@@ -394,4 +391,11 @@ public interface Robot {
    * @return the configuration settings for this <code>Robot</code>.
    */
   Settings settings();
+
+  /**
+   * Indicates whether this <code>Robot</code> is active. Being "active" means that <code>{@link #cleanUp()}</code> has
+   * not been called yet.
+   * @return <code>true</code> if this <code>Robot</code> is active, <code>false</code> otherwise.
+   */
+  boolean isActive();
 }

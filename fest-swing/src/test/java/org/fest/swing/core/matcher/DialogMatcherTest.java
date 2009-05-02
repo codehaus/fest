@@ -15,20 +15,18 @@
  */
 package org.fest.swing.core.matcher;
 
-import javax.swing.JDialog;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.test.builder.JDialogs.dialog;
+import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.swing.test.core.TestGroups.GUI;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import javax.swing.JDialog;
 
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.swing.TestDialog;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.test.builder.JDialogs.dialog;
-import static org.fest.swing.test.core.TestGroups.GUI;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link DialogMatcher}</code>.
@@ -41,7 +39,17 @@ import static org.fest.swing.test.core.TestGroups.GUI;
   @BeforeMethod public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
   }
-  
+
+  public void shouldReturnTrueIfMatchingAnyDialog() {
+    DialogMatcher matcher = DialogMatcher.any();
+    assertThat(matcher.matches(dialog().createNew())).isTrue();
+  }
+
+  public void shouldReturnFalseIfComponentIsNotDialog() {
+    DialogMatcher matcher = DialogMatcher.any();
+    assertThat(matcher.matches(textField().createNew())).isFalse();
+  }
+
   public void shouldReturnTrueIfNameIsEqualToExpected() {
     String name = "dialog";
     DialogMatcher matcher = DialogMatcher.withName(name);
@@ -69,7 +77,7 @@ import static org.fest.swing.test.core.TestGroups.GUI;
     JDialog dialog = dialog().withName(name).withTitle(title).createNew();
     assertThat(matcher.matches(dialog)).isFalse();
   }
-  
+
   @DataProvider(name = "notMatchingNameAndTitle")
   public Object[][] notMatchingNameAndTitle() {
     return new Object[][] {

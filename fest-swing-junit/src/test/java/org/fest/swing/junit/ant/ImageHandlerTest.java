@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.fest.mocks.EasyMockTemplate;
+import org.fest.swing.image.ImageFileWriter;
 import org.fest.swing.image.ScreenshotTaker;
 import org.testng.annotations.*;
 
@@ -114,7 +115,7 @@ import org.testng.annotations.*;
     new EasyMockTemplate(decoder, writer) {
       protected void expectations() throws Throwable {
         expect(decoder.decodeBase64(encoded)).andReturn(image);
-        writer.saveAsPng(image, path);
+        writer.writeAsPng(image, path);
         expectLastCall().andThrow(thrownOnPurpose());
       }
 

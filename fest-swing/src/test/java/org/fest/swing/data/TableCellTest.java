@@ -75,6 +75,16 @@ import org.testng.annotations.Test;
     assertThat(cell.equals("Hello")).isFalse();
   }
 
+  public void shouldReturnNotEqualIfRowValuesAreNotEqual() {
+    TableCell other = TableCell.row(8).column(8);
+    assertThat(cell.equals(other)).isFalse();
+  }
+
+  public void shouldReturnNotEqualIfColumnValuesAreNotEqual() {
+    TableCell other = TableCell.row(6).column(6);
+    assertThat(cell.equals(other)).isFalse();
+  }
+
   public void shouldImplementToString() {
     assertThat(cell.toString()).isEqualTo("[row=6, column=8]");
   }

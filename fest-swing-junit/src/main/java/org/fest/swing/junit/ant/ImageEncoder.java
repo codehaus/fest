@@ -15,7 +15,7 @@
  */
 package org.fest.swing.junit.ant;
 
-import static org.fest.swing.image.ScreenshotTaker.PNG_EXTENSION;
+import static org.fest.swing.image.ImageFileExtensions.PNG;
 import static org.fest.swing.junit.ant.CommonConstants.UTF_8;
 import static org.fest.util.Files.flushAndClose;
 
@@ -37,7 +37,7 @@ class ImageEncoder {
   String encodeBase64(BufferedImage image) throws IOException {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     try {
-      ImageIO.write(image, PNG_EXTENSION, out);
+      ImageIO.write(image, PNG, out);
       byte[] encoded = Base64.encodeBase64(out.toByteArray());
       return new String(encoded, UTF_8);
     } finally {

@@ -22,6 +22,8 @@ import static org.fest.util.Strings.isEmpty;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
+import org.fest.swing.image.ImageFileWriter;
+
 /**
  * Understands base64 encoding and decoding of an image.
  *
@@ -96,7 +98,7 @@ public final class ImageHandler {
     String realPath = path.replace("/", separator);
     BufferedImage image = decodeBase64(encoded, decoder);
     try {
-      writer.saveAsPng(image, realPath);
+      writer.writeAsPng(image, realPath);
     } catch (Exception ignored) {
       logger.log(SEVERE, ignored.getMessage());
     }
