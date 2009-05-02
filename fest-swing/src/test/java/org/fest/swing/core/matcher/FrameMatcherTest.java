@@ -142,4 +142,10 @@ import org.testng.annotations.*;
     JFrame frame = frame().withTitle("Bye").createNew();
     assertThat(matcher.matches(frame)).isFalse();
   }
+
+  public void shouldImplementToString() {
+    FrameMatcher matcher = FrameMatcher.withName("frame").andTitle("Hello").andShowing();
+    assertThat(matcher.toString()).isEqualTo(
+        "org.fest.swing.core.matcher.FrameMatcher[name='frame', title='Hello', requireShowing=true]");
+  }
 }

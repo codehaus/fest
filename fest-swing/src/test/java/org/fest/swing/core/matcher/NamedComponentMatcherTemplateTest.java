@@ -56,6 +56,10 @@ import org.testng.annotations.Test;
     assertThat(matcher.quotedName()).isEqualTo("'hello'");
   }
 
+  public void shouldImplementToStringInAny() {
+    assertThat(NamedComponentMatcherTemplate.ANY.toString()).isEqualTo("<Any>");
+  }
+
   private static class Matcher extends NamedComponentMatcherTemplate<JLabel> {
 
     protected Matcher(Class<JLabel> supportedType) {

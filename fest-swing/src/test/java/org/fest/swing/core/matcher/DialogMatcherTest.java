@@ -140,4 +140,10 @@ import org.testng.annotations.*;
     JDialog dialog = dialog().withTitle("Bye").createNew();
     assertThat(matcher.matches(dialog)).isFalse();
   }
+
+  public void shouldImplementToString() {
+    DialogMatcher matcher = DialogMatcher.withName("dialog").andTitle("Hello").andShowing();
+    assertThat(matcher.toString()).isEqualTo(
+        "org.fest.swing.core.matcher.DialogMatcher[name='dialog', title='Hello', requireShowing=true]");
+  }
 }

@@ -141,6 +141,12 @@ import org.testng.annotations.*;
     assertThat(matcher.matches(textField)).isFalse();
   }
 
+  public void shouldImplementToString() {
+    JTextComponentMatcher matcher = JTextComponentMatcher.withName("textField").andText("Hello").andShowing();
+    assertThat(matcher.toString()).isEqualTo(
+        "org.fest.swing.core.matcher.JTextComponentMatcher[name='textField', text='Hello', requireShowing=true]");
+  }
+
   private static class MyWindow extends TestWindow {
     private static final long serialVersionUID = 1L;
 
