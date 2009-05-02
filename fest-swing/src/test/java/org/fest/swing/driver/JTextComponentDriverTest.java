@@ -15,22 +15,8 @@
  */
 package org.fest.swing.driver;
 
-import javax.swing.JTextField;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.test.swing.TestWindow;
-import org.fest.swing.test.task.ComponentSetVisibleTask;
-
+import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS;
+import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.driver.JTextComponentSelectedTextQuery.selectedTextOf;
@@ -40,6 +26,18 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.*;
 import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
+
+import java.awt.Dimension;
+
+import javax.swing.*;
+
+import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.core.Robot;
+import org.fest.swing.edt.*;
+import org.fest.swing.exception.ActionFailedException;
+import org.fest.swing.test.swing.TestWindow;
+import org.fest.swing.test.task.ComponentSetVisibleTask;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JTextComponentDriver}</code>.
@@ -58,7 +56,7 @@ public class JTextComponentDriverTest {
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
   }
-  
+
   @BeforeMethod public void setUp() {
     robot = robotWithNewAwtHierarchy();
     driver = new JTextComponentDriver(robot);
@@ -127,7 +125,7 @@ public class JTextComponentDriverTest {
       assertActionFailureDueToNotShowingComponent(e);
     }
   }
-  
+
   @Test(groups = GUI, expectedExceptions = NullPointerException.class)
   public void shouldThrowErrorIfReplacementTextIsNull() {
     driver.replaceText(textField, null);
@@ -258,6 +256,14 @@ public class JTextComponentDriverTest {
     assertThat(selectedTextOf(textField)).isEqualTo("llo W");
   }
 
+  public void shouldScrollToTextToSelect() {
+    JTextField tf = window.scrollToViewTextField;
+    setText(tf, "one two three four five six seven eight nine ten");
+    robot.waitForIdle();
+    driver.selectText(tf, "ten");
+    assertThat(selectedTextOf(tf)).isEqualTo("ten");
+  }
+
   public void shouldThrowErrorWhenSelectingGivenTextInDisabledJTextComponent() {
     disableTextField();
     try {
@@ -358,19 +364,19 @@ public class JTextComponentDriverTest {
     disable(textField);
     robot.waitForIdle();
   }
-  
+
   @RunsInEDT
   private void hideWindow() {
     ComponentSetVisibleTask.hide(window);
     robot.waitForIdle();
   }
-  
+
   @RunsInEDT
   private void setTextFieldText(String text) {
     setText(textField, text);
     robot.waitForIdle();
   }
-  
+
   @RunsInEDT
   private static void setText(final JTextField textField, final String text) {
     execute(new GuiTask() {
@@ -384,6 +390,7 @@ public class JTextComponentDriverTest {
     private static final long serialVersionUID = 1L;
 
     final JTextField textField = new JTextField("This is a test");
+    final JTextField scrollToViewTextField = new JTextField(10);
 
     @RunsInEDT
     static MyWindow createNew() {
@@ -396,7 +403,12 @@ public class JTextComponentDriverTest {
 
     private MyWindow() {
       super(JTextComponentDriverTest.class);
-      add(textField);
+      JScrollPane scrollPane = new JScrollPane(VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_ALWAYS);
+      final JViewport viewport = scrollPane.getViewport();
+      viewport.add(new JLabel("A Label"));
+      viewport.add(scrollToViewTextField);
+      scrollPane.setPreferredSize(new Dimension(50, 50));
+      addComponents(textField, scrollPane);
     }
   }
 }

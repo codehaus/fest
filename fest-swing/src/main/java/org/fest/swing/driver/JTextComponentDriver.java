@@ -14,29 +14,11 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.Container;
-import java.awt.Point;
-import java.awt.Rectangle;
-
-import javax.swing.CellRendererPane;
-import javax.swing.JComponent;
-import javax.swing.JTextField;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.JTextComponent;
-
-import org.fest.assertions.Description;
-import org.fest.swing.annotation.RunsInCurrentThread;
-import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.util.Pair;
-
-import static java.lang.Math.*;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 import static java.lang.String.valueOf;
-import static javax.swing.text.DefaultEditorKit.*;
-
+import static javax.swing.text.DefaultEditorKit.deletePrevCharAction;
+import static javax.swing.text.DefaultEditorKit.selectAllAction;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
 import static org.fest.swing.driver.JTextComponentEditableQuery.isEditable;
@@ -48,6 +30,21 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.exception.ActionFailedException.actionFailure;
 import static org.fest.swing.format.Formatting.format;
 import static org.fest.util.Strings.*;
+
+import java.awt.*;
+
+import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.JTextComponent;
+
+import org.fest.assertions.Description;
+import org.fest.swing.annotation.RunsInCurrentThread;
+import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.core.Robot;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
+import org.fest.swing.exception.ActionFailedException;
+import org.fest.swing.util.Pair;
 
 /**
  * Understands simulation of user input on a <code>{@link JTextComponent}</code>. Unlike
@@ -169,7 +166,7 @@ public class JTextComponentDriver extends JComponentDriver {
       }
     });
   }
-  
+
   /**
    * Select the given text range.
    * @param textBox the target <code>JTextComponent</code>.
@@ -185,7 +182,7 @@ public class JTextComponentDriver extends JComponentDriver {
     robot.moveMouse(textBox, scrollToPosition(textBox, end));
     performAndValidateTextSelection(textBox, start, end);
   }
-  
+
   @RunsInEDT
   private static Point validateAndScrollToPosition(final JTextComponent textBox, final int index) {
     return execute(new GuiQuery<Point>() {
@@ -204,7 +201,7 @@ public class JTextComponentDriver extends JComponentDriver {
       }
     });
   }
-  
+
   /**
    * Move the pointer to the location of the given index. Takes care of auto-scrolling through text.
    * @param textBox the target <code>JTextComponent</code>.
@@ -230,10 +227,14 @@ public class JTextComponentDriver extends JComponentDriver {
     try {
       r = textBox.modelToView(index);
     } catch (BadLocationException e) {
-      throw actionFailure(concat("Unable to get location for index '", valueOf(index), "' in ", format(textBox)));
+      throw cannotGetLocation(textBox, index);
     }
     if (r != null) return r;
-    throw actionFailure(concat("Text in component", format(textBox)," has zero length"));
+    throw cannotGetLocation(textBox, index);
+  }
+
+  private static ActionFailedException cannotGetLocation(JTextComponent textBox, int index) {
+    throw actionFailure(concat("Unable to get location for index '", valueOf(index), "' in ", format(textBox)));
   }
 
   @RunsInCurrentThread
@@ -282,7 +283,7 @@ public class JTextComponentDriver extends JComponentDriver {
       }
     });
   }
-  
+
   @RunsInCurrentThread
   private static void verifyTextWasSelected(JTextComponent textBox, int start, int end) {
     int actualStart = textBox.getSelectionStart();
