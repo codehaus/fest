@@ -81,6 +81,9 @@
       <url>http://www.xpteam.com/jeff/</url>
     </contributor>
     <contributor>
+      <name>Martin Bachmann</name>
+    </contributor>
+    <contributor>
       <name>Fabien Barbero</name>
     </contributor>
     <contributor>
@@ -113,7 +116,14 @@
       <url>http://www.talios.com/</url>
     </contributor>
     <contributor>
+      <name>Christian Dähn</name>
+    </contributor>
+    <contributor>
       <name>David DIDIER</name>
+    </contributor>
+    <contributor>
+      <name>Olivier DOREMIEUX</name>
+      <organizationUrl>http://www.newsoftwaremarketing.com/</organizationUrl>
     </contributor>
     <contributor>
       <name>Brian Duff</name>
@@ -124,6 +134,9 @@
     </contributor>
     <contributor>
       <name>Dan Dyer</name>
+    </contributor>
+    <contributor>
+      <name>Tony Eichelberger</name>
     </contributor>
     <contributor>
       <name>Jacob Fahrenkrug</name>
@@ -156,6 +169,9 @@
       <name>Leo Jay</name>
     </contributor>
     <contributor>
+      <name>Jeanette (Kleopatra)</name>
+    </contributor>
+    <contributor>
       <name>Marc Johen</name>
     </contributor>
     <contributor>
@@ -177,10 +193,16 @@
       <name>Ewan McDougall</name>
     </contributor>
     <contributor>
+      <name>Ondrej Medek</name>
+    </contributor>
+    <contributor>
       <name>Duncan Mills</name>
       <organization>Oracle</organization>
       <organizationUrl>http://www.oracle.com/</organizationUrl>
       <url>http://www.groundside.com/blog/DuncanMills.php</url>
+    </contributor>
+    <contributor>
+      <name>Stephen Neal</name>
     </contributor>
     <contributor>
       <name>Viet Nguyen</name>
@@ -217,6 +239,12 @@
       <url>http://www.future-invent.de/</url>
     </contributor>
     <contributor>
+      <name>Uli Schrempp</name>
+    </contributor>
+    <contributor>
+      <name>Hayden Shorter</name>
+    </contributor>
+    <contributor>
       <name>Lorenzo Sicilia</name>
     </contributor>
     <contributor>
@@ -232,6 +260,10 @@
       <name>John Stephi</name>
     </contributor>
     <contributor>
+      <name>Eitan Suez</name>
+      <url>http://weblogs.java.net/blog/eitan/</url>
+    </contributor>
+    <contributor>
       <name>Daniel F. Surdyk, III</name>
     </contributor>
     <contributor>
@@ -244,6 +276,9 @@
     </contributor>
     <contributor>
       <name>Rich Toulouse</name>
+    </contributor>
+    <contributor>
+      <name>Andriy Tsykholyas</name>
     </contributor>
     <contributor>
       <name>Lukasz Tutaj</name>
