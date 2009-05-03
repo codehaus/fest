@@ -31,6 +31,11 @@ class FrameDisposer {
 
   @RunsInEDT
   void disposeFrames() {
+    doDisposeFrames();
+  }
+
+  @RunsInEDT
+  private static void doDisposeFrames() {
     execute(new GuiTask() {
       protected void executeInEDT() {
         for (Frame f : Frame.getFrames()) f.dispose();

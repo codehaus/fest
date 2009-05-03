@@ -5,7 +5,7 @@
     <author email="alex.ruiz.05@gmail.com">Alex Ruiz</author>
   </properties>
   <body>
-    <release version="1.2" date="2009-05-04" description="Subsequent release">
+    <release version="1.2a1" date="2009-05-04" description="Subsequent release">
       <action dev="alruiz" type="add" issue="FEST-29" due-to="Christian Dähn">
         Deprecated org.fest.swing.junit.runner.GUITestRunner in module 'fest-swing-junit' and rewrote it as 
         org.fest.junit.v_4_3_1.runner.GUITestRunner in module 'fest-swing-junit-4.3.1.
