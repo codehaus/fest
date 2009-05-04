@@ -4,10 +4,10 @@
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.easytesting</groupId>
-  <artifactId>fest-swing-testng</artifactId>
-  <version>1.2a1-SNAPSHOT</version>
-  <name>FEST Swing - TestNG Extension</name>
-  <description>TestNG-specific extension for FEST-Swing</description>
+  <artifactId>fest-swing-junit-4.3.1</artifactId>
+  <version>1.2a1</version>
+  <name>FEST Swing - JUnit 4.3.1 Extension</name>
+  <description>JUnit 4.3.1-specific extension for FEST-Swing</description>
   <inceptionYear>2007</inceptionYear>
   <url>http://fest.easytesting.org/swing</url>
   <parent>
@@ -34,28 +34,40 @@
   </issueManagement>
   <dependencies>
     <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>5.7</version>
-      <classifier>jdk15</classifier>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.3.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.easytesting</groupId>
       <artifactId>fest-swing</artifactId>
-      <version>1.2a1-SNAPSHOT</version>
+      <version>1.2a1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.easytesting</groupId>
-      <artifactId>fest-reflect</artifactId>
-      <version>1.1</version>
-      <scope>test</scope>
+      <artifactId>fest-swing-junit</artifactId>
+      <version>1.2a1</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.easytesting</groupId>
       <artifactId>fest-assert</artifactId>
-      <version>1.1-SNAPSHOT</version>
+      <version>1.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.easytesting</groupId>
+      <artifactId>fest-mocks</artifactId>
+      <version>1.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>5.7</version>
+      <classifier>jdk15</classifier>
       <scope>test</scope>
     </dependency>
   </dependencies>
