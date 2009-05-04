@@ -14,6 +14,13 @@
  */
 package org.fest.swing.junit.v4_5.runner;
 
+import static org.fest.swing.annotation.GUITestFinder.isGUITest;
+import static org.fest.swing.junit.runner.Formatter.testNameFrom;
+
+import java.lang.reflect.Method;
+
+import org.fest.swing.junit.runner.FailureScreenshotTaker;
+import org.fest.swing.junit.runner.ImageFolderCreator;
 import org.junit.Ignore;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.internal.runners.model.EachTestNotifier;
@@ -30,6 +37,8 @@ import org.junit.runners.model.InitializationError;
  */
 public class GUITestRunner extends BlockJUnit4ClassRunner {
 
+  private final FailureScreenshotTaker screenshotTaker;
+
   /**
    * Creates a new <code>{@link GUITestRunner}</code>.
    * @param testClass the class containing the tests to run.
@@ -37,6 +46,7 @@ public class GUITestRunner extends BlockJUnit4ClassRunner {
    */
   public GUITestRunner(Class<?> testClass) throws InitializationError {
     super(testClass);
+    screenshotTaker = new FailureScreenshotTaker(new ImageFolderCreator().createImageFolder());
   }
 
   /**
@@ -58,9 +68,17 @@ public class GUITestRunner extends BlockJUnit4ClassRunner {
     } catch (AssumptionViolatedException e) {
       eachNotifier.addFailedAssumption(e);
     } catch (Throwable e) {
+      takeScreenshot(method);
       eachNotifier.addFailure(e);
     } finally {
       eachNotifier.fireTestFinished();
     }
+  }
+
+  private void takeScreenshot(FrameworkMethod method) {
+    Method realMethod = method.getMethod();
+    final Class<?> testClass = realMethod.getDeclaringClass();
+    if (!(isGUITest(testClass, realMethod))) return;
+    screenshotTaker.saveScreenshot(testNameFrom(testClass, realMethod));
   }
 }
