@@ -6,7 +6,7 @@
 	<classpathentry kind="var" path="M2_REPO/swinghelper/debug/1.0/debug-1.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/easytesting/fest-assert/1.1/fest-assert-1.1.jar" sourcepath="/M2_REPO/org/easytesting/fest-assert/1.1/fest-assert-1.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/easytesting/fest-reflect/1.1/fest-reflect-1.1.jar" sourcepath="M2_REPO/org/easytesting/fest-reflect/1.0/fest-reflect-1.0-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/easytesting/fest-swing/1.2a1-SNAPSHOT/fest-swing-1.2a1-SNAPSHOT.jar" sourcepath="M2_REPO/org/easytesting/fest-swing/1.2a1-SNAPSHOT/fest-swing-1.2a1-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/easytesting/fest-swing/1.2a1/fest-swing-1.2a1.jar" sourcepath="M2_REPO/org/easytesting/fest-swing/1.2a1/fest-swing-1.2a1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/easytesting/fest-util/1.1/fest-util-1.1.jar" sourcepath="/M2_REPO/org/easytesting/fest-util/1.1/fest-util-1.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar" sourcepath="M2_REPO/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/mrj/MRJToolkitStubs/1.0/MRJToolkitStubs-1.0.jar"/>
