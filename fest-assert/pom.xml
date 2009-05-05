@@ -26,7 +26,7 @@
   <repositories>
     <repository>
       <id>fest</id>
-      <url>http://svn.codehaus.org/fest/m2/repo/</url>
+      <url>http://svn.codehaus.org/fest/m2/repo</url>
     </repository>
   </repositories>
   <scm>
