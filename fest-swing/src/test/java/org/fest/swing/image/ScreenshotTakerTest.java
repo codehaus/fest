@@ -49,7 +49,8 @@ import org.testng.annotations.*;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test public class ScreenshotTakerTest {
+@Test(groups = GUI)
+public class ScreenshotTakerTest {
 
   private static final BufferedImage NO_IMAGE = null;
   private ScreenshotTaker taker;
@@ -67,17 +68,17 @@ import org.testng.annotations.*;
     if (screenLock.acquiredBy(this)) screenLock.release(this);
   }
 
-  @Test(expectedExceptions = ImageException.class)
+  @Test(groups = GUI, expectedExceptions = ImageException.class)
   public void shouldThrowErrorIfFilePathIsNull() {
     taker.saveImage(NO_IMAGE, null);
   }
 
-  @Test(expectedExceptions = ImageException.class)
+  @Test(groups = GUI, expectedExceptions = ImageException.class)
   public void shouldThrowErrorIfFilePathIsEmpty() {
     taker.saveImage(NO_IMAGE, "");
   }
 
-  @Test(expectedExceptions = ImageException.class)
+  @Test(groups = GUI, expectedExceptions = ImageException.class)
   public void shouldThrowErrorIfFilePathNotEndingWithPng() {
     taker.saveImage(NO_IMAGE, "somePathWithoutPng");
   }

@@ -15,34 +15,29 @@
  */
 package org.fest.swing.monitor;
 
-import java.awt.Dimension;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.util.logging.Logger;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
+import static org.fest.swing.test.core.TestGroups.GUI;
+import static org.fest.swing.timing.Pause.pause;
+import static org.fest.util.Strings.concat;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import java.awt.*;
+import java.util.logging.Logger;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
-import static org.fest.swing.timing.Pause.pause;
-import static org.fest.util.Strings.concat;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link WindowStatus}</code>.
  *
  * @author Alex Ruiz
  */
+@Test(groups = GUI)
 public class WindowStatusTest {
 
   private static Logger logger = Logger.getAnonymousLogger();
@@ -70,7 +65,7 @@ public class WindowStatusTest {
     }
   }
 
-  @Test public void shouldMoveMouseToCenterWithFrameWidthGreaterThanHeight() {
+  public void shouldMoveMouseToCenterWithFrameWidthGreaterThanHeight() {
     ScreenLock.instance().acquire(this);
     window.display();
     Point center = new WindowMetrics(window).center();
@@ -87,7 +82,7 @@ public class WindowStatusTest {
     assertThat(mousePointerLocation()).isEqualTo(center);
   }
 
-  @Test public void shouldMoveMouseToCenterWithFrameHeightGreaterThanWidth() {
+  public void shouldMoveMouseToCenterWithFrameHeightGreaterThanWidth() {
     ScreenLock.instance().acquire(this);
     window.display(new Dimension(200, 400));
     Point center = new WindowMetrics(window).center();
@@ -104,7 +99,7 @@ public class WindowStatusTest {
     assertThat(mousePointerLocation()).isEqualTo(center);
   }
 
-  @Test public void shouldResizeWindowToReceiveEvents() {
+  public void shouldResizeWindowToReceiveEvents() {
     ScreenLock.instance().acquire(this);
     window.display(new Dimension(0 ,0));
     Dimension original = sizeOf(window);
@@ -124,7 +119,7 @@ public class WindowStatusTest {
     assertThat(sizeOf(window).height).isGreaterThan(original.height);
   }
 
-  @Test public void shouldNotCheckIfRobotIsNull() {
+  public void shouldNotCheckIfRobotIsNull() {
     status = new WindowStatus(windows, null);
     Point before = mousePointerLocation();
     new EasyMockTemplate(windows) {

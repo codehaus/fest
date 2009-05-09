@@ -15,25 +15,24 @@
  */
 package org.fest.swing.driver;
 
-import javax.swing.JTextField;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.TestGroups.GUI;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import javax.swing.JTextField;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link WaitForComponentToShowCondition}</code>.
  *
  * @author Yvonne Wang
  */
-@Test public class WaitForComponentToShowConditionTest {
+@Test(groups = GUI)
+public class WaitForComponentToShowConditionTest {
 
   private WaitForComponentToShowCondition condition;
   private ComponentStub c;
@@ -41,7 +40,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
   }
-  
+
   @BeforeMethod public void setUp() {
     c = ComponentStub.createNew();
     condition = WaitForComponentToShowCondition.untilIsShowing(c);
@@ -74,7 +73,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
         }
       });
     }
-    
+
     private ComponentStub() {}
 
     void showing(boolean isShowing) {

@@ -15,14 +15,15 @@
  */
 package org.fest.swing.launcher;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.TestGroups.GUI;
+import static org.fest.util.Collections.list;
+
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import org.fest.swing.core.GenericTypeMatcher;
 import org.fest.swing.core.Robot;
@@ -31,22 +32,18 @@ import org.fest.swing.exception.UnexpectedException;
 import org.fest.swing.finder.WindowFinder;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.launcher.JavaApp.ArgumentObserver;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.util.Collections.list;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link ApplicationLauncher}</code>.
  *
  * @author Yvonne Wang
  */
-@Test
+@Test(groups = GUI)
 public class ApplicationLauncherTest {
 
   private Robot robot;
-  
+
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
   }

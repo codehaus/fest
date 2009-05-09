@@ -15,36 +15,32 @@
  */
 package org.fest.swing.monitor;
 
-import java.awt.Window;
-import java.util.Map;
-import java.util.TimerTask;
-import java.util.logging.Logger;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiTask;
-import org.fest.swing.lock.ScreenLock;
-import org.fest.swing.test.swing.TestWindow;
-
 import static java.lang.String.valueOf;
 import static java.util.logging.Logger.getAnonymousLogger;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.timing.Pause.pause;
 import static org.fest.util.Strings.concat;
 
+import java.awt.Window;
+import java.util.Map;
+import java.util.TimerTask;
+import java.util.logging.Logger;
+
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.edt.GuiTask;
+import org.fest.swing.lock.ScreenLock;
+import org.fest.swing.test.swing.TestWindow;
+import org.testng.annotations.*;
+
 /**
  * Tests for <code>{@link Windows}</code>.
  *
  * @author Alex Ruiz
  */
-@Test public class WindowsTest {
+@Test(groups = GUI)
+public class WindowsTest {
 
   private static Logger logger = getAnonymousLogger();
 
@@ -78,7 +74,6 @@ import static org.fest.util.Strings.concat;
     }
   }
 
-  @Test(groups = GUI)
   public void shouldEvaluateWindowAsReadyAndNotHiddenIfVisible() {
     ScreenLock.instance().acquire(this);
     window.display();

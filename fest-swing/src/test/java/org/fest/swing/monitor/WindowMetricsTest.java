@@ -15,31 +15,27 @@
  */
 package org.fest.swing.monitor;
 
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Window;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.TestGroups.GUI;
+import static org.fest.swing.test.query.ContainerInsetsQuery.insetsOf;
+import static org.fest.swing.test.swing.TestWindow.createAndShowNewWindow;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import java.awt.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.query.ContainerInsetsQuery.insetsOf;
-import static org.fest.swing.test.swing.TestWindow.createAndShowNewWindow;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link WindowMetrics}</code>.
  *
  * @author Alex Ruiz
  */
+@Test(groups = GUI)
 public class WindowMetricsTest {
 
   private WindowMetrics metrics;
@@ -72,11 +68,11 @@ public class WindowMetricsTest {
     }
   }
 
-  @Test public void shouldObtainInsets() {
+  public void shouldObtainInsets() {
     assertThat(metrics.insets).isEqualTo(insetsOf(window));
   }
 
-  @Test public void shouldCalculateCenter() {
+  public void shouldCalculateCenter() {
     Point center = centerOf(metrics);
     assertThat(center).isEqualTo(expectedCenterOf(window));
   }
@@ -102,12 +98,12 @@ public class WindowMetricsTest {
     });
   }
 
-  @Test public void shouldAddVerticalInsets() {
+  public void shouldAddVerticalInsets() {
     Insets insets = insetsOf(window);
     assertThat(metrics.leftAndRightInsets()).isEqualTo(insets.right + insets.left);
   }
 
-  @Test public void shouldAddHorizontalInsets() {
+  public void shouldAddHorizontalInsets() {
     Insets insets = insetsOf(window);
     assertThat(metrics.topAndBottomInsets()).isEqualTo(insets.top + insets.bottom);
   }
