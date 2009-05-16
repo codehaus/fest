@@ -33,6 +33,13 @@ public class KeyStrokeMap {
   private static final Map<KeyStroke, Character> KEY_STROKE_TO_CHAR = new HashMap<KeyStroke, Character>();
 
   static {
+    reloadFromLocale();
+  }
+
+  /**
+   * Reloads the key stroke mappings for the language from the default locale.
+   */
+  public static void reloadFromLocale() {
     KeyStrokeMappingProviderPicker picker = new KeyStrokeMappingProviderPicker();
     addKeyStrokesFrom(picker.providerFor(Locale.getDefault()));
   }
@@ -58,6 +65,14 @@ public class KeyStrokeMap {
   public static synchronized void clearKeyStrokes() {
     CHAR_TO_KEY_STROKE.clear();
     KEY_STROKE_TO_CHAR.clear();
+  }
+
+  /**
+   * Indicates whether <code>{@link KeyStrokeMap}</code> has mappings or not.
+   * @return <code>true</code> if it has mappings, <code>false</code> otherwise.
+   */
+  public static synchronized boolean hasKeyStrokes() {
+    return !CHAR_TO_KEY_STROKE.isEmpty() && KEY_STROKE_TO_CHAR.isEmpty();
   }
 
   /**
