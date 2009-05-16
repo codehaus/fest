@@ -29,29 +29,12 @@ import javax.swing.KeyStroke;
  */
 public class KeyStrokeMap {
 
-  private static final String GERMAN = "de";
-
   private static final Map<Character, KeyStroke> CHAR_TO_KEY_STROKE = new HashMap<Character, KeyStroke>();
   private static final Map<KeyStroke, Character> KEY_STROKE_TO_CHAR = new HashMap<KeyStroke, Character>();
 
   static {
-    initialize();
-  }
-
-  public static void main(String[] args) {
-    System.out.println(Locale.GERMAN.getLanguage());
-    System.out.println(Locale.GERMAN.getDisplayLanguage());
-  }
-
-  private static void initialize() {
-    Locale locale = Locale.getDefault();
-    if (GERMAN.equalsIgnoreCase(locale.getDisplayLanguage())) {
-      addKeyStrokesFrom(new KeyStrokeMappingProvider_de());
-      return;
-    }
-    // for now by default is the "English" keyboard mapping.
-    // we'll support for other languages when users request it.
-    addKeyStrokesFrom(new KeyStrokeMappingProvider_en());
+    KeyStrokeMappingProviderPicker picker = new KeyStrokeMappingProviderPicker();
+    addKeyStrokesFrom(picker.providerFor(Locale.getDefault()));
   }
 
   /**

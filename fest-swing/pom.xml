@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.easytesting</groupId>
   <artifactId>fest-swing</artifactId>
-  <version>1.2a1</version>
+  <version>1.2a2-SNAPSHOT</version>
   <name>FEST Swing</name>
   <description>Fluent interface for functional GUI testing</description>
   <inceptionYear>2007</inceptionYear>
