@@ -15,11 +15,11 @@
  */
 package org.fest.swing.util;
 
-import java.lang.reflect.Array;
-
 import static org.fest.swing.util.System.LINE_SEPARATOR;
 import static org.fest.util.Objects.areEqual;
 import static org.fest.util.Strings.quote;
+
+import java.lang.reflect.Array;
 
 /**
  * Understands utility methods for arrays.

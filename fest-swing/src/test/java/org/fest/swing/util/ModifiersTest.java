@@ -19,6 +19,7 @@ import static java.awt.event.InputEvent.*;
 import static java.awt.event.KeyEvent.*;
 import static org.fest.assertions.Assertions.assertThat;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
@@ -108,4 +109,32 @@ import org.testng.annotations.Test;
     assertThat(updatedModifierMask & META_MASK).isEqualTo(0);
     assertThat(updatedModifierMask & SHIFT_MASK).isEqualTo(0);
   }
+
+  @Test(dataProvider = "modifierKeyCodes")
+  public void shouldReturnTrueIfGivenKeyIsModifier(int keyCode) {
+    assertThat(Modifiers.isModifier(keyCode)).isTrue();
+  }
+
+  @DataProvider(name = "modifierKeyCodes") public Object[][] modifierKeyCodes() {
+   return new Object[][] { { VK_ALT_GRAPH }, { VK_ALT }, { VK_SHIFT }, { VK_CONTROL }, { VK_META } };
+  }
+
+  public void shouldReturnFalseIfGivenKeyIsNotModifier() {
+    assertThat(Modifiers.isModifier(VK_A)).isFalse();
+  }
+
+  @Test(dataProvider = "modifierKeyCodesAndMasks")
+  public void shouldReturnMaskForModifier(int keyCode, int mask) {
+    assertThat(Modifiers.maskFor(keyCode)).isEqualTo(mask);
+  }
+
+  @DataProvider(name = "modifierKeyCodesAndMasks") public Object[][] modifierKeyCodesAndMasks() {
+    return new Object[][] {
+        { VK_ALT_GRAPH, ALT_GRAPH_MASK },
+        { VK_ALT, ALT_MASK },
+        { VK_SHIFT, SHIFT_MASK },
+        { VK_CONTROL, CTRL_MASK },
+        { VK_META, META_MASK },
+    };
+   }
 }

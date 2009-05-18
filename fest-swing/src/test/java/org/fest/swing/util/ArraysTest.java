@@ -15,11 +15,11 @@
  */
 package org.fest.swing.util;
 
-import org.testng.annotations.Test;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.util.System.LINE_SEPARATOR;
 import static org.fest.util.Strings.concat;
+
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link Arrays}</code>.
@@ -32,6 +32,10 @@ import static org.fest.util.Strings.concat;
     assertThat(Arrays.equal(null, null)).isTrue();
   }
 
+  public void shouldReturnEqualArraysIfBothArraysAreEmpty() {
+    assertThat(Arrays.equal(new String[0][], new String[0][])).isTrue();
+  }
+
   public void shouldReturnNotEqualArraysIfFirstArrayIsNull() {
     assertThat(Arrays.equal(null, new String[0][])).isFalse();
   }
@@ -42,6 +46,12 @@ import static org.fest.util.Strings.concat;
 
   public void shouldReturnNotEqualArraysIfArraysHaveDifferentDimensions() {
     assertThat(Arrays.equal(new String[0][], new String[1][0])).isFalse();
+  }
+
+  public void shouldReturnNotEqualArraysIfArraysHaveDifferentSecondDimensions() {
+    String[][] one = { { "Hello" } };
+    String[][] two = { { "Hello", "Bye" } };
+    assertThat(Arrays.equal(one, two)).isFalse();
   }
 
   public void shouldReturnNotEqualArraysIfArraysHaveDifferentData() {
