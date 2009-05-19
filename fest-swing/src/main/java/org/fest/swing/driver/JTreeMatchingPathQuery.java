@@ -1,5 +1,9 @@
 package org.fest.swing.driver;
 
+import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.util.Collections.list;
+
 import java.util.List;
 
 import javax.swing.JTree;
@@ -9,27 +13,33 @@ import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 
-import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.util.Collections.list;
-
 /**
- * Understands an action, executed in the event dispatch thread, that finds a path in a <code>{@link JTree}</code> 
+ * Understands an action, executed in the event dispatch thread, that finds a path in a <code>{@link JTree}</code>
  * that matches a given <code>String</code>.
  *
  * @author Alex Ruiz
- * 
+ *
  * @see JTreePathFinder
  */
 final class JTreeMatchingPathQuery {
-  
+
   @RunsInEDT
   static TreePath findVisibleMatchingPath(final JTree tree, final String path, final JTreePathFinder pathFinder) {
     return execute(new GuiQuery<TreePath>() {
       protected TreePath executeInEDT() {
         validateIsEnabledAndShowing(tree);
-        TreePath findMatchingPath = pathFinder.findMatchingPath(tree, path);
-        return addRootIfInvisible(tree, findMatchingPath);
+        TreePath matchingPath = pathFinder.findMatchingPath(tree, path);
+        return addRootIfInvisible(tree, matchingPath);
+      }
+    });
+  }
+
+  @RunsInEDT
+  static TreePath matchingPathFor(final JTree tree, final String path, final JTreePathFinder pathFinder) {
+    return execute(new GuiQuery<TreePath>() {
+      protected TreePath executeInEDT() {
+        TreePath matchingPath = pathFinder.findMatchingPath(tree, path);
+        return addRootIfInvisible(tree, matchingPath);
       }
     });
   }
@@ -49,14 +59,5 @@ final class JTreeMatchingPathQuery {
     return new TreePath(newPath.toArray());
   }
 
-  @RunsInEDT
-  static TreePath matchingPathFor(final JTree tree, final String path, final JTreePathFinder pathFinder) {
-    return execute(new GuiQuery<TreePath>() {
-      protected TreePath executeInEDT() {
-        return pathFinder.findMatchingPath(tree, path);
-      }
-    });
-  }
-  
   private JTreeMatchingPathQuery() {}
 }
