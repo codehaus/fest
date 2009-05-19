@@ -15,11 +15,11 @@
  */
 package org.fest.swing.core;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.Window;
 
 import org.fest.swing.edt.GuiTask;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 
 /**
@@ -33,8 +33,8 @@ class ActivateWindowTask {
   static void activateWindow(final Window w) {
     execute(new GuiTask() {
       protected void executeInEDT() {
-        // FIXME figure out why two are sometimes needed
-        w.toFront(); w.toFront();
+        w.toFront();
+        w.requestFocusInWindow();
       }
     });
   }
