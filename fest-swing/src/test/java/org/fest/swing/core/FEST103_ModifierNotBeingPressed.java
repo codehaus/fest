@@ -16,6 +16,8 @@
 package org.fest.swing.core;
 
 import static java.awt.event.InputEvent.CTRL_MASK;
+import static java.awt.event.InputEvent.SHIFT_MASK;
+import static java.awt.event.KeyEvent.VK_A;
 import static java.awt.event.KeyEvent.VK_M;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -46,7 +48,8 @@ import org.testng.annotations.*;
 @Test public class FEST103_ModifierNotBeingPressed {
 
   private Robot robot;
-  private FrameFixture window;
+  private FrameFixture frameFixture;
+  private MyWindow window;
 
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
@@ -54,8 +57,9 @@ import org.testng.annotations.*;
 
   @BeforeMethod public void setUp() {
     robot = robotWithNewAwtHierarchy();
-    window = new FrameFixture(robot, MyWindow.createNew());
-    window.show();
+    window = MyWindow.createNew();
+    frameFixture = new FrameFixture(robot, window);
+    frameFixture.show();
   }
 
   @AfterMethod public void tearDown() {
@@ -63,10 +67,17 @@ import org.testng.annotations.*;
   }
 
   public void shouldPressKeyAndModifier() {
-    window.moveToFront(); // ensure the window is active
+    frameFixture.moveToFront(); // ensure the window is active
     robot.pressAndReleaseKey(VK_M, CTRL_MASK);
     JOptionPaneFixture optionPane = findOptionPane().using(robot);
     optionPane.requireInformationMessage().requireMessage("Hello World");
+  }
+
+  public void shouldPressShiftAsModifier() {
+    frameFixture.moveToFront();
+    robot.focus(window.textField);
+    robot.pressAndReleaseKey(VK_A, SHIFT_MASK);
+    frameFixture.textBox().requireText("A");
   }
 
   private static class MyWindow extends TestWindow {
@@ -81,9 +92,12 @@ import org.testng.annotations.*;
       });
     }
 
+    final JTextField textField = new JTextField(5);
+
     private MyWindow() {
       super(FEST103_ModifierNotBeingPressed.class);
       setJMenuBar(menuBar());
+      addComponents(textField);
       setPreferredSize(new Dimension(200, 100));
     }
 
