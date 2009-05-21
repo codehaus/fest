@@ -31,10 +31,11 @@ import org.fest.swing.core.GenericTypeMatcher;
 import org.fest.swing.core.Robot;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.exception.WaitTimedOutError;
-import org.fest.swing.finder.LauncherWindow.DialogToLaunch;
-import org.fest.swing.finder.LauncherWindow.WindowToLaunch;
 import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.fixture.FrameFixture;
+import org.fest.swing.test.swing.DialogLauncherWindow;
+import org.fest.swing.test.swing.DialogLauncherWindow.DialogToLaunch;
+import org.fest.swing.test.swing.DialogLauncherWindow.WindowToLaunch;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -54,7 +55,7 @@ public class WindowFinderTest {
 
   private FrameFixture launcher;
   private Robot robot;
-  private LauncherWindow launcherWindow;
+  private DialogLauncherWindow launcherWindow;
 
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
@@ -62,7 +63,7 @@ public class WindowFinderTest {
   
   @BeforeMethod public void setUp() {
     robot = robotWithNewAwtHierarchy();
-    launcherWindow = LauncherWindow.createNew(WindowFinderTest.class);
+    launcherWindow = DialogLauncherWindow.createNew(WindowFinderTest.class);
     launcher = new FrameFixture(robot, launcherWindow);
     launcher.show();
   }

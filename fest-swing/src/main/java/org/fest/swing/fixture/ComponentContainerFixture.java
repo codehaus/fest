@@ -1,35 +1,40 @@
 /*
  * Created on Jan 13, 2009
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
- * 
+ *
  * Copyright @2009 the original author or authors.
  */
 package org.fest.swing.fixture;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dialog;
+import static org.fest.swing.timing.Timeout.timeout;
+
+import java.awt.*;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
 import org.fest.swing.core.GenericTypeMatcher;
 import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.exception.WaitTimedOutError;
+import org.fest.swing.timing.Timeout;
 
 /**
  * Understands lookup of <code>{@link Component}</code>s contained in a <code>{@link Container}</code>.
- * 
+ *
  * @author Alex Ruiz
  */
 public interface ComponentContainerFixture {
+
+  /** The timeout to use when looking for a dialog. It's value is 100 ms. **/
+  public static Timeout DEFAULT_DIALOG_LOOKUP_TIMEOUT = timeout(100);
 
   /**
    * Returns a <code>{@link JButton}</code> found in this fixture's <code>{@link Container}</code>.
@@ -44,9 +49,9 @@ public interface ComponentContainerFixture {
    * specified search criteria.
    * @param matcher contains the search criteria for finding a <code>JButton</code>.
    * @return a fixture that manages the <code>JButton</code> found.
-   * @throws ComponentLookupException if a <code>JButton</code> that matches the given search criteria could not be 
+   * @throws ComponentLookupException if a <code>JButton</code> that matches the given search criteria could not be
    * found.
-   * @throws ComponentLookupException if more than one <code>JButton</code> that matches the given search criteria is 
+   * @throws ComponentLookupException if more than one <code>JButton</code> that matches the given search criteria is
    * found.
    */
   JButtonFixture button(GenericTypeMatcher<? extends JButton> matcher);
@@ -74,9 +79,9 @@ public interface ComponentContainerFixture {
    * specified search criteria.
    * @param matcher contains the search criteria for finding a <code>JCheckBox</code>.
    * @return a fixture that manages the <code>JCheckBox</code> found.
-   * @throws ComponentLookupException if a <code>JCheckBox</code> that matches the given search criteria could not be 
+   * @throws ComponentLookupException if a <code>JCheckBox</code> that matches the given search criteria could not be
    * found.
-   * @throws ComponentLookupException if more than one <code>JCheckBox</code> that matches the given search criteria is 
+   * @throws ComponentLookupException if more than one <code>JCheckBox</code> that matches the given search criteria is
    * found.
    */
   JCheckBoxFixture checkBox(GenericTypeMatcher<? extends JCheckBox> matcher);
@@ -103,9 +108,9 @@ public interface ComponentContainerFixture {
    * specified search criteria.
    * @param matcher contains the search criteria for finding a <code>JComboBox</code>.
    * @return a fixture that manages the <code>JComboBox</code> found.
-   * @throws ComponentLookupException if a <code>JComboBox</code> that matches the given search criteria could not be 
+   * @throws ComponentLookupException if a <code>JComboBox</code> that matches the given search criteria could not be
    * found.
-   * @throws ComponentLookupException if more than one <code>JComboBox</code> that matches the given search criteria is 
+   * @throws ComponentLookupException if more than one <code>JComboBox</code> that matches the given search criteria is
    * found.
    */
   JComboBoxFixture comboBox(GenericTypeMatcher<? extends JComboBox> matcher);
@@ -121,64 +126,117 @@ public interface ComponentContainerFixture {
   JComboBoxFixture comboBox(String name);
 
   /**
-   * Returns a <code>{@link Dialog}</code> found in this fixture's <code>{@link Container}</code>.
+   * Returns the only <code>{@link Dialog}</code> currently available (if any.) This method uses the value defined in
+   * <code>{@link #DEFAULT_DIALOG_LOOKUP_TIMEOUT}</code> as the default lookup timeout.
    * @return a fixture that manages the <code>Dialog</code> found.
-   * @throws ComponentLookupException if a <code>Dialog</code> could not be found.
-   * @throws ComponentLookupException if more than one <code>Dialog</code> is found.
+   * @throws WaitTimedOutError if a <code>Dialog</code> could not be found.
+   * @see #dialog(Timeout)
    */
   DialogFixture dialog();
 
   /**
-   * Finds a <code>{@link Dialog}</code> owned by this fixture's <code>{@link Container}</code>, that matches the
-   * specified search criteria.
+   * Returns the only <code>{@link Dialog}</code> currently available (if any.)
+   * @param timeout the amount of time to wait for a <code>Dialog</code> to be found.
+   * @return a fixture that manages the <code>Dialog</code> found.
+   * @throws WaitTimedOutError if a <code>Dialog</code> could not be found.
+   * @since 1.2
+   */
+  DialogFixture dialog(Timeout timeout);
+
+  /**
+   * Finds a <code>{@link Dialog}</code> that matches the specified search criteria. This method uses the value defined
+   * in <code>{@link #DEFAULT_DIALOG_LOOKUP_TIMEOUT}</code> as the default lookup timeout.
    * @param matcher contains the search criteria for finding a <code>Dialog</code>.
    * @return a fixture that manages the <code>Dialog</code> found.
-   * @throws ComponentLookupException if a <code>Dialog</code> that matches the given search criteria could not be 
-   * found.
-   * @throws ComponentLookupException if more than one <code>Dialog</code> that matches the given search criteria is 
-   * found.
+   * @throws WaitTimedOutError if a <code>Dialog</code> that matches the given search criteria could not be found.
+   * @see #dialog(GenericTypeMatcher, Timeout)
    */
   DialogFixture dialog(GenericTypeMatcher<? extends Dialog> matcher);
 
   /**
-   * Finds a <code>{@link Dialog}</code> owned by this fixture's <code>{@link Container}</code>, which name matches the
-   * specified one.
+   * Finds a <code>{@link Dialog}</code> that matches the specified search criteria.
+   * @param matcher contains the search criteria for finding a <code>Dialog</code>.
+   * @param timeout the amount of time to wait for a <code>Dialog</code> to be found.
+   * @return a fixture that manages the <code>Dialog</code> found.
+   * @throws WaitTimedOutError if a <code>Dialog</code> that matches the given search criteria could not be found.
+   * @since 1.2
+   */
+  DialogFixture dialog(GenericTypeMatcher<? extends Dialog> matcher, Timeout timeout);
+
+  /**
+   * Finds a <code>{@link Dialog}</code> with a name matching the specified one. This method uses the value defined in
+   * <code>{@link #DEFAULT_DIALOG_LOOKUP_TIMEOUT}</code> as the default lookup timeout.
    * @param name the name to match.
    * @return a fixture that manages the <code>Dialog</code> found.
-   * @throws ComponentLookupException if a <code>Dialog</code> having a matching name could not be found.
-   * @throws ComponentLookupException if more than one <code>Dialog</code> having a matching name is found.
+   * @throws WaitTimedOutError if a <code>Dialog</code> that a matching name could not be found.
+   * @see #dialog(String, Timeout)
    */
   DialogFixture dialog(String name);
 
   /**
-   * Returns a <code>{@link JFileChooser}</code> found in this fixture's <code>{@link Container}</code>.
+   * Finds a <code>{@link Dialog}</code> with a name matching the specified one.
+   * @param name the name to match.
+   * @param timeout the amount of time to wait for a <code>Dialog</code> to be found.
+   * @return a fixture that manages the <code>Dialog</code> found.
+   * @throws WaitTimedOutError if a <code>Dialog</code> that a matching name could not be found.
+   * @since 1.2
+   */
+  DialogFixture dialog(String name, Timeout timeout);
+
+  /**
+   * Returns the only <code>{@link JFileChooser}</code> currently available (if any.)  This method uses the value
+   * defined in <code>{@link #DEFAULT_DIALOG_LOOKUP_TIMEOUT}</code> as the default lookup timeout.
    * @return a fixture that manages the <code>JFileChooser</code> found.
-   * @throws ComponentLookupException if a <code>JFileChooser</code> could not be found.
-   * @throws ComponentLookupException if more <code>JFileChooser</code> could not be found.
+   * @throws WaitTimedOutError if a <code>JFileChooser</code> could not be found.
+   * @see #fileChooser(Timeout)
    */
   JFileChooserFixture fileChooser();
 
   /**
-   * Finds a <code>{@link JFileChooser}</code> in this fixture's <code>{@link Container}</code>, that matches the
-   * specified search criteria.
+   * Returns the only <code>{@link JFileChooser}</code> currently available (if any.)
+   * @param timeout the amount of time to wait for a <code>JFileChooser</code> to be found.
+   * @return a fixture that manages the <code>JFileChooser</code> found.
+   * @throws WaitTimedOutError if a <code>JFileChooser</code> could not be found.
+   */
+  JFileChooserFixture fileChooser(Timeout timeout);
+
+  /**
+   * Finds a <code>{@link JFileChooser}</code> that matches the specified search criteria. This method uses the value
+   * defined in <code>{@link #DEFAULT_DIALOG_LOOKUP_TIMEOUT}</code> as the default lookup timeout.
    * @param matcher contains the search criteria for finding a <code>JFileChooser</code>.
    * @return a fixture that manages the <code>JFileChooser</code> found.
-   * @throws ComponentLookupException if a <code>JFileChooser</code> that matches the given search criteria could not be 
-   * found.
-   * @throws ComponentLookupException if more than one <code>JFileChooser</code> that matches the given search criteria 
-   * is found.
+   * @throws WaitTimedOutError if a <code>JFileChooser</code> could not be found.
+   * @see #fileChooser(GenericTypeMatcher, Timeout)
    */
   JFileChooserFixture fileChooser(GenericTypeMatcher<? extends JFileChooser> matcher);
 
   /**
-   * Finds a <code>{@link JFileChooser}</code> in this fixture's <code>{@link Container}</code>, which name matches
-   * the specified one.
+   * Finds a <code>{@link JFileChooser}</code> that matches the specified search criteria.
+   * @param matcher contains the search criteria for finding a <code>JFileChooser</code>.
+   * @param timeout the amount of time to wait for a <code>JFileChooser</code> to be found.
+   * @return a fixture that manages the <code>JFileChooser</code> found.
+   * @throws WaitTimedOutError if a <code>JFileChooser</code> could not be found.
+   */
+  JFileChooserFixture fileChooser(GenericTypeMatcher<? extends JFileChooser> matcher, Timeout timeout);
+
+  /**
+   * Finds a <code>{@link JFileChooser}</code> with a name matching the specified one. This method uses the value
+   * defined in <code>{@link #DEFAULT_DIALOG_LOOKUP_TIMEOUT}</code> as the default lookup timeout.
    * @param name the name to match.
    * @return a fixture that manages the <code>JFileChooser</code> found.
-   * @throws ComponentLookupException if a <code>JFileChooser</code> having a matching name could not be found.
-   * @throws ComponentLookupException if more than one <code>JFileChooser</code> having a matching name is found.
+   * @throws WaitTimedOutError if a <code>JFileChooser</code> could not be found.
+   * @see #fileChooser(String, Timeout)
    */
   JFileChooserFixture fileChooser(String name);
+
+  /**
+   * Finds a <code>{@link JFileChooser}</code> with a name matching the specified one.
+   * @param name the name to match.
+   * @param timeout the amount of time to wait for a <code>JFileChooser</code> to be found.
+   * @return a fixture that manages the <code>JFileChooser</code> found.
+   * @throws WaitTimedOutError if a <code>JFileChooser</code> could not be found.
+   */
+  JFileChooserFixture fileChooser(String name, Timeout timeout);
 
   /**
    * Returns a <code>{@link JLabel}</code> found in this fixture's <code>{@link Container}</code>.
@@ -193,9 +251,9 @@ public interface ComponentContainerFixture {
    * specified search criteria.
    * @param matcher contains the search criteria for finding a <code>JLabel</code>.
    * @return a fixture that manages the <code>JLabel</code> found.
-   * @throws ComponentLookupException if a <code>JLabel</code> that matches the given search criteria could not be 
+   * @throws ComponentLookupException if a <code>JLabel</code> that matches the given search criteria could not be
    * found.
-   * @throws ComponentLookupException if more than one <code>JLabel</code> that matches the given search criteria is 
+   * @throws ComponentLookupException if more than one <code>JLabel</code> that matches the given search criteria is
    * found.
    */
   JLabelFixture label(GenericTypeMatcher<? extends JLabel> matcher);
@@ -224,7 +282,7 @@ public interface ComponentContainerFixture {
    * @param matcher contains the search criteria for finding a <code>JList</code>.
    * @return a fixture that manages the <code>JList</code> found.
    * @throws ComponentLookupException if a <code>JList</code> that matches the given search criteria could not be found.
-   * @throws ComponentLookupException if more than one <code>JList</code> that matches the given search criteria is 
+   * @throws ComponentLookupException if more than one <code>JList</code> that matches the given search criteria is
    * found.
    */
   JListFixture list(GenericTypeMatcher<? extends JList> matcher);
@@ -274,19 +332,28 @@ public interface ComponentContainerFixture {
    * @param matcher contains the search criteria for finding a <code>JMenuItem</code>.
    * @return a fixture that manages the <code>JMenuItem</code> found.
    * @throws ComponentLookupException if a <code>JMenuItem</code> that matches the given search criteria could not be
-   *          found.
+   * found.
    * @throws ComponentLookupException if more than one <code>JMenuItem</code> that matches the given search criteria is
-   *          found.
+   * found.
    */
   JMenuItemFixture menuItem(GenericTypeMatcher<? extends JMenuItem> matcher);
 
   /**
-   * Finds a <code>{@link JOptionPane}</code>.
+   * Returns the only <code>{@link JOptionPane}</code> currently available (if any.) This method uses the value defined
+   * in <code>{@link #DEFAULT_DIALOG_LOOKUP_TIMEOUT}</code> as the default lookup timeout.
    * @return a fixture that manages the <code>JOptionPane</code> found.
-   * @throws ComponentLookupException if a <code>JOptionPane</code> could not be found.
-   * @throws ComponentLookupException if more than one <code>JOptionPane</code> is found.
+   * @throws WaitTimedOutError if a <code>JOptionPane</code> could not be found.
+   * @see #optionPane(Timeout)
    */
   JOptionPaneFixture optionPane();
+
+  /**
+   * Returns the only <code>{@link JOptionPane}</code> currently available (if any.)
+   * @param timeout the amount of time to wait for a <code>JOptionPane</code> to be found.
+   * @return a fixture that manages the <code>JOptionPane</code> found.
+   * @throws WaitTimedOutError if a <code>JOptionPane</code> could not be found.
+   */
+  JOptionPaneFixture optionPane(Timeout timeout);
 
   /**
    * Returns a <code>{@link JPanel}</code> found in this fixture's <code>{@link Container}</code>.
@@ -301,9 +368,9 @@ public interface ComponentContainerFixture {
    * specified search criteria.
    * @param matcher contains the search criteria for finding a <code>JPanel</code>.
    * @return a fixture that manages the <code>JPanel</code> found.
-   * @throws ComponentLookupException if a <code>JPanel</code> that matches the given search criteria could not be 
+   * @throws ComponentLookupException if a <code>JPanel</code> that matches the given search criteria could not be
    * found.
-   * @throws ComponentLookupException if more than one <code>JPanel</code> that matches the given search criteria is 
+   * @throws ComponentLookupException if more than one <code>JPanel</code> that matches the given search criteria is
    * found.
    */
   JPanelFixture panel(GenericTypeMatcher<? extends JPanel> matcher);
@@ -330,9 +397,9 @@ public interface ComponentContainerFixture {
    * specified search criteria.
    * @param matcher contains the search criteria for finding a <code>JRadioButton</code>.
    * @return a fixture that manages the <code>JRadioButton</code> found.
-   * @throws ComponentLookupException if a <code>JRadioButton</code> that matches the given search criteria could not be 
+   * @throws ComponentLookupException if a <code>JRadioButton</code> that matches the given search criteria could not be
    * found.
-   * @throws ComponentLookupException if more than one <code>JRadioButton</code> that matches the given search criteria 
+   * @throws ComponentLookupException if more than one <code>JRadioButton</code> that matches the given search criteria
    * is found.
    */
   JRadioButtonFixture radioButton(GenericTypeMatcher<? extends JRadioButton> matcher);
@@ -360,9 +427,9 @@ public interface ComponentContainerFixture {
    * specified search criteria.
    * @param matcher contains the search criteria for finding a <code>JScrollBar</code>.
    * @return a fixture that manages the <code>JScrollBar</code> found.
-   * @throws ComponentLookupException if a <code>JScrollBar</code> that matches the given search criteria could not be 
+   * @throws ComponentLookupException if a <code>JScrollBar</code> that matches the given search criteria could not be
    * found.
-   * @throws ComponentLookupException if more than one <code>JScrollBar</code> that matches the given search criteria is 
+   * @throws ComponentLookupException if more than one <code>JScrollBar</code> that matches the given search criteria is
    * found.
    */
   JScrollBarFixture scrollBar(GenericTypeMatcher<? extends JScrollBar> matcher);
@@ -390,9 +457,9 @@ public interface ComponentContainerFixture {
    * specified search criteria.
    * @param matcher contains the search criteria for finding a <code>JScrollPane</code>.
    * @return a fixture that manages the <code>JScrollPane</code> found.
-   * @throws ComponentLookupException if a <code>JScrollPane</code> that matches the given search criteria could not be 
+   * @throws ComponentLookupException if a <code>JScrollPane</code> that matches the given search criteria could not be
    * found.
-   * @throws ComponentLookupException if more than one <code>JScrollPane</code> that matches the given search criteria 
+   * @throws ComponentLookupException if more than one <code>JScrollPane</code> that matches the given search criteria
    * is found.
    */
   JScrollPaneFixture scrollPane(GenericTypeMatcher<? extends JScrollPane> matcher);
@@ -420,9 +487,9 @@ public interface ComponentContainerFixture {
    * specified search criteria.
    * @param matcher contains the search criteria for finding a <code>JSlider</code>.
    * @return a fixture that manages the <code>JSlider</code> found.
-   * @throws ComponentLookupException if a <code>JSlider</code> that matches the given search criteria could not be 
+   * @throws ComponentLookupException if a <code>JSlider</code> that matches the given search criteria could not be
    * found.
-   * @throws ComponentLookupException if more than one <code>JSlider</code> that matches the given search criteria is 
+   * @throws ComponentLookupException if more than one <code>JSlider</code> that matches the given search criteria is
    * found.
    */
   JSliderFixture slider(GenericTypeMatcher<? extends JSlider> matcher);
@@ -450,9 +517,9 @@ public interface ComponentContainerFixture {
    * specified search criteria.
    * @param matcher contains the search criteria for finding a <code>JSpinner</code>.
    * @return a fixture that manages the <code>JSpinner</code> found.
-   * @throws ComponentLookupException if a <code>JSpinner</code> that matches the given search criteria could not be 
+   * @throws ComponentLookupException if a <code>JSpinner</code> that matches the given search criteria could not be
    * found.
-   * @throws ComponentLookupException if more than one <code>JSpinner</code> that matches the given search criteria is 
+   * @throws ComponentLookupException if more than one <code>JSpinner</code> that matches the given search criteria is
    * found.
    */
   JSpinnerFixture spinner(GenericTypeMatcher<? extends JSpinner> matcher);
@@ -480,9 +547,9 @@ public interface ComponentContainerFixture {
    * specified search criteria.
    * @param matcher contains the search criteria for finding a <code>JSplitPane</code>.
    * @return a fixture that manages the <code>JSplitPane</code> found.
-   * @throws ComponentLookupException if a <code>JSplitPane</code> that matches the given search criteria could not be 
+   * @throws ComponentLookupException if a <code>JSplitPane</code> that matches the given search criteria could not be
    * found.
-   * @throws ComponentLookupException if more than one <code>JSplitPane</code> that matches the given search criteria is 
+   * @throws ComponentLookupException if more than one <code>JSplitPane</code> that matches the given search criteria is
    * found.
    */
   JSplitPaneFixture splitPane(GenericTypeMatcher<? extends JSplitPane> matcher);
@@ -510,9 +577,9 @@ public interface ComponentContainerFixture {
    * specified search criteria.
    * @param matcher contains the search criteria for finding a <code>JTabbedPane</code>.
    * @return a fixture that manages the <code>JTabbedPane</code> found.
-   * @throws ComponentLookupException if a <code>JTabbedPane</code> that matches the given search criteria could not be 
+   * @throws ComponentLookupException if a <code>JTabbedPane</code> that matches the given search criteria could not be
    * found.
-   * @throws ComponentLookupException if more than one <code>JTabbedPane</code> that matches the given search criteria 
+   * @throws ComponentLookupException if more than one <code>JTabbedPane</code> that matches the given search criteria
    * is found.
    */
   JTabbedPaneFixture tabbedPane(GenericTypeMatcher<? extends JTabbedPane> matcher);
@@ -540,9 +607,9 @@ public interface ComponentContainerFixture {
    * specified search criteria.
    * @param matcher contains the search criteria for finding a <code>JTable</code>.
    * @return a fixture that manages the <code>JTable</code> found.
-   * @throws ComponentLookupException if a <code>JTable</code> that matches the given search criteria could not be 
+   * @throws ComponentLookupException if a <code>JTable</code> that matches the given search criteria could not be
    * found.
-   * @throws ComponentLookupException if more than one <code>JTable</code> that matches the given search criteria is 
+   * @throws ComponentLookupException if more than one <code>JTable</code> that matches the given search criteria is
    * found.
    */
   JTableFixture table(GenericTypeMatcher<? extends JTable> matcher);
@@ -570,9 +637,9 @@ public interface ComponentContainerFixture {
    * fixture, that matches the specified search criteria.
    * @param matcher contains the search criteria for finding a <code>JTextComponent</code>.
    * @return a fixture that manages the <code>JTextComponent</code> found.
-   * @throws ComponentLookupException if a <code>JTextComponent</code> that matches the given search criteria could not 
+   * @throws ComponentLookupException if a <code>JTextComponent</code> that matches the given search criteria could not
    * be found.
-   * @throws ComponentLookupException if more than one <code>JTextComponent</code> that matches the given search 
+   * @throws ComponentLookupException if more than one <code>JTextComponent</code> that matches the given search
    * criteria is found.
    */
   JTextComponentFixture textBox(GenericTypeMatcher<? extends JTextComponent> matcher);
@@ -600,9 +667,9 @@ public interface ComponentContainerFixture {
    * specified search criteria.
    * @param matcher contains the search criteria for finding a <code>JToggleButton</code>.
    * @return a fixture that manages the <code>JToggleButton</code> found.
-   * @throws ComponentLookupException if a <code>JToggleButton</code> that matches the given search criteria could not 
+   * @throws ComponentLookupException if a <code>JToggleButton</code> that matches the given search criteria could not
    * be found.
-   * @throws ComponentLookupException if more than one <code>JToggleButton</code> that matches the given search criteria 
+   * @throws ComponentLookupException if more than one <code>JToggleButton</code> that matches the given search criteria
    * is found.
    */
   JToggleButtonFixture toggleButton(GenericTypeMatcher<? extends JToggleButton> matcher);
@@ -630,9 +697,9 @@ public interface ComponentContainerFixture {
    * specified search criteria.
    * @param matcher contains the search criteria for finding a <code>JToolBar</code>.
    * @return a fixture that manages the <code>JToolBar</code> found.
-   * @throws ComponentLookupException if a <code>JToolBar</code> that matches the given search criteria could not be 
+   * @throws ComponentLookupException if a <code>JToolBar</code> that matches the given search criteria could not be
    * found.
-   * @throws ComponentLookupException if more than one <code>JToolBar</code> that matches the given search criteria is 
+   * @throws ComponentLookupException if more than one <code>JToolBar</code> that matches the given search criteria is
    * found.
    */
   JToolBarFixture toolBar(GenericTypeMatcher<? extends JToolBar> matcher);
@@ -661,7 +728,7 @@ public interface ComponentContainerFixture {
    * @param matcher contains the search criteria for finding a <code>JTree</code>.
    * @return a fixture that manages the <code>JTree</code> found.
    * @throws ComponentLookupException if a <code>JTree</code> that matches the given search criteria could not be found.
-   * @throws ComponentLookupException if more than one <code>JTree</code> that matches the given search criteria is 
+   * @throws ComponentLookupException if more than one <code>JTree</code> that matches the given search criteria is
    * found.
    */
   JTreeFixture tree(GenericTypeMatcher<? extends JTree> matcher);
@@ -677,12 +744,12 @@ public interface ComponentContainerFixture {
   JTreeFixture tree(String name);
 
   /**
-   * Returns a <code>{@link ComponentFixture}</code> managing a component inside this fixture's 
-   * <code>{@link Container}</code>. This is an extension method, to allow implementations of 
+   * Returns a <code>{@link ComponentFixture}</code> managing a component inside this fixture's
+   * <code>{@link Container}</code>. This is an extension method, to allow implementations of
    * <code>{@link ContainerFixture}</code> handle custom GUI components.
    * @param <C> the type of <code>Component</code> the fixture to return can handle.
    * @param <F> the type of <code>ComponentFixture</code> to return.
-   * @param extension the <code>ComponentFixtureExtension</code> that creates the <code>ComponentFixture</code> to 
+   * @param extension the <code>ComponentFixtureExtension</code> that creates the <code>ComponentFixture</code> to
    * return.
    * @return a <code>ComponentFixture</code> managing a component inside this fixture's <code>Container</code>.
    */

@@ -14,19 +14,18 @@
  */
 package org.fest.swing.fixture;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dialog;
+import static org.fest.swing.core.ComponentLookupScope.SHOWING_ONLY;
+import static org.fest.swing.timing.Pause.pause;
+
+import java.awt.*;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
-import org.fest.swing.core.ComponentFinder;
-import org.fest.swing.core.GenericTypeMatcher;
+import org.fest.swing.core.*;
 import org.fest.swing.core.Robot;
 import org.fest.swing.exception.ComponentLookupException;
-
-import static org.fest.swing.core.ComponentLookupScope.SHOWING_ONLY;
+import org.fest.swing.timing.Timeout;
 
 /**
  * Understands lookup of <code>{@link Component}</code>s contained in a <code>{@link Container}</code>.
@@ -130,32 +129,80 @@ public abstract class ContainerFixture<T extends Container> extends JPopupMenuIn
 
   /** {@inheritDoc} */
   public DialogFixture dialog() {
-    return new DialogFixture(robot, findByType(Dialog.class));
+    return dialog(DEFAULT_DIALOG_LOOKUP_TIMEOUT);
+  }
+
+  /** {@inheritDoc} */
+  public DialogFixture dialog(Timeout timeout) {
+    TypeMatcher matcher = new TypeMatcher(Dialog.class, requireShowing());
+    return findDialog(matcher, timeout);
   }
 
   /** {@inheritDoc} */
   public DialogFixture dialog(GenericTypeMatcher<? extends Dialog> matcher) {
-    return new DialogFixture(robot, find(matcher));
+    return dialog(matcher, DEFAULT_DIALOG_LOOKUP_TIMEOUT);
+  }
+
+  /** {@inheritDoc} */
+  public DialogFixture dialog(GenericTypeMatcher<? extends Dialog> matcher, Timeout timeout) {
+    return findDialog(matcher, timeout);
   }
 
   /** {@inheritDoc} */
   public DialogFixture dialog(String name) {
-    return new DialogFixture(robot, findByName(name, Dialog.class));
+    return dialog(name, DEFAULT_DIALOG_LOOKUP_TIMEOUT);
+  }
+
+  /** {@inheritDoc} */
+  public DialogFixture dialog(String name, Timeout timeout) {
+    NameMatcher matcher = new NameMatcher(name, Dialog.class, requireShowing());
+    return findDialog(matcher, timeout);
+  }
+
+  private DialogFixture findDialog(ComponentMatcher matcher, Timeout timeout) {
+    String description = "dialog to be found using matcher " + matcher;
+    ComponentFoundCondition condition = new ComponentFoundCondition(description, robot.finder(), matcher);
+    pause(condition, timeout);
+    return new DialogFixture(robot, (Dialog)condition.found());
   }
 
   /** {@inheritDoc} */
   public JFileChooserFixture fileChooser() {
-    return new JFileChooserFixture(robot, findByType(JFileChooser.class));
+    return fileChooser(DEFAULT_DIALOG_LOOKUP_TIMEOUT);
+  }
+
+  /** {@inheritDoc} */
+  public JFileChooserFixture fileChooser(Timeout timeout) {
+    TypeMatcher matcher = new TypeMatcher(JFileChooser.class, requireShowing());
+    return findFileChooser(matcher, timeout);
   }
 
   /** {@inheritDoc} */
   public JFileChooserFixture fileChooser(GenericTypeMatcher<? extends JFileChooser> matcher) {
-    return new JFileChooserFixture(robot, find(matcher));
+    return fileChooser(matcher, DEFAULT_DIALOG_LOOKUP_TIMEOUT);
+  }
+
+  /** {@inheritDoc} */
+  public JFileChooserFixture fileChooser(GenericTypeMatcher<? extends JFileChooser> matcher, Timeout timeout) {
+    return findFileChooser(matcher, timeout);
   }
 
   /** {@inheritDoc} */
   public JFileChooserFixture fileChooser(String name) {
     return new JFileChooserFixture(robot, findByName(name, JFileChooser.class));
+  }
+
+  /** {@inheritDoc} */
+  public JFileChooserFixture fileChooser(String name, Timeout timeout) {
+    NameMatcher matcher = new NameMatcher(name, JFileChooser.class, requireShowing());
+    return findFileChooser(matcher, timeout);
+  }
+
+  private JFileChooserFixture findFileChooser(ComponentMatcher matcher, Timeout timeout) {
+    String description = "file chooser to be found using matcher " + matcher;
+    ComponentFoundCondition condition = new ComponentFoundCondition(description, robot.finder(), matcher);
+    pause(condition, timeout);
+    return new JFileChooserFixture(robot, (JFileChooser)condition.found());
   }
 
   /** {@inheritDoc} */
@@ -206,7 +253,16 @@ public abstract class ContainerFixture<T extends Container> extends JPopupMenuIn
 
   /** {@inheritDoc} */
   public JOptionPaneFixture optionPane() {
-    return new JOptionPaneFixture(robot);
+    return optionPane(DEFAULT_DIALOG_LOOKUP_TIMEOUT);
+  }
+
+  /** {@inheritDoc} */
+  public JOptionPaneFixture optionPane(Timeout timeout) {
+    TypeMatcher matcher = new TypeMatcher(JOptionPane.class, requireShowing());
+    String description = "option pane to be found using matcher " + matcher;
+    ComponentFoundCondition condition = new ComponentFoundCondition(description, robot.finder(), matcher);
+    pause(condition, timeout);
+    return new JOptionPaneFixture(robot, (JOptionPane)condition.found());
   }
 
   /** {@inheritDoc} */
@@ -430,7 +486,7 @@ public abstract class ContainerFixture<T extends Container> extends JPopupMenuIn
   }
 
   /**
-   * Finds a <code>{@link Component}</code> using the given <code>{@link GenericTypeMatcher}</code>, contained in this 
+   * Finds a <code>{@link Component}</code> using the given <code>{@link GenericTypeMatcher}</code>, contained in this
    * fixture's <code>{@link Container}</code>.
    * @param <C> the generic type of component the given matcher can handle.
    * @param matcher the matcher to use to find the component.
@@ -446,7 +502,7 @@ public abstract class ContainerFixture<T extends Container> extends JPopupMenuIn
   public <C extends Component, F extends ComponentFixture<C>> F with(ComponentFixtureExtension<C, F> extension) {
     return extension.createFixture(robot, target);
   }
-  
+
   /**
    * Returns the <code>{@link ComponentFinder}</code> contained in this fixture's <code>{@link Robot}</code>.
    * @return the <code>ComponentFinder</code> contained in this fixture's <code>Robot</code>.
