@@ -5,6 +5,46 @@
     <author email="alex.ruiz.05@gmail.com">Alex Ruiz</author>
   </properties>
   <body>
+    <release version="1.2a2" date="2009-05-26" description="Subsequent release">
+      <action dev="alruiz" type="add" issue="FEST-32" due-to="Juhos Csaba-Zsolt">
+        Added method 'dialog(Timeout)' to ContainerFixture.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-32" due-to="Juhos Csaba-Zsolt">
+        Added method 'dialog(GenericTypeMatcher, Timeout)' to ContainerFixture.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-32" due-to="Juhos Csaba-Zsolt">
+        Added method 'dialog(String Timeout)' to ContainerFixture.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-32" due-to="Juhos Csaba-Zsolt">
+        Added method 'fileChooser(Timeout)' to ContainerFixture.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-32" due-to="Juhos Csaba-Zsolt">
+        Added method 'fileChooser(GenericTypeMatcher, Timeout)' to ContainerFixture.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-32" due-to="Juhos Csaba-Zsolt">
+        Added method 'fileChooser(String Timeout)' to ContainerFixture.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-32" due-to="Juhos Csaba-Zsolt">
+        Added method 'optionPane(Timeout)' to ContainerFixture.
+      </action>
+      <action dev="alruiz" type="fix" issue="FEST-32" due-to="Juhos Csaba-Zsolt">
+        Original methods to look up Dialogs, JFileChoosers and JOptionPanes now delegate to the overloaded versions that
+        take a Timeout.
+      </action>
+      <action dev="alruiz" type="fix" issue="FEST-32" due-to="Juhos Csaba-Zsolt">
+        Class org.fest.swing.timing.Timeout now throws NPE in constructor if the given TimeUnit is null.
+      </action>
+      <action dev="alruiz" type="fix" issue="FEST-118" due-to="Olivier DOREMIEUX">
+        To activate a Window, org.fest.swing.core.ActivateWindowTask now calls 'toFront and 'requestFocusInWindow' 
+        instead of two calls to 'toFront'.
+      </action>
+      <action dev="alruiz" type="fix" issue="FEST-119" due-to="Eric Kolotyluk">
+        Fixed implementation of 'requireSelection(String)' in JTreeDriver when a JTree has an invisible root.
+      </action>
+      <action dev="alruiz" type="fix" issue="FEST-132">
+        KeyStrokeMap now uses the German keyboard mappings if the language of the default locale is German.
+      </action>
+    </release>
     <release version="1.2a1" date="2009-05-04" description="Subsequent release">
       <action dev="alruiz" type="add" issue="FEST-29" due-to="Christian Dähn">
         Deprecated org.fest.swing.junit.runner.GUITestRunner in module 'fest-swing-junit' and rewrote it as 
