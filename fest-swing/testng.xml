@@ -2,17 +2,20 @@
 
 <suite name="All Tests" verbose="1">
 	<test name="Non GUI">
+    <!--
 		<groups>
 			<run>
 				<exclude name="GUI" />
 			</run>
 		</groups>
+		-->
     <packages>
       <package name="org.fest.swing.annotation" />
       <package name="org.fest.swing.applet" />
-      <package name="org.fest.swing.data" />
       <package name="org.fest.swing.awt" />
+      <package name="org.fest.swing.core" />
       <package name="org.fest.swing.core.matcher" />
+      <package name="org.fest.swing.data" />
       <package name="org.fest.swing.driver" />
       <package name="org.fest.swing.edt" />
       <package name="org.fest.swing.exception" />
@@ -25,6 +28,7 @@
       <package name="org.fest.swing.keystroke" />
       <package name="org.fest.swing.launcher" />
       <package name="org.fest.swing.listener" />
+      <package name="org.fest.swing.lock" />
       <package name="org.fest.swing.monitor" />
       <package name="org.fest.swing.query" />
       <package name="org.fest.swing.testing" />

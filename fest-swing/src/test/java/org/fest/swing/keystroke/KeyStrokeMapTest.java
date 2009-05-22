@@ -15,7 +15,9 @@
  */
 package org.fest.swing.keystroke;
 
+import static java.awt.event.InputEvent.CTRL_MASK;
 import static java.awt.event.InputEvent.SHIFT_MASK;
+import static java.awt.event.KeyEvent.CHAR_UNDEFINED;
 import static java.awt.event.KeyEvent.VK_A;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;
@@ -43,7 +45,7 @@ import org.testng.annotations.*;
 
   @BeforeMethod public void setUp() {
     provider = createMock(KeyStrokeMappingProvider.class);
-    keyStroke = KeyStroke.getKeyStroke(VK_A, SHIFT_MASK);
+    keyStroke = KeyStroke.getKeyStroke(VK_A, CTRL_MASK);
     mapping = new KeyStrokeMapping('A', keyStroke);
     mappings = new ArrayList<KeyStrokeMapping>();
     mappings.add(mapping);
@@ -52,6 +54,7 @@ import org.testng.annotations.*;
   }
 
   @AfterMethod public void tearDown() {
+    KeyStrokeMap.updateKeyStrokeMapCollection(new KeyStrokeMapCollection());
     KeyStrokeMap.reloadFromLocale();
   }
 
@@ -79,5 +82,41 @@ import org.testng.annotations.*;
         assertThat(KeyStrokeMap.charFor(keyStroke)).isEqualTo('A');
       }
     }.run();
+  }
+
+  public void shouldStripModifiersButShiftIfCharForKeyStrokeNotFoundInMap() {
+    final Character character = 'a';
+    final KeyStrokeMapCollection maps = createMock(KeyStrokeMapCollection.class);
+    KeyStrokeMap.updateKeyStrokeMapCollection(maps);
+    new EasyMockTemplate(maps) {
+      protected void expectations() {
+        expect(maps.charFor(keyStroke)).andReturn(null);
+        expect(maps.charFor(removeModifiersExceptShift(keyStroke))).andReturn(character);
+      }
+
+      protected void codeToTest() {
+        assertThat(KeyStrokeMap.charFor(keyStroke)).isEqualTo(character);
+      }
+    }.run();
+  }
+
+  public void shouldReturnUndefinedCharacterIfCharacterForKeyStrokeNotFound() {
+    final KeyStrokeMapCollection maps = createMock(KeyStrokeMapCollection.class);
+    KeyStrokeMap.updateKeyStrokeMapCollection(maps);
+    new EasyMockTemplate(maps) {
+      protected void expectations() {
+        expect(maps.charFor(keyStroke)).andReturn(null);
+        expect(maps.charFor(removeModifiersExceptShift(keyStroke))).andReturn(null);
+      }
+
+      protected void codeToTest() {
+        assertThat(KeyStrokeMap.charFor(keyStroke)).isEqualTo(CHAR_UNDEFINED);
+      }
+    }.run();
+  }
+
+  private static KeyStroke removeModifiersExceptShift(KeyStroke base) {
+    final int mask = base.getModifiers() & ~SHIFT_MASK;
+    return KeyStroke.getKeyStroke(VK_A, mask);
   }
 }

@@ -17,7 +17,7 @@ package org.fest.swing.keystroke;
 import static java.awt.event.InputEvent.SHIFT_MASK;
 import static java.awt.event.KeyEvent.CHAR_UNDEFINED;
 
-import java.util.*;
+import java.util.Locale;
 
 import javax.swing.KeyStroke;
 
@@ -29,8 +29,7 @@ import javax.swing.KeyStroke;
  */
 public class KeyStrokeMap {
 
-  private static final Map<Character, KeyStroke> CHAR_TO_KEY_STROKE = new HashMap<Character, KeyStroke>();
-  private static final Map<KeyStroke, Character> KEY_STROKE_TO_CHAR = new HashMap<KeyStroke, Character>();
+  private static KeyStrokeMapCollection maps = new KeyStrokeMapCollection();
 
   static {
     reloadFromLocale();
@@ -41,7 +40,13 @@ public class KeyStrokeMap {
    */
   public static void reloadFromLocale() {
     KeyStrokeMappingProviderPicker picker = new KeyStrokeMappingProviderPicker();
+    maps.clear();
     addKeyStrokesFrom(picker.providerFor(Locale.getDefault()));
+  }
+
+  // for testing only
+  static void updateKeyStrokeMapCollection(KeyStrokeMapCollection c) {
+    maps = c;
   }
 
   /**
@@ -49,30 +54,28 @@ public class KeyStrokeMap {
    * <code>{@link KeyStrokeMappingProvider}</code> to this map.
    * @param provider the given <code>KeyStrokeMappingProvider</code>.
    */
-  public static synchronized void addKeyStrokesFrom(KeyStrokeMappingProvider provider) {
+  public static void addKeyStrokesFrom(KeyStrokeMappingProvider provider) {
     for (KeyStrokeMapping entry : provider.keyStrokeMappings())
       add(entry.character(), entry.keyStroke());
   }
 
   private static void add(Character character, KeyStroke keyStroke) {
-    CHAR_TO_KEY_STROKE.put(character, keyStroke);
-    KEY_STROKE_TO_CHAR.put(keyStroke, character);
+    maps.add(character, keyStroke);
   }
 
   /**
    * Removes all the character-<code>{@link KeyStroke}</code> mappings.
    */
-  public static synchronized void clearKeyStrokes() {
-    CHAR_TO_KEY_STROKE.clear();
-    KEY_STROKE_TO_CHAR.clear();
+  public static void clearKeyStrokes() {
+    maps.clear();
   }
 
   /**
    * Indicates whether <code>{@link KeyStrokeMap}</code> has mappings or not.
    * @return <code>true</code> if it has mappings, <code>false</code> otherwise.
    */
-  public static synchronized boolean hasKeyStrokes() {
-    return !CHAR_TO_KEY_STROKE.isEmpty() && KEY_STROKE_TO_CHAR.isEmpty();
+  public static boolean hasKeyStrokes() {
+    return !maps.isEmpty();
   }
 
   /**
@@ -80,10 +83,10 @@ public class KeyStrokeMap {
    * <code>null</code> if we don't know how to generate it.
    * @param character the given character.
    * @return the key code-based <code>KeyStroke</code> corresponding to the given character, or <code>null</code> if
-   *         we cannot generate it.
+   * we cannot generate it.
    */
   public static KeyStroke keyStrokeFor(char character) {
-    return CHAR_TO_KEY_STROKE.get(character);
+    return maps.keyStrokeFor(character);
   }
 
   /**
@@ -94,14 +97,16 @@ public class KeyStrokeMap {
    * @return KeyEvent.VK_UNDEFINED if the result is unknown.
    */
   public static char charFor(KeyStroke keyStroke) {
-    Character character = KEY_STROKE_TO_CHAR.get(keyStroke);
-    if (character == null) {
-      // Try again, but strip all modifiers but shift
-      int mask = keyStroke.getModifiers() & ~SHIFT_MASK;
-      character = KEY_STROKE_TO_CHAR.get(KeyStroke.getKeyStroke(keyStroke.getKeyCode(), mask));
-      if (character == null) return CHAR_UNDEFINED;
-    }
+    Character character = maps.charFor(keyStroke);
+    // Try again, but strip all modifiers but shift
+    if (character == null) character = charWithoutModifiersButShift(keyStroke);
+    if (character == null) return CHAR_UNDEFINED;
     return character.charValue();
+  }
+
+  private static Character charWithoutModifiersButShift(KeyStroke keyStroke) {
+    int mask = keyStroke.getModifiers() & ~SHIFT_MASK;
+    return maps.charFor(KeyStroke.getKeyStroke(keyStroke.getKeyCode(), mask));
   }
 
   private KeyStrokeMap() {}
