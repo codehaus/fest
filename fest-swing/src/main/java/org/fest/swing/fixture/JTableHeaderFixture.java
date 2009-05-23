@@ -102,11 +102,13 @@ public class JTableHeaderFixture extends ComponentFixture<JTableHeader> {
    * @param index the index of the column to click.
    * @param mouseClickInfo specifies the mouse button to use and the number of times to click.
    * @return this fixture.
+   * @throws NullPointerException if the given <code>MouseClickInfo</code> is <code>null</code>.
    * @throws IllegalStateException if this fixture's <code>JTableHeader</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JTableHeader</code> is not showing on the screen.
    * @throws IndexOutOfBoundsException if the index is out of bounds.
    */
   public JTableHeaderFixture clickColumn(int index, MouseClickInfo mouseClickInfo) {
+    if (mouseClickInfo == null) throw new NullPointerException("The given MouseClickInfo should not be null");
     driver.clickColumn(target, index, mouseClickInfo.button(), mouseClickInfo.times());
     return this;
   }

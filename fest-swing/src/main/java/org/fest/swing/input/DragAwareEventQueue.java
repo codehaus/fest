@@ -15,17 +15,16 @@
  */
 package org.fest.swing.input;
 
-import java.awt.AWTEvent;
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.Toolkit;
+import static java.awt.AWTEvent.MOUSE_EVENT_MASK;
+import static java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK;
+import static java.awt.event.MouseEvent.*;
+import static javax.swing.SwingUtilities.convertMouseEvent;
+import static javax.swing.SwingUtilities.getDeepestComponentAt;
+
+import java.awt.*;
 import java.awt.event.AWTEventListener;
 import java.awt.event.MouseEvent;
 import java.util.EmptyStackException;
-
-import static java.awt.AWTEvent.*;
-import static java.awt.event.MouseEvent.*;
-import static javax.swing.SwingUtilities.*;
 
 /**
  * Catches native drop target events, which are normally hidden from AWTEventListeners.
@@ -37,11 +36,17 @@ class DragAwareEventQueue extends EventQueue {
   private final Toolkit toolkit;
   private final long mask;
   private final AWTEventListener eventListener;
+  private final NativeDnD nativeDnD;
 
   DragAwareEventQueue(Toolkit toolkit, long mask, AWTEventListener eventListener) {
+    this(toolkit, mask, eventListener, new NativeDnD());
+  }
+
+  DragAwareEventQueue(Toolkit toolkit, long mask, AWTEventListener eventListener, NativeDnD nativeDnD) {
     this.toolkit = toolkit;
     this.mask = mask;
     this.eventListener = eventListener;
+    this.nativeDnD = nativeDnD;
   }
 
   /**
@@ -58,12 +63,12 @@ class DragAwareEventQueue extends EventQueue {
   /**
    * Dispatch native drag/drop events the same way non-native drags are reported. Enter/Exit are reported with the
    * appropriate source, while drag and release events use the drag source as the source.
-   * @param e an instance of <code>java.awt.AWTEvent</code>
+   * @param e an instance of <code>java.awt.AWTEvent</code>.
    */
   @Override protected void dispatchEvent(AWTEvent e) {
-    // TODO: implement enter/exit events 
+    // TODO: implement enter/exit events
     // TODO: change source to drag source, not mouse under
-    if (isNativeDragAndDrop(e)) {
+    if (nativeDnD.isNativeDragAndDrop(e)) {
       MouseEvent mouseEvent = (MouseEvent) e;
       Component target = getDeepestComponentAt(mouseEvent.getComponent(), mouseEvent.getX(), mouseEvent.getY());
       if (target != mouseEvent.getSource())
@@ -71,10 +76,6 @@ class DragAwareEventQueue extends EventQueue {
       relayDnDEvent(mouseEvent);
     }
     super.dispatchEvent(e);
-  }
-
-  boolean isNativeDragAndDrop(AWTEvent e) {
-    return e.getClass().getName().indexOf("SunDropTargetEvent") != -1;
   }
 
   private void relayDnDEvent(MouseEvent event) {

@@ -128,6 +128,16 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
     }.run();
   }
 
+  @Test(expectedExceptions = NullPointerException.class)
+  public void shouldThrowErrorWhenClickingColumnByIndexIfMouseClickInfoIsNull() {
+    fixture.clickColumn(0, null);
+  }
+
+  @Test(expectedExceptions = NullPointerException.class)
+  public void shouldThrowErrorWhenClickingColumnByNameIfMouseClickInfoIsNull() {
+    fixture.clickColumn("first", null);
+  }
+
   private void assertThatReturnsThis(JTableHeaderFixture result) {
     assertThat(result).isSameAs(fixture);
   }

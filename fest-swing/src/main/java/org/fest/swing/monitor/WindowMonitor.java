@@ -14,6 +14,8 @@
  */
 package org.fest.swing.monitor;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.*;
 import java.util.Collection;
 
@@ -21,14 +23,12 @@ import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 
-import static org.fest.swing.edt.GuiActionRunner.execute;
-
 /**
  * Understands a monitor that keeps track of all known root windows (showing, hidden, closed.)
  *
  * @author Alex Ruiz
  */
-public final class WindowMonitor {
+public class WindowMonitor {
 
   private final Context context;
   private final ContextMonitor contextMonitor;

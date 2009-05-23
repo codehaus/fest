@@ -136,5 +136,10 @@ import org.testng.annotations.Test;
         { VK_CONTROL, CTRL_MASK },
         { VK_META, META_MASK },
     };
-   }
+  }
+
+  @Test(expectedExceptions = IllegalArgumentException.class)
+  public void shouldThrowErrorIfKeyIsNotModifier() {
+    Modifiers.maskFor(VK_A);
+  }
 }
