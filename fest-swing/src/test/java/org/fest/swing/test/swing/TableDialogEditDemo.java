@@ -1,13 +1,13 @@
 /*
  * Copyright (c) 1995 - 2008 Sun Microsystems, Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
  * following conditions are met: - Redistributions of source code must retain the above copyright notice, this list of
  * conditions and the following disclaimer. - Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation and/or other materials provided with the
  * distribution. - Neither the name of Sun Microsystems nor the names of its contributors may be used to endorse or
  * promote products derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
@@ -18,18 +18,15 @@
  */
 package org.fest.swing.test.swing;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-
-import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableColumn;
-
-import static java.awt.Color.*;
+import static java.awt.Color.PINK;
+import static java.awt.Color.RED;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import static javax.swing.SwingUtilities.invokeLater;
+
+import java.awt.*;
+
+import javax.swing.*;
+import javax.swing.table.*;
 
 /**
  * This is like TableDemo, except that it substitutes a Favorite Color column for the Last Name column and specifies a
@@ -37,7 +34,7 @@ import static javax.swing.SwingUtilities.invokeLater;
  */
 public class TableDialogEditDemo extends JPanel {
   private static final long serialVersionUID = 1L;
-  
+
   public final JTable table;
 
   public TableDialogEditDemo() {
@@ -76,11 +73,11 @@ public class TableDialogEditDemo extends JPanel {
     sportColumn.setCellRenderer(renderer);
   }
 
-  class MyTableModel extends AbstractTableModel {
+  private static class MyTableModel extends AbstractTableModel {
     private static final long serialVersionUID = 1L;
-    
+
     private final String[] columnNames = { "First Name", "Favorite Color", "Sport", "# of Years", "Vegetarian" };
-    private final Object[][] data = { 
+    private final Object[][] data = {
         { "Mary",   new Color(153, 0, 153), "Snowboarding",   5, false },
         { "Alison", new Color(51, 51, 153), "Rowing",         3, true  },
         { "Kathy",  new Color(51, 102, 51), "Knitting",       2, false },
@@ -107,13 +104,12 @@ public class TableDialogEditDemo extends JPanel {
      * JTable uses this method to determine the default renderer/ editor for each cell. If we didn't implement this
      * method, then the last column would contain text ("true"/"false"), rather than a check box.
      */
-    @Override public Class<?> getColumnClass(int c) {
-      return getValueAt(0, c).getClass();
+    @Override public Class<?> getColumnClass(int columnIndex) {
+      return getValueAt(0, columnIndex).getClass();
     }
 
     @Override public boolean isCellEditable(int row, int col) {
-      // Note that the data/cell address is constant,
-      // no matter where the cell appears onscreen.
+      // Note that the data/cell address is constant, no matter where the cell appears on screen.
       if (col < 1) return false;
       return true;
     }

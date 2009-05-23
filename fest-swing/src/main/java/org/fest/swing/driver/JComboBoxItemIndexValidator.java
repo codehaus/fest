@@ -15,13 +15,12 @@
  */
 package org.fest.swing.driver;
 
+import static java.lang.String.valueOf;
+import static org.fest.util.Strings.concat;
+
 import javax.swing.JComboBox;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static java.lang.String.valueOf;
-
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands verification that a given number is a valid index of an item in a <code>{@link JComboBox}</code>.
@@ -36,10 +35,20 @@ final class JComboBoxItemIndexValidator {
 
   @RunsInCurrentThread
   static void validateIndex(JComboBox comboBox, int index) {
+    if (index < 0) throw invalidIndex(concat(itemIndex(index), " should not be less than zero"));
     int itemCount = comboBox.getItemCount();
+    if (itemCount == 0) throw invalidIndex("JComboBox is empty");
     if (index >= 0 && index < itemCount) return;
-    throw new IndexOutOfBoundsException(concat(
-        "Item index (", valueOf(index), ") should be between [", valueOf(0), "] and [", valueOf(itemCount - 1), "] (inclusive)"));
+    throw invalidIndex(concat(
+        itemIndex(index), " should be between [", valueOf(0), "] and [", valueOf(itemCount - 1), "] (inclusive)"));
+  }
+
+  private static String itemIndex(int index) {
+    return concat("Item index (", valueOf(index), ")");
+  }
+
+  private static IndexOutOfBoundsException invalidIndex(String msg) {
+    throw new IndexOutOfBoundsException(msg);
   }
 
   private JComboBoxItemIndexValidator() {}
