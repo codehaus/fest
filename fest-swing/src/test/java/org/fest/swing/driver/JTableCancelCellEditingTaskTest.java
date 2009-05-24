@@ -64,8 +64,9 @@ public class JTableCancelCellEditingTaskTest extends JTableCellEditingTaskTestCa
     JTableCancelCellEditingTask.cancelEditing(table(), row, col);
     robot().waitForIdle();
     assertThat(isTableEditing()).isFalse();
-    assertThat(table().cellEditor().cellEditingCanceled()).isTrue();
-    assertThat(table().cellEditor().cellEditingStopped()).isFalse();
+    MyCellEditor cellEditor = table().cellEditor();
+    assertThat(cellEditor.cellEditingCanceled()).isTrue();
+    assertThat(cellEditor.cellEditingStopped()).isFalse();
   }
 
   public void shouldNotThrowErrorIfCellEditorIsNull() {

@@ -1,13 +1,29 @@
+/*
+ * Created on Aug 19, 2008
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ *
+ * Copyright @2008-2009 the original author or authors.
+ */
 package org.fest.swing.driver;
+
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.util.Arrays.array;
 
 import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 
+import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
-import org.fest.util.Arrays;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands a task that ensures that the node identified by the specified path is expanded and viewable. This action
@@ -16,6 +32,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
  * @see JTree#expandPath(TreePath)
  *
  * @author Yvonne Wang
+ * @author Alex Ruiz
  */
 final class JTreeExpandPathTask {
 
@@ -23,17 +40,20 @@ final class JTreeExpandPathTask {
   static void expandPath(final JTree tree, final TreePath path) {
     execute(new GuiTask() {
       protected void executeInEDT() {
-        TreePath realPath = path;
-        if (path.getPathCount() == 1 && !tree.isRootVisible()) {
-          Object root = tree.getModel().getRoot();
-          Object target = path.getLastPathComponent();
-          if (target != root) {
-            realPath = new TreePath(Arrays.array(root, target));
-          }
-        }
+        TreePath realPath = addRootToPathIfNecessary(tree, path);
         if (!tree.isExpanded(path)) tree.expandPath(realPath);
       }
     });
+  }
+
+  @RunsInCurrentThread
+  private static TreePath addRootToPathIfNecessary(JTree tree, TreePath path) {
+    if (path.getPathCount() == 1 && !tree.isRootVisible()) {
+      Object root = tree.getModel().getRoot();
+      Object target = path.getLastPathComponent();
+      if (target != root) return new TreePath(array(root, target));
+    }
+    return path;
   }
 
   private JTreeExpandPathTask() {}

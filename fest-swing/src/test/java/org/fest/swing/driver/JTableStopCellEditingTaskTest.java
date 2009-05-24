@@ -57,15 +57,29 @@ public class JTableStopCellEditingTaskTest extends JTableCellEditingTaskTestCase
     }
   }
 
+  public void shouldValidateAndStopCellEditing() {
+    int row = 0;
+    int col = 1;
+    editTableCellAt(row, col);
+    JTableStopCellEditingTask.validateAndStopEditing(table(), row, col);
+    robot().waitForIdle();
+    assertCellEditingStopped();
+  }
+
   public void shouldStopCellEditing() {
     int row = 0;
     int col = 1;
     editTableCellAt(row, col);
     JTableStopCellEditingTask.stopEditing(table(), row, col);
     robot().waitForIdle();
+    assertCellEditingStopped();
+  }
+
+  private void assertCellEditingStopped() {
     assertThat(isTableEditing()).isFalse();
-    assertThat(table().cellEditor().cellEditingCanceled()).isFalse();
-    assertThat(table().cellEditor().cellEditingStopped()).isTrue();
+    MyCellEditor cellEditor = table().cellEditor();
+    assertThat(cellEditor.cellEditingCanceled()).isFalse();
+    assertThat(cellEditor.cellEditingStopped()).isTrue();
   }
 
   public void shouldNotThrowErrorIfCellEditorIsNull() {
