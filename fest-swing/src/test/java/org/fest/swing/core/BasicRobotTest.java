@@ -15,30 +15,9 @@
  */
 package org.fest.swing.core;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.*;
-
-import org.testng.annotations.*;
-
-import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.WaitTimedOutError;
-import org.fest.swing.test.recorder.ClickRecorder;
-import org.fest.swing.test.recorder.KeyRecorder;
-import org.fest.swing.test.swing.TestWindow;
-import org.fest.swing.timing.Condition;
-
-import static java.awt.event.InputEvent.*;
+import static java.awt.event.InputEvent.CTRL_MASK;
+import static java.awt.event.InputEvent.SHIFT_MASK;
 import static java.awt.event.KeyEvent.*;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.awt.AWT.*;
 import static org.fest.swing.core.BasicRobotTest.KeyAction.action;
@@ -54,6 +33,24 @@ import static org.fest.swing.test.recorder.ClickRecorder.attachTo;
 import static org.fest.swing.test.task.ComponentSetVisibleTask.setVisible;
 import static org.fest.swing.timing.Pause.pause;
 import static org.fest.util.Arrays.array;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.*;
+
+import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.exception.WaitTimedOutError;
+import org.fest.swing.test.recorder.ClickRecorder;
+import org.fest.swing.test.recorder.KeyRecorder;
+import org.fest.swing.test.swing.TestWindow;
+import org.fest.swing.timing.Condition;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link org.fest.swing.core.BasicRobot}</code>.
@@ -72,7 +69,7 @@ public class BasicRobotTest {
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
   }
-  
+
   @BeforeMethod public void setUp() {
     robot = (BasicRobot)BasicRobot.robotWithCurrentAwtHierarchy();
     window = MyWindow.createAndShow();
@@ -95,7 +92,7 @@ public class BasicRobotTest {
       assertThat(e.getMessage()).contains("Timed out waiting for Window to open");
     }
   }
-  
+
   private static class AlwaysInvisibleFrame extends JFrame {
     private static final long serialVersionUID = 1L;
 
@@ -107,7 +104,7 @@ public class BasicRobotTest {
         }
       });
     }
-    
+
     @Override public void setVisible(boolean b) {
       super.setVisible(false);
     }
@@ -202,7 +199,7 @@ public class BasicRobotTest {
     robot.click(where, button, times);
     assertThat(recorder).clicked(button).timesClicked(times).clickedAt(visibleCenter);
   }
-  
+
   @DataProvider(name = "clickingData")
   public Object[][] clickingData() {
     return new Object[][] {
@@ -220,7 +217,6 @@ public class BasicRobotTest {
     KeyRecorder recorder = KeyRecorder.attachTo(textFieldWithPopup);
     int[] keys = { VK_A, VK_B, VK_Z };
     robot.pressAndReleaseKeys(keys);
-    robot.waitForIdle();
     assertThat(recorder).keysPressed(keys).keysReleased(keys);
   }
 
@@ -340,7 +336,7 @@ public class BasicRobotTest {
       assertThat(e.getMessage()).contains("Expecting no JOptionPane to be showing");
     }
   }
-  
+
   public void shouldRotateMouseWheel() {
     JList list = window.list;
     assertThat(firstVisibleIndexOf(list)).isEqualTo(0);
@@ -350,7 +346,7 @@ public class BasicRobotTest {
     assertThat(recorder.wheelRotation()).isEqualTo(amount);
     assertThat(firstVisibleIndexOf(list)).isGreaterThan(0);
   }
-  
+
   @RunsInEDT
   private static int firstVisibleIndexOf(final JList list) {
     return execute(new GuiQuery<Integer>() {
@@ -359,7 +355,7 @@ public class BasicRobotTest {
       }
     });
   }
-  
+
   private static class MouseWheelRecorder implements MouseWheelListener {
     private int wheelRotation;
 
@@ -368,7 +364,7 @@ public class BasicRobotTest {
       c.addMouseWheelListener(recorder);
       return recorder;
     }
-    
+
     public void mouseWheelMoved(MouseWheelEvent e) {
       wheelRotation = e.getWheelRotation();
     }

@@ -563,6 +563,7 @@ public class BasicRobot implements Robot {
     for (int keyCode : keyCodes) {
       keyPressAndRelease(keyCode, 0);
       waitForIdle();
+      pause(50); // it seems that even when waiting for idle the events are not completely propagated
     }
   }
 

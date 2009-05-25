@@ -41,6 +41,7 @@ import java.awt.Component;
 import javax.swing.*;
 
 import org.fest.assertions.Description;
+import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.cell.JComboBoxCellReader;
 import org.fest.swing.core.Robot;
@@ -308,8 +309,38 @@ public class JComboBoxDriver extends JComponentDriver {
     Component editor = editorComponentOf(comboBox);
     // this will never happen...at least in Sun's JVM
     if (editor == null) throw actionFailure("JComboBox does not have an editor");
-    focus(editor);
+    focusAndWaitForFocusGain(editor);
     robot.enterText(text);
+  }
+
+  /**
+   * Simulates a user pressing and releasing the given keys on the <code>{@link JComboBox}</code>.
+   * @param comboBox the target component.
+   * @param keyCodes one or more codes of the keys to press.
+   * @throws NullPointerException if the given array of codes is <code>null</code>.
+   * @throws IllegalStateException if the <code>JComboBox</code> is disabled.
+   * @throws IllegalStateException if the <code>JComboBox</code> is not showing on the screen.
+   * @throws IllegalArgumentException if the given code is not a valid key code.
+   * @see java.awt.event.KeyEvent
+   */
+  @RunsInEDT
+  public void pressAndReleaseKeys(JComboBox comboBox, int... keyCodes) {
+    if (keyCodes == null) throw new NullPointerException("The array of key codes should not be null");
+    assertIsEnabledAndShowing(comboBox);
+    Component target = editorIfEditable(comboBox);
+    if (target == null) target = comboBox;
+    focusAndWaitForFocusGain(target);
+    robot.pressAndReleaseKeys(keyCodes);
+  }
+
+  @RunsInEDT
+  private static Component editorIfEditable(final JComboBox comboBox) {
+    return execute(new GuiQuery<Component>() {
+      protected Component executeInEDT() {
+        if (!comboBox.isEditable()) return null;
+        return editorComponent(comboBox);
+      }
+    });
   }
 
   @RunsInEDT
@@ -325,11 +356,16 @@ public class JComboBoxDriver extends JComponentDriver {
   private static Component editorComponentOf(final JComboBox comboBox) {
     return execute(new GuiQuery<Component>() {
       protected Component executeInEDT() {
-        ComboBoxEditor editor = comboBox.getEditor();
-        if (editor == null) return null;
-        return editor.getEditorComponent();
+        return editorComponent(comboBox);
       }
     });
+  }
+
+  @RunsInCurrentThread
+  private static Component editorComponent(JComboBox comboBox) {
+    ComboBoxEditor editor = comboBox.getEditor();
+    if (editor == null) return null;
+    return editor.getEditorComponent();
   }
 
   /**

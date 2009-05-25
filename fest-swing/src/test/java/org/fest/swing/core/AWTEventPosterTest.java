@@ -71,7 +71,7 @@ import org.testng.annotations.*;
       }
 
       protected void codeToTest() {
-        postEventAndAssertItWaited();
+        postEventAndAssertItWaited(c);
       }
     }.run();
   }
@@ -86,7 +86,7 @@ import org.testng.annotations.*;
       }
 
       protected void codeToTest() {
-        postEventAndAssertItWaited();
+        postEventAndAssertItWaited(null);
       }
     }.run();
   }
@@ -101,9 +101,9 @@ import org.testng.annotations.*;
     expectLastCall().once();
   }
 
-  private void postEventAndAssertItWaited() {
+  private void postEventAndAssertItWaited(Component c) {
     StopWatch stopWatch = startNewStopWatch();
-    poster.postEvent(null, event);
+    poster.postEvent(c, event);
     stopWatch.stop();
     assertThat(stopWatch.ellapsedTime()).isGreaterThanOrEqualTo(WAIT_DELAY);
   }
