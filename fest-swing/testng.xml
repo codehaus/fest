@@ -2,13 +2,11 @@
 
 <suite name="All Tests" verbose="1">
 	<test name="Non GUI">
-    <!--
 		<groups>
 			<run>
 				<exclude name="GUI" />
 			</run>
 		</groups>
-		-->
     <packages>
       <package name="org.fest.swing.annotation" />
       <package name="org.fest.swing.applet" />
