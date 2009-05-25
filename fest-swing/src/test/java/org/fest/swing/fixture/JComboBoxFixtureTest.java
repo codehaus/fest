@@ -15,6 +15,7 @@
  */
 package org.fest.swing.fixture;
 
+import static java.awt.event.KeyEvent.*;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
@@ -112,6 +113,19 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         assertThatReturnsThis(fixture.enterText("Hello"));
+      }
+    }.run();
+  }
+
+  @Override public void shouldPressAndReleaseKeys() {
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        driver.pressAndReleaseKeys(target, VK_A, VK_B, VK_C);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture().pressAndReleaseKeys(VK_A, VK_B, VK_C));
       }
     }.run();
   }
