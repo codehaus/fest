@@ -28,23 +28,22 @@ import org.fest.swing.hierarchy.ExistingHierarchy;
  */
 class HierarchyBasedFocusOwnerFinder implements FocusOwnerFinderStrategy {
 
-  private final WindowFocusOwnerFinder delegate;
+  private final ContainerFocusOwnerFinder delegate;
 
   HierarchyBasedFocusOwnerFinder() {
-    this(new WindowFocusOwnerFinder());
+    this(new ContainerFocusOwnerFinder());
   }
 
-  HierarchyBasedFocusOwnerFinder(WindowFocusOwnerFinder newDelegate) {
+  HierarchyBasedFocusOwnerFinder(ContainerFocusOwnerFinder newDelegate) {
     delegate = newDelegate;
   }
 
   @RunsInCurrentThread
   public Component focusOwner() {
-    Component focus = null;
     for (Container c : new ExistingHierarchy().roots()) {
-      focus = delegate.focusOwnerOf(c);
+      Component focus = delegate.focusOwnerOf(c);
       if (focus != null) break;
     }
-    return focus;
+    return null;
   }
 }

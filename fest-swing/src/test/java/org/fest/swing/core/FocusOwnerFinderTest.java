@@ -20,6 +20,7 @@ import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.awt.Component;
+import java.util.List;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.test.builder.JLabels;
@@ -37,9 +38,17 @@ import org.testng.annotations.*;
   private FocusOwnerFinderStrategy strategy2;
 
   @BeforeMethod public void setUp() {
+    verifyDefaultStrategies();
     strategy1 = createMock(FocusOwnerFinderStrategy.class);
     strategy2 = createMock(FocusOwnerFinderStrategy.class);
     FocusOwnerFinder.replaceStrategiesWith(strategy1, strategy2);
+  }
+
+  private void verifyDefaultStrategies() {
+    List<FocusOwnerFinderStrategy> strategies = FocusOwnerFinder.strategies();
+    assertThat(strategies).hasSize(2);
+    assertThat(strategies.get(0)).isInstanceOf(ReflectionBasedFocusOwnerFinder.class);
+    assertThat(strategies.get(1)).isInstanceOf(HierarchyBasedFocusOwnerFinder.class);
   }
 
   @AfterMethod public void tearDown() {

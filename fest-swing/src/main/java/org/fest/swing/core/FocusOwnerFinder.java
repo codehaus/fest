@@ -49,6 +49,10 @@ public final class FocusOwnerFinder {
     STRATEGIES.addAll(list(strategies));
   }
 
+  static List<FocusOwnerFinderStrategy> strategies() {
+    return new ArrayList<FocusOwnerFinderStrategy>(STRATEGIES);
+  }
+
   /**
    * Returns the focus owner. This method is executed in the event dispatch thread.
    * @return the focus owner.

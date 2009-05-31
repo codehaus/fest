@@ -24,7 +24,7 @@ import org.fest.swing.annotation.RunsInCurrentThread;
  *
  * @author Alex Ruiz
  */
-class WindowFocusOwnerFinder {
+class ContainerFocusOwnerFinder {
 
   @RunsInCurrentThread
   Component focusOwnerOf(Container c) {
@@ -32,6 +32,7 @@ class WindowFocusOwnerFinder {
     return focusOwnerOf((Window)c);
   }
 
+  @RunsInCurrentThread
   private Component focusOwnerOf(Window w) {
     if (!w.isShowing()) return null;
     Component focus = w.getFocusOwner();
@@ -40,6 +41,6 @@ class WindowFocusOwnerFinder {
       focus = o.getFocusOwner();
       if (focus != null) return focus;
     }
-    return focus;
+    return null;
   }
 }
