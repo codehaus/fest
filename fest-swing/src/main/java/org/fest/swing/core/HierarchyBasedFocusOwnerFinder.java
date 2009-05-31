@@ -25,7 +25,7 @@ import org.fest.swing.hierarchy.ExistingHierarchy;
  *
  * @author Alex Ruiz
  */
-class RootsBasedFocusOwnerFinder implements FocusOwnerFinderStrategy {
+class HierarchyBasedFocusOwnerFinder implements FocusOwnerFinderStrategy {
 
   @RunsInCurrentThread
   public Component focusOwner() {

@@ -41,7 +41,7 @@ public final class FocusOwnerFinder {
   }
 
   static void initializeStrategies() {
-    replaceStrategiesWith(new ReflectionBasedFocusOwnerFinder(), new RootsBasedFocusOwnerFinder());
+    replaceStrategiesWith(new ReflectionBasedFocusOwnerFinder(), new HierarchyBasedFocusOwnerFinder());
   }
 
   static void replaceStrategiesWith(FocusOwnerFinderStrategy...strategies) {
