@@ -20,12 +20,12 @@ import static org.fest.swing.test.core.TestGroups.GUI;
 import org.testng.annotations.Test;
 
 /**
- * Tests for <code>{@link HierarchyBasedFocusOwnerFinder}</code>.
+ * GUI Tests for <code>{@link HierarchyBasedFocusOwnerFinder}</code>.
  *
  * @author Alex Ruiz
  */
 @Test(groups = GUI)
-public class HierarchyBasedFocusOwnerFinderTest extends FocusOwnerFinderStrategyTestCase {
+public class HierarchyBasedFocusOwnerFinderGuiTest extends FocusOwnerFinderStrategyTestCase {
 
   protected FocusOwnerFinderStrategy createStrategyToTest() {
     return new HierarchyBasedFocusOwnerFinder();

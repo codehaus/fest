@@ -19,7 +19,6 @@ import java.awt.Component;
 import java.awt.Container;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-import org.fest.swing.hierarchy.ExistingHierarchy;
 
 /**
  * Understands how to find the focus owner using the roots of a component hierarchy.
@@ -29,18 +28,20 @@ import org.fest.swing.hierarchy.ExistingHierarchy;
 class HierarchyBasedFocusOwnerFinder implements FocusOwnerFinderStrategy {
 
   private final ContainerFocusOwnerFinder delegate;
+  private final HierarchyRootsSource rootsSource;
 
   HierarchyBasedFocusOwnerFinder() {
-    this(new ContainerFocusOwnerFinder());
+    this(new ContainerFocusOwnerFinder(), new HierarchyRootsSource());
   }
 
-  HierarchyBasedFocusOwnerFinder(ContainerFocusOwnerFinder newDelegate) {
+  HierarchyBasedFocusOwnerFinder(ContainerFocusOwnerFinder newDelegate, HierarchyRootsSource newRootsSource) {
     delegate = newDelegate;
+    rootsSource = newRootsSource;
   }
 
   @RunsInCurrentThread
   public Component focusOwner() {
-    for (Container c : new ExistingHierarchy().roots()) {
+    for (Container c : rootsSource.existingHierarchyRoots()) {
       Component focus = delegate.focusOwnerOf(c);
       if (focus != null) break;
     }
