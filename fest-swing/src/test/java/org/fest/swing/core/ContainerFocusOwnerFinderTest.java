@@ -15,25 +15,36 @@
  */
 package org.fest.swing.core;
 
-import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.util.Arrays.array;
+import static org.fest.swing.core.ComponentRequestFocusTask.giveFocusTo;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.TestGroups.GUI;
+import static org.fest.swing.test.task.ComponentHasFocusCondition.untilFocused;
+import static org.fest.swing.timing.Pause.pause;
 
 import java.awt.*;
 
-import org.fest.mocks.EasyMockTemplate;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
+import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.lock.ScreenLock;
+import org.fest.swing.test.swing.TestDialog;
+import org.fest.swing.test.swing.TestWindow;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link ContainerFocusOwnerFinder}</code>.
  *
  * @author Alex Ruiz
  */
-@Test public class ContainerFocusOwnerFinderTest {
+@Test(groups = GUI)
+public class ContainerFocusOwnerFinderTest {
 
+  private MyWindow window;
   private ContainerFocusOwnerFinder finder;
 
   @BeforeClass public void setUpOnce() {
@@ -41,79 +52,108 @@ import org.testng.annotations.Test;
     finder = new ContainerFocusOwnerFinder();
   }
 
+  @BeforeMethod public void setUp() {
+    ScreenLock.instance().acquire(this);
+    window = MyWindow.createNew();
+  }
+
+  @AfterMethod public void tearDown() {
+    try {
+      window.destroy();
+    } finally {
+      ScreenLock.instance().release(this);
+    }
+  }
+
   public void shouldReturnNullIfContainerIsNotWindow() {
     Container c = createMock(Container.class);
-    assertThat(finder.focusOwnerOf(c)).isNull();
+    assertThat(focusOwnerOf(c)).isNull();
   }
 
   public void shouldReturnNullIfWindowIsNotShowing() {
-    final Window w = mockWindow();
-    new EasyMockTemplate(w) {
-      protected void expectations() {
-        expect(w.isShowing()).andReturn(false);
-      }
-
-      protected void codeToTest() {
-        assertThat(finder.focusOwnerOf(w)).isNull();
-      }
-    }.run();
+    assertThat(focusOwnerOf(window)).isNull();
   }
 
   public void shouldReturnFocusOwnerInWindow() {
-    final Window w = mockWindow();
-    final Component focusOwner = mockComponent();
-    new EasyMockTemplate(w) {
-      protected void expectations() {
-        expect(w.isShowing()).andReturn(true);
-        expect(w.getFocusOwner()).andReturn(focusOwner);
-      }
-
-      protected void codeToTest() {
-        assertThat(finder.focusOwnerOf(w)).isSameAs(focusOwner);
-      }
-    }.run();
+    window.display();
+    JTextField focusOwner = window.textBox;
+    giveFocusAndWaitTillFocused(focusOwner);
+    assertThat(focusOwnerOf(window)).isSameAs(focusOwner);
   }
 
   public void shouldReturnFocusOwnerInOwnedWindowWhenTopWindowDoesNotHaveFocusOwner() {
-    final Window w = mockWindow();
-    final Window owned = mockWindow();
-    final Component focusOwner = mockComponent();
-    new EasyMockTemplate(w, owned) {
-      protected void expectations() {
-        expect(w.isShowing()).andReturn(true);
-        expect(w.getFocusOwner()).andReturn(null);
-        expect(w.getOwnedWindows()).andReturn(array(owned));
-        expect(owned.getFocusOwner()).andReturn(focusOwner);
-      }
-
-      protected void codeToTest() {
-        assertThat(finder.focusOwnerOf(w)).isSameAs(focusOwner);
-      }
-    }.run();
+    window.display();
+    MyDialog dialog = MyDialog.createAndShow(window);
+    JButton focusOwner = dialog.button;
+    giveFocusAndWaitTillFocused(focusOwner);
+    assertThat(focusOwnerOf(window)).isSameAs(focusOwner);
   }
 
   public void shouldReturnNullIfTopWindowOrOwnedWindowsDoNotHaveFocusOwner() {
-    final Window w = mockWindow();
-    final Window owned = mockWindow();
-    new EasyMockTemplate(w, owned) {
-      protected void expectations() {
-        expect(w.isShowing()).andReturn(true);
-        expect(w.getFocusOwner()).andReturn(null);
-        expect(w.getOwnedWindows()).andReturn(array(owned));
-        expect(owned.getFocusOwner()).andReturn(null);
-      }
-
-      protected void codeToTest() {
-        assertThat(finder.focusOwnerOf(w)).isNull();
-      }
-    }.run();
+    window.display();
+    MyWindow window2 = MyWindow.createNew();
+    window2.display();
+    giveFocusAndWaitTillFocused(window2.textBox);
+    assertThat(focusOwnerOf(window)).isNull();
   }
 
-  private static Window mockWindow() {
-    return createMock(Window.class);
+  private void giveFocusAndWaitTillFocused(Component focusOwner) {
+    giveFocusTo(focusOwner);
+    pause(untilFocused(focusOwner));
   }
 
-  private static Component mockComponent() {
-    return createMock(Component.class);
+  @RunsInEDT
+  private Component focusOwnerOf(final Container c) {
+    return execute(new GuiQuery<Component>() {
+      protected Component executeInEDT() {
+        return finder.focusOwnerOf(c);
+      }
+    });
+  }
+
+  private static class MyDialog extends TestDialog {
+    private static final long serialVersionUID = 1L;
+
+    final JButton button = new JButton("Click me");
+
+    @RunsInEDT
+    static MyDialog createAndShow(final Frame owner) {
+      return execute(new GuiQuery<MyDialog>() {
+        protected MyDialog executeInEDT() {
+          MyDialog dialog = new MyDialog(owner);
+          dialog.displayInCurrentThread();
+          return dialog;
+        }
+      });
+    }
+
+    private void displayInCurrentThread() {
+      TestDialog.display(this);
+    }
+
+    private MyDialog(Frame owner) {
+      super(owner);
+      add(button);
+    }
+  }
+
+  private static class MyWindow extends TestWindow {
+    private static final long serialVersionUID = 1L;
+
+    final JTextField textBox = new JTextField(20);
+
+    @RunsInEDT
+    static MyWindow createNew() {
+      return execute(new GuiQuery<MyWindow>() {
+        protected MyWindow executeInEDT() {
+          return new MyWindow();
+        }
+      });
+    }
+
+    private MyWindow() {
+      super(ContainerFocusOwnerFinder.class);
+      addComponents(textBox);
+    }
   }
 }
