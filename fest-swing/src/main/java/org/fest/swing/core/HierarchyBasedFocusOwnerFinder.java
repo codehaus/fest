@@ -43,7 +43,7 @@ class HierarchyBasedFocusOwnerFinder implements FocusOwnerFinderStrategy {
   public Component focusOwner() {
     for (Container c : rootsSource.existingHierarchyRoots()) {
       Component focus = delegate.focusOwnerOf(c);
-      if (focus != null) break;
+      if (focus != null) return focus;
     }
     return null;
   }

@@ -27,7 +27,8 @@ import org.fest.swing.hierarchy.ExistingHierarchy;
  */
 class HierarchyRootsSource {
 
-  Collection<? extends Container> existingHierarchyRoots() {
-    return new ExistingHierarchy().roots();
+  Container[] existingHierarchyRoots() {
+    Collection<? extends Container> roots = new ExistingHierarchy().roots();
+    return roots.toArray(new Container[roots.size()]);
   }
 }
