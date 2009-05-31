@@ -45,12 +45,11 @@ import org.testng.annotations.Test;
   }
 
   public void shouldReturnFocusOwnerFromDelegate() {
-    final Container c = createMock(Container.class);
-    final Container[] roots = array(c);
+    final Container c = mockContainer();
     final Component focusOwner = createMock(Component.class);
     new EasyMockTemplate(delegate, rootsSource) {
       protected void expectations() {
-        expect(rootsSource.existingHierarchyRoots()).andReturn(roots);
+        expect(rootsSource.existingHierarchyRoots()).andReturn(array(c));
         expect(delegate.focusOwnerOf(c)).andReturn(focusOwner);
       }
 
@@ -61,11 +60,10 @@ import org.testng.annotations.Test;
   }
 
   public void shouldReturnNullIfDelegateDidNotFindFocusOwner() {
-    final Container c = createMock(Container.class);
-    final Container[] roots = array(c);
+    final Container c = mockContainer();
     new EasyMockTemplate(delegate, rootsSource) {
       protected void expectations() {
-        expect(rootsSource.existingHierarchyRoots()).andReturn(roots);
+        expect(rootsSource.existingHierarchyRoots()).andReturn(array(c));
         expect(delegate.focusOwnerOf(c)).andReturn(null);
       }
 
@@ -75,11 +73,14 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  private static Container mockContainer() {
+    return createMock(Container.class);
+  }
+
   public void shouldReturnNullIfThereAreNoRootContainers() {
-    final Container[] roots = new Container[0];
     new EasyMockTemplate(delegate, rootsSource) {
       protected void expectations() {
-        expect(rootsSource.existingHierarchyRoots()).andReturn(roots);
+        expect(rootsSource.existingHierarchyRoots()).andReturn(new Container[0]);
       }
 
       protected void codeToTest() {
