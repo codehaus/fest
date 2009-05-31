@@ -15,7 +15,8 @@
  */
 package org.fest.swing.core;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.hierarchy.ExistingHierarchy;
@@ -27,23 +28,23 @@ import org.fest.swing.hierarchy.ExistingHierarchy;
  */
 class HierarchyBasedFocusOwnerFinder implements FocusOwnerFinderStrategy {
 
+  private final WindowFocusOwnerFinder delegate;
+
+  HierarchyBasedFocusOwnerFinder() {
+    this(new WindowFocusOwnerFinder());
+  }
+
+  HierarchyBasedFocusOwnerFinder(WindowFocusOwnerFinder newDelegate) {
+    delegate = newDelegate;
+  }
+
   @RunsInCurrentThread
   public Component focusOwner() {
     Component focus = null;
     for (Container c : new ExistingHierarchy().roots()) {
-      if (!(c instanceof Window)) continue;
-      Window w = (Window) c;
-      if (w.isShowing() && (focus = focusOwner(w)) != null) break;
+      focus = delegate.focusOwnerOf(c);
+      if (focus != null) break;
     }
-    return focus;
-  }
-
-  @RunsInCurrentThread
-  private Component focusOwner(Window w) {
-    Component focus = w.getFocusOwner();
-    if (focus != null) return focus;
-    for (Window owndedWindow : w.getOwnedWindows())
-      if ((focus = owndedWindow.getFocusOwner()) != null) return focus;
     return focus;
   }
 }
