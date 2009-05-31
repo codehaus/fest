@@ -15,18 +15,16 @@
  */
 package org.fest.swing.core;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.util.Collections.list;
+
 import java.awt.Component;
-import java.awt.Container;
-import java.awt.KeyboardFocusManager;
-import java.awt.Window;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.hierarchy.ExistingHierarchy;
-
-import static org.fest.reflect.core.Reflection.staticField;
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands lookup of a <code>{@link Component}</code> owning the input focus.
@@ -35,6 +33,21 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
  * @author Alex Ruiz
  */
 public final class FocusOwnerFinder {
+
+  private static final List<FocusOwnerFinderStrategy> STRATEGIES = new ArrayList<FocusOwnerFinderStrategy>();
+
+  static {
+    initializeStrategies();
+  }
+
+  static void initializeStrategies() {
+    replaceStrategiesWith(new ReflectionBasedFocusOwnerFinder(), new RootsBasedFocusOwnerFinder());
+  }
+
+  static void replaceStrategiesWith(FocusOwnerFinderStrategy...strategies) {
+    STRATEGIES.clear();
+    STRATEGIES.addAll(list(strategies));
+  }
 
   /**
    * Returns the focus owner. This method is executed in the event dispatch thread.
@@ -53,38 +66,21 @@ public final class FocusOwnerFinder {
    * Returns the focus owner. <b>Note:</b> this method is <b>not</b> executed in the event dispatch thread. Callers are
    * responsible for calling this method in the event dispatch thread.
    * <p>
-   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @return the focus owner.
    */
   @RunsInCurrentThread
   public static Component focusOwner() {
-    try {
-      return staticField("focusOwner").ofType(Component.class).in(KeyboardFocusManager.class).get();
-    } catch (Exception e) {
-      return focusOwnerInHierarchy();
+    for (FocusOwnerFinderStrategy strategy : STRATEGIES) {
+      try {
+        return strategy.focusOwner();
+      } catch (Exception e) {
+        continue;
+      }
     }
-  }
-
-  @RunsInCurrentThread
-  static Component focusOwnerInHierarchy() {
-    Component focus = null;
-    for (Container c : new ExistingHierarchy().roots()) {
-      if (!(c instanceof Window)) continue;
-      Window w = (Window) c;
-      if (w.isShowing() && (focus = focusOwner(w)) != null) break;
-    }
-    return focus;
-  }
-
-  @RunsInCurrentThread
-  private static Component focusOwner(Window w) {
-    Component focus = w.getFocusOwner();
-    if (focus != null) return focus;
-    for (Window owndedWindow : w.getOwnedWindows())
-      if ((focus = owndedWindow.getFocusOwner()) != null) return focus;
-    return focus;
+    return null;
   }
 
   private FocusOwnerFinder() {}

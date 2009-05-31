@@ -15,30 +15,15 @@
  */
 package org.fest.swing.core;
 
-import java.awt.Component;
-import java.awt.Frame;
-
-import javax.swing.JButton;
-import javax.swing.JTextField;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.lock.ScreenLock;
-import org.fest.swing.test.swing.TestDialog;
-import org.fest.swing.test.swing.TestWindow;
-
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.ComponentRequestFocusTask.giveFocusTo;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.TestGroups.GUI;
-import static org.fest.swing.test.task.ComponentHasFocusCondition.untilFocused;
-import static org.fest.swing.timing.Pause.pause;
+
+import java.awt.Component;
+
+import org.fest.mocks.EasyMockTemplate;
+import org.fest.swing.test.builder.JLabels;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link FocusOwnerFinder}</code>.
@@ -46,109 +31,45 @@ import static org.fest.swing.timing.Pause.pause;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = GUI)
-public class FocusOwnerFinderTest {
+@Test public class FocusOwnerFinderTest {
 
-  private MyWindow window;
-  private JTextField textField;
+  private FocusOwnerFinderStrategy strategy1;
+  private FocusOwnerFinderStrategy strategy2;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-  
   @BeforeMethod public void setUp() {
-    ScreenLock.instance().acquire(this);
-    window = MyWindow.createAndShow();
-    textField = window.textBox;
+    strategy1 = createMock(FocusOwnerFinderStrategy.class);
+    strategy2 = createMock(FocusOwnerFinderStrategy.class);
+    FocusOwnerFinder.replaceStrategiesWith(strategy1, strategy2);
   }
 
   @AfterMethod public void tearDown() {
-    try {
-      window.destroy();
-    } finally {
-      ScreenLock.instance().release(this);
-    }
+    FocusOwnerFinder.initializeStrategies();
   }
 
-  public void shouldFindFocusOwner() {
-    giveFocusTo(textField);
-    pause(untilFocused(textField));
-    Component focusOwner = execute(new GuiQuery<Component>() {
-      protected Component executeInEDT() {
-        return FocusOwnerFinder.focusOwner();
+  public void shouldUseStrategiesUntilFocusOwnerFound() {
+    final Component focusOwner = JLabels.label().createNew();
+    new EasyMockTemplate(strategy1, strategy2) {
+      protected void expectations() {
+        expect(strategy1.focusOwner()).andThrow(new RuntimeException());
+        expect(strategy2.focusOwner()).andReturn(focusOwner);
       }
-    });
-    assertThat(focusOwner).isSameAs(textField);
-  }
 
-  public void shouldFindFocusOwnerInHierarchy() {
-    giveFocusTo(textField);
-    pause(untilFocused(textField));
-    Component focusOwner = focusOwnerInHierarchy();
-    assertThat(focusOwner).isSameAs(textField);
-  }
-
-  public void shouldFindFocusInOwnedWindow() {
-    MyDialog dialog = MyDialog.createAndShow(window);
-    giveFocusTo(dialog.button);
-    pause(untilFocused(dialog.button));
-    Component focusOwner = focusOwnerInHierarchy();
-    assertThat(focusOwner).isSameAs(dialog.button);
-    dialog.destroy();
-  }
-
-  @RunsInEDT
-  private Component focusOwnerInHierarchy() {
-    return execute(new GuiQuery<Component>() {
-      protected Component executeInEDT() {
-        return FocusOwnerFinder.focusOwnerInHierarchy();
+      protected void codeToTest() {
+        assertThat(FocusOwnerFinder.focusOwner()).isSameAs(focusOwner);
       }
-    });
+    }.run();
   }
 
-  private static class MyDialog extends TestDialog {
-    private static final long serialVersionUID = 1L;
+  public void shouldReturnNullIfStrategiesFailToFindFocusOwner() {
+    new EasyMockTemplate(strategy1, strategy2) {
+      protected void expectations() {
+        expect(strategy1.focusOwner()).andThrow(new RuntimeException());
+        expect(strategy2.focusOwner()).andThrow(new RuntimeException());
+      }
 
-    final JButton button = new JButton("Click me");
-
-    @RunsInEDT
-    static MyDialog createAndShow(final Frame owner) {
-      return execute(new GuiQuery<MyDialog>() {
-        protected MyDialog executeInEDT() {
-          MyDialog dialog = new MyDialog(owner);
-          dialog.displayInCurrentThread();
-          return dialog;
-        }
-      });
-    }
-
-    private void displayInCurrentThread() {
-      TestDialog.display(this);
-    }
-
-    private MyDialog(Frame owner) {
-      super(owner);
-      add(button);
-    }
-  }
-
-  private static class MyWindow extends TestWindow {
-    private static final long serialVersionUID = 1L;
-
-    final JTextField textBox = new JTextField(20);
-
-    @RunsInEDT
-    static MyWindow createAndShow() {
-      return execute(new GuiQuery<MyWindow>() {
-        protected MyWindow executeInEDT() {
-          return display(new MyWindow());
-        }
-      });
-    }
-
-    private MyWindow() {
-      super(FocusOwnerFinderTest.class);
-      addComponents(textBox);
-    }
+      protected void codeToTest() {
+        assertThat(FocusOwnerFinder.focusOwner()).isNull();
+      }
+    }.run();
   }
 }
