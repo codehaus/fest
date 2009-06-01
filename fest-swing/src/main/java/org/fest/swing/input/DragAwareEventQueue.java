@@ -36,17 +36,17 @@ class DragAwareEventQueue extends EventQueue {
   private final Toolkit toolkit;
   private final long mask;
   private final AWTEventListener eventListener;
-  private final NativeDnD nativeDnD;
+  private final NativeDnDIdentifier nativeDnd;
 
   DragAwareEventQueue(Toolkit toolkit, long mask, AWTEventListener eventListener) {
-    this(toolkit, mask, eventListener, new NativeDnD());
+    this(toolkit, mask, eventListener, new NativeDnDIdentifier());
   }
 
-  DragAwareEventQueue(Toolkit toolkit, long mask, AWTEventListener eventListener, NativeDnD nativeDnD) {
+  DragAwareEventQueue(Toolkit toolkit, long mask, AWTEventListener eventListener, NativeDnDIdentifier nativeDnd) {
     this.toolkit = toolkit;
     this.mask = mask;
     this.eventListener = eventListener;
-    this.nativeDnD = nativeDnD;
+    this.nativeDnd = nativeDnd;
   }
 
   /**
@@ -68,7 +68,7 @@ class DragAwareEventQueue extends EventQueue {
   @Override protected void dispatchEvent(AWTEvent e) {
     // TODO: implement enter/exit events
     // TODO: change source to drag source, not mouse under
-    if (nativeDnD.isNativeDragAndDrop(e)) {
+    if (nativeDnd.isNativeDragAndDrop(e)) {
       MouseEvent mouseEvent = (MouseEvent) e;
       Component target = getDeepestComponentAt(mouseEvent.getComponent(), mouseEvent.getX(), mouseEvent.getY());
       if (target != mouseEvent.getSource())

@@ -27,18 +27,18 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
- * Tests for <code>{@link NativeDnD}</code>.
+ * Tests for <code>{@link NativeDnDIdentifier}</code>.
  *
  * @author Alex Ruiz
  */
 @Test(groups = GUI)
-public class NativeDnDTest {
+public class NativeDnDIdentifierTest {
 
-  private NativeDnD dnd;
+  private NativeDnDIdentifier dnd;
 
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
-    dnd = new NativeDnD();
+    dnd = new NativeDnDIdentifier();
   }
 
   public void shouldReturnIsNativeDnDIfEventIsMouseEventAndClassNameIsSunDropTargetEvent() {

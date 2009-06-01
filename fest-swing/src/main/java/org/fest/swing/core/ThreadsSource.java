@@ -22,18 +22,9 @@ package org.fest.swing.core;
  */
 class ThreadsSource {
 
-  Thread mainThread() {
-    for (Thread t : allThreads()) if (isMain(t)) return t;
-    return null;
-  }
-
-  private Thread[] allThreads() {
+  Thread[] allThreads() {
     Thread[] all = new Thread[Thread.activeCount()];
     Thread.enumerate(all);
     return all;
-  }
-
-  private boolean isMain(Thread thread) {
-    return "main".equalsIgnoreCase(thread.getName());
   }
 }

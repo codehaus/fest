@@ -20,6 +20,7 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.util.Arrays.array;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.testng.annotations.BeforeMethod;
@@ -34,22 +35,30 @@ import org.testng.annotations.Test;
 
   private ThreadsSource threadsSource;
   private FrameDisposer frameDisposer;
+  private MainThreadIdentifier mainThreadIdentifier;
   private TestTerminator terminator;
 
   @BeforeMethod public void setUp() {
     threadsSource = createMock(ThreadsSource.class);
     frameDisposer = createMock(FrameDisposer.class);
-    terminator = new TestTerminator(threadsSource, frameDisposer);
+    mainThreadIdentifier = createMock(MainThreadIdentifier.class);
+    terminator = new TestTerminator(threadsSource, frameDisposer, mainThreadIdentifier);
   }
 
   public void shouldTerminateGUITests() {
     final Thread mainThread = createMock(Thread.class);
-    new EasyMockTemplate(threadsSource, frameDisposer, mainThread) {
+    new EasyMockTemplate(threadsSource, frameDisposer, mainThreadIdentifier, mainThread) {
       protected void expectations() {
-        expect(threadsSource.mainThread()).andReturn(mainThread);
-        mainThread.interrupt();
-        expectLastCall().once();
+        Thread[] allThreads = array(mainThread);
+        expect(threadsSource.allThreads()).andReturn(allThreads);
+        expect(mainThreadIdentifier.mainThreadIn(allThreads)).andReturn(mainThread);
+        expectInterruptionOf(mainThread);
         expectFramesDisposal();
+      }
+
+      private void expectInterruptionOf(Thread t) {
+        t.interrupt();
+        expectLastCall().once();
       }
 
       protected void codeToTest() {
@@ -59,9 +68,11 @@ import org.testng.annotations.Test;
   }
 
   public void shouldNotThrowErrorIfMainThreadNotFound() {
-    new EasyMockTemplate(threadsSource, frameDisposer) {
+    new EasyMockTemplate(threadsSource, frameDisposer, mainThreadIdentifier) {
       protected void expectations() {
-        expect(threadsSource.mainThread()).andReturn(null);
+        Thread[] allThreads = new Thread[0];
+        expect(threadsSource.allThreads()).andReturn(allThreads);
+        expect(mainThreadIdentifier.mainThreadIn(allThreads)).andReturn(null);
         expectFramesDisposal();
       }
 

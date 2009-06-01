@@ -1,5 +1,5 @@
 /*
- * Created on May 2, 2009
+ * Created on May 22, 2009
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,29 +13,20 @@
  *
  * Copyright @2009 the original author or authors.
  */
-package org.fest.swing.core;
+package org.fest.swing.input;
 
-import static org.fest.assertions.Assertions.assertThat;
-
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import java.awt.AWTEvent;
+import java.awt.event.MouseEvent;
 
 /**
- * Tests for <code>{@link ThreadsSource}</code>.
+ * Understands detection of native drag 'n drop events.
  *
  * @author Alex Ruiz
  */
-@Test public class ThreadsSourceTest {
+class NativeDnDIdentifier {
 
-  private ThreadsSource source;
-
-  @BeforeMethod public void setUp() {
-    source = new ThreadsSource();
+  boolean isNativeDragAndDrop(AWTEvent e) {
+    return (e instanceof MouseEvent) && e.getClass().getName().indexOf("SunDropTargetEvent") != -1;
   }
 
-  public void shouldReturnAllActiveThreads() {
-    Thread[] all = new Thread[Thread.activeCount()];
-    Thread.enumerate(all);
-    assertThat(source.allThreads()).isEqualTo(all);
-  }
 }

@@ -1,5 +1,5 @@
 /*
- * Created on May 22, 2009
+ * Created on May 31, 2009
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,20 +13,21 @@
  *
  * Copyright @2009 the original author or authors.
  */
-package org.fest.swing.input;
-
-import java.awt.AWTEvent;
-import java.awt.event.MouseEvent;
+package org.fest.swing.core;
 
 /**
- * Understands detection of native drag 'n drop events.
+ * Understands how to identify the "main" thread.
  *
  * @author Alex Ruiz
  */
-class NativeDnD {
+public class MainThreadIdentifier {
 
-  boolean isNativeDragAndDrop(AWTEvent e) {
-    return (e instanceof MouseEvent) && e.getClass().getName().indexOf("SunDropTargetEvent") != -1;
+  Thread mainThreadIn(Thread[] threads) {
+    for (Thread t : threads) if (isMain(t)) return t;
+    return null;
   }
 
+  private boolean isMain(Thread thread) {
+    return "main".equalsIgnoreCase(thread.getName());
+  }
 }

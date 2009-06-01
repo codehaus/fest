@@ -24,14 +24,16 @@ class TestTerminator {
 
   private final ThreadsSource threadsSource;
   private final FrameDisposer frameDisposer;
+  private final MainThreadIdentifier mainThreadIdentifier;
 
   TestTerminator() {
-    this(new ThreadsSource(), new FrameDisposer());
+    this(new ThreadsSource(), new FrameDisposer(), new MainThreadIdentifier());
   }
 
-  TestTerminator(ThreadsSource threadsSource, FrameDisposer frameDisposer) {
+  TestTerminator(ThreadsSource threadsSource, FrameDisposer frameDisposer, MainThreadIdentifier mainThreadIdentifier) {
     this.threadsSource = threadsSource;
     this.frameDisposer = frameDisposer;
+    this.mainThreadIdentifier = mainThreadIdentifier;
   }
 
   /*
@@ -51,7 +53,7 @@ class TestTerminator {
    * if it is in a {@link Object#wait()} or {@link Thread#sleep(long)} method.
    */
   private void pokeMainThread() {
-    Thread mainThread = threadsSource.mainThread();
+    Thread mainThread = mainThreadIdentifier.mainThreadIn(threadsSource.allThreads());
     if (mainThread != null) mainThread.interrupt();
   }
 
