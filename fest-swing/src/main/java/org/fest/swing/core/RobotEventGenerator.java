@@ -15,17 +15,19 @@
  */
 package org.fest.swing.core;
 
-import java.awt.*;
-import java.awt.Robot;
-
 import static java.lang.String.valueOf;
-
 import static org.fest.swing.awt.AWT.translate;
 import static org.fest.swing.exception.ActionFailedException.actionFailure;
 import static org.fest.swing.exception.UnexpectedException.unexpected;
 import static org.fest.swing.timing.Pause.pause;
-import static org.fest.swing.util.Platform.*;
+import static org.fest.swing.util.Platform.isOSX;
+import static org.fest.swing.util.Platform.isWindows;
 import static org.fest.util.Strings.concat;
+
+import java.awt.*;
+import java.awt.Robot;
+
+import org.fest.swing.util.RobotFactory;
 
 /**
  * Understands input event generation using a AWT <code>{@link Robot}</code>.
@@ -40,21 +42,16 @@ class RobotEventGenerator implements InputEventGenerator {
   private final Settings settings;
 
   RobotEventGenerator(Settings settings) {
-    this(createRobot(), settings);
+    this(new RobotFactory(), settings);
   }
-  
-  private static Robot createRobot() {
+
+  RobotEventGenerator(RobotFactory robotFactory, Settings settings) {
     try {
-      Robot robot = new Robot();
+      robot = robotFactory.newRobotInPrimaryScreen();
       if (isWindows() || isOSX()) pause(500);
-      return robot;
     } catch (AWTException e) {
       throw unexpected(e);
     }
-  }
-  
-  RobotEventGenerator(Robot robot, Settings settings) {
-    this.robot = robot;
     this.settings = settings;
     settings.attachTo(robot);
   }
@@ -66,7 +63,7 @@ class RobotEventGenerator implements InputEventGenerator {
     Point p = where;
     if (c != null) {
       p = translate(c, where.x, where.y);
-      if (!isPointInScreenBoundaries(p)) 
+      if (!isPointInScreenBoundaries(p))
         throw actionFailure("The component to click is out of the boundaries of the screeen");
     }
     pressMouse(p, buttons);
@@ -76,7 +73,7 @@ class RobotEventGenerator implements InputEventGenerator {
     Rectangle screen = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
     return screen.contains(p);
   }
-  
+
   /** {@inheritDoc} */
   public void pressMouse(Point where, int buttons) {
     moveMouse(where.x, where.y);
@@ -103,7 +100,7 @@ class RobotEventGenerator implements InputEventGenerator {
     Point p = translate(c, x, y);
     moveMouse(p.x, p.y);
   }
-  
+
   /** {@inheritDoc} */
   public void moveMouse(int x, int y) {
     robot.mouseMove(x, y);

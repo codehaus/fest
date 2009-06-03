@@ -27,6 +27,7 @@ import static org.fest.swing.test.swing.TestWindow.createAndShowNewWindow;
 import static org.fest.util.Files.temporaryFolderPath;
 import static org.fest.util.Strings.concat;
 
+import java.awt.AWTException;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -41,6 +42,7 @@ import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.swing.TestWindow;
+import org.fest.swing.util.RobotFactory;
 import org.testng.annotations.*;
 
 /**
@@ -101,7 +103,7 @@ public class ScreenshotTakerTest {
     final BufferedImage image = createMock(BufferedImage.class);
     final String path = "image.png";
     final ImageFileWriter writer = createMock(ImageFileWriter.class);
-    taker = new ScreenshotTaker(writer);
+    taker = new ScreenshotTaker(writer, new RobotFactory());
     final IOException error = new IOException("On Purpose");
     new EasyMockTemplate(writer) {
       protected void expectations() throws Throwable {
@@ -114,6 +116,26 @@ public class ScreenshotTakerTest {
           failWhenExpectingException();
         } catch (ImageException e) {
           assertThat(e.getCause()).isSameAs(error);
+        }
+      }
+    }.run();
+  }
+
+  public void shouldRethrowExceptionAsImageExceptionWhenCreatingRobot() {
+    final ImageFileWriter writer = createMock(ImageFileWriter.class);
+    final RobotFactory robotFactory = createMock(RobotFactory.class);
+    final AWTException toThrow = new AWTException("Thrown on purpose");
+    new EasyMockTemplate(writer, robotFactory) {
+      protected void expectations() throws Throwable {
+        expect(robotFactory.newRobotInPrimaryScreen()).andThrow(toThrow);
+      }
+
+      protected void codeToTest() {
+        try {
+          taker = new ScreenshotTaker(writer, robotFactory);
+          failWhenExpectingException();
+        } catch (ImageException e) {
+          assertThat(e.getCause()).isSameAs(toThrow);
         }
       }
     }.run();

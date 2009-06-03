@@ -15,6 +15,10 @@
  */
 package org.fest.swing.monitor;
 
+import static java.lang.Math.max;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
+
 import java.awt.*;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
@@ -22,11 +26,7 @@ import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.util.Pair;
-
-import static java.lang.Math.max;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
+import org.fest.swing.util.RobotFactory;
 
 /**
  * Understands verification of the state of a window.
@@ -40,23 +40,20 @@ class WindowStatus {
   private static int sign = 1;
 
   private final Windows windows;
-  private final Robot robot;
+
+  final Robot robot;
 
   WindowStatus(Windows windows) {
-    this(windows, createRobot());
+    this(windows, new RobotFactory());
   }
 
-  WindowStatus(Windows windows, Robot robot) {
+  WindowStatus(Windows windows, RobotFactory robotFactory) {
     this.windows = windows;
-    this.robot = robot;
-  }
-
-  private static Robot createRobot() {
+    Robot r = null;
     try {
-      return new Robot();
-    } catch (AWTException e) {
-      return null;
-    }
+      r = robotFactory.newRobotInPrimaryScreen();
+    } catch (AWTException ignored) {}
+    robot = r;
   }
 
   Windows windows() { return windows; }

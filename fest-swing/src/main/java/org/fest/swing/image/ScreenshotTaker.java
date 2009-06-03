@@ -32,6 +32,7 @@ import javax.swing.text.JTextComponent;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
+import org.fest.swing.util.RobotFactory;
 
 /**
  * Understands taking screenshots of the desktop and GUI components.
@@ -55,13 +56,13 @@ public class ScreenshotTaker {
    * @throws ImageException if a AWT Robot (the responsible for taking screenshots) cannot be instantiated.
    */
   public ScreenshotTaker() {
-    this(new ImageFileWriter());
+    this(new ImageFileWriter(), new RobotFactory());
   }
 
-  ScreenshotTaker(ImageFileWriter writer) {
+  ScreenshotTaker(ImageFileWriter writer, RobotFactory robotFactory) {
     this.writer = writer;
     try {
-      robot = new Robot();
+      robot = robotFactory.newRobotInPrimaryScreen();
     } catch (AWTException e) {
       throw new ImageException("Unable to create AWT Robot", e);
     }

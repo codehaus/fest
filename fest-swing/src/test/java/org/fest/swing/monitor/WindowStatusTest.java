@@ -30,6 +30,7 @@ import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.swing.TestWindow;
+import org.fest.swing.util.RobotFactory;
 import org.testng.annotations.*;
 
 /**
@@ -63,6 +64,20 @@ public class WindowStatusTest {
       ScreenLock lock = ScreenLock.instance();
       if (lock.acquiredBy(this)) lock.release(this);
     }
+  }
+
+  public void shouldHaveRobotEqualToNullIfRobotCannotBeCreated() {
+    final RobotFactory factory = createMock(RobotFactory.class);
+    new EasyMockTemplate(factory) {
+      protected void expectations() throws Throwable {
+        expect(factory.newRobotInPrimaryScreen()).andThrow(new AWTException("Thrown on purpose"));
+      }
+
+      protected void codeToTest() {
+        status = new WindowStatus(windows, factory);
+        assertThat(status.robot).isNull();
+      }
+    }.run();
   }
 
   public void shouldMoveMouseToCenterWithFrameWidthGreaterThanHeight() {
@@ -120,12 +135,15 @@ public class WindowStatusTest {
   }
 
   public void shouldNotCheckIfRobotIsNull() {
-    status = new WindowStatus(windows, null);
+    final RobotFactory factory = createMock(RobotFactory.class);
     Point before = mousePointerLocation();
-    new EasyMockTemplate(windows) {
-      @Override protected void expectations() {}
+    new EasyMockTemplate(windows, factory) {
+      @Override protected void expectations() throws Throwable {
+        expect(factory.newRobotInPrimaryScreen()).andReturn(null);
+      }
 
       @Override protected void codeToTest() {
+        status = new WindowStatus(windows, factory);
         status.checkIfReady(window);
       }
     }.run();

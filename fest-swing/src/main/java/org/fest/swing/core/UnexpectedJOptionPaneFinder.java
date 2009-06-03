@@ -33,7 +33,7 @@ import org.fest.swing.annotation.RunsInEDT;
  */
 class UnexpectedJOptionPaneFinder {
 
-  private static final ComponentMatcher OPTION_PANE_MATCHER = new TypeMatcher(JOptionPane.class, true);
+  static final ComponentMatcher OPTION_PANE_MATCHER = new TypeMatcher(JOptionPane.class, true);
 
   private final ComponentFinder finder;
 

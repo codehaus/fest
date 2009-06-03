@@ -1,5 +1,5 @@
 /*
- * Created on Apr 3, 2008
+ * Created on Jun 3, 2009
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -11,36 +11,40 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  *
- * Copyright @2008-2009 the original author or authors.
+ * Copyright @2009 the original author or authors.
  */
-package org.fest.swing.core;
+package org.fest.swing.util;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.core.TestGroups.GUI;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
- * GUI tests for <code>{@link RobotEventGenerator}</code>.
+ * Tests for <code>{@link RobotFactory}</code>.
  *
  * @author Alex Ruiz
  */
 @Test(groups = GUI)
-public class RobotEventGeneratorGuiTest extends InputEventGeneratorTestCase {
+public class RobotFactoryTest {
 
-  private Settings settings;
-  private RobotEventGenerator eventGenerator;
+  private RobotFactory robotFactory;
 
-  @Override void onSetUp() {
-    settings = new Settings();
-    eventGenerator = new RobotEventGenerator(settings);
+  @BeforeClass public void setUpOnce() {
+    robotFactory = new RobotFactory();
   }
 
-  InputEventGenerator eventGenerator() {
-    return eventGenerator;
-  }
-
-  public void shouldAttachRobotToSettings() {
-    assertThat(eventGenerator.robot()).isSameAs(settings.robot());
+  public void shouldCreateNewRobot() throws AWTException {
+    Robot last = null;
+    for (int i = 0; i < 6; i++) {
+      Robot current = robotFactory.newRobotInPrimaryScreen();
+      assertThat(current).isNotNull()
+                         .isNotSameAs(last);
+      last = current;
+    }
   }
 }
