@@ -15,14 +15,14 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.driver.ModelValueToString.asText;
+
 import java.awt.Component;
 
 import javax.swing.JList;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.cell.JListCellReader;
-
-import static org.fest.swing.driver.ModelValueToString.asText;
 
 /**
  * Understands the default implementation of <code>{@link JListCellReader}</code>.
@@ -58,7 +58,7 @@ public class BasicJListCellReader implements JListCellReader {
   /**
    * Returns the internal value of a cell in a <code>{@link JList}</code> as expected in a test.
    * <p>
-   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param list the given <code>JList</code>.
@@ -72,6 +72,6 @@ public class BasicJListCellReader implements JListCellReader {
     Component c = list.getCellRenderer().getListCellRendererComponent(list, element, index, true, true);
     String value = (c != null) ? rendererReader.valueFrom(c) : null;
     if (value != null) return value;
-    return asText(list.getModel().getElementAt(index));
+    return asText(element);
   }
 }
