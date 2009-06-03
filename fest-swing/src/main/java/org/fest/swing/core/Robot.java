@@ -383,6 +383,7 @@ public interface Robot {
 
   /**
    * Ensures that there is no <code>{@link javax.swing.JOptionPane}</code> showing, and potentially blocking GUI tests.
+   * @throws AssertionError if there is one or more <code>JOptionPane</code>s showing on the screen.
    */
   void requireNoJOptionPaneIsShowing();
 

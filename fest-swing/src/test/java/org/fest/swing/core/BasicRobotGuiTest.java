@@ -20,7 +20,6 @@ import static java.awt.event.InputEvent.SHIFT_MASK;
 import static java.awt.event.KeyEvent.*;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.awt.AWT.*;
-import static org.fest.swing.core.BasicRobotTest.KeyAction.action;
 import static org.fest.swing.core.MouseButton.*;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.query.ComponentLocationOnScreenQuery.locationOnScreen;
@@ -53,13 +52,13 @@ import org.fest.swing.timing.Condition;
 import org.testng.annotations.*;
 
 /**
- * Tests for <code>{@link org.fest.swing.core.BasicRobot}</code>.
+ * GUI tests for <code>{@link org.fest.swing.core.BasicRobot}</code>.
  *
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
 @Test(groups = GUI)
-public class BasicRobotTest {
+public class BasicRobotGuiTest {
 
   private BasicRobot robot;
   private MyWindow window;
@@ -227,12 +226,12 @@ public class BasicRobotTest {
     robot.waitForIdle();
     List<KeyAction> actions = recorder.actions;
     assertThat(actions).containsOnly(
-        action(KEY_PRESSED,  VK_SHIFT),
-        action(KEY_PRESSED,  VK_CONTROL),
-        action(KEY_PRESSED,  VK_C),
-        action(KEY_RELEASED, VK_C),
-        action(KEY_RELEASED, VK_CONTROL),
-        action(KEY_RELEASED, VK_SHIFT)
+        KeyAction.action(KEY_PRESSED,  VK_SHIFT),
+        KeyAction.action(KEY_PRESSED,  VK_CONTROL),
+        KeyAction.action(KEY_PRESSED,  VK_C),
+        KeyAction.action(KEY_RELEASED, VK_C),
+        KeyAction.action(KEY_RELEASED, VK_CONTROL),
+        KeyAction.action(KEY_RELEASED, VK_SHIFT)
     );
   }
 
@@ -372,7 +371,7 @@ public class BasicRobotTest {
     int wheelRotation() { return wheelRotation; }
   }
 
-  static class KeyPressRecorder extends KeyAdapter {
+  private static class KeyPressRecorder extends KeyAdapter {
     final List<KeyAction> actions = new ArrayList<KeyAction>();
 
     static KeyPressRecorder attachTo(Component c) {
@@ -382,15 +381,15 @@ public class BasicRobotTest {
     }
 
     @Override public void keyPressed(KeyEvent e) {
-      actions.add(action(KEY_PRESSED, e.getKeyCode()));
+      actions.add(KeyAction.action(KEY_PRESSED, e.getKeyCode()));
     }
 
     @Override public void keyReleased(KeyEvent e) {
-      actions.add(action(KEY_RELEASED, e.getKeyCode()));
+      actions.add(KeyAction.action(KEY_RELEASED, e.getKeyCode()));
     }
   }
 
-  static class KeyAction {
+  private static class KeyAction {
     final int type;
     final int keyCode;
 
@@ -451,7 +450,7 @@ public class BasicRobotTest {
     }
 
     private MyWindow() {
-      super(BasicRobotTest.class);
+      super(BasicRobotGuiTest.class);
       listScrollPane.setPreferredSize(new Dimension(300, 100));
       addComponents(textFieldWithPopup, textFieldWithoutPopup, button, listScrollPane);
       button.addActionListener(new ActionListener() {

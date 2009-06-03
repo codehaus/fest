@@ -20,7 +20,6 @@ import static java.awt.event.WindowEvent.WINDOW_CLOSING;
 import static java.lang.System.currentTimeMillis;
 import static javax.swing.SwingUtilities.getWindowAncestor;
 import static javax.swing.SwingUtilities.isEventDispatchThread;
-import static org.fest.assertions.Fail.fail;
 import static org.fest.swing.awt.AWT.centerOf;
 import static org.fest.swing.awt.AWT.visibleCenterOf;
 import static org.fest.swing.core.ActivateWindowTask.activateWindow;
@@ -102,6 +101,7 @@ public class BasicRobot implements Robot {
 
   private final AWTEventPoster eventPoster;
   private final InputEventGenerator eventGenerator;
+  private final UnexpectedJOptionPaneFinder unexpectedJOptionPaneFinder;
 
   /**
    * Creates a new <code>{@link Robot}</code> with a new AWT hierarchy. The created <code>Robot</code> will not be able
@@ -131,6 +131,7 @@ public class BasicRobot implements Robot {
     eventGenerator = new RobotEventGenerator(settings);
     eventPoster = new AWTEventPoster(toolkit, inputState, windowMonitor, settings);
     finder = new BasicComponentFinder(this.hierarchy);
+    unexpectedJOptionPaneFinder = new UnexpectedJOptionPaneFinder(finder);
     active = true;
   }
 
@@ -739,23 +740,8 @@ public class BasicRobot implements Robot {
   /** {@inheritDoc} */
   @RunsInEDT
   public void requireNoJOptionPaneIsShowing() {
-    List<Component> found = new ArrayList<Component>(finder().findAll(new TypeMatcher(JOptionPane.class, true)));
-    if (found.isEmpty()) return;
-    unexpectedJOptionPanesFound(found);
+    unexpectedJOptionPaneFinder.requireNoJOptionPaneIsShowing();
   }
-
-  private void unexpectedJOptionPanesFound(List<Component> found) {
-    StringBuilder message = new StringBuilder();
-    message.append("Expecting no JOptionPane to be showing, but found:<[");
-    int size = found.size();
-    for (int i = 0; i < size; i++) {
-      message.append(format(found.get(i)));
-      if (i != size - 1) message.append(", ");
-    }
-    message.append("]>");
-    fail(message.toString());
-  }
-
 
   /** {@inheritDoc} */
   public Settings settings() {
