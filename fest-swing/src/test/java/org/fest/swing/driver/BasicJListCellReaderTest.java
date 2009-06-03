@@ -19,6 +19,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.util.Collections.list;
 
 import java.awt.Component;
 import java.util.List;
@@ -26,7 +27,6 @@ import java.util.List;
 import javax.swing.*;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.util.Collections;
 import org.testng.annotations.Test;
 
 /**
@@ -47,13 +47,10 @@ import org.testng.annotations.Test;
 
   public void shouldReturnTextFromCellRendererComponent() {
     final JLabel editor = createMock(JLabel.class);
-    final Mocks mocks = new Mocks(editor);
-    final CellRendererReader cellRendererReader = createMock(CellRendererReader.class);
+    final Mocks mocks = Mocks.mocksWithCellEditor(editor);
+    final CellRendererReader cellRendererReader = mockCellRendererReader();
     final BasicJListCellReader reader = new BasicJListCellReader(cellRendererReader);
-    List<Object> allMocks = mocks.mocks();
-    allMocks.add(editor);
-    allMocks.add(cellRendererReader);
-    new EasyMockTemplate(allMocks.toArray()) {
+    new EasyMockTemplate(mocks.allMocksPlus(cellRendererReader)) {
       protected void expectations()  {
         mocks.expectToObtainEditorAtIndex(6);
         expect(cellRendererReader.valueFrom(editor)).andReturn("HELLO WORLD");
@@ -66,12 +63,10 @@ import org.testng.annotations.Test;
   }
 
   public void shouldReturnTextFromElementIfCellRendererComponentIsNull() {
-    final Mocks mocks = new Mocks(null);
-    final CellRendererReader cellRendererReader = createMock(CellRendererReader.class);
+    final Mocks mocks = Mocks.mocksWithoutCellEditor();
+    final CellRendererReader cellRendererReader = mockCellRendererReader();
     final BasicJListCellReader reader = new BasicJListCellReader(cellRendererReader);
-    List<Object> allMocks = mocks.mocks();
-    allMocks.add(cellRendererReader);
-    new EasyMockTemplate(allMocks.toArray()) {
+    new EasyMockTemplate(mocks.allMocksPlus(cellRendererReader)) {
       protected void expectations()  {
         mocks.expectToObtainEditorAtIndex(6);
       }
@@ -82,11 +77,23 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  private CellRendererReader mockCellRendererReader() {
+    return createMock(CellRendererReader.class);
+  }
+
   private static class Mocks {
     final JList list = createMock(JList.class);
     final ListModel model = createMock(ListModel.class);
     final ListCellRenderer cellRenderer = createMock(ListCellRenderer.class);
     final Component editor;
+
+    static Mocks mocksWithCellEditor(Component editor) {
+      return new Mocks(editor);
+    }
+
+    static Mocks mocksWithoutCellEditor() {
+      return new Mocks(null);
+    }
 
     Mocks(Component editor) {
       this.editor = editor;
@@ -100,8 +107,10 @@ import org.testng.annotations.Test;
       expect(cellRenderer.getListCellRendererComponent(list, element, index, true, true)).andReturn(editor);
     }
 
-    List<Object> mocks() {
-      return Collections.list(list, model, cellRenderer);
+    Object[] allMocksPlus(Object... additionalMocks) {
+      List<Object> allMocks = list(list, model, cellRenderer);
+      allMocks.addAll(list(additionalMocks));
+      return allMocks.toArray();
     }
   }
 
