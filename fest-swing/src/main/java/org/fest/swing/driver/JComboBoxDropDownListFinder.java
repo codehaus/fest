@@ -36,7 +36,7 @@ import org.fest.swing.util.TimeoutWatch;
  */
 final class JComboBoxDropDownListFinder {
 
-  private static final ComponentMatcher LIST_MATCHER = new TypeMatcher(JList.class);
+  static final ComponentMatcher LIST_MATCHER = new TypeMatcher(JList.class);
 
   private final Robot robot;
 
@@ -54,19 +54,19 @@ final class JComboBoxDropDownListFinder {
     JPopupMenu popup = robot.findActivePopupMenu();
     if (popup == null) {
       TimeoutWatch watch = startWatchWithTimeoutOf(robot.settings().timeoutToFindPopup());
-      while ((popup = robot.findActivePopupMenu()) == null) {
+      popup = robot.findActivePopupMenu();
+      while (popup == null) {
         if (watch.isTimeOut()) return null;
         pause();
+        popup = robot.findActivePopupMenu();
       }
     }
     return findListIn(popup);
   }
 
   private JList findListIn(Container parent) {
-    List<Component> found = new ArrayList<Component>(robot.finder().findAll(LIST_MATCHER));
+    List<Component> found = new ArrayList<Component>(robot.finder().findAll(parent, LIST_MATCHER));
     if (found.size() != 1) return null;
-    final Component c = found.get(0);
-    if (c instanceof JList) return (JList)c;
-    return null;
+    return (JList)found.get(0);
   }
 }
