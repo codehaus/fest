@@ -316,11 +316,17 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.4</version>
+        <version>2.4.2</version>
+        <configuration>
+          <suiteXmlFiles>
+            <suiteXmlFile>testng.xml</suiteXmlFile>
+          </suiteXmlFiles>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>com.atlassian.maven.plugins</groupId>
         <artifactId>maven-clover2-plugin</artifactId>
+        <version>2.5.0</version>
         <configuration>
           <licenseLocation>../clover.license</licenseLocation>
           <includesTestSourceRoots>false</includesTestSourceRoots>
