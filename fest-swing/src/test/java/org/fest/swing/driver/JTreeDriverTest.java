@@ -15,38 +15,33 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.tree.*;
-
-import org.testng.annotations.*;
-
-import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
-import org.fest.swing.exception.LocationUnavailableException;
-import org.fest.swing.test.swing.TestTree;
-import org.fest.swing.test.swing.TestWindow;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.driver.JTreeSetEditableTask.setEditable;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.*;
 import static org.fest.swing.test.core.TestGroups.GUI;
+import static org.fest.swing.test.swing.TreeNodeFactory.node;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
 import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
 import static org.fest.swing.test.task.JTreeSelectRowTask.selectRow;
 import static org.fest.util.Arrays.array;
+
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.*;
+import javax.swing.tree.*;
+
+import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.core.Robot;
+import org.fest.swing.edt.*;
+import org.fest.swing.exception.LocationUnavailableException;
+import org.fest.swing.test.swing.TestTree;
+import org.fest.swing.test.swing.TestWindow;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JTreeDriver}</code>.
@@ -68,7 +63,7 @@ public class JTreeDriverTest {
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
   }
-  
+
   @BeforeMethod public void setUp() {
     robot = robotWithNewAwtHierarchy();
     driver = new JTreeDriver(robot);
@@ -101,7 +96,7 @@ public class JTreeDriverTest {
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertActionFailureDueToDisabledComponent(e);
-    }    
+    }
   }
 
   public void shouldThrowErrorWhenSelectingNodeByRowInNotShowingJTree() {
@@ -111,7 +106,7 @@ public class JTreeDriverTest {
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertActionFailureDueToNotShowingComponent(e);
-    }    
+    }
   }
 
   @Test(groups = GUI, expectedExceptions = NullPointerException.class)
@@ -225,7 +220,7 @@ public class JTreeDriverTest {
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertActionFailureDueToDisabledComponent(e);
-    }    
+    }
   }
 
   public void shouldThrowErrorWhenSelectingNodeByPathInNotShowingJTree() {
@@ -235,7 +230,7 @@ public class JTreeDriverTest {
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertActionFailureDueToNotShowingComponent(e);
-    }    
+    }
   }
 
   @Test(groups = GUI, expectedExceptions = NullPointerException.class)
@@ -308,7 +303,7 @@ public class JTreeDriverTest {
     disable(dragTree);
     robot.waitForIdle();
   }
-  
+
   @RunsInEDT
   private void hideWindow() {
     hide(window);
@@ -635,12 +630,6 @@ public class JTreeDriverTest {
 
     private static TreeModel rootOnly() {
       return new DefaultTreeModel(node("root"));
-    }
-
-    private static MutableTreeNode node(String text, MutableTreeNode...children) {
-      DefaultMutableTreeNode node = new DefaultMutableTreeNode(text);
-      for (MutableTreeNode child : children) node.add(child);
-      return node;
     }
 
     private MyWindow() {

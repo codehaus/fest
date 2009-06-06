@@ -18,6 +18,7 @@ package org.fest.swing.fixture;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.TestGroups.BUG;
 import static org.fest.swing.test.core.TestGroups.GUI;
+import static org.fest.swing.test.swing.TreeNodeFactory.node;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -99,12 +100,6 @@ public class FEST119_CannotSelectRowInJTreeIfRootIsInvisible {
             node("branch2")
         );
       return new DefaultTreeModel(root);
-    }
-
-    private static MutableTreeNode node(String text, MutableTreeNode...children) {
-      DefaultMutableTreeNode node = new DefaultMutableTreeNode(text);
-      for (MutableTreeNode child : children) node.add(child);
-      return node;
     }
 
     private MyWindow() {

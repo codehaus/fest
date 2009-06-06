@@ -250,7 +250,7 @@ public class JTreeDriver extends JComponentDriver {
    */
   @RunsInEDT
   public JPopupMenu showPopupMenu(JTree tree, String path) {
-    TreePath matchingPath = findVisibleMatchingPath(tree, path, pathFinder);
+    TreePath matchingPath = findMatchingPathInVisibleAndEnabledJTree(tree, path, pathFinder);
     matchingPath = addRootIfInvisible(tree, matchingPath);
     makeVisible(tree, matchingPath, false);
     return robot.showPopupMenu(tree, pointAtPath(tree, matchingPath, location));
@@ -344,7 +344,7 @@ public class JTreeDriver extends JComponentDriver {
 
   @RunsInEDT
   private Point selectMatchingPath(JTree tree, String path) {
-    TreePath matchingPath = findVisibleMatchingPath(tree, path, pathFinder);
+    TreePath matchingPath = findMatchingPathInVisibleAndEnabledJTree(tree, path, pathFinder);
     matchingPath = addRootIfInvisible(tree, matchingPath);
     makeVisible(tree, matchingPath, false);
     Point p = scrollToPathToSelect(tree, matchingPath, location);

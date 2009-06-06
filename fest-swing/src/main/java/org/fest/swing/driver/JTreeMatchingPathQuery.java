@@ -24,7 +24,8 @@ import org.fest.swing.edt.GuiQuery;
 final class JTreeMatchingPathQuery {
 
   @RunsInEDT
-  static TreePath findVisibleMatchingPath(final JTree tree, final String path, final JTreePathFinder pathFinder) {
+  static TreePath findMatchingPathInVisibleAndEnabledJTree(final JTree tree, final String path,
+      final JTreePathFinder pathFinder) {
     return execute(new GuiQuery<TreePath>() {
       protected TreePath executeInEDT() {
         validateIsEnabledAndShowing(tree);

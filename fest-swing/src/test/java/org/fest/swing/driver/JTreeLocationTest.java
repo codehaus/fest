@@ -15,30 +15,26 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.TestGroups.GUI;
+import static org.fest.swing.test.swing.TreeNodeFactory.node;
+import static org.fest.swing.timing.Pause.pause;
+import static org.fest.util.Arrays.array;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JTree;
 import javax.swing.tree.*;
 
-import org.testng.annotations.*;
-
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
+import org.fest.swing.edt.*;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.TestGroups.GUI;
-import static org.fest.swing.timing.Pause.pause;
-import static org.fest.util.Arrays.array;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JTreeLocation}</code>.
@@ -57,7 +53,7 @@ public class JTreeLocationTest {
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
   }
-  
+
   @BeforeMethod public void setUp() {
     robot = robotWithNewAwtHierarchy();
     MyWindow window = MyWindow.createNew();
@@ -118,7 +114,7 @@ public class JTreeLocationTest {
       }
     });
   }
-  
+
   @RunsInEDT
   private TreePath node11Path() {
     return childOf(node1Path(), 0);
@@ -189,12 +185,6 @@ public class JTreeLocationTest {
               ),
           node("node2")
           );
-    }
-
-    private DefaultMutableTreeNode node(String text, MutableTreeNode...children) {
-      DefaultMutableTreeNode node = new DefaultMutableTreeNode(text);
-      for (MutableTreeNode child : children) node.add(child);
-      return node;
     }
   }
 
