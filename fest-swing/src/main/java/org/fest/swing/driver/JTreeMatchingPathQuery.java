@@ -54,6 +54,7 @@ final class JTreeMatchingPathQuery {
     if (path == null) return path;
     Object root = tree.getModel().getRoot();
     if (tree.isRootVisible() || root == null) return path;
+    // root is invisible but path already contains root
     if (path.getPathCount() > 0 && root == path.getPathComponent(0)) return path;
     List<Object> newPath = list(path.getPath());
     newPath.add(0, root);

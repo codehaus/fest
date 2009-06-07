@@ -46,7 +46,7 @@ import org.testng.annotations.*;
 public class JTreeMatchingPathQueryTest {
 
   private Robot robot;
-  private JTree tree;
+  private MyWindow window;
   private JTreePathFinder pathFinder;
 
   @BeforeClass public void setUpOnce() {
@@ -56,8 +56,7 @@ public class JTreeMatchingPathQueryTest {
   @BeforeMethod public void setUp() {
     pathFinder = new JTreePathFinder();
     robot = BasicRobot.robotWithNewAwtHierarchy();
-    MyWindow window = MyWindow.createNew();
-    tree = window.tree;
+    window = MyWindow.createNew();
     robot.showWindow(window);
   }
 
@@ -66,7 +65,7 @@ public class JTreeMatchingPathQueryTest {
   }
 
   public void shouldFindMatchingPathWhenRootIsInvisible() {
-    TreePath treePath = JTreeMatchingPathQuery.matchingPathFor(tree, "branch1/branch1.1", pathFinder);
+    TreePath treePath = JTreeMatchingPathQuery.matchingPathFor(window.tree, "branch1/branch1.1", pathFinder);
     Object[] path = treePath.getPath();
     assertThat(path).hasSize(3);
     assertThatIsTreeNodeWithGivenText(path[0], "root");
@@ -76,7 +75,7 @@ public class JTreeMatchingPathQueryTest {
 
   public void shouldFindMatchingPathWhenRootIsVisible() {
     makeTreeRootVisible();
-    TreePath treePath = JTreeMatchingPathQuery.matchingPathFor(tree, "root/branch1/branch1.1", pathFinder);
+    TreePath treePath = JTreeMatchingPathQuery.matchingPathFor(window.tree, "root/branch1/branch1.1", pathFinder);
     Object[] path = treePath.getPath();
     assertThat(path).hasSize(3);
     assertThatIsTreeNodeWithGivenText(path[0], "root");
@@ -87,7 +86,7 @@ public class JTreeMatchingPathQueryTest {
   private void makeTreeRootVisible() {
     execute(new GuiTask() {
       protected void executeInEDT() {
-        tree.setRootVisible(true);
+        window.tree.setRootVisible(true);
       }
     });
     robot.waitForIdle();
@@ -101,7 +100,7 @@ public class JTreeMatchingPathQueryTest {
 
   public void shouldThrowErrorIfPathNotFound() {
     try {
-      JTreeMatchingPathQuery.matchingPathFor(tree, "hello", pathFinder);
+      JTreeMatchingPathQuery.matchingPathFor(window.tree, "hello", pathFinder);
       failWhenExpectingException();
     } catch (LocationUnavailableException e) {
       assertThat(e.getMessage()).isEqualTo("Unable to find path 'hello'");
@@ -109,8 +108,14 @@ public class JTreeMatchingPathQueryTest {
   }
 
   public void shouldReturnNullIfPathToAddRootToIsNull() {
-    TreePath treePath = JTreeMatchingPathQuery.addRootIfInvisible(tree, null);
+    TreePath treePath = JTreeMatchingPathQuery.addRootIfInvisible(window.tree, null);
     assertThat(treePath).isNull();
+  }
+
+  public void shouldNotAddRootToPathIfRootIsInvisibleButPathAlreadyContainsRoot() {
+    TreePath treePath = new TreePath(window.root);
+    TreePath newTreePath = JTreeMatchingPathQuery.addRootIfInvisible(window.tree, treePath);
+    assertThat(newTreePath).isEqualTo(treePath);
   }
 
   private static class MyWindow extends TestWindow {
@@ -127,20 +132,24 @@ public class JTreeMatchingPathQueryTest {
       });
     }
 
-    final TestTree tree = new TestTree(nodes());
+    final MutableTreeNode root = createRoot();
+    final TestTree tree = new TestTree(nodes(root));
 
-    private static TreeModel nodes() {
-      MutableTreeNode root =
-        node("root",
-            node("branch1",
-                node("branch1.1",
-                    node("branch1.1.1"),
-                    node("branch1.1.2")
-                ),
-                node("branch1.2")
-            ),
-            node("branch2")
-        );
+    private static MutableTreeNode createRoot() {
+      MutableTreeNode root = node("root",
+          node("branch1",
+              node("branch1.1",
+                  node("branch1.1.1"),
+                  node("branch1.1.2")
+              ),
+              node("branch1.2")
+          ),
+          node("branch2")
+      );
+      return root;
+    }
+
+    private static TreeModel nodes(MutableTreeNode root) {
       return new DefaultTreeModel(root);
     }
 

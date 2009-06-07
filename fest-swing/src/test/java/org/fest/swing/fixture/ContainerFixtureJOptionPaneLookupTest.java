@@ -38,9 +38,9 @@ import org.testng.annotations.*;
 @Test(groups = GUI)
 public class ContainerFixtureJOptionPaneLookupTest {
 
-  private FrameFixture launcher;
+  private ConcreteContainerFixture launcher;
   private Robot robot;
-  private JOptionPaneLauncherWindow launcherWindow;
+  private JOptionPaneLauncherWindow window;
 
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
@@ -48,9 +48,9 @@ public class ContainerFixtureJOptionPaneLookupTest {
 
   @BeforeMethod public void setUp() {
     robot = robotWithNewAwtHierarchy();
-    launcherWindow = JOptionPaneLauncherWindow.createNew(WindowFinderTest.class);
-    launcher = new FrameFixture(robot, launcherWindow);
-    launcher.show();
+    window = JOptionPaneLauncherWindow.createNew(WindowFinderTest.class);
+    launcher = new ConcreteContainerFixture(robot, window);
+    robot.showWindow(window);
   }
 
   @AfterMethod public void tearDown() {
@@ -87,7 +87,7 @@ public class ContainerFixtureJOptionPaneLookupTest {
   }
 
   private void launchJOptionPane(int delay) {
-    launcherWindow.launchDelay(delay);
+    window.launchDelay(delay);
     launcher.button("message").click();
   }
 }

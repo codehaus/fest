@@ -44,9 +44,9 @@ import org.testng.annotations.*;
 @Test(groups = GUI)
 public class ContainerFixtureDialogLookupTest {
 
-  private FrameFixture launcher;
+  private ConcreteContainerFixture fixture;
   private Robot robot;
-  private DialogLauncherWindow launcherWindow;
+  private DialogLauncherWindow window;
 
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
@@ -54,9 +54,9 @@ public class ContainerFixtureDialogLookupTest {
 
   @BeforeMethod public void setUp() {
     robot = robotWithNewAwtHierarchy();
-    launcherWindow = DialogLauncherWindow.createNew(WindowFinderTest.class);
-    launcher = new FrameFixture(robot, launcherWindow);
-    launcher.show();
+    window = DialogLauncherWindow.createNew(WindowFinderTest.class);
+    fixture = new ConcreteContainerFixture(robot, window);
+    robot.showWindow(window);
   }
 
   @AfterMethod public void tearDown() {
@@ -65,19 +65,19 @@ public class ContainerFixtureDialogLookupTest {
 
   public void shouldFindDialogByType() {
     launchDialog(0);
-    DialogFixture dialog = launcher.dialog();
+    DialogFixture dialog = fixture.dialog();
     assertCorrectDialogWasFound(dialog);
   }
 
   public void shouldFindDialogByTypeUsingTimeout() {
     launchDialog(200);
-    DialogFixture dialog = launcher.dialog(timeout(300));
+    DialogFixture dialog = fixture.dialog(timeout(300));
     assertCorrectDialogWasFound(dialog);
   }
 
   public void shouldFailIfDialogNotFoundAfterTimeout() {
     try {
-      launcher.dialog(timeout(100));
+      fixture.dialog(timeout(100));
       failWhenExpectingException();
     } catch (WaitTimedOutError e) {
       assertErrorMessageIsCorrect(e);
@@ -87,19 +87,19 @@ public class ContainerFixtureDialogLookupTest {
   public void shouldFindDialogWithMatcher() {
     launchDialog(0);
     GenericTypeMatcher<JDialog> matcher = new DialogByTitleMatcher();
-    DialogFixture dialog = launcher.dialog(matcher);
+    DialogFixture dialog = fixture.dialog(matcher);
     assertCorrectDialogWasFound(dialog);
   }
 
   public void shouldFindDialogWithMatcherUsingTimeout() {
     launchDialog(200);
-    DialogFixture dialog = launcher.dialog(new DialogByTitleMatcher(), timeout(300));
+    DialogFixture dialog = fixture.dialog(new DialogByTitleMatcher(), timeout(300));
     assertCorrectDialogWasFound(dialog);
   }
 
   public void shouldFailIfDialogNotFoundWithMatcherAfterTimeout() {
     try {
-      launcher.dialog(new DialogByTitleMatcher(), timeout(300));
+      fixture.dialog(new DialogByTitleMatcher(), timeout(300));
       failWhenExpectingException();
     } catch (WaitTimedOutError e) {
       assertErrorMessageIsCorrect(e);
@@ -108,13 +108,13 @@ public class ContainerFixtureDialogLookupTest {
 
   public void shouldFindDialogByName() {
     launchDialog(0);
-    DialogFixture dialog = launcher.dialog("dialog");
+    DialogFixture dialog = fixture.dialog("dialog");
     assertCorrectDialogWasFound(dialog);
   }
 
   public void shouldFindDialogByNameUsingTimeout() {
     launchDialog(200);
-    DialogFixture dialog = launcher.dialog("dialog", timeout(300));
+    DialogFixture dialog = fixture.dialog("dialog", timeout(300));
     assertCorrectDialogWasFound(dialog);
   }
 
@@ -124,7 +124,7 @@ public class ContainerFixtureDialogLookupTest {
 
   public void shouldFailIfDialogNotFoundByNameAfterTimeout() {
     try {
-      launcher.dialog("dialog", timeout(300));
+      fixture.dialog("dialog", timeout(300));
       failWhenExpectingException();
     } catch (WaitTimedOutError e) {
       assertErrorMessageIsCorrect(e);
@@ -136,8 +136,8 @@ public class ContainerFixtureDialogLookupTest {
   }
 
   private void launchDialog(int delay) {
-    launcherWindow.dialogLaunchDelay(delay);
-    launcher.button("launchDialog").click();
+    window.dialogLaunchDelay(delay);
+    fixture.button("launchDialog").click();
   }
 
   private static class DialogByTitleMatcher extends GenericTypeMatcher<JDialog> {
