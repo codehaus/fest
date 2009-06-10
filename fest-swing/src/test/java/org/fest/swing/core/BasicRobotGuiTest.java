@@ -41,8 +41,7 @@ import java.util.List;
 import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.*;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.exception.WaitTimedOutError;
 import org.fest.swing.test.recorder.ClickRecorder;
@@ -213,10 +212,20 @@ public class BasicRobotGuiTest {
 
   public void shouldPressAndReleaseGivenKeys() {
     textFieldWithPopup.requestFocusInWindow();
-    KeyRecorder recorder = KeyRecorder.attachTo(textFieldWithPopup);
-    int[] keys = { VK_A, VK_B, VK_Z };
-    robot.pressAndReleaseKeys(keys);
-    assertThat(recorder).keysPressed(keys).keysReleased(keys);
+    final KeyRecorder recorder = KeyRecorder.attachTo(textFieldWithPopup);
+    execute(new GuiTask() {
+      protected void executeInEDT() {
+        textFieldWithPopup.setText("");
+      }
+    });
+    robot.waitForIdle();
+    robot.pressAndReleaseKeys(new int[] { VK_A, VK_B, VK_Z });
+    pause(new Condition("until keys VK_A, VK_B and VK_Z are pressed and released") {
+      public boolean test() {
+        Integer[] expectedKeys = array(VK_A, VK_B, VK_Z);
+        return recorder.keysWerePressed(expectedKeys) && recorder.keysWereReleased(expectedKeys);
+      }
+    }, 500);
   }
 
   public void shouldPressKeyAndModifiers() {
@@ -237,17 +246,25 @@ public class BasicRobotGuiTest {
 
   public void shouldPressGivenKeyWithoutReleasingIt() {
     textFieldWithPopup.requestFocusInWindow();
-    KeyRecorder recorder = KeyRecorder.attachTo(textFieldWithPopup);
+    final KeyRecorder recorder = KeyRecorder.attachTo(textFieldWithPopup);
     robot.pressKey(VK_A);
-    assertThat(recorder).keysPressed(VK_A).noKeysReleased();
+    pause(new Condition("until key VK_A is pressed") {
+      public boolean test() {
+        return recorder.keysWerePressed(VK_A) && recorder.noKeysReleased();
+      }
+    }, 500);
   }
 
   public void shouldReleaseGivenKey() {
     textFieldWithPopup.requestFocusInWindow();
-    KeyRecorder recorder = KeyRecorder.attachTo(textFieldWithPopup);
+    final KeyRecorder recorder = KeyRecorder.attachTo(textFieldWithPopup);
     robot.pressKey(VK_A);
     robot.releaseKey(VK_A);
-    assertThat(recorder).keysReleased(VK_A);
+    pause(new Condition("until key is released") {
+      public boolean test() {
+        return recorder.keysWereReleased(VK_A);
+      }
+    }, 500);
   }
 
   public void shouldShowPopupMenu() {
