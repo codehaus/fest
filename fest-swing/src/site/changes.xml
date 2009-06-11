@@ -5,6 +5,14 @@
     <author email="alex.ruiz.05@gmail.com">Alex Ruiz</author>
   </properties>
   <body>
+    <release version="1.2a3" date="2009-05-26" description="Subsequent release">
+      <action dev="alruiz" type="fix">
+        Deprecated constructor 'TwoStateButtonFixture(Robot, Class)'.
+      </action>
+      <action dev="alruiz" type="fix">
+        Deprecated constructor 'JPopupMenuInvokerFixture(Robot, Class)'.
+      </action>
+    </release>
     <release version="1.2a2" date="2009-05-26" description="Subsequent release">
       <action dev="alruiz" type="add" issue="FEST-32" due-to="Juhos Csaba-Zsolt">
         Added method 'dialog(Timeout)' to ContainerFixture.
