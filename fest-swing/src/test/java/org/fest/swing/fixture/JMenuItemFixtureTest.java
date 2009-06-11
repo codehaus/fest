@@ -16,12 +16,8 @@
 package org.fest.swing.fixture;
 
 import static java.awt.event.InputEvent.SHIFT_MASK;
-import static java.awt.event.KeyEvent.VK_A;
-import static java.awt.event.KeyEvent.VK_B;
-import static java.awt.event.KeyEvent.VK_C;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.replay;
+import static java.awt.event.KeyEvent.*;
+import static org.easymock.EasyMock.*;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.core.KeyPressInfo.keyCode;
@@ -31,9 +27,7 @@ import static org.fest.swing.timing.Timeout.timeout;
 import javax.swing.JMenuItem;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.core.ComponentFinder;
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.Robot;
+import org.fest.swing.core.*;
 import org.fest.swing.driver.ComponentDriver;
 import org.fest.swing.driver.JMenuItemDriver;
 import org.fest.swing.timing.Timeout;
@@ -82,6 +76,19 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         assertThatReturnsThis(fixture.click());
+      }
+    }.run();
+  }
+
+  public void shouldGiveFocus() {
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        driver.focus(target);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.focus());
       }
     }.run();
   }

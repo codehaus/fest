@@ -1,0 +1,142 @@
+/*
+ * Created on Jun 7, 2009
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ *
+ * Copyright @2009 the original author or authors.
+ */
+package org.fest.swing.fixture;
+
+import static java.awt.Adjustable.VERTICAL;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.TestGroups.GUI;
+
+import javax.swing.JScrollBar;
+
+import org.fest.swing.core.GenericTypeMatcher;
+import org.fest.swing.core.Robot;
+import org.fest.swing.edt.*;
+import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.test.swing.TestWindow;
+import org.testng.annotations.*;
+
+/**
+ * Tests lookup of <code>{@link JScrollBar}</code>s in <code>{@link ContainerFixture}</code>.
+ *
+ * @author Alex Ruiz
+ */
+@Test(groups = GUI)
+public class ContainerFixtureJScrollBarLookupTest {
+
+  private ConcreteContainerFixture fixture;
+  private Robot robot;
+  private MyWindow window;
+
+  @BeforeClass public void setUpOnce() {
+    FailOnThreadViolationRepaintManager.install();
+  }
+
+  @BeforeMethod public void setUp() {
+    robot = robotWithNewAwtHierarchy();
+    window = MyWindow.createNew();
+    fixture = new ConcreteContainerFixture(robot, window);
+    robot.showWindow(window);
+  }
+
+  @AfterMethod public void tearDown() {
+    robot.cleanUp();
+  }
+
+  public void shouldFindJScrollBarByType() {
+    JScrollBarFixture scrollBar = fixture.scrollBar();
+    assertThatFixtureHasCorrectJScrollBar(scrollBar);
+  }
+
+  public void shouldFailIfJScrollBarCannotBeFoundByType() {
+    execute(new GuiTask() {
+      protected void executeInEDT() {
+        window.remove(window.scrollBar);
+      }
+    });
+    robot.waitForIdle();
+    try {
+      fixture.scrollBar();
+      failWhenExpectingException();
+    } catch (ComponentLookupException e) {
+      assertThat(e.getMessage()).contains("Unable to find component using matcher")
+                                .contains("type=javax.swing.JScrollBar, requireShowing=true");
+    }
+  }
+
+  public void shouldFindJScrollBarByName() {
+    JScrollBarFixture scrollBar = fixture.scrollBar("scrollMeScrollBar");
+    assertThatFixtureHasCorrectJScrollBar(scrollBar);
+  }
+
+  public void shouldFailIfJScrollBarCannotBeFoundByName() {
+    try {
+      fixture.scrollBar("myScrollBar");
+      failWhenExpectingException();
+    } catch (ComponentLookupException e) {
+      assertThat(e.getMessage()).contains("Unable to find component using matcher")
+                                .contains("name='myScrollBar', type=javax.swing.JScrollBar, requireShowing=true");
+    }
+  }
+
+  public void shouldFindJScrollBarWithCustomMatcher() {
+    JScrollBarFixture scrollBar = fixture.scrollBar(new GenericTypeMatcher<JScrollBar>(JScrollBar.class) {
+      protected boolean isMatching(JScrollBar s) {
+        return s.getOrientation() == VERTICAL && s.getValue() == 8;
+      }
+    });
+    assertThatFixtureHasCorrectJScrollBar(scrollBar);
+  }
+
+  private void assertThatFixtureHasCorrectJScrollBar(JScrollBarFixture scrollBarFixture) {
+    assertThat(scrollBarFixture.component()).isSameAs(window.scrollBar);
+  }
+
+  public void shouldFailIfJScrollBarCannotBeFoundWithCustomMatcher() {
+    try {
+      fixture.scrollBar(new GenericTypeMatcher<JScrollBar>(JScrollBar.class) {
+        protected boolean isMatching(JScrollBar s) {
+          return false;
+        }
+      });
+      failWhenExpectingException();
+    } catch (ComponentLookupException e) {
+      assertThat(e.getMessage()).contains("Unable to find component using matcher");
+    }
+  }
+
+  private static class MyWindow extends TestWindow {
+    private static final long serialVersionUID = 1L;
+
+    final JScrollBar scrollBar = new JScrollBar(VERTICAL, 8, 1, 6, 10);
+
+    static MyWindow createNew() {
+      return execute(new GuiQuery<MyWindow>() {
+        protected MyWindow executeInEDT() {
+          return new MyWindow();
+        }
+      });
+    }
+
+    private MyWindow() {
+      super(ContainerFixtureJScrollBarLookupTest.class);
+      scrollBar.setName("scrollMeScrollBar");
+      addComponents(scrollBar);
+    }
+  }
+}

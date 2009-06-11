@@ -30,9 +30,7 @@ import static org.fest.swing.test.builder.JTableHeaders.tableHeader;
 import static org.fest.swing.test.builder.JTables.table;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Point;
+import java.awt.*;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
@@ -278,6 +276,16 @@ public class JTableFixtureTest extends CommonComponentFixtureTestCase<JTable> {
         assertThatReturnsThis(fixture.click(cell, mouseClickInfo));
       }
     }.run();
+  }
+
+  public void shouldThrowExceptionIfMouseClickInfoIsNull() {
+    MouseClickInfo mouseClickInfo = null;
+    try {
+      fixture.click(cell, mouseClickInfo);
+      failWhenExpectingException();
+    } catch (NullPointerException e) {
+      assertThat(e.getMessage()).isEqualTo("The given MouseClickInfo should not be null");
+    }
   }
 
   public void shouldShowJPopupMenuAtCell() {
