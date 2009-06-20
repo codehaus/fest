@@ -15,12 +15,11 @@
  */
 package org.fest.swing.fixture;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JCheckBox;
 
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
-import org.fest.swing.core.Robot;
+import org.fest.swing.core.*;
 import org.fest.swing.driver.AbstractButtonDriver;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.timing.Timeout;
@@ -315,14 +314,27 @@ public class JCheckBoxFixture extends TwoStateButtonFixture<JCheckBox> {
   }
 
   /**
-   * Asserts that the text of this fixture's <code>{@link JCheckBox}</code> is equal to the specified
+   * Asserts that the text of this fixture's <code>{@link JCheckBox}</code> is equal to or matches the specified
    * <code>String</code>.
-   * @param expected the text to match.
+   * @param expected the text to match. It can be a regular expression.
    * @return this fixture.
-   * @throws AssertionError if the text of the target JCheckBox is not equal to the given one.
+   * @throws AssertionError if the text of the target JCheckBox is not equal to or does not match the given one.
    */
   public JCheckBoxFixture requireText(String expected) {
     driver.requireText(target, expected);
+    return this;
+  }
+
+  /**
+   * Asserts that the text of this fixture's <code>{@link JCheckBox}</code> matches the given regular expression pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the text of the target <code>JCheckBox</code> does not match the given regular expression
+   * pattern.
+   */
+  public JCheckBoxFixture requireText(Pattern pattern) {
+    driver.requireText(target, pattern);
     return this;
   }
 }
