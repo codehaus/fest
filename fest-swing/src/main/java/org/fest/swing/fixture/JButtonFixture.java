@@ -295,7 +295,7 @@ public class JButtonFixture extends JPopupMenuInvokerFixture<JButton> implements
    * @throws AssertionError if the text of the target <code>JButton</code> does not match the given regular expression
    * pattern.
    */
-  public Object requireText(Pattern pattern) {
+  public JButtonFixture requireText(Pattern pattern) {
     driver.requireText(target, pattern);
     return this;
   }
