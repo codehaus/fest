@@ -48,26 +48,26 @@ import org.testng.annotations.Test;
   }
 
   public void shouldReturnMatchingIfStringAndPatternAreEqual() {
-    assertThat(Strings.match("hello", "hello")).isTrue();
+    assertThat(Strings.areEqualOrMatch("hello", "hello")).isTrue();
   }
 
   public void shouldReturnMatchingIfStringMatchesPattern() {
-    assertThat(Strings.match("hell.", "hello")).isTrue();
+    assertThat(Strings.areEqualOrMatch("hell.", "hello")).isTrue();
   }
 
   public void shouldReturnNotMatchingIfStringDoesNotMatchPattern() {
-    assertThat(Strings.match("hi", "hello")).isFalse();
+    assertThat(Strings.areEqualOrMatch("hi", "hello")).isFalse();
   }
 
   public void shouldReturnNotMatchingIfStringIsNull() {
-    assertThat(Strings.match("hell.", null)).isFalse();
+    assertThat(Strings.areEqualOrMatch("hell.", null)).isFalse();
   }
 
   public void shouldReturnNotMatchingIfPatternIsNull() {
-    assertThat(Strings.match(null, "Hello")).isFalse();
+    assertThat(Strings.areEqualOrMatch(null, "Hello")).isFalse();
   }
 
   public void shouldReturnMatchingIfStringAndPatternAreNull() {
-    assertThat(Strings.match(null, null)).isTrue();
+    assertThat(Strings.areEqualOrMatch(null, null)).isTrue();
   }
 }

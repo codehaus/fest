@@ -294,6 +294,7 @@ public class JButtonFixture extends JPopupMenuInvokerFixture<JButton> implements
    * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
    * @throws AssertionError if the text of the target <code>JButton</code> does not match the given regular expression
    * pattern.
+   * @since 1.2
    */
   public JButtonFixture requireText(Pattern pattern) {
     driver.requireText(target, pattern);

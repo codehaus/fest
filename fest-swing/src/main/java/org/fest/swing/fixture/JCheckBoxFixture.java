@@ -332,6 +332,7 @@ public class JCheckBoxFixture extends TwoStateButtonFixture<JCheckBox> {
    * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
    * @throws AssertionError if the text of the target <code>JCheckBox</code> does not match the given regular expression
    * pattern.
+   * @since 1.2
    */
   public JCheckBoxFixture requireText(Pattern pattern) {
     driver.requireText(target, pattern);

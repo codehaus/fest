@@ -37,6 +37,7 @@ import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
 
 import java.awt.Component;
+import java.util.regex.Pattern;
 
 import javax.swing.*;
 
@@ -93,10 +94,10 @@ public class JComboBoxDriver extends JComponentDriver {
   }
 
   /**
-   * Selects the first item matching the given text in the <code>{@link JComboBox}</code>. Value matching is performed
-   * using this fixture's <code>{@link JComboBoxCellReader}</code>.
+   * Selects the first item matching the given text in the <code>{@link JComboBox}</code>. The text of the
+   * <code>JComboBox</code> items is obtained by this fixture's <code>{@link JComboBoxCellReader}</code>.
    * @param comboBox the target <code>JComboBox</code>.
-   * @param value the value to match
+   * @param value the value to match. It can be a regular expression.
    * @throws LocationUnavailableException if an element matching the given value cannot be found.
    * @throws IllegalStateException if the <code>JComboBox</code> is disabled.
    * @throws IllegalStateException if the <code>JComboBox</code> is not showing on the screen.
@@ -105,10 +106,32 @@ public class JComboBoxDriver extends JComponentDriver {
   @RunsInEDT
   public void selectItem(JComboBox comboBox, String value) {
     int index = matchingItemIndex(comboBox, value, cellReader);
-    if (index < 0)
-      throw new LocationUnavailableException(concat(
-          "Unable to find item ", quote(value), " among the JComboBox contents (", format(contentsOf(comboBox)), ")"));
+    if (index < 0) throw failMatchingNotFound(comboBox, value);
     selectItem(comboBox, index);
+  }
+
+  /**
+   * Selects the first item matching the given regular expression pattern in the <code>{@link JComboBox}</code>. The
+   * text of the <code>JComboBox</code> items is obtained by this fixture's <code>{@link JComboBoxCellReader}</code>.
+   * @param comboBox the target <code>JComboBox</code>.
+   * @param pattern the regular expression pattern to match.
+   * @throws LocationUnavailableException if an element matching the given pattern cannot be found.
+   * @throws IllegalStateException if the <code>JComboBox</code> is disabled.
+   * @throws IllegalStateException if the <code>JComboBox</code> is not showing on the screen.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @see #cellReader(JComboBoxCellReader)
+   * @since 1.2
+   */
+  public void selectItem(JComboBox comboBox, Pattern pattern) {
+    int index = matchingItemIndex(comboBox, pattern, cellReader);
+    if (index < 0) throw failMatchingNotFound(comboBox, pattern.pattern());
+    selectItem(comboBox, index);
+  }
+
+  private LocationUnavailableException failMatchingNotFound(JComboBox comboBox, String value) {
+    throw new LocationUnavailableException(concat(
+        "Unable to find item matching ", quote(value),
+        " among the JComboBox contents (", format(contentsOf(comboBox)), ")"));
   }
 
   /**

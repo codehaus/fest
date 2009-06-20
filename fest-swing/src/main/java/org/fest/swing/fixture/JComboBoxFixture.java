@@ -15,6 +15,8 @@
  */
 package org.fest.swing.fixture;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JComboBox;
 import javax.swing.JList;
 
@@ -297,9 +299,10 @@ public class JComboBoxFixture extends JPopupMenuInvokerFixture<JComboBox> implem
   }
 
   /**
-   * Simulates a user selecting an item in this fixture's <code>{@link JComboBox}</code>. Value matching is performed
-   * by this fixture's <code>{@link JComboBoxCellReader}</code>.
-   * @param text the text of the item to select.
+   * Simulates a user selecting an item in this fixture's <code>{@link JComboBox}</code>. The text of the item to
+   * select must match the given <code>String</code>. Such text is retrieved by this fixture's
+   * <code>{@link JComboBoxCellReader}</code>.
+   * @param text the text of the item to select. It can be a regular expression.
    * @return this fixture.
    * @throws LocationUnavailableException if an element matching the given text cannot be found.
    * @throws IllegalStateException if this fixture's <code>JComboBox</code> is disabled.
@@ -308,6 +311,24 @@ public class JComboBoxFixture extends JPopupMenuInvokerFixture<JComboBox> implem
    */
   public JComboBoxFixture selectItem(String text) {
     driver.selectItem(target, text);
+    return this;
+  }
+
+  /**
+   * Simulates a user selecting an item in this fixture's <code>{@link JComboBox}</code>. The text of the item to
+   * select must match the given regular expression pattern. Such text is retrieved by this fixture's
+   * <code>{@link JComboBoxCellReader}</code>.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws LocationUnavailableException if an element matching the given pattern cannot be found.
+   * @throws IllegalStateException if this fixture's <code>JComboBox</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JComboBox</code> is not showing on the screen.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @see #cellReader(JComboBoxCellReader)
+   * @since 1.2
+   */
+  public JComboBoxFixture selectItem(Pattern pattern) {
+    driver.selectItem(target, pattern);
     return this;
   }
 
@@ -408,7 +429,7 @@ public class JComboBoxFixture extends JPopupMenuInvokerFixture<JComboBox> implem
   /**
    * Verifies that the <code>String</code> representation of the selected item in this fixture's
    * <code>{@link JComboBox}</code> matches the given text.
-   * @param value the text to match.
+   * @param value the text to match. It can be a regular expression.
    * @return this fixture.
    * @throws AssertionError if the selected item does not match the given text.
    * @see #cellReader(JComboBoxCellReader)

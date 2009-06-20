@@ -15,7 +15,7 @@
  */
 package org.fest.swing.driver;
 
-import static org.fest.swing.util.Strings.match;
+import static org.fest.swing.util.Strings.areEqualOrMatch;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
 
@@ -41,6 +41,6 @@ class StringIsEqualToOrMatches extends Condition<String> {
   }
 
   public boolean matches(String actual) {
-    return match(pattern, actual);
+    return areEqualOrMatch(pattern, actual);
   }
 }

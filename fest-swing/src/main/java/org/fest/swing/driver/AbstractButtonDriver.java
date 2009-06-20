@@ -69,6 +69,7 @@ public class AbstractButtonDriver extends JComponentDriver {
    * @param pattern the regular expression pattern to match.
    * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
    * @throws AssertionError if the text of the button does not match the given regular expression pattern.
+   * @since 1.2
    */
   public void requireText(AbstractButton button, Pattern pattern) {
     assertThat(textOf(button)).as(propertyName(button, TEXT_PROPERTY)).satisfies(matches(pattern));

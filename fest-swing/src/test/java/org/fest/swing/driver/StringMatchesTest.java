@@ -57,7 +57,7 @@ import org.testng.annotations.Test;
       });
   }
 
-  public void shouldFailIfPatternIsNull() {
+  public void shouldThrowErrorIfPatternIsNull() {
     Pattern p = null;
     try {
       assertThat("hello").satisfies(StringMatches.matches(p));

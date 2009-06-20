@@ -24,6 +24,8 @@ import static org.fest.swing.test.builder.JComboBoxes.comboBox;
 import static org.fest.swing.test.builder.JLists.list;
 import static org.fest.util.Arrays.array;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JComboBox;
 import javax.swing.JList;
 
@@ -179,6 +181,20 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         assertThatReturnsThis(fixture.selectItem("Frodo"));
+      }
+    }.run();
+  }
+
+  public void shouldSelectItemWithTextMatchingPattern() {
+    final Pattern p = Pattern.compile(".");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.selectItem(target, p);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.selectItem(p));
       }
     }.run();
   }

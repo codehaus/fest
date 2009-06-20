@@ -18,6 +18,8 @@ package org.fest.swing.util;
 import static org.fest.util.Objects.areEqual;
 import static org.fest.util.Strings.isEmpty;
 
+import java.util.regex.Pattern;
+
 /**
  * Understands utility methods related to <code>String</code>s.
  *
@@ -55,10 +57,25 @@ public final class Strings {
    * @param s the <code>String</code> to verify.
    * @return <code>true</code> if the given <code>String</code>s match, <code>false</code> otherwise.
    */
-  public static boolean match(String pattern, String s) {
+  public static boolean areEqualOrMatch(String pattern, String s) {
     if (areEqual(pattern, s)) return true;
     if (pattern != null && s != null) return s.matches(pattern);
     return false;
+  }
+
+  /**
+   * Indicates if the given <code>String</code> matches the given regular expression pattern.
+   * @param p the given regular expression pattern.
+   * @param s the <code>String</code> to evaluate.
+   * @return <code>true</code> if the given <code>String</code> matches the given regular expression pattern,
+   * <code>false</code> otherwise. It also returns <code>false</code> if the given <code>String</code> is
+   * <code>null</code>.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   */
+  public static boolean match(Pattern p, String s) {
+    if (p == null) throw new NullPointerException("The pattern to match should not be null");
+    if (s == null) return false;
+    return p.matcher(s).matches();
   }
 
   private Strings() {}

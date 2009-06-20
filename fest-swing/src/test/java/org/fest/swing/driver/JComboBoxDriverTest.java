@@ -27,6 +27,7 @@ import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
 import static org.fest.util.Arrays.array;
 
 import java.awt.Component;
+import java.util.regex.Pattern;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -140,15 +141,23 @@ public class JComboBoxDriverTest {
     }
   }
 
-  private void assertThatComboBoxHasNoSelection() {
-    assertThatSelectedIndexIsEqualTo(-1);
-  }
-
   public void shouldNotSelectItemWithGivenTextIfAlreadySelected() {
     setSelectedIndex(comboBox, 1);
     robot.waitForIdle();
     driver.selectItem(comboBox, "second");
     assertThatSelectedItemIsEqualTo("second");
+  }
+
+  @Test(groups = GUI, expectedExceptions = LocationUnavailableException.class)
+  public void shouldThrowErrorIfMatchingItemToSelectDoesNotExist() {
+    driver.selectItem(comboBox, "hundred");
+  }
+
+  public void shouldSelectItemMatchingGivenPattern() {
+    clearSelectionInComboBox();
+    driver.selectItem(comboBox, Pattern.compile("sec.*"));
+    assertThatSelectedItemIsEqualTo("second");
+    assertCellReaderWasCalled();
   }
 
   private void assertThatSelectedItemIsEqualTo(String expected) {
@@ -163,9 +172,34 @@ public class JComboBoxDriverTest {
     });
   }
 
+  public void shouldThrowErrorWhenSelectingItemMatchingPatternInDisabledJComboBox() {
+    clearSelectionAndDisableComboBox();
+    try {
+      driver.selectItem(comboBox, Pattern.compile("sec.*"));
+      failWhenExpectingException();
+    } catch (IllegalStateException e) {
+      assertActionFailureDueToDisabledComponent(e);
+    }
+    assertThatComboBoxHasNoSelection();
+  }
+
+  private void assertThatComboBoxHasNoSelection() {
+    assertThatSelectedIndexIsEqualTo(-1);
+  }
+
+  public void shouldThrowErrorWhenSelectingItemMatchingPatternInNotShowingJComboBox() {
+    hideWindow();
+    try {
+      driver.selectItem(comboBox, Pattern.compile("sec.*"));
+      failWhenExpectingException();
+    } catch (IllegalStateException e) {
+      assertActionFailureDueToNotShowingComponent(e);
+    }
+  }
+
   @Test(groups = GUI, expectedExceptions = LocationUnavailableException.class)
-  public void shouldThrowErrorIfMatchingItemToSelectDoesNotExist() {
-    driver.selectItem(comboBox, "hundred");
+  public void shouldThrowErrorWhenSelectingItemIfItemMatchingPatternDoesNotExist() {
+    driver.selectItem(comboBox, Pattern.compile("hundred"));
   }
 
   public void shouldReturnTextAtGivenIndex() {

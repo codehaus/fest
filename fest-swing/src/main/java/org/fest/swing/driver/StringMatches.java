@@ -15,6 +15,7 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.util.Strings.match;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
 
@@ -37,13 +38,11 @@ class StringMatches extends Condition<String> {
   }
 
   private StringMatches(Pattern pattern) {
-    if (pattern == null) throw new NullPointerException("The pattern to match should not be null");
     this.pattern = pattern;
-    as(concat("match pattern:", quote(pattern.pattern())));
+    if (pattern != null) as(concat("match pattern:", quote(pattern.pattern())));
   }
 
   public boolean matches(String actual) {
-    if (actual == null) return false;
-    return pattern.matcher(actual).matches();
+    return match(pattern, actual);
   }
 }

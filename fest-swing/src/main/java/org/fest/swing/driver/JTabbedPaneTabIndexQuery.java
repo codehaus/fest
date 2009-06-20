@@ -20,7 +20,7 @@ import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.edt.GuiQuery;
 
 import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.util.Strings.match;
+import static org.fest.swing.util.Strings.areEqualOrMatch;
 
 /**
  * Understands an action that returns the index of a tab (in a <code>{@link JTabbedPane}</code>) whose title matches the
@@ -41,7 +41,7 @@ final class JTabbedPaneTabIndexQuery {
       protected Integer executeInEDT() {
         int tabCount = tabbedPane.getTabCount();
         for (int i = 0; i < tabCount; i++)
-          if (match(title, tabbedPane.getTitleAt(i))) return i;
+          if (areEqualOrMatch(title, tabbedPane.getTitleAt(i))) return i;
         return -1;
       }
     });

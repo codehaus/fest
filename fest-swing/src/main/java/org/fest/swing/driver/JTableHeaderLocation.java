@@ -24,7 +24,7 @@ import org.fest.swing.exception.LocationUnavailableException;
 
 import static java.lang.String.valueOf;
 
-import static org.fest.swing.util.Strings.match;
+import static org.fest.swing.util.Strings.areEqualOrMatch;
 import static org.fest.util.Strings.*;
 
 /**
@@ -104,7 +104,7 @@ public class JTableHeaderLocation {
   public int indexOf(JTableHeader tableHeader, String columnName) {
     int size = columnCount(tableHeader);
     for (int i = 0; i < size; i++)
-      if (match(columnName, columnName(tableHeader, i))) return i;
+      if (areEqualOrMatch(columnName, columnName(tableHeader, i))) return i;
     return -1;
   }
 
