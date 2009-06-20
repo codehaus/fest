@@ -21,6 +21,8 @@ import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JButtons.button;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JButton;
 
 import org.fest.mocks.EasyMockTemplate;
@@ -80,6 +82,20 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         assertThatReturnsThis(fixture.requireText("A Button"));
+      }
+    }.run();
+  }
+
+  public void shouldRequireTextToMatchRegex() {
+    final Pattern pattern = Pattern.compile(".");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.requireText(target, pattern);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireText(pattern));
       }
     }.run();
   }

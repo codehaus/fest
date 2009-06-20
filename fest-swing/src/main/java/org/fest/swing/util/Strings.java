@@ -1,16 +1,16 @@
 /*
  * Created on Jan 13, 2008
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * Copyright @2008-2009 the original author or authors.
  */
 package org.fest.swing.util;
@@ -44,12 +44,12 @@ public final class Strings {
       return false;
     }
   }
-  
+
   /**
    * Indicates if the given <code>String</code>s match. To match, one of the following conditions needs to be true:
    * <ul>
    * <li>both <code>String</code>s have to be equal</li>
-   * <li>'s' matches the regular expression in 'pattern'</li>
+   * <li><code>s</code> matches the regular expression in <code>pattern</code></li>
    * </ul>
    * @param pattern a <code>String</code> to match (it can be a regular expression.)
    * @param s the <code>String</code> to verify.
@@ -60,6 +60,6 @@ public final class Strings {
     if (pattern != null && s != null) return s.matches(pattern);
     return false;
   }
-  
+
   private Strings() {}
 }

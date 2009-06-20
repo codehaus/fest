@@ -15,17 +15,21 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.driver.AbstractButtonSelectedQuery.isSelected;
+import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
+import static org.fest.swing.driver.StringIsEqualToOrMatches.isEqualToOrMatches;
+import static org.fest.swing.driver.StringMatches.matches;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
+import java.util.regex.Pattern;
+
 import javax.swing.AbstractButton;
 
 import org.fest.assertions.Description;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.driver.AbstractButtonSelectedQuery.isSelected;
-import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands simulation of user input on an <code>{@link AbstractButton}</code>. This class is intended for internal
@@ -48,14 +52,26 @@ public class AbstractButtonDriver extends JComponentDriver {
   }
 
   /**
-   * Asserts that the text in the given button is equal to the specified <code>String</code>.
+   * Asserts that the text in the given button is equal to or matches the specified <code>String</code>.
    * @param button the given button.
-   * @param expected the text to match.
-   * @throws AssertionError if the text of the button is not equal to the given one.
+   * @param expected the text to match. It can be a regular expression.
+   * @throws AssertionError if the text of the button is not equal to or does not match the given one.
    */
   @RunsInEDT
   public void requireText(AbstractButton button, String expected) {
-    assertThat(textOf(button)).as(propertyName(button, TEXT_PROPERTY)).isEqualTo(expected);
+    assertThat(textOf(button)).as(propertyName(button, TEXT_PROPERTY)).satisfies(isEqualToOrMatches(expected));
+  }
+
+
+  /**
+   * Asserts that the text in the given button matches the given regular expression pattern.
+   * @param button the given button.
+   * @param pattern the regular expression pattern to match.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the text of the button does not match the given regular expression pattern.
+   */
+  public void requireText(AbstractButton button, Pattern pattern) {
+    assertThat(textOf(button)).as(propertyName(button, TEXT_PROPERTY)).satisfies(matches(pattern));
   }
 
   /**
@@ -91,7 +107,7 @@ public class AbstractButtonDriver extends JComponentDriver {
     if (!validateAndFindIsSelected(button)) return;
     robot.click(button);
   }
-  
+
   @RunsInEDT
   private static boolean validateAndFindIsSelected(final AbstractButton button) {
     return execute(new GuiQuery<Boolean>() {

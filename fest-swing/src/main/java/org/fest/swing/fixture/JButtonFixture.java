@@ -15,12 +15,11 @@
  */
 package org.fest.swing.fixture;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JButton;
 
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
-import org.fest.swing.core.Robot;
+import org.fest.swing.core.*;
 import org.fest.swing.driver.AbstractButtonDriver;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.exception.WaitTimedOutError;
@@ -276,13 +275,28 @@ public class JButtonFixture extends JPopupMenuInvokerFixture<JButton> implements
   }
 
   /**
-   * Asserts that the text of this fixture's <code>{@link JButton}</code> is equal to the specified <code>String</code>.
-   * @param expected the text to match.
+   * Asserts that the text of this fixture's <code>{@link JButton}</code> is equal to or matches the specified
+   * <code>String</code>.
+   * @param expected the text to match. It can be a regular expression.
    * @return this fixture.
-   * @throws AssertionError if the text of the target JButton is not equal to the given one.
+   * @throws AssertionError if the text of the target <code>JButton</code> is not equal to or does not match the given
+   * one.
    */
   public JButtonFixture requireText(String expected) {
     driver.requireText(target, expected);
+    return this;
+  }
+
+  /**
+   * Asserts that the text of this fixture's <code>{@link JButton}</code> matches the given regular expression pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the text of the target <code>JButton</code> does not match the given regular expression
+   * pattern.
+   */
+  public Object requireText(Pattern pattern) {
+    driver.requireText(target, pattern);
     return this;
   }
 }

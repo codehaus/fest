@@ -39,10 +39,7 @@ public abstract class TwoStateButtonFixture<T extends AbstractButton> extends JP
    * @throws NullPointerException if <code>type</code> is <code>null</code>.
    * @throws ComponentLookupException if a matching component could not be found.
    * @throws ComponentLookupException if more than one matching component is found.
-   * @deprecated use {@link #TwoStateButtonFixture(Robot, AbstractButton)} instead, performing a component lookup by
-   * type first.
    */
-  @Deprecated
   public TwoStateButtonFixture(Robot robot, Class<? extends T> type) {
     super(robot, type);
   }

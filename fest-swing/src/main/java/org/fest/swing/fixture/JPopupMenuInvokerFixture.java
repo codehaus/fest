@@ -41,10 +41,7 @@ public abstract class JPopupMenuInvokerFixture<T extends Component> extends Comp
    * @throws NullPointerException if <code>type</code> is <code>null</code>.
    * @throws ComponentLookupException if a matching component could not be found.
    * @throws ComponentLookupException if more than one matching component is found.
-   * @deprecated use {@link #JPopupMenuInvokerFixture(Robot, Component)} instead, performing a component lookup by
-   * type first.
    */
-  @Deprecated
   public JPopupMenuInvokerFixture(Robot robot, Class<? extends T> type) {
     super(robot, type);
   }

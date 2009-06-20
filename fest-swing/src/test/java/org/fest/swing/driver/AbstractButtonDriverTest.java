@@ -15,25 +15,6 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.AbstractButton;
-import javax.swing.JCheckBox;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import org.fest.assertions.AssertExtension;
-import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.test.swing.TestWindow;
-import org.fest.swing.test.task.ComponentSetVisibleTask;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.driver.AbstractButtonSelectedQuery.isSelected;
@@ -42,6 +23,22 @@ import static org.fest.swing.test.core.CommonAssertions.*;
 import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.test.task.AbstractButtonSetSelectedTask.setSelected;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.regex.Pattern;
+
+import javax.swing.AbstractButton;
+import javax.swing.JCheckBox;
+
+import org.fest.assertions.AssertExtension;
+import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.core.Robot;
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.test.swing.TestWindow;
+import org.fest.swing.test.task.ComponentSetVisibleTask;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link AbstractButtonDriver}</code>.
@@ -111,13 +108,43 @@ public class AbstractButtonDriverTest {
     driver.requireText(checkBox, "Hello");
   }
 
+  public void shouldPassIfTextMatchesExpectedPatternAsString() {
+    driver.requireText(checkBox, "Hell.");
+  }
+
+  public void shouldPassIfTextMatchesExpectedPattern() {
+    Pattern pattern = Pattern.compile("Hell.");
+    driver.requireText(checkBox, pattern);
+  }
+
   public void shouldFailIfTextIsNotEqualToExpectedOne() {
     try {
       driver.requireText(checkBox, "Bye");
       failWhenExpectingException();
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("property:'text'")
-                                .contains("expected:<'Bye'> but was:<'Hello'>");
+                                .contains("actual value:<'Hello'> should satisfy condition:<equal to or match pattern:'Bye'>");
+    }
+  }
+
+  public void shouldFailIfTextDoesNotMatchExpectedPatternAsString() {
+    try {
+      driver.requireText(checkBox, "Bye.");
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("property:'text'")
+                                .contains("actual value:<'Hello'> should satisfy condition:<equal to or match pattern:'Bye.'>");
+    }
+  }
+
+  public void shouldFailIfTextDoesNotMatchExpectedPattern() {
+    try {
+      Pattern pattern = Pattern.compile("Bye.");
+      driver.requireText(checkBox, pattern);
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("property:'text'")
+                                .contains("actual value:<'Hello'> should satisfy condition:<match pattern:'Bye.'>");
     }
   }
 
@@ -200,7 +227,7 @@ public class AbstractButtonDriverTest {
     ComponentSetVisibleTask.hide(window);
     robot.waitForIdle();
   }
-  
+
   @RunsInEDT
   private void assertThatCheckBoxIsNotSelected() {
     assertThat(isSelected(checkBox)).isFalse();
