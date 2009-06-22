@@ -15,26 +15,23 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.TestGroups.GUI;
+
 import java.awt.Dimension;
+import java.util.regex.Pattern;
 
 import javax.swing.JLabel;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JLabelDriver}</code>.
@@ -51,7 +48,7 @@ public class JLabelDriverTest {
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
   }
-  
+
   @BeforeMethod public void setUp() {
     robot = robotWithNewAwtHierarchy();
     driver = new JLabelDriver(robot);
@@ -68,12 +65,27 @@ public class JLabelDriverTest {
     driver.requireText(label, "Hi");
   }
 
+  public void shouldPassIfTextMatchesPatternAsString() {
+    driver.requireText(label, "H.*");
+  }
+
   public void shouldFailIfDoesNotHaveExpectedText() {
     try {
       driver.requireText(label, "Bye");
       failWhenExpectingException();
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("property:'text'").contains("expected:<'Bye'> but was:<'Hi'>");
+      assertThat(e.getMessage()).contains("property:'text'")
+                                .contains("actual value:<'Hi'> is not equal to or does not match pattern:<'Bye'>");
+    }
+  }
+
+  public void shouldFailIfTextDoesNotMatchPattern() {
+    try {
+      driver.requireText(label, Pattern.compile("Bye"));
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("property:'text'")
+                                .contains("actual value:<'Hi'> does not match pattern:<'Bye'>");
     }
   }
 
@@ -94,7 +106,7 @@ public class JLabelDriverTest {
     private MyWindow() {
       super(JTextComponentDriverTest.class);
       add(label);
-      setPreferredSize(new Dimension(200, 200));
+      setPreferredSize(new Dimension(100, 50));
     }
   }
 

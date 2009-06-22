@@ -86,7 +86,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldRequireTextToMatchRegex() {
+  public void shouldRequireTextToMatchPattern() {
     final Pattern pattern = Pattern.compile(".");
     new EasyMockTemplate(driver) {
       protected void expectations() {
