@@ -18,8 +18,7 @@ package org.fest.swing.driver;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.driver.AbstractButtonSelectedQuery.isSelected;
 import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
-import static org.fest.swing.driver.StringIsEqualToOrMatches.isEqualToOrMatches;
-import static org.fest.swing.driver.StringMatches.matches;
+import static org.fest.swing.driver.TextAssert.verifyThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 
 import java.util.regex.Pattern;
@@ -59,9 +58,8 @@ public class AbstractButtonDriver extends JComponentDriver {
    */
   @RunsInEDT
   public void requireText(AbstractButton button, String expected) {
-    assertThat(textOf(button)).as(propertyName(button, TEXT_PROPERTY)).satisfies(isEqualToOrMatches(expected));
+    verifyThat(textOf(button)).as(propertyName(button, TEXT_PROPERTY)).isEqualOrMatches(expected);
   }
-
 
   /**
    * Asserts that the text in the given button matches the given regular expression pattern.
@@ -72,7 +70,7 @@ public class AbstractButtonDriver extends JComponentDriver {
    * @since 1.2
    */
   public void requireText(AbstractButton button, Pattern pattern) {
-    assertThat(textOf(button)).as(propertyName(button, TEXT_PROPERTY)).satisfies(matches(pattern));
+    verifyThat(textOf(button)).as(propertyName(button, TEXT_PROPERTY)).matches(pattern);
   }
 
   /**

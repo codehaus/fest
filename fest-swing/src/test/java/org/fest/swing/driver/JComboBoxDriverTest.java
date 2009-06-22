@@ -267,8 +267,9 @@ public class JComboBoxDriverTest {
       driver.requireSelection(comboBox, "second");
       failWhenExpectingException();
     } catch (AssertionError e) {
+      System.out.println(e.getMessage());
       assertThat(e.getMessage()).contains("property:'selectedIndex'")
-                                .contains("expected:<'second'> but was:<'first'>");
+                                .contains("actual value:<'first'> is not equal to or does not match pattern:<'second'>");
     }
   }
 
@@ -295,7 +296,7 @@ public class JComboBoxDriverTest {
       failWhenExpectingException();
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("property:'selectedIndex'")
-                                .contains("expected:<'second'> but was:<'Hello World'>");
+                                .contains("actual value:<'Hello World'> is not equal to or does not match pattern:<'second'>");
     }
   }
 
@@ -337,6 +338,40 @@ public class JComboBoxDriverTest {
     });
   }
 
+  public void shouldPassIfSelectionValueMatchesPatternAsString() {
+    selectFirstItemInComboBox();
+    driver.requireSelection(comboBox, "firs.*");
+    assertCellReaderWasCalled();
+  }
+
+  public void shouldPassIfSelectionValueMatchesPattern() {
+    selectFirstItemInComboBox();
+    driver.requireSelection(comboBox, Pattern.compile("firs."));
+    assertCellReaderWasCalled();
+  }
+
+  public void shouldFailIfSelectionDoesNotMatchPattern() {
+    selectFirstItemInComboBox();
+    try {
+      driver.requireSelection(comboBox, Pattern.compile("sec.*"));
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("property:'selectedIndex'")
+                                .contains("actual value:<'first'> does not match pattern:<'sec.*'>");
+    }
+  }
+
+  public void shouldFailIfItDoesNotHaveAnySelectionAndExpectingSelectionValueMatchingPattern() {
+    clearSelectionInComboBox();
+    try {
+      driver.requireSelection(comboBox, Pattern.compile("second"));
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("property:'selectedIndex'")
+                                .contains("No selection");
+    }
+  }
+
   public void shouldPassIfDoesNotHaveSelectionAsAnticipated() {
     clearSelectionInComboBox();
     driver.requireNoSelection(comboBox);
@@ -357,6 +392,12 @@ public class JComboBoxDriverTest {
       assertThat(e.getMessage()).contains("property:'selectedIndex'")
                                 .contains("Expecting no selection, but found:<'first'>");
     }
+  }
+
+  @RunsInEDT
+  private void selectFirstItemInComboBox() {
+    setSelectedIndex(comboBox, 0);
+    robot.waitForIdle();
   }
 
   public void shouldPassIfComboBoxIsEditable() {
@@ -506,12 +547,6 @@ public class JComboBoxDriverTest {
     } catch (IllegalStateException e) {
       assertActionFailureDueToNotEditableComboBox(e);
     }
-  }
-
-  @RunsInEDT
-  private void selectFirstItemInComboBox() {
-    setSelectedIndex(comboBox, 0);
-    robot.waitForIdle();
   }
 
   @RunsInEDT

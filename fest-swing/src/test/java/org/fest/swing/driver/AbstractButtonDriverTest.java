@@ -123,7 +123,7 @@ public class AbstractButtonDriverTest {
       failWhenExpectingException();
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("property:'text'")
-                                .contains("actual value:<'Hello'> should satisfy condition:<equal to or match pattern:'Bye'>");
+                                .contains("actual value:<'Hello'> is not equal to or does not match pattern:<'Bye'>");
     }
   }
 
@@ -133,7 +133,7 @@ public class AbstractButtonDriverTest {
       failWhenExpectingException();
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("property:'text'")
-                                .contains("actual value:<'Hello'> should satisfy condition:<equal to or match pattern:'Bye.'>");
+                                .contains("actual value:<'Hello'> is not equal to or does not match pattern:<'Bye.'>");
     }
   }
 
@@ -143,8 +143,9 @@ public class AbstractButtonDriverTest {
       driver.requireText(checkBox, pattern);
       failWhenExpectingException();
     } catch (AssertionError e) {
+      System.out.println(e.getMessage());
       assertThat(e.getMessage()).contains("property:'text'")
-                                .contains("actual value:<'Hello'> should satisfy condition:<match pattern:'Bye.'>");
+                                .contains("actual value:<'Hello'> does not match pattern:<'Bye.'>");
     }
   }
 

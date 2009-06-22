@@ -440,6 +440,20 @@ public class JComboBoxFixture extends JPopupMenuInvokerFixture<JComboBox> implem
   }
 
   /**
+   * Verifies that the <code>String</code> representation of the selected item in this fixture's
+   * <code>{@link JComboBox}</code> matches the given regular expression pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws AssertionError if the selected item does not match the given regular expression pattern.
+   * @see #cellReader(JComboBoxCellReader)
+   * @since 1.2
+   */
+  public JComboBoxFixture requireSelection(Pattern pattern) {
+    driver.requireSelection(target, pattern);
+    return this;
+  }
+
+  /**
    * Verifies that the index of the selected item in this fixture's <code>{@link JComboBox}</code> is equal to the given
    * value.
    * @param index the expected selection index.

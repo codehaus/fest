@@ -30,6 +30,7 @@ import static org.fest.swing.driver.JComboBoxSelectionValueQuery.NO_SELECTION_VA
 import static org.fest.swing.driver.JComboBoxSelectionValueQuery.selection;
 import static org.fest.swing.driver.JComboBoxSetPopupVisibleTask.setPopupVisible;
 import static org.fest.swing.driver.JComboBoxSetSelectedIndexTask.setSelectedIndex;
+import static org.fest.swing.driver.TextAssert.verifyThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.exception.ActionFailedException.actionFailure;
 import static org.fest.util.Arrays.format;
@@ -122,6 +123,7 @@ public class JComboBoxDriver extends JComponentDriver {
    * @see #cellReader(JComboBoxCellReader)
    * @since 1.2
    */
+  @RunsInEDT
   public void selectItem(JComboBox comboBox, Pattern pattern) {
     int index = matchingItemIndex(comboBox, pattern, cellReader);
     if (index < 0) throw failMatchingNotFound(comboBox, pattern.pattern());
@@ -138,16 +140,37 @@ public class JComboBoxDriver extends JComponentDriver {
    * Verifies that the <code>String</code> representation of the selected item in the <code>{@link JComboBox}</code>
    * matches the given text.
    * @param comboBox the target <code>JComboBox</code>.
-   * @param value the text to match.
+   * @param value the text to match. It can be a regular expression.
    * @throws AssertionError if the selected item does not match the given value.
+   * @see #cellReader(JComboBoxCellReader)
    */
   @RunsInEDT
   public void requireSelection(JComboBox comboBox, String value) {
-    Object selection = selection(comboBox, cellReader);
-    if (NO_SELECTION_VALUE == selection) failNoSelection(comboBox);
-    assertThat(selection).as(selectedIndexProperty(comboBox)).isEqualTo(value);
+    String selection = selectionRequiredOf(comboBox);
+    verifyThat(selection).as(selectedIndexProperty(comboBox)).isEqualOrMatches(value);
   }
 
+  /**
+   * Verifies that the <code>String</code> representation of the selected item in the <code>{@link JComboBox}</code>
+   * matches the given regular expression pattern.
+   * @param comboBox the target <code>JComboBox</code>.
+   * @param pattern the regular expression pattern to match.
+   * @throws AssertionError if the selected item does not match the given regular expression pattern.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @see #cellReader(JComboBoxCellReader)
+   * @since 1.2
+   */
+  @RunsInEDT
+  public void requireSelection(JComboBox comboBox, Pattern pattern) {
+    String selection = selectionRequiredOf(comboBox);
+    verifyThat(selection).as(selectedIndexProperty(comboBox)).matches(pattern);
+  }
+
+  private String selectionRequiredOf(JComboBox comboBox) throws AssertionError {
+    Object selection = selection(comboBox, cellReader);
+    if (NO_SELECTION_VALUE == selection) throw failNoSelection(comboBox);
+    return (String)selection;
+  }
 
    /**
     * Verifies that the index of the selected item in the <code>{@link JComboBox}</code> is equal to the given value.
@@ -163,8 +186,8 @@ public class JComboBoxDriver extends JComponentDriver {
      assertThat(selectedIndex).as(selectedIndexProperty(comboBox)).isEqualTo(index);
   }
 
-  private void failNoSelection(JComboBox comboBox) {
-    fail(concat("[", selectedIndexProperty(comboBox).value(), "] No selection"));
+  private AssertionError failNoSelection(JComboBox comboBox) {
+    throw fail(concat("[", selectedIndexProperty(comboBox).value(), "] No selection"));
   }
 
   /**
