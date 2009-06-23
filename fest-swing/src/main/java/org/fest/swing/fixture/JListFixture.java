@@ -17,6 +17,8 @@ package org.fest.swing.fixture;
 
 import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JList;
 
 import org.fest.swing.cell.JListCellReader;
@@ -128,12 +130,24 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
 
   /**
    * Returns a fixture that manages the list item specified by the given text.
-   * @param text the text of the item.
+   * @param text the text of the item. It can be a regular expression.
    * @return a fixture that manages the list item specified by the given text.
    * @throws LocationUnavailableException if an element matching the given text cannot be found.
    */
   public JListItemFixture item(String text) {
     return new JListItemFixture(this, driver.indexOf(target, text));
+  }
+
+  /**
+   * Returns a fixture that manages the list item whose text matches the given regular expression pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return a fixture that manages the list item whose text matches the given regular expression pattern.
+   * @throws LocationUnavailableException if an element matching the given text cannot be found.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @since 1.2
+   */
+  public JListItemFixture item(Pattern pattern) {
+    return new JListItemFixture(this, driver.indexOf(target, pattern));
   }
 
   /**
@@ -211,7 +225,7 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
 
   /**
    * Simulates a user selecting an item in this fixture's <code>{@link JList}</code>.
-   * @param text the text of the item to select.
+   * @param text the text of the item to select. It can be a regular expression.
    * @return this fixture.
    * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
@@ -220,6 +234,23 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
    */
   public JListFixture selectItem(String text) {
     driver.selectItem(target, text);
+    return this;
+  }
+
+  /**
+   * Simulates a user selecting an item in this fixture's <code>{@link JList}</code>. The value of the item to select
+   * must match the given regular expression pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
+   * @throws LocationUnavailableException if an element matching the given text cannot be found.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @see #cellReader(JListCellReader)
+   * @since 1.2
+   */
+  public JListFixture selectItem(Pattern pattern) {
+    driver.selectItem(target, pattern);
     return this;
   }
 

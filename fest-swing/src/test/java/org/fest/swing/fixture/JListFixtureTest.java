@@ -26,6 +26,8 @@ import static org.fest.swing.util.Range.from;
 import static org.fest.swing.util.Range.to;
 import static org.fest.util.Arrays.array;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JList;
 import javax.swing.JPopupMenu;
 
@@ -177,6 +179,20 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  public void shouldSelectItemMatchingPatternAsString() {
+    final Pattern pattern = Pattern.compile("Hello");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.selectItem(target, pattern);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.selectItem(pattern));
+      }
+    }.run();
+  }
+
   public void shouldDoubleClickItemUnderIndex() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -282,6 +298,21 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         JListItemFixture item = fixture.item("Frodo");
+        assertThat(item.index).isEqualTo(8);
+        assertThat(item.list).isSameAs(fixture);
+      }
+    }.run();
+  }
+
+  public void shouldReturnJListItemFixtureWithItemMatchingPatternAsString() {
+    final Pattern pattern = Pattern.compile("Frodo");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        expect(driver.indexOf(target, pattern)).andReturn(8);
+      }
+
+      protected void codeToTest() {
+        JListItemFixture item = fixture.item(pattern);
         assertThat(item.index).isEqualTo(8);
         assertThat(item.list).isSameAs(fixture);
       }

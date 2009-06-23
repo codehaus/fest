@@ -33,6 +33,7 @@ import static org.fest.util.Arrays.array;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.regex.Pattern;
 
 import javax.swing.*;
 
@@ -94,12 +95,35 @@ public class JListDriverTest {
     assertCellReaderWasCalled();
   }
 
+  public void shouldReturnIndexForItemMatchingPatternAsString() {
+    int index = driver.indexOf(dragList, "thr.*");
+    assertThat(index).isEqualTo(2);
+    assertCellReaderWasCalled();
+  }
+
   public void shouldThrowErrorIfIndexForValueNotFound() {
     try {
       driver.indexOf(dragList, "four");
       failWhenExpectingException();
     } catch (LocationUnavailableException expected) {
-      assertThat(expected.getMessage()).isEqualTo("Unable to find an element matching the value 'four'");
+      assertThat(expected.getMessage()).isEqualTo(
+          "Unable to find item matching 'four' among the JList contents (['one', 'two', 'three']");
+    }
+  }
+
+  public void shouldReturnIndexForItemMatchingPattern() {
+    int index = driver.indexOf(dragList, Pattern.compile("thr.*"));
+    assertThat(index).isEqualTo(2);
+    assertCellReaderWasCalled();
+  }
+
+  public void shouldThrowErrorIfIndexForItemMatchingPatternNotFound() {
+    try {
+      driver.indexOf(dragList, Pattern.compile("fou.*"));
+      failWhenExpectingException();
+    } catch (LocationUnavailableException expected) {
+      assertThat(expected.getMessage()).isEqualTo(
+          "Unable to find item matching pattern 'fou.*' among the JList contents (['one', 'two', 'three']");
     }
   }
 
@@ -192,18 +216,25 @@ public class JListDriverTest {
     assertDragListHasNoSelection();
   }
 
+  public void shouldThrowErrorIfMatchingItemToSelectNotFound() {
+    try {
+      driver.selectItem(dragList, "ten");
+      failWhenExpectingException();
+    } catch (LocationUnavailableException e) {
+      assertThat(e.getMessage()).isEqualTo("Unable to find item matching 'ten' among the JList contents (['one', 'two', 'three']");
+    }
+  }
+
   public void shouldSelectItemWithGivenText() {
     driver.selectItem(dragList, "two");
     assertThat(selectedValue(dragList)).isEqualTo("two");
     assertCellReaderWasCalled();
   }
 
-  private static Object selectedValue(final JList list) {
-    return execute(new GuiQuery<Object>() {
-      protected Object executeInEDT() {
-        return list.getSelectedValue();
-      }
-    });
+  public void shouldSelectItemMatchingPatternAsString() {
+    driver.selectItem(dragList, "tw.*");
+    assertThat(selectedValue(dragList)).isEqualTo("two");
+    assertCellReaderWasCalled();
   }
 
   public void shouldThrowErrorWhenSelectingItemWithGivenTextInDisabledJList() {
@@ -226,6 +257,51 @@ public class JListDriverTest {
       assertActionFailureDueToNotShowingComponent(e);
     }
     assertDragListHasNoSelection();
+  }
+
+  public void shouldSelectItemMatchingPattern() {
+    driver.selectItem(dragList, Pattern.compile("tw.*"));
+    assertThat(selectedValue(dragList)).isEqualTo("two");
+    assertCellReaderWasCalled();
+  }
+
+  private static Object selectedValue(final JList list) {
+    return execute(new GuiQuery<Object>() {
+      protected Object executeInEDT() {
+        return list.getSelectedValue();
+      }
+    });
+  }
+
+  public void shouldThrowErrorWhenSelectingItemMatchingPatternInDisabledJList() {
+    disableDragList();
+    try {
+      driver.selectItem(dragList, Pattern.compile("tw.*"));
+      failWhenExpectingException();
+    } catch (IllegalStateException e) {
+      assertActionFailureDueToDisabledComponent(e);
+    }
+    assertDragListHasNoSelection();
+  }
+
+  public void shouldThrowErrorWhenSelectingItemMatchingPatternInNotShowingJList() {
+    hideWindow();
+    try {
+      driver.selectItem(dragList, Pattern.compile("tw.*"));
+      failWhenExpectingException();
+    } catch (IllegalStateException e) {
+      assertActionFailureDueToNotShowingComponent(e);
+    }
+    assertDragListHasNoSelection();
+  }
+
+  public void shouldThrowErrorIfItemToSelectMatchingPatternNotFound() {
+    try {
+      driver.selectItem(dragList, Pattern.compile("ten"));
+      failWhenExpectingException();
+    } catch (LocationUnavailableException e) {
+      assertThat(e.getMessage()).isEqualTo("Unable to find item matching pattern 'ten' among the JList contents (['one', 'two', 'three']");
+    }
   }
 
   @Test(groups = GUI, expectedExceptions = NullPointerException.class)

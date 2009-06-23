@@ -32,10 +32,12 @@ import static org.fest.swing.driver.JListSelectionValueQuery.NO_SELECTION_VALUE;
 import static org.fest.swing.driver.JListSelectionValueQuery.singleSelectionValue;
 import static org.fest.swing.driver.JListSelectionValuesQuery.selectionValues;
 import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.util.Arrays.format;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
 
 import java.awt.Point;
+import java.util.regex.Pattern;
 
 import javax.swing.JList;
 import javax.swing.JPopupMenu;
@@ -114,7 +116,7 @@ public class JListDriver extends JComponentDriver {
   }
 
   /**
-   * Clicks the item matching the given value using left mouse button once.
+   * Selects the item in the given <code>{@link JList}</code> whose value matches the given one.
    * @param list the target <code>JList</code>.
    * @param value the value to match.
    * @throws IllegalStateException if the <code>JList</code> is disabled.
@@ -125,7 +127,26 @@ public class JListDriver extends JComponentDriver {
   public void selectItem(JList list, String value) {
     Pair<Integer, Point> scrollInfo = scrollToItemIfNotSelectedYet(list, value, cellReader);
     robot.waitForIdle();
-    verify(scrollInfo, value);
+    verify(list, scrollInfo, value);
+    if (scrollInfo.ii == null) return; // already selected cell.
+    robot.click(list, cellCenterIn(scrollInfo));
+  }
+
+  /**
+   * Selects the item in the given <code>{@link JList}</code> whose value matches the given regular expression pattern.
+   * @param list the target <code>JList</code>.
+   * @param pattern the regular expression to match.
+   * @throws IllegalStateException if the <code>JList</code> is disabled.
+   * @throws IllegalStateException if the <code>JList</code> is not showing on the screen.
+   * @throws LocationUnavailableException if an element matching the given value cannot be found.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @since 1.2
+   */
+  @RunsInEDT
+  public void selectItem(JList list, Pattern pattern) {
+    Pair<Integer, Point> scrollInfo = scrollToItemIfNotSelectedYet(list, pattern, cellReader);
+    robot.waitForIdle();
+    verify(list, scrollInfo, pattern);
     if (scrollInfo.ii == null) return; // already selected cell.
     robot.click(list, cellCenterIn(scrollInfo));
   }
@@ -143,7 +164,7 @@ public class JListDriver extends JComponentDriver {
   public void clickItem(JList list, String value, MouseButton button, int times) {
     Pair<Integer, Point> scrollInfo = scrollToItem(list, value, cellReader);
     robot.waitForIdle();
-    verify(scrollInfo, value);
+    verify(list, scrollInfo, value);
     robot.click(list, cellCenterIn(scrollInfo), button, times);
   }
 
@@ -350,7 +371,7 @@ public class JListDriver extends JComponentDriver {
   public void drag(JList list, String value) {
     Pair<Integer, Point> scrollInfo = scrollToItem(list, value, cellReader);
     robot.waitForIdle();
-    verify(scrollInfo, value);
+    verify(list, scrollInfo, value);
     super.drag(list, cellCenterIn(scrollInfo));
   }
 
@@ -367,7 +388,7 @@ public class JListDriver extends JComponentDriver {
   public void drop(JList list, String value) {
     Pair<Integer, Point> scrollInfo = scrollToItem(list, value, cellReader);
     robot.waitForIdle();
-    verify(scrollInfo, value);
+    verify(list, scrollInfo, value);
     super.drop(list, cellCenterIn(scrollInfo));
   }
 
@@ -431,12 +452,16 @@ public class JListDriver extends JComponentDriver {
   public JPopupMenu showPopupMenu(JList list, String value) {
     Pair<Integer, Point> scrollInfo = scrollToItem(list, value, cellReader);
     robot.waitForIdle();
-    verify(scrollInfo, value);
+    verify(list, scrollInfo, value);
     return robot.showPopupMenu(list, cellCenterIn(scrollInfo));
   }
 
-  private void verify(Pair<Integer, Point> scrollInfo, String value) {
-    if (ITEM_NOT_FOUND.equals(scrollInfo)) throw indexNotFoundFor(value);
+  private void verify(JList list, Pair<Integer, Point> scrollInfo, String value) {
+    if (ITEM_NOT_FOUND.equals(scrollInfo)) throw failMatchingNotFound(list, value);
+  }
+
+  private void verify(JList list, Pair<Integer, Point> scrollInfo, Pattern pattern) {
+    if (ITEM_NOT_FOUND.equals(scrollInfo)) throw failMatchingNotFound(list, pattern);
   }
 
   private Point cellCenterIn(Pair<Integer, Point> scrollInfo) {
@@ -476,7 +501,7 @@ public class JListDriver extends JComponentDriver {
   /**
    * Returns the index of the first item matching the given value.
    * @param list the target <code>JList</code>
-   * @param value the value to match.
+   * @param value the value to match. It can be a regular expression.
    * @return the index of the first item matching the given value.
    * @throws LocationUnavailableException if an element matching the given value cannot be found.
    */
@@ -484,7 +509,7 @@ public class JListDriver extends JComponentDriver {
   public int indexOf(JList list, String value) {
     int index = itemIndex(list, value, cellReader);
     if (index >= 0) return index;
-    throw indexNotFoundFor(value);
+    throw failMatchingNotFound(list, value);
   }
 
   @RunsInEDT
@@ -494,6 +519,43 @@ public class JListDriver extends JComponentDriver {
         return matchingItemIndex(list, value, cellReader);
       }
     });
+  }
+
+  private LocationUnavailableException failMatchingNotFound(JList list, String value) {
+    throw new LocationUnavailableException(concat(
+        "Unable to find item matching ", quote(value),
+        " among the JList contents (", format(contents(list, cellReader))));
+  }
+
+  /**
+   * Returns the index of the first item matching the given regular expression pattern.
+   * @param list the target <code>JList</code>
+   * @param pattern the regular expression pattern to match.
+   * @return the index of the first item matching the given regular expression pattern.
+   * @throws LocationUnavailableException if an element matching the given value cannot be found.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @since 1.2
+   */
+  @RunsInEDT
+  public int indexOf(JList list, Pattern pattern) {
+    int index = itemIndex(list, pattern, cellReader);
+    if (index >= 0) return index;
+    throw failMatchingNotFound(list, pattern);
+  }
+
+  @RunsInEDT
+  private static int itemIndex(final JList list, final Pattern pattern, final JListCellReader cellReader) {
+    return execute(new GuiQuery<Integer>() {
+      protected Integer executeInEDT() {
+        return matchingItemIndex(list, pattern, cellReader);
+      }
+    });
+  }
+
+  private LocationUnavailableException failMatchingNotFound(JList list, Pattern pattern) {
+    throw new LocationUnavailableException(concat(
+        "Unable to find item matching pattern ", quote(pattern.pattern()),
+        " among the JList contents (", format(contents(list, cellReader))));
   }
 
   /**
@@ -509,10 +571,6 @@ public class JListDriver extends JComponentDriver {
   @RunsInEDT
   public String value(JList list, int index) {
     return itemValue(list, index, cellReader);
-  }
-
-  private static LocationUnavailableException indexNotFoundFor(String value) {
-    throw new LocationUnavailableException(concat("Unable to find an element matching the value ", quote(value)));
   }
 
   /**
