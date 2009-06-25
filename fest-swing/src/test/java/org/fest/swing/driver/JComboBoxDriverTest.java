@@ -21,13 +21,13 @@ import static org.fest.swing.driver.JComboBoxSetEditableTask.setEditable;
 import static org.fest.swing.driver.JComboBoxSetSelectedIndexTask.setSelectedIndex;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.*;
+import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
 import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
 import static org.fest.util.Arrays.array;
 
 import java.awt.Component;
-import java.util.regex.Pattern;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -155,7 +155,7 @@ public class JComboBoxDriverTest {
 
   public void shouldSelectItemMatchingGivenPattern() {
     clearSelectionInComboBox();
-    driver.selectItem(comboBox, Pattern.compile("sec.*"));
+    driver.selectItem(comboBox, regex("sec.*"));
     assertThatSelectedItemIsEqualTo("second");
     assertCellReaderWasCalled();
   }
@@ -175,7 +175,7 @@ public class JComboBoxDriverTest {
   public void shouldThrowErrorWhenSelectingItemMatchingPatternInDisabledJComboBox() {
     clearSelectionAndDisableComboBox();
     try {
-      driver.selectItem(comboBox, Pattern.compile("sec.*"));
+      driver.selectItem(comboBox, regex("sec.*"));
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertActionFailureDueToDisabledComponent(e);
@@ -190,7 +190,7 @@ public class JComboBoxDriverTest {
   public void shouldThrowErrorWhenSelectingItemMatchingPatternInNotShowingJComboBox() {
     hideWindow();
     try {
-      driver.selectItem(comboBox, Pattern.compile("sec.*"));
+      driver.selectItem(comboBox, regex("sec.*"));
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertActionFailureDueToNotShowingComponent(e);
@@ -199,7 +199,7 @@ public class JComboBoxDriverTest {
 
   @Test(groups = GUI, expectedExceptions = LocationUnavailableException.class)
   public void shouldThrowErrorWhenSelectingItemIfItemMatchingPatternDoesNotExist() {
-    driver.selectItem(comboBox, Pattern.compile("hundred"));
+    driver.selectItem(comboBox, regex("hundred"));
   }
 
   public void shouldReturnTextAtGivenIndex() {
@@ -346,14 +346,14 @@ public class JComboBoxDriverTest {
 
   public void shouldPassIfSelectionValueMatchesPattern() {
     selectFirstItemInComboBox();
-    driver.requireSelection(comboBox, Pattern.compile("firs."));
+    driver.requireSelection(comboBox, regex("firs."));
     assertCellReaderWasCalled();
   }
 
   public void shouldFailIfSelectionDoesNotMatchPattern() {
     selectFirstItemInComboBox();
     try {
-      driver.requireSelection(comboBox, Pattern.compile("sec.*"));
+      driver.requireSelection(comboBox, regex("sec.*"));
       failWhenExpectingException();
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("property:'selectedIndex'")
@@ -364,7 +364,7 @@ public class JComboBoxDriverTest {
   public void shouldFailIfItDoesNotHaveAnySelectionAndExpectingSelectionValueMatchingPattern() {
     clearSelectionInComboBox();
     try {
-      driver.requireSelection(comboBox, Pattern.compile("second"));
+      driver.requireSelection(comboBox, regex("second"));
       failWhenExpectingException();
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("property:'selectedIndex'")

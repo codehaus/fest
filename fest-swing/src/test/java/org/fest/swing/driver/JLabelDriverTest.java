@@ -19,10 +19,10 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.swing.test.core.TestGroups.GUI;
 
 import java.awt.Dimension;
-import java.util.regex.Pattern;
 
 import javax.swing.JLabel;
 
@@ -81,7 +81,7 @@ public class JLabelDriverTest {
 
   public void shouldFailIfTextDoesNotMatchPattern() {
     try {
-      driver.requireText(label, Pattern.compile("Bye"));
+      driver.requireText(label, regex("Bye"));
       failWhenExpectingException();
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("property:'text'")

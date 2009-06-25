@@ -17,6 +17,7 @@ package org.fest.swing.driver;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.swing.test.core.TestGroups.ACTION;
 import static org.fest.swing.test.core.TestGroups.GUI;
 
@@ -81,12 +82,12 @@ public class JComboBoxMatchingItemQueryTest {
   }
 
   public void shouldReturnMatchingIndexWhenUsingPattern() {
-    Pattern p = Pattern.compile("f.*");
+    Pattern p = regex("f.*");
     assertThat(JComboBoxMatchingItemQuery.matchingItemIndex(comboBox, p, cellReader)).isEqualTo(0);
   }
 
   public void shouldReturnNegativeOneIfNoMatchingIndexFoundWhenUsingPattern() {
-    Pattern p = Pattern.compile("Hello");
+    Pattern p = regex("Hello");
     assertThat(JComboBoxMatchingItemQuery.matchingItemIndex(comboBox, p, cellReader)).isEqualTo(-1);
   }
 

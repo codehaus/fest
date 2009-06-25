@@ -24,6 +24,7 @@ import static org.fest.swing.driver.JListSetSelectedIndexTask.setSelectedIndex;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.query.ComponentVisibleQuery.isVisible;
 import static org.fest.swing.test.core.CommonAssertions.*;
+import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
 import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
@@ -112,14 +113,14 @@ public class JListDriverTest {
   }
 
   public void shouldReturnIndexForItemMatchingPattern() {
-    int index = driver.indexOf(dragList, Pattern.compile("thr.*"));
+    int index = driver.indexOf(dragList, regex("thr.*"));
     assertThat(index).isEqualTo(2);
     assertCellReaderWasCalled();
   }
 
   public void shouldThrowErrorIfIndexForItemMatchingPatternNotFound() {
     try {
-      driver.indexOf(dragList, Pattern.compile("fou.*"));
+      driver.indexOf(dragList, regex("fou.*"));
       failWhenExpectingException();
     } catch (LocationUnavailableException expected) {
       assertThat(expected.getMessage()).isEqualTo(
@@ -260,7 +261,7 @@ public class JListDriverTest {
   }
 
   public void shouldSelectItemMatchingPattern() {
-    driver.selectItem(dragList, Pattern.compile("tw.*"));
+    driver.selectItem(dragList, regex("tw.*"));
     assertThat(selectedValue(dragList)).isEqualTo("two");
     assertCellReaderWasCalled();
   }
@@ -276,7 +277,7 @@ public class JListDriverTest {
   public void shouldThrowErrorWhenSelectingItemMatchingPatternInDisabledJList() {
     disableDragList();
     try {
-      driver.selectItem(dragList, Pattern.compile("tw.*"));
+      driver.selectItem(dragList, regex("tw.*"));
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertActionFailureDueToDisabledComponent(e);
@@ -287,7 +288,7 @@ public class JListDriverTest {
   public void shouldThrowErrorWhenSelectingItemMatchingPatternInNotShowingJList() {
     hideWindow();
     try {
-      driver.selectItem(dragList, Pattern.compile("tw.*"));
+      driver.selectItem(dragList, regex("tw.*"));
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertActionFailureDueToNotShowingComponent(e);
@@ -297,7 +298,7 @@ public class JListDriverTest {
 
   public void shouldThrowErrorIfItemToSelectMatchingPatternNotFound() {
     try {
-      driver.selectItem(dragList, Pattern.compile("ten"));
+      driver.selectItem(dragList, regex("ten"));
       failWhenExpectingException();
     } catch (LocationUnavailableException e) {
       assertThat(e.getMessage()).isEqualTo("Unable to find item matching pattern 'ten' among the JList contents (['one', 'two', 'three']");
@@ -322,6 +323,18 @@ public class JListDriverTest {
     assertCellReaderWasCalled();
   }
 
+  public void shouldSelectItemsMatchingGivenPatternsAsString() {
+    driver.selectItems(dragList, array("tw.*", "thr.*"));
+    assertThat(selectedValues(dragList)).isEqualTo(array("two", "three"));
+    assertCellReaderWasCalled();
+  }
+
+  public void shouldSelectItemsMatchingGivenPatternAsString() {
+    driver.selectItems(dragList, array("t.*"));
+    assertThat(selectedValues(dragList)).isEqualTo(array("two", "three"));
+    assertCellReaderWasCalled();
+  }
+
   public void shouldThrowErrorWhenSelectingItemsWithGivenTextInDisabledJList() {
     disableDragList();
     try {
@@ -342,6 +355,72 @@ public class JListDriverTest {
       assertActionFailureDueToNotShowingComponent(e);
     }
     assertDragListHasNoSelection();
+  }
+
+  public void shouldThrowErrorIfNoItemsMatchingTextWereSelected() {
+    try {
+      driver.selectItems(dragList, array("abc"));
+      failWhenExpectingException();
+    } catch (LocationUnavailableException e) {
+      assertThat(e.getMessage()).contains(
+          "Unable to find item matching the value(s) ['abc'] among the JList contents (['one', 'two', 'three']");
+    }
+  }
+
+  @Test(groups = GUI, expectedExceptions = NullPointerException.class)
+  public void shouldThrowErrorIfArrayOfPatternsToSelectIsNull() {
+    Pattern[] patterns = null;
+    driver.selectItems(dragList, patterns);
+  }
+
+  @Test(groups = GUI, expectedExceptions = IllegalArgumentException.class)
+  public void shouldThrowErrorIfArrayOfPatternsToSelectIsEmpty() {
+    Pattern[] patterns = new Pattern[0];
+    driver.selectItems(dragList, patterns);
+  }
+
+  @Test(groups = GUI, expectedExceptions = NullPointerException.class)
+  public void shouldThrowErrorIfAnyPatternInArraySelectIsNull() {
+    Pattern[] patterns = { regex("hello"), null };
+    driver.selectItems(dragList, patterns);
+  }
+
+  public void shouldSelectItemsMatchingGivenPatterns() {
+    driver.selectItems(dragList, array(regex("t.*")));
+    assertThat(selectedValues(dragList)).isEqualTo(array("two", "three"));
+    assertCellReaderWasCalled();
+  }
+
+  public void shouldThrowErrorWhenSelectingItemsMatchingGivenPatternsInDisabledJList() {
+    disableDragList();
+    try {
+      driver.selectItems(dragList, array(regex("two"), regex("three")));
+      failWhenExpectingException();
+    } catch (IllegalStateException e) {
+      assertActionFailureDueToDisabledComponent(e);
+    }
+    assertDragListHasNoSelection();
+  }
+
+  public void shouldThrowErrorWhenSelectingItemsMatchingGivenPatternsInNotShowingJList() {
+    hideWindow();
+    try {
+      driver.selectItems(dragList, array(regex("two"), regex("three")));
+      failWhenExpectingException();
+    } catch (IllegalStateException e) {
+      assertActionFailureDueToNotShowingComponent(e);
+    }
+    assertDragListHasNoSelection();
+  }
+
+  public void shouldThrowErrorIfNoItemsMatchingPatternWereSelected() {
+    try {
+      driver.selectItems(dragList, array(regex("abc")));
+      failWhenExpectingException();
+    } catch (LocationUnavailableException e) {
+      assertThat(e.getMessage()).contains(
+          "Unable to find item matching the pattern(s) ['abc'] among the JList contents (['one', 'two', 'three']");
+    }
   }
 
   public void shouldSelectItemsWithGivenIndices() {

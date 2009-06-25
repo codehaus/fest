@@ -24,8 +24,7 @@ import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
 import static org.fest.swing.driver.CommonValidations.validateCellReader;
 import static org.fest.swing.driver.JListContentQuery.contents;
 import static org.fest.swing.driver.JListItemValueQuery.itemValue;
-import static org.fest.swing.driver.JListMatchingItemQuery.centerOfMatchingItemCell;
-import static org.fest.swing.driver.JListMatchingItemQuery.matchingItemIndex;
+import static org.fest.swing.driver.JListMatchingItemQuery.*;
 import static org.fest.swing.driver.JListScrollToItemTask.*;
 import static org.fest.swing.driver.JListSelectedIndexQuery.selectedIndexOf;
 import static org.fest.swing.driver.JListSelectionValueQuery.NO_SELECTION_VALUE;
@@ -33,10 +32,12 @@ import static org.fest.swing.driver.JListSelectionValueQuery.singleSelectionValu
 import static org.fest.swing.driver.JListSelectionValuesQuery.selectionValues;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.util.Arrays.format;
+import static org.fest.util.Arrays.isEmpty;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
 
 import java.awt.Point;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.swing.JList;
@@ -53,7 +54,6 @@ import org.fest.swing.exception.*;
 import org.fest.swing.util.Pair;
 import org.fest.swing.util.Range.From;
 import org.fest.swing.util.Range.To;
-import org.fest.util.Arrays;
 
 /**
  * Understands simulation of user input on a <code>{@link JList}</code>. Unlike <code>JListFixture</code>, this
@@ -95,7 +95,7 @@ public class JListDriver extends JComponentDriver {
   /**
    * Selects the items matching the given values.
    * @param list the target <code>JList</code>.
-   * @param values the values to match.
+   * @param values the values to match. Each <code>String</code> can be a regular expression.
    * @throws NullPointerException if the given array is <code>null</code>.
    * @throws IllegalArgumentException if the given array is empty.
    * @throws IllegalStateException if the <code>JList</code> is disabled.
@@ -104,15 +104,57 @@ public class JListDriver extends JComponentDriver {
    */
   public void selectItems(final JList list, final String[] values) {
     if (values == null) throw new NullPointerException("Array of values should not be null");
-    if (Arrays.isEmpty(values)) throw new IllegalArgumentException("Array of values should not be empty");
+    if (isEmpty(values)) throw new IllegalArgumentException("Array of values should not be empty");
+    final List<Integer> indices = matchingItemIndices(list, values, cellReader);
+    if (indices.isEmpty()) throw failMatchingNotFound(list, values);
     new MultipleSelectionTemplate(robot) {
       int elementCount() {
-        return values.length;
+        return indices.size();
       }
       void selectElement(int index) {
-        selectItem(list, values[index]);
+        selectItem(list, indices.get(index));
       }
     }.multiSelect();
+  }
+
+  private LocationUnavailableException failMatchingNotFound(JList list, String[] values) {
+    throw new LocationUnavailableException(concat(
+        "Unable to find item matching the value(s) ", format(values),
+        " among the JList contents (", format(contents(list, cellReader))));
+  }
+
+  /**
+   * Selects the items matching the given regular expression patterns.
+   * @param list the target <code>JList</code>.
+   * @param patterns the regular expression patterns to match.
+   * @throws NullPointerException if the given array is <code>null</code>.
+   * @throws NullPointerException if any of the regular expression patterns is <code>null</code>.
+   * @throws IllegalArgumentException if the given array is empty.
+   * @throws IllegalStateException if the <code>JList</code> is disabled.
+   * @throws IllegalStateException if the <code>JList</code> is not showing on the screen.
+   * @throws LocationUnavailableException if an element matching the any of the given regular expression patterns cannot
+   * be found.
+   * @since 1.2
+   */
+  public void selectItems(final JList list, final Pattern[] patterns) {
+    if (patterns == null) throw new NullPointerException("Array of patterns should not be null");
+    if (isEmpty(patterns)) throw new IllegalArgumentException("Array of patterns should not be empty");
+    final List<Integer> indices = matchingItemIndices(list, patterns, cellReader);
+    if (indices.isEmpty()) throw failMatchingNotFound(list, patterns);
+    new MultipleSelectionTemplate(robot) {
+      int elementCount() {
+        return indices.size();
+      }
+      void selectElement(int index) {
+        selectItem(list, indices.get(index));
+      }
+    }.multiSelect();
+  }
+
+  private LocationUnavailableException failMatchingNotFound(JList list, Pattern[] patterns) {
+    throw new LocationUnavailableException(concat(
+        "Unable to find item matching the pattern(s) ", Patterns.format(patterns),
+        " among the JList contents (", format(contents(list, cellReader))));
   }
 
   /**

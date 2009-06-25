@@ -15,9 +15,8 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
-
-import java.util.regex.Pattern;
 
 import org.fest.test.CodeToTest;
 import org.testng.annotations.Test;
@@ -59,7 +58,7 @@ import org.testng.annotations.Test;
     expectAssertionError("actual value:<'hello'> does not match pattern:<'bye'>")
       .on(new CodeToTest() {
         public void run() throws Throwable {
-          new TextAssert("hello").matches(Pattern.compile("bye"));
+          new TextAssert("hello").matches(regex("bye"));
         }
       });
   }
@@ -68,12 +67,12 @@ import org.testng.annotations.Test;
     expectAssertionError("[A Test] actual value:<'hello'> does not match pattern:<'bye'>")
       .on(new CodeToTest() {
         public void run() throws Throwable {
-          new TextAssert("hello").as("A Test").matches(Pattern.compile("bye"));
+          new TextAssert("hello").as("A Test").matches(regex("bye"));
         }
       });
   }
 
   public void shouldPassIfActualValueMatchesPattern() {
-    new TextAssert("Hello").matches(Pattern.compile("Hel.*"));
+    new TextAssert("Hello").matches(regex("Hel.*"));
   }
 }

@@ -22,6 +22,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
 import static org.fest.swing.test.builder.JLists.list;
 import static org.fest.swing.test.builder.JPopupMenus.popupMenu;
+import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.swing.util.Range.from;
 import static org.fest.swing.util.Range.to;
 import static org.fest.util.Arrays.array;
@@ -166,6 +167,20 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  public void shouldSelectItemsMatchingPatterns() {
+    final Pattern[] patterns = array(regex("Frodo"), regex("Sam"));
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.selectItems(target, patterns);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.selectItems(patterns));
+      }
+    }.run();
+  }
+
   public void shouldSelectItemWithValue() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -179,8 +194,8 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldSelectItemMatchingPatternAsString() {
-    final Pattern pattern = Pattern.compile("Hello");
+  public void shouldSelectItemMatchingPattern() {
+    final Pattern pattern = regex("Hello");
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.selectItem(target, pattern);
@@ -305,7 +320,7 @@ import org.testng.annotations.Test;
   }
 
   public void shouldReturnJListItemFixtureWithItemMatchingPatternAsString() {
-    final Pattern pattern = Pattern.compile("Frodo");
+    final Pattern pattern = regex("Frodo");
     new EasyMockTemplate(driver) {
       protected void expectations() {
         expect(driver.indexOf(target, pattern)).andReturn(8);

@@ -17,10 +17,12 @@ package org.fest.swing.driver;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.util.Arrays.array;
 
 import java.awt.Dimension;
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 import javax.swing.JList;
@@ -103,8 +105,8 @@ public class JListMatchingItemQueryTest {
 
   @DataProvider(name = "matchingPatternsAsString") public Object[][] matchingPatterns() {
     return new Object[][] {
-        { Pattern.compile("Yod.*"), 0 },
-        { Pattern.compile("Luk.*"), 1 }
+        { regex("Yod.*"), 0 },
+        { regex("Luk.*"), 1 }
     };
   }
 
@@ -119,6 +121,32 @@ public class JListMatchingItemQueryTest {
         return JListMatchingItemQuery.matchingItemIndex(list, value, cellReader);
       }
     });
+  }
+
+  public void shouldReturnIndicesOfItemsMatchingPatternAsString() {
+    assertThat(findMatchingItems(".*")).hasSize(2).contains(0, 1);
+  }
+
+  public void shouldReturnIndicesOfItemsMatchingPatternsAsString() {
+    assertThat(findMatchingItems("Y.*", "L.*")).hasSize(2).contains(0, 1);
+  }
+
+  @RunsInEDT
+  private Collection<Integer> findMatchingItems(final String...values) {
+    return JListMatchingItemQuery.matchingItemIndices(list, values, cellReader);
+  }
+
+  public void shouldReturnIndicesOfItemsMatchingPattern() {
+    assertThat(findMatchingItems(regex(".*"))).hasSize(2).contains(0, 1);
+  }
+
+  public void shouldReturnIndicesOfItemsMatchingPatterns() {
+    assertThat(findMatchingItems(regex("Y.*"), regex("L.*"))).hasSize(2).contains(0, 1);
+  }
+
+  @RunsInEDT
+  private Collection<Integer> findMatchingItems(final Pattern...patterns) {
+    return JListMatchingItemQuery.matchingItemIndices(list, patterns, cellReader);
   }
 
   private static class MyWindow extends TestWindow {

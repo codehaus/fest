@@ -20,6 +20,7 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JCheckBoxes.checkBox;
+import static org.fest.swing.test.core.Regex.regex;
 
 import java.util.regex.Pattern;
 
@@ -112,7 +113,7 @@ import org.testng.annotations.Test;
   }
 
   public void shouldRequireTextToMatchRegex() {
-    final Pattern pattern = Pattern.compile(".");
+    final Pattern pattern = regex(".");
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.requireText(target, pattern);

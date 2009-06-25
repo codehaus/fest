@@ -20,6 +20,7 @@ import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.driver.AbstractButtonSelectedQuery.isSelected;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.*;
+import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.test.task.AbstractButtonSetSelectedTask.setSelected;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
@@ -113,8 +114,7 @@ public class AbstractButtonDriverTest {
   }
 
   public void shouldPassIfTextMatchesExpectedPattern() {
-    Pattern pattern = Pattern.compile("Hell.");
-    driver.requireText(checkBox, pattern);
+    driver.requireText(checkBox, regex("Hell."));
   }
 
   public void shouldFailIfTextIsNotEqualToExpectedOne() {
@@ -139,7 +139,7 @@ public class AbstractButtonDriverTest {
 
   public void shouldFailIfTextDoesNotMatchExpectedPattern() {
     try {
-      Pattern pattern = Pattern.compile("Bye.");
+      Pattern pattern = regex("Bye.");
       driver.requireText(checkBox, pattern);
       failWhenExpectingException();
     } catch (AssertionError e) {

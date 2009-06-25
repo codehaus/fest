@@ -22,6 +22,7 @@ import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JComboBoxes.comboBox;
 import static org.fest.swing.test.builder.JLists.list;
+import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.util.Arrays.array;
 
 import java.util.regex.Pattern;
@@ -186,7 +187,7 @@ import org.testng.annotations.Test;
   }
 
   public void shouldSelectItemWithTextMatchingPattern() {
-    final Pattern p = Pattern.compile(".");
+    final Pattern p = regex(".");
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.selectItem(target, p);
@@ -280,7 +281,7 @@ import org.testng.annotations.Test;
   }
 
   public void shouldRequireSelectionByPatternMatching() {
-    final Pattern p = Pattern.compile("Hello");
+    final Pattern p = regex("Hello");
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.requireSelection(target, p);

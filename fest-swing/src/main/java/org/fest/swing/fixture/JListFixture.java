@@ -207,19 +207,39 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
   }
 
   /**
-   * Simulates a user selecting the specified items in this fixture's <code>{@link JList}</code>.
-   * @param items the text of the items to select.
+   * Simulates a user selecting the specified items in this fixture's <code>{@link JList}</code>. The items to select
+   * should match the given values.
+   * @param items the text of the items to select. Each <code>String</code> can be a regular expression.
    * @return this fixture.
    * @throws NullPointerException if the given array is <code>null</code>.
    * @throws IllegalArgumentException if the given array is empty.
    * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
-   * @throws LocationUnavailableException if an element matching the any of the given <code>String</code>s cannot be
-   * found.
+   * @throws LocationUnavailableException if an element matching the any of the given values cannot be found.
    * @see #cellReader(JListCellReader)
    */
   public JListFixture selectItems(String...items) {
     driver.selectItems(target, items);
+    return this;
+  }
+
+  /**
+   * Simulates a user selecting the specified items in this fixture's <code>{@link JList}</code>. The items to select
+   * should select the given regular expression patterns.
+   * @param patterns the regular expression patterns to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given array is <code>null</code>.
+   * @throws NullPointerException if any of the regular expression patterns is <code>null</code>.
+   * @throws IllegalArgumentException if the given array is empty.
+   * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
+   * @throws LocationUnavailableException if an element matching the any of the given regular expression patterns cannot
+   * be found.
+   * @see #cellReader(JListCellReader)
+   * @since 1.2
+   */
+  public JListFixture selectItems(Pattern... patterns) {
+    driver.selectItems(target, patterns);
     return this;
   }
 
