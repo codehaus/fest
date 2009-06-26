@@ -168,6 +168,18 @@ public class JListDriverTest {
     assertThat(locationToIndex(dragList, pointClicked)).isEqualTo(1);
   }
 
+  public void shouldClickItemMatchingGivenPattern() {
+    setSelectedIndex(dragList, (-1));
+    robot.waitForIdle();
+    ClickRecorder recorder = ClickRecorder.attachTo(dragList);
+    driver.clickItem(dragList, regex("two"), RIGHT_BUTTON, 2);
+    assertThat(recorder).clicked(RIGHT_BUTTON)
+                        .timesClicked(2);
+    Point pointClicked = recorder.pointClicked();
+    assertThat(locationToIndex(dragList, pointClicked)).isEqualTo(1);
+  }
+
+  @RunsInEDT
   private static int locationToIndex(final JList list, final Point p) {
     return execute(new GuiQuery<Integer>() {
       protected Integer executeInEDT() {

@@ -19,8 +19,6 @@ import static java.util.Collections.sort;
 import static org.fest.swing.driver.JListCellBoundsQuery.cellBounds;
 import static org.fest.swing.driver.JListCellCenterQuery.cellCenter;
 import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.util.Strings.areEqualOrMatch;
-import static org.fest.swing.util.Strings.match;
 
 import java.awt.Point;
 import java.util.*;
@@ -32,6 +30,7 @@ import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.cell.JListCellReader;
 import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.util.*;
 
 /**
  * Understands lookup of the first item in a <code>{@link JList}</code> whose value matches a given one.
@@ -52,60 +51,45 @@ final class JListMatchingItemQuery {
 
   @RunsInCurrentThread
   static int matchingItemIndex(JList list, String value, JListCellReader cellReader) {
-    int size = list.getModel().getSize();
-    for (int i = 0; i < size; i++)
-      if (areEqualOrMatch(value, cellReader.valueAt(list, i))) return i;
-    return -1;
+    return matchingItemIndex(list, new StringTextMatcher(value), cellReader);
   }
 
   @RunsInCurrentThread
   static int matchingItemIndex(JList list, Pattern pattern, JListCellReader cellReader) {
+    return matchingItemIndex(list, new PatternTextMatcher(pattern), cellReader);
+  }
+
+  @RunsInCurrentThread
+  static int matchingItemIndex(JList list, TextMatcher matcher, JListCellReader cellReader) {
     int size = list.getModel().getSize();
     for (int i = 0; i < size; i++)
-      if (match(pattern, cellReader.valueAt(list, i))) return i;
+      if (matcher.isMatching(cellReader.valueAt(list, i))) return i;
     return -1;
   }
 
   @RunsInEDT
   static List<Integer> matchingItemIndices(final JList list, final String[] values, final JListCellReader cellReader) {
-    return execute(new GuiQuery<List<Integer>>() {
-      protected List<Integer> executeInEDT() {
-        Set<Integer> indices = new HashSet<Integer>();
-        int size = list.getModel().getSize();
-        for (int i = 0; i < size; i++)
-          if (matches(cellReader.valueAt(list, i), values)) indices.add(i);
-        List<Integer> indexList = new ArrayList<Integer>(indices);
-        sort(indexList);
-        return indexList;
-      }
-    });
-  }
-
-  private static boolean matches(String value, String[] values) {
-    for (String val : values)
-      if (areEqualOrMatch(val, value)) return true;
-    return false;
+    return matchingItemIndices(list, new StringTextMatcher(values), cellReader);
   }
 
   @RunsInEDT
   static List<Integer> matchingItemIndices(final JList list, final Pattern[] patterns, final JListCellReader cellReader) {
+    return matchingItemIndices(list, new PatternTextMatcher(patterns), cellReader);
+  }
+
+  @RunsInEDT
+  static List<Integer> matchingItemIndices(final JList list, final TextMatcher matcher, final JListCellReader cellReader) {
     return execute(new GuiQuery<List<Integer>>() {
       protected List<Integer> executeInEDT() {
         Set<Integer> indices = new HashSet<Integer>();
         int size = list.getModel().getSize();
         for (int i = 0; i < size; i++)
-          if (matches(cellReader.valueAt(list, i), patterns)) indices.add(i);
+          if (matcher.isMatching(cellReader.valueAt(list, i))) indices.add(i);
         List<Integer> indexList = new ArrayList<Integer>(indices);
         sort(indexList);
         return indexList;
       }
     });
-  }
-
-  private static boolean matches(String value, Pattern[] patterns) {
-    for (Pattern p : patterns)
-      if (match(p, value)) return true;
-    return false;
   }
 
   private JListMatchingItemQuery() {}

@@ -52,6 +52,7 @@ import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.*;
 import org.fest.swing.util.Pair;
+import org.fest.swing.util.Patterns;
 import org.fest.swing.util.Range.From;
 import org.fest.swing.util.Range.To;
 
@@ -207,6 +208,26 @@ public class JListDriver extends JComponentDriver {
     Pair<Integer, Point> scrollInfo = scrollToItem(list, value, cellReader);
     robot.waitForIdle();
     verify(list, scrollInfo, value);
+    robot.click(list, cellCenterIn(scrollInfo), button, times);
+  }
+
+  /**
+   * Clicks the first item matching the given regular expression pattern, using the specified mouse button, the given
+   * number times.
+   * @param list the target <code>JList</code>.
+   * @param pattern the regular expression pattern to match.
+   * @param button the button to use.
+   * @param times the number of times to click.
+   * @throws IllegalStateException if the <code>JList</code> is disabled.
+   * @throws IllegalStateException if the <code>JList</code> is not showing on the screen.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws LocationUnavailableException if an element matching the given regular expression pattern cannot be found.
+   * @since 1.2
+   */
+  public void clickItem(JList list, Pattern pattern, MouseButton button, int times) {
+    Pair<Integer, Point> scrollInfo = scrollToItem(list, pattern, cellReader);
+    robot.waitForIdle();
+    verify(list, scrollInfo, pattern);
     robot.click(list, cellCenterIn(scrollInfo), button, times);
   }
 

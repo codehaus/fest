@@ -301,6 +301,22 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
     return this;
   }
 
+  /**
+   * Simulates a user double-clicking an item in this fixture's <code>{@link JList}</code>. The value of the item to
+   * double-click should match the given regular expression pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws LocationUnavailableException if an element matching the given regular expression pattern cannot be found.
+   * @since 1.2
+   */
+  public JListFixture doubleClickItem(Pattern pattern) {
+    driver.clickItem(target, pattern, LEFT_BUTTON, 2);
+    return this;
+  }
+
   void clickItem(int index, MouseButton button, int times) {
     driver.clickItem(target, index, button, times);
   }

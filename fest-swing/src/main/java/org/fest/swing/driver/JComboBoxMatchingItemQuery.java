@@ -16,8 +16,6 @@
 package org.fest.swing.driver;
 
 import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.util.Strings.areEqualOrMatch;
-import static org.fest.swing.util.Strings.match;
 
 import java.util.regex.Pattern;
 
@@ -26,6 +24,7 @@ import javax.swing.JComboBox;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.cell.JComboBoxCellReader;
 import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.util.*;
 
 /**
  * Understands lookup of the first item in a <code>{@link JComboBox}</code> whose value matches a given one.
@@ -35,30 +34,25 @@ import org.fest.swing.edt.GuiQuery;
 final class JComboBoxMatchingItemQuery {
 
   @RunsInEDT
-  static int matchingItemIndex(final JComboBox comboBox, final String value, final JComboBoxCellReader cellReader) {
+  static int matchingItemIndex(JComboBox comboBox, String value, JComboBoxCellReader cellReader) {
+    return matchingItemIndex(comboBox, new StringTextMatcher(value), cellReader);
+  }
+
+  @RunsInEDT
+  static int matchingItemIndex(JComboBox comboBox, Pattern pattern, JComboBoxCellReader cellReader) {
+    return matchingItemIndex(comboBox, new PatternTextMatcher(pattern), cellReader);
+  }
+
+  @RunsInEDT
+  static int matchingItemIndex(final JComboBox comboBox, final TextMatcher matcher, final JComboBoxCellReader cellReader) {
     return execute(new GuiQuery<Integer>() {
       protected Integer executeInEDT() {
         int itemCount = comboBox.getItemCount();
         for (int i = 0; i < itemCount; i++)
-          if (areEqualOrMatch(value, value(comboBox, i, cellReader))) return i;
+          if (matcher.isMatching(cellReader.valueAt(comboBox, i))) return i;
         return -1;
       }
     });
-  }
-
-  static int matchingItemIndex(final JComboBox comboBox, final Pattern pattern, final JComboBoxCellReader cellReader) {
-    return execute(new GuiQuery<Integer>() {
-      protected Integer executeInEDT() {
-        int itemCount = comboBox.getItemCount();
-        for (int i = 0; i < itemCount; i++)
-          if (match(pattern, value(comboBox, i, cellReader))) return i;
-        return -1;
-      }
-    });
-  }
-
-  private static String value(JComboBox comboBox, int index, JComboBoxCellReader cellReader) {
-    return cellReader.valueAt(comboBox, index);
   }
 
   private JComboBoxMatchingItemQuery() {}

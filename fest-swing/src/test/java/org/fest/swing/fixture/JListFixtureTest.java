@@ -234,6 +234,20 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  public void shouldDoubleClickItemMatchingPattern() {
+    final Pattern p = regex("hello");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.clickItem(target, p, LEFT_BUTTON, 2);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.doubleClickItem(p));
+      }
+    }.run();
+  }
+
   public void shouldRequireSelectionValue() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
