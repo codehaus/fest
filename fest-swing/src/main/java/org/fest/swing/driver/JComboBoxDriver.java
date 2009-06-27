@@ -50,6 +50,7 @@ import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.*;
+import org.fest.swing.util.*;
 
 /**
  * Understands simulation of user input on a <code>{@link JComboBox}</code>. Unlike <code>JComboBoxFixture</code>, this
@@ -106,9 +107,7 @@ public class JComboBoxDriver extends JComponentDriver {
    */
   @RunsInEDT
   public void selectItem(JComboBox comboBox, String value) {
-    int index = matchingItemIndex(comboBox, value, cellReader);
-    if (index < 0) throw failMatchingNotFound(comboBox, value);
-    selectItem(comboBox, index);
+    selectItem(comboBox, new StringTextMatcher(value));
   }
 
   /**
@@ -125,14 +124,19 @@ public class JComboBoxDriver extends JComponentDriver {
    */
   @RunsInEDT
   public void selectItem(JComboBox comboBox, Pattern pattern) {
-    int index = matchingItemIndex(comboBox, pattern, cellReader);
-    if (index < 0) throw failMatchingNotFound(comboBox, pattern.pattern());
+    selectItem(comboBox, new PatternTextMatcher(pattern));
+  }
+
+  @RunsInEDT
+  private void selectItem(JComboBox comboBox, TextMatcher matcher) {
+    int index = matchingItemIndex(comboBox, matcher, cellReader);
+    if (index < 0) throw failMatchingNotFound(comboBox, matcher);
     selectItem(comboBox, index);
   }
 
-  private LocationUnavailableException failMatchingNotFound(JComboBox comboBox, String value) {
+  private LocationUnavailableException failMatchingNotFound(JComboBox comboBox, TextMatcher matcher) {
     throw new LocationUnavailableException(concat(
-        "Unable to find item matching ", quote(value),
+        "Unable to find item matching the ", matcher.description(), " ", matcher.formattedValues(),
         " among the JComboBox contents (", format(contentsOf(comboBox)), ")"));
   }
 

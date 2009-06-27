@@ -32,6 +32,11 @@ import org.testng.annotations.Test;
     new StringTextMatcher(values);
   }
 
+  @Test(expectedExceptions = IllegalArgumentException.class)
+  public void shouldThrowErrorIfValueArrayIsEmpty() {
+    new StringTextMatcher(new String[0]);
+  }
+
   public void shouldReturnTrueIfTextIsEqualToAnyValue() {
     StringTextMatcher matcher = new StringTextMatcher("hello", "world");
     assertThat(matcher.isMatching("world")).isTrue();
@@ -45,5 +50,25 @@ import org.testng.annotations.Test;
   public void shouldReturnFalseIfTextDoesNotMatchAnyValue() {
     StringTextMatcher matcher = new StringTextMatcher("hell.*", "world");
     assertThat(matcher.isMatching("bye")).isFalse();
+  }
+
+  public void shouldReturnValueWordAsDescriptionIfMatcherHasOnlyOneValue() {
+    StringTextMatcher matcher = new StringTextMatcher("one");
+    assertThat(matcher.description()).isEqualTo("value");
+  }
+
+  public void shouldReturnValuesWordAsDescriptionIfMatcherHasMoreThanOneValue() {
+    StringTextMatcher matcher = new StringTextMatcher("one", "two");
+    assertThat(matcher.description()).isEqualTo("values");
+  }
+
+  public void shouldReturnSingleValueAsFormattedValueIfMatcherHasOnlyOneValue() {
+    StringTextMatcher matcher = new StringTextMatcher("one");
+    assertThat(matcher.formattedValues()).isEqualTo("'one'");
+  }
+
+  public void shouldReturnArrayOfValuesAsFormattedValueIfMatcherHasMoreThanOneValue() {
+    StringTextMatcher matcher = new StringTextMatcher("one", "two");
+    assertThat(matcher.formattedValues()).isEqualTo("['one', 'two']");
   }
 }

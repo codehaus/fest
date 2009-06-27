@@ -35,6 +35,11 @@ import org.testng.annotations.Test;
     new PatternTextMatcher(patterns);
   }
 
+  @Test(expectedExceptions = IllegalArgumentException.class)
+  public void shouldThrowErrorIfPatternArrayIsEmpty() {
+    new PatternTextMatcher(new Pattern[0]);
+  }
+
   @Test(expectedExceptions = NullPointerException.class)
   public void shouldThrowErrorIfAnyPatternInArrayIsNull() {
     Pattern[] patterns = { null, regex("hello"), null };
@@ -50,5 +55,25 @@ import org.testng.annotations.Test;
   public void shouldReturnFalseIfTextDoesNotMatchAnyPattern() {
     PatternTextMatcher matcher = new PatternTextMatcher(regex("bye"), regex("hello"));
     assertThat(matcher.isMatching("world")).isFalse();
+  }
+
+  public void shouldReturnPatternWordAsDescriptionIfMatcherHasOnlyOnePattern() {
+    PatternTextMatcher matcher = new PatternTextMatcher(regex("one"));
+    assertThat(matcher.description()).isEqualTo("pattern");
+  }
+
+  public void shouldReturnPatternsWordAsDescriptionIfMatcherHasMoreThanOnePattern() {
+    PatternTextMatcher matcher = new PatternTextMatcher(regex("one"), regex("two"));
+    assertThat(matcher.description()).isEqualTo("patterns");
+  }
+
+  public void shouldReturnSinglePatternAsFormattedValueIfMatcherHasOnlyOnePattern() {
+    PatternTextMatcher matcher = new PatternTextMatcher(regex("one"));
+    assertThat(matcher.formattedValues()).isEqualTo("'one'");
+  }
+
+  public void shouldReturnArrayOfPatternsAsFormattedValueIfMatcherHasMoreThanOnePattern() {
+    PatternTextMatcher matcher = new PatternTextMatcher(regex("one"), regex("two"));
+    assertThat(matcher.formattedValues()).isEqualTo("['one', 'two']");
   }
 }

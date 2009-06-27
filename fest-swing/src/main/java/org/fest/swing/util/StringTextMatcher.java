@@ -16,6 +16,9 @@
 package org.fest.swing.util;
 
 import static org.fest.swing.util.Strings.areEqualOrMatch;
+import static org.fest.util.Arrays.format;
+import static org.fest.util.Arrays.isEmpty;
+import static org.fest.util.Strings.quote;
 
 /**
  * Understands matching text to a group of <code>String</code> values. Matching is perform by equality or by regular
@@ -31,9 +34,11 @@ public class StringTextMatcher implements TextMatcher {
    * Creates a new </code>{@link StringTextMatcher}</code>.
    * @param values the <code>String</code> values to match. Each value can be a regular expression.
    * @throws NullPointerException if the array of values is <code>null</code>.
+   * @throws IllegalArgumentException if the array of values is empty.
    */
   public StringTextMatcher(String...values) {
     if (values == null) throw new NullPointerException("The array of values should not be null");
+    if (isEmpty(values)) throw new IllegalArgumentException("The array of values should not be empty");
     this.values = values;
   }
 
@@ -48,5 +53,29 @@ public class StringTextMatcher implements TextMatcher {
     for (String value : values)
       if (areEqualOrMatch(value, text)) return true;
     return false;
+  }
+
+  /**
+   * Returns "value" if this matcher contains only one value, or "values" if this matcher contains more than one
+   * value.
+   * @return "value" if this matcher contains only one value, or "values" if this matcher contains more than one
+   * value.
+   */
+  public String description() {
+    if (onlyOneValue()) return "value";
+    return "values";
+  }
+
+  /**
+   * Returns the <code>String</code> values in this matcher, formatted as a single <code>String</code>.
+   * @return the <code>String</code> values in this matcher, formatted as a single <code>String</code>.
+   */
+  public String formattedValues() {
+    if (onlyOneValue()) return quote(values[0]);
+    return format(values);
+  }
+
+  private boolean onlyOneValue() {
+    return values.length == 1;
   }
 }

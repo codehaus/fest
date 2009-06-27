@@ -28,4 +28,16 @@ public interface TextMatcher {
    * @return <code>true</code> if the given text matches some value(s), <code>false</code> otherwise.
    */
   boolean isMatching(String text);
+
+  /**
+   * Returns the description of the type of value this matcher supports.
+   * @return the description of the type of value this matcher supports.
+   */
+  String description();
+
+  /**
+   * Returns the values in this matcher, formatted as a <code>String</code>.
+   * @return the values in this matcher, formatted as a <code>String</code>.
+   */
+  String formattedValues();
 }

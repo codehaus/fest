@@ -15,19 +15,21 @@
  */
 package org.fest.swing.driver;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.util.Arrays.array;
 
 import java.awt.Dimension;
 import java.util.Collection;
-import java.util.regex.Pattern;
+import java.util.List;
 
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
+import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.cell.JListCellReader;
 import org.fest.swing.core.BasicRobot;
@@ -35,6 +37,7 @@ import org.fest.swing.core.Robot;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.test.swing.TestWindow;
+import org.fest.swing.util.TextMatcher;
 import org.testng.annotations.*;
 
 /**
@@ -65,60 +68,39 @@ public class JListMatchingItemQueryTest {
     robot.cleanUp();
   }
 
-  @Test(dataProvider = "matchingItems", groups = GUI)
-  public void shouldReturnIndexOfMatchingItem(final String value, int expectedIndex) {
-    assertThat(findMatchingItem(value)).isEqualTo(expectedIndex);
-  }
-
-  @DataProvider(name = "matchingItems") public Object[][] matchingItems() {
-    return new Object[][] {
-        { "Yoda", 0 },
-        { "Luke", 1 }
-    };
-  }
-
-  @Test(dataProvider = "matchingPatternsAsString", groups = GUI)
-  public void shouldReturnIndexOfItemMatchingPatternAsString(final String pattern, int expectedIndex) {
-    assertThat(findMatchingItem(pattern)).isEqualTo(expectedIndex);
-  }
-
-  @DataProvider(name = "matchingPatternsAsString") public Object[][] matchingPatternsAsString() {
-    return new Object[][] {
-        { "Yod.*", 0 },
-        { "Luk.*", 1 }
-    };
-  }
-
-  @Test(dataProvider = "matchingPatterns", groups = GUI)
-  public void shouldReturnIndexOfItemMatchingPattern(final Pattern pattern, int expectedIndex) {
-    assertThat(findMatchingItem(pattern)).isEqualTo(expectedIndex);
-  }
-
-  @RunsInEDT
-  private int findMatchingItem(final Pattern pattern) {
-    return execute(new GuiQuery<Integer>() {
-      protected Integer executeInEDT() {
-        return JListMatchingItemQuery.matchingItemIndex(list, pattern, cellReader);
+  public void shouldReturnIndexOfMatchingItem() {
+    final TextMatcher matcher = mockTextMatcher();
+    new EasyMockTemplate(matcher) {
+      protected void expectations() {
+        expect(matcher.isMatching("Yoda")).andReturn(false);
+        expect(matcher.isMatching("Luke")).andReturn(true);
       }
-    });
-  }
 
-  @DataProvider(name = "matchingPatternsAsString") public Object[][] matchingPatterns() {
-    return new Object[][] {
-        { regex("Yod.*"), 0 },
-        { regex("Luk.*"), 1 }
-    };
+      protected void codeToTest() {
+        assertThat(matchingItemIndex(matcher)).isEqualTo(1);
+      }
+    }.run();
   }
 
   public void shouldReturnNegativeOneIfMatchingItemNotFound() {
-    assertThat(findMatchingItem("Leia")).isEqualTo(-1);
+    final TextMatcher matcher = mockTextMatcher();
+    new EasyMockTemplate(matcher) {
+      protected void expectations() {
+        expect(matcher.isMatching("Yoda")).andReturn(false);
+        expect(matcher.isMatching("Luke")).andReturn(false);
+      }
+
+      protected void codeToTest() {
+        assertThat(matchingItemIndex(matcher)).isEqualTo(-1);
+      }
+    }.run();
   }
 
   @RunsInEDT
-  private int findMatchingItem(final String value) {
+  private int matchingItemIndex(final TextMatcher matcher) {
     return execute(new GuiQuery<Integer>() {
       protected Integer executeInEDT() {
-        return JListMatchingItemQuery.matchingItemIndex(list, value, cellReader);
+        return JListMatchingItemQuery.matchingItemIndex(list, matcher, cellReader);
       }
     });
   }
@@ -136,17 +118,46 @@ public class JListMatchingItemQueryTest {
     return JListMatchingItemQuery.matchingItemIndices(list, values, cellReader);
   }
 
-  public void shouldReturnIndicesOfItemsMatchingPattern() {
-    assertThat(findMatchingItems(regex(".*"))).hasSize(2).contains(0, 1);
+  public void shouldReturnIndicesOfMatchingItems() {
+    final TextMatcher matcher = mockTextMatcher();
+    new EasyMockTemplate(matcher) {
+      protected void expectations() {
+        expect(matcher.isMatching("Yoda")).andReturn(false);
+        expect(matcher.isMatching("Luke")).andReturn(true);
+      }
+
+      protected void codeToTest() {
+        assertThat(matchingItemIndices(matcher)).hasSize(1).containsOnly(1);
+      }
+    }.run();
   }
 
-  public void shouldReturnIndicesOfItemsMatchingPatterns() {
-    assertThat(findMatchingItems(regex("Y.*"), regex("L.*"))).hasSize(2).contains(0, 1);
+  public void shouldReturnEmptyListIfMatchingItemsNotFound() {
+    final TextMatcher matcher = mockTextMatcher();
+    new EasyMockTemplate(matcher) {
+      protected void expectations() {
+        expect(matcher.isMatching("Yoda")).andReturn(false);
+        expect(matcher.isMatching("Luke")).andReturn(false);
+      }
+
+      protected void codeToTest() {
+        assertThat(matchingItemIndices(matcher)).isEmpty();
+      }
+    }.run();
   }
 
   @RunsInEDT
-  private Collection<Integer> findMatchingItems(final Pattern...patterns) {
-    return JListMatchingItemQuery.matchingItemIndices(list, patterns, cellReader);
+  private List<Integer> matchingItemIndices(final TextMatcher matcher) {
+    List<Integer> matchingIndices = execute(new GuiQuery<List<Integer>>() {
+      protected List<Integer> executeInEDT() {
+        return JListMatchingItemQuery.matchingItemIndices(list, matcher, cellReader);
+      }
+    });
+    return matchingIndices;
+  }
+
+  private static TextMatcher mockTextMatcher() {
+    return createMock(TextMatcher.class);
   }
 
   private static class MyWindow extends TestWindow {

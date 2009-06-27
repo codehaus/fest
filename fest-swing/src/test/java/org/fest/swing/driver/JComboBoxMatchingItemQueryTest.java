@@ -15,16 +15,17 @@
  */
 package org.fest.swing.driver;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.swing.test.core.TestGroups.ACTION;
 import static org.fest.swing.test.core.TestGroups.GUI;
-
-import java.util.regex.Pattern;
+import static org.fest.util.Arrays.array;
 
 import javax.swing.JComboBox;
 
+import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.cell.JComboBoxCellReader;
 import org.fest.swing.core.BasicRobot;
@@ -32,6 +33,7 @@ import org.fest.swing.core.Robot;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.test.swing.TestWindow;
+import org.fest.swing.util.TextMatcher;
 import org.testng.annotations.*;
 
 /**
@@ -42,11 +44,10 @@ import org.testng.annotations.*;
 @Test(groups = { GUI, ACTION })
 public class JComboBoxMatchingItemQueryTest {
 
-  private static final String[] ITEMS = { "first", "second", "third" };
-
   private Robot robot;
   private JComboBox comboBox;
   private JComboBoxCellReader cellReader;
+  private TextMatcher matcher;
 
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
@@ -55,6 +56,7 @@ public class JComboBoxMatchingItemQueryTest {
   @BeforeMethod public void setUp() {
     robot = BasicRobot.robotWithNewAwtHierarchy();
     cellReader = new BasicJComboBoxCellReader();
+    matcher = createMock(TextMatcher.class);
     MyWindow window = MyWindow.createNew();
     comboBox = window.comboBox;
     robot.showWindow(window);
@@ -64,37 +66,39 @@ public class JComboBoxMatchingItemQueryTest {
     robot.cleanUp();
   }
 
-  @Test(dataProvider = "indices", groups = { GUI, ACTION })
-  public void shouldReturnMatchingIndex(int index) {
-    assertThat(JComboBoxMatchingItemQuery.matchingItemIndex(comboBox, ITEMS[index], cellReader)).isEqualTo(index);
+  public void shouldReturnMatchingIndices() {
+    new EasyMockTemplate(matcher) {
+      protected void expectations() {
+        expect(matcher.isMatching("aaa")).andReturn(false);
+        expect(matcher.isMatching("bbb")).andReturn(true);
+      }
+
+      protected void codeToTest() {
+        int matchingIndex = JComboBoxMatchingItemQuery.matchingItemIndex(comboBox, matcher, cellReader);
+        assertThat(matchingIndex).isEqualTo(1);
+      }
+    }.run();
   }
 
-  public void shouldReturnMatchingIndexWhenUsingPatternAsString() {
-    assertThat(JComboBoxMatchingItemQuery.matchingItemIndex(comboBox, "f.*", cellReader)).isEqualTo(0);
-  }
+  public void shouldReturnNegativeOneIfNoMatchingIndicesFound() {
+    new EasyMockTemplate(matcher) {
+      protected void expectations() {
+        expect(matcher.isMatching("aaa")).andReturn(false);
+        expect(matcher.isMatching("bbb")).andReturn(false);
+        expect(matcher.isMatching("ccc")).andReturn(false);
+      }
 
-  public void shouldReturnNegativeOneIfNoMatchingIndexFound() {
-    assertThat(JComboBoxMatchingItemQuery.matchingItemIndex(comboBox, "Hello", cellReader)).isEqualTo(-1);
-  }
-
-  @DataProvider(name = "indices") public Object[][] indices() {
-    return new Object[][] { { 0 }, { 1 }, { 2 } };
-  }
-
-  public void shouldReturnMatchingIndexWhenUsingPattern() {
-    Pattern p = regex("f.*");
-    assertThat(JComboBoxMatchingItemQuery.matchingItemIndex(comboBox, p, cellReader)).isEqualTo(0);
-  }
-
-  public void shouldReturnNegativeOneIfNoMatchingIndexFoundWhenUsingPattern() {
-    Pattern p = regex("Hello");
-    assertThat(JComboBoxMatchingItemQuery.matchingItemIndex(comboBox, p, cellReader)).isEqualTo(-1);
+      protected void codeToTest() {
+        int matchingIndex = JComboBoxMatchingItemQuery.matchingItemIndex(comboBox, matcher, cellReader);
+        assertThat(matchingIndex).isEqualTo(-1);
+      }
+    }.run();
   }
 
   private static class MyWindow extends TestWindow {
     private static final long serialVersionUID = 1L;
 
-    final JComboBox comboBox = new JComboBox(ITEMS);
+    final JComboBox comboBox = new JComboBox(array("aaa", "bbb", "ccc"));
 
     @RunsInEDT
     static MyWindow createNew() {

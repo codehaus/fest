@@ -32,7 +32,6 @@ import static org.fest.swing.driver.JListSelectionValueQuery.singleSelectionValu
 import static org.fest.swing.driver.JListSelectionValuesQuery.selectionValues;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.util.Arrays.format;
-import static org.fest.util.Arrays.isEmpty;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
 
@@ -51,8 +50,7 @@ import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.*;
-import org.fest.swing.util.Pair;
-import org.fest.swing.util.Patterns;
+import org.fest.swing.util.*;
 import org.fest.swing.util.Range.From;
 import org.fest.swing.util.Range.To;
 
@@ -103,25 +101,9 @@ public class JListDriver extends JComponentDriver {
    * @throws IllegalStateException if the <code>JList</code> is not showing on the screen.
    * @throws LocationUnavailableException if an element matching the any of the given values cannot be found.
    */
-  public void selectItems(final JList list, final String[] values) {
-    if (values == null) throw new NullPointerException("Array of values should not be null");
-    if (isEmpty(values)) throw new IllegalArgumentException("Array of values should not be empty");
-    final List<Integer> indices = matchingItemIndices(list, values, cellReader);
-    if (indices.isEmpty()) throw failMatchingNotFound(list, values);
-    new MultipleSelectionTemplate(robot) {
-      int elementCount() {
-        return indices.size();
-      }
-      void selectElement(int index) {
-        selectItem(list, indices.get(index));
-      }
-    }.multiSelect();
-  }
-
-  private LocationUnavailableException failMatchingNotFound(JList list, String[] values) {
-    throw new LocationUnavailableException(concat(
-        "Unable to find item matching the value(s) ", format(values),
-        " among the JList contents (", format(contents(list, cellReader))));
+  @RunsInEDT
+  public void selectItems(JList list, String[] values) {
+    selectItems(list, new StringTextMatcher(values));
   }
 
   /**
@@ -137,11 +119,15 @@ public class JListDriver extends JComponentDriver {
    * be found.
    * @since 1.2
    */
-  public void selectItems(final JList list, final Pattern[] patterns) {
-    if (patterns == null) throw new NullPointerException("Array of patterns should not be null");
-    if (isEmpty(patterns)) throw new IllegalArgumentException("Array of patterns should not be empty");
-    final List<Integer> indices = matchingItemIndices(list, patterns, cellReader);
-    if (indices.isEmpty()) throw failMatchingNotFound(list, patterns);
+  @RunsInEDT
+  public void selectItems(JList list, Pattern[] patterns) {
+    selectItems(list, new PatternTextMatcher(patterns));
+  }
+
+  @RunsInEDT
+  private void selectItems(final JList list, final TextMatcher matcher) {
+    final List<Integer> indices = matchingItemIndices(list, matcher, cellReader);
+    if (indices.isEmpty()) throw failMatchingNotFound(list, matcher);
     new MultipleSelectionTemplate(robot) {
       int elementCount() {
         return indices.size();
@@ -150,12 +136,6 @@ public class JListDriver extends JComponentDriver {
         selectItem(list, indices.get(index));
       }
     }.multiSelect();
-  }
-
-  private LocationUnavailableException failMatchingNotFound(JList list, Pattern[] patterns) {
-    throw new LocationUnavailableException(concat(
-        "Unable to find item matching the pattern(s) ", Patterns.format(patterns),
-        " among the JList contents (", format(contents(list, cellReader))));
   }
 
   /**
@@ -168,11 +148,7 @@ public class JListDriver extends JComponentDriver {
    */
   @RunsInEDT
   public void selectItem(JList list, String value) {
-    Pair<Integer, Point> scrollInfo = scrollToItemIfNotSelectedYet(list, value, cellReader);
-    robot.waitForIdle();
-    verify(list, scrollInfo, value);
-    if (scrollInfo.ii == null) return; // already selected cell.
-    robot.click(list, cellCenterIn(scrollInfo));
+    selectItem(list, new StringTextMatcher(value));
   }
 
   /**
@@ -187,9 +163,14 @@ public class JListDriver extends JComponentDriver {
    */
   @RunsInEDT
   public void selectItem(JList list, Pattern pattern) {
-    Pair<Integer, Point> scrollInfo = scrollToItemIfNotSelectedYet(list, pattern, cellReader);
+    selectItem(list, new PatternTextMatcher(pattern));
+  }
+
+  @RunsInEDT
+  private void selectItem(JList list, TextMatcher matcher) {
+    Pair<Integer, Point> scrollInfo = scrollToItemIfNotSelectedYet(list, matcher, cellReader);
     robot.waitForIdle();
-    verify(list, scrollInfo, pattern);
+    verify(list, scrollInfo, matcher);
     if (scrollInfo.ii == null) return; // already selected cell.
     robot.click(list, cellCenterIn(scrollInfo));
   }
@@ -205,10 +186,7 @@ public class JListDriver extends JComponentDriver {
    * @throws LocationUnavailableException if an element matching the given value cannot be found.
    */
   public void clickItem(JList list, String value, MouseButton button, int times) {
-    Pair<Integer, Point> scrollInfo = scrollToItem(list, value, cellReader);
-    robot.waitForIdle();
-    verify(list, scrollInfo, value);
-    robot.click(list, cellCenterIn(scrollInfo), button, times);
+    clickItem(list, new StringTextMatcher(value), button, times);
   }
 
   /**
@@ -225,9 +203,13 @@ public class JListDriver extends JComponentDriver {
    * @since 1.2
    */
   public void clickItem(JList list, Pattern pattern, MouseButton button, int times) {
-    Pair<Integer, Point> scrollInfo = scrollToItem(list, pattern, cellReader);
+    clickItem(list, new PatternTextMatcher(pattern), button, times);
+  }
+
+  private void clickItem(JList list, TextMatcher matcher, MouseButton button, int times) {
+    Pair<Integer, Point> scrollInfo = scrollToItem(list, matcher, cellReader);
     robot.waitForIdle();
-    verify(list, scrollInfo, pattern);
+    verify(list, scrollInfo, matcher);
     robot.click(list, cellCenterIn(scrollInfo), button, times);
   }
 
@@ -523,8 +505,8 @@ public class JListDriver extends JComponentDriver {
     if (ITEM_NOT_FOUND.equals(scrollInfo)) throw failMatchingNotFound(list, value);
   }
 
-  private void verify(JList list, Pair<Integer, Point> scrollInfo, Pattern pattern) {
-    if (ITEM_NOT_FOUND.equals(scrollInfo)) throw failMatchingNotFound(list, pattern);
+  private void verify(JList list, Pair<Integer, Point> scrollInfo, TextMatcher matcher) {
+    if (ITEM_NOT_FOUND.equals(scrollInfo)) throw failMatchingNotFound(list, matcher);
   }
 
   private Point cellCenterIn(Pair<Integer, Point> scrollInfo) {
@@ -570,18 +552,7 @@ public class JListDriver extends JComponentDriver {
    */
   @RunsInEDT
   public int indexOf(JList list, String value) {
-    int index = itemIndex(list, value, cellReader);
-    if (index >= 0) return index;
-    throw failMatchingNotFound(list, value);
-  }
-
-  @RunsInEDT
-  private static int itemIndex(final JList list, final String value, final JListCellReader cellReader) {
-    return execute(new GuiQuery<Integer>() {
-      protected Integer executeInEDT() {
-        return matchingItemIndex(list, value, cellReader);
-      }
-    });
+    return indexOf(list, new StringTextMatcher(value));
   }
 
   private LocationUnavailableException failMatchingNotFound(JList list, String value) {
@@ -601,24 +572,29 @@ public class JListDriver extends JComponentDriver {
    */
   @RunsInEDT
   public int indexOf(JList list, Pattern pattern) {
-    int index = itemIndex(list, pattern, cellReader);
-    if (index >= 0) return index;
-    throw failMatchingNotFound(list, pattern);
+    return indexOf(list, new PatternTextMatcher(pattern));
   }
 
   @RunsInEDT
-  private static int itemIndex(final JList list, final Pattern pattern, final JListCellReader cellReader) {
+  private int indexOf(JList list, TextMatcher matcher) {
+    int index = itemIndex(list, matcher, cellReader);
+    if (index >= 0) return index;
+    throw failMatchingNotFound(list, matcher);
+  }
+
+  @RunsInEDT
+  private static int itemIndex(final JList list, final TextMatcher matcher, final JListCellReader cellReader) {
     return execute(new GuiQuery<Integer>() {
       protected Integer executeInEDT() {
-        return matchingItemIndex(list, pattern, cellReader);
+        return matchingItemIndex(list, matcher, cellReader);
       }
     });
   }
 
-  private LocationUnavailableException failMatchingNotFound(JList list, Pattern pattern) {
+  private LocationUnavailableException failMatchingNotFound(JList list, TextMatcher matcher) {
     throw new LocationUnavailableException(concat(
-        "Unable to find item matching pattern ", quote(pattern.pattern()),
-        " among the JList contents (", format(contents(list, cellReader))));
+        "Unable to find item matching the ", matcher.description(), " ", matcher.formattedValues(),
+        " among the JList contents ", format(contents(list, cellReader))));
   }
 
   /**

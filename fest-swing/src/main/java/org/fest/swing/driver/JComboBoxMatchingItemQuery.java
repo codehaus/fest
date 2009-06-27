@@ -17,14 +17,12 @@ package org.fest.swing.driver;
 
 import static org.fest.swing.edt.GuiActionRunner.execute;
 
-import java.util.regex.Pattern;
-
 import javax.swing.JComboBox;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.cell.JComboBoxCellReader;
 import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.util.*;
+import org.fest.swing.util.TextMatcher;
 
 /**
  * Understands lookup of the first item in a <code>{@link JComboBox}</code> whose value matches a given one.
@@ -32,16 +30,6 @@ import org.fest.swing.util.*;
  * @author Alex Ruiz
  */
 final class JComboBoxMatchingItemQuery {
-
-  @RunsInEDT
-  static int matchingItemIndex(JComboBox comboBox, String value, JComboBoxCellReader cellReader) {
-    return matchingItemIndex(comboBox, new StringTextMatcher(value), cellReader);
-  }
-
-  @RunsInEDT
-  static int matchingItemIndex(JComboBox comboBox, Pattern pattern, JComboBoxCellReader cellReader) {
-    return matchingItemIndex(comboBox, new PatternTextMatcher(pattern), cellReader);
-  }
 
   @RunsInEDT
   static int matchingItemIndex(final JComboBox comboBox, final TextMatcher matcher, final JComboBoxCellReader cellReader) {

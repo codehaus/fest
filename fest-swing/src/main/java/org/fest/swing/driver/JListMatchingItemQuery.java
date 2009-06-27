@@ -22,7 +22,6 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 
 import java.awt.Point;
 import java.util.*;
-import java.util.regex.Pattern;
 
 import javax.swing.JList;
 
@@ -30,7 +29,8 @@ import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.cell.JListCellReader;
 import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.util.*;
+import org.fest.swing.util.StringTextMatcher;
+import org.fest.swing.util.TextMatcher;
 
 /**
  * Understands lookup of the first item in a <code>{@link JList}</code> whose value matches a given one.
@@ -43,20 +43,10 @@ final class JListMatchingItemQuery {
   static Point centerOfMatchingItemCell(final JList list, final String value, final JListCellReader cellReader) {
     return execute(new GuiQuery<Point>() {
       protected Point executeInEDT() {
-        int itemIndex = matchingItemIndex(list, value, cellReader);
+        int itemIndex = matchingItemIndex(list, new StringTextMatcher(value), cellReader);
         return cellCenter(list, cellBounds(list, itemIndex));
       }
     });
-  }
-
-  @RunsInCurrentThread
-  static int matchingItemIndex(JList list, String value, JListCellReader cellReader) {
-    return matchingItemIndex(list, new StringTextMatcher(value), cellReader);
-  }
-
-  @RunsInCurrentThread
-  static int matchingItemIndex(JList list, Pattern pattern, JListCellReader cellReader) {
-    return matchingItemIndex(list, new PatternTextMatcher(pattern), cellReader);
   }
 
   @RunsInCurrentThread
@@ -70,11 +60,6 @@ final class JListMatchingItemQuery {
   @RunsInEDT
   static List<Integer> matchingItemIndices(final JList list, final String[] values, final JListCellReader cellReader) {
     return matchingItemIndices(list, new StringTextMatcher(values), cellReader);
-  }
-
-  @RunsInEDT
-  static List<Integer> matchingItemIndices(final JList list, final Pattern[] patterns, final JListCellReader cellReader) {
-    return matchingItemIndices(list, new PatternTextMatcher(patterns), cellReader);
   }
 
   @RunsInEDT

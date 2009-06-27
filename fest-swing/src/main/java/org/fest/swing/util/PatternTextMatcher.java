@@ -15,7 +15,10 @@
  */
 package org.fest.swing.util;
 
+import static org.fest.swing.util.Patterns.format;
 import static org.fest.swing.util.Strings.match;
+import static org.fest.util.Arrays.isEmpty;
+import static org.fest.util.Strings.quote;
 
 import java.util.regex.Pattern;
 
@@ -33,9 +36,11 @@ public class PatternTextMatcher implements TextMatcher {
    * Creates a new </code>{@link PatternTextMatcher}</code>.
    * @param patterns the regular expression patterns to match.
    * @throws NullPointerException if the array of patterns is <code>null</code>.
+   * @throws IllegalArgumentException if the array of patterns is empty.
    */
   public PatternTextMatcher(Pattern...patterns) {
     if (patterns == null) throw new NullPointerException("The array of patterns should not be null");
+    if (isEmpty(patterns)) throw new IllegalArgumentException("The array of patterns should not be empty");
     this.patterns = patterns;
   }
 
@@ -50,5 +55,29 @@ public class PatternTextMatcher implements TextMatcher {
     for (Pattern pattern : patterns)
       if (match(pattern, text)) return true;
     return false;
+  }
+
+  /**
+   * Returns "pattern" if this matcher contains only one pattern, or "patterns" if this matcher contains more than one
+   * pattern.
+   * @return "pattern" if this matcher contains only one pattern, or "patterns" if this matcher contains more than one
+   * pattern.
+   */
+  public String description() {
+    if (onlyOnePattern()) return "pattern";
+    return "patterns";
+  }
+
+  /**
+   * Returns the regular expression patterns in this matcher, formatted as a single <code>String</code>.
+   * @return the regular expression patterns in this matcher, formatted as a single <code>String</code>.
+   */
+  public String formattedValues() {
+    if (onlyOnePattern()) return quote(patterns[0].pattern());
+    return format(patterns);
+  }
+
+  private boolean onlyOnePattern() {
+    return patterns.length == 1;
   }
 }

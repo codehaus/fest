@@ -24,7 +24,6 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.regex.Pattern;
 
 import javax.swing.JList;
 
@@ -57,18 +56,12 @@ final class JListScrollToItemTask {
   }
 
   @RunsInEDT
-  // returns the index of first matching element and the point that the JList was scrolled to.
   static Pair<Integer, Point> scrollToItem(JList list, String value, JListCellReader cellReader) {
     return scrollToItem(list, new StringTextMatcher(value), cellReader);
   }
 
   @RunsInEDT
   // returns the index of first matching element and the point that the JList was scrolled to.
-  static Pair<Integer, Point> scrollToItem(final JList list, final Pattern pattern, final JListCellReader cellReader) {
-    return scrollToItem(list, new PatternTextMatcher(pattern), cellReader);
-  }
-
-  @RunsInEDT
   static Pair<Integer, Point> scrollToItem(final JList list, final TextMatcher matcher, final JListCellReader cellReader) {
     return execute(new GuiQuery<Pair<Integer, Point>>() {
       protected Pair<Integer, Point> executeInEDT() {
@@ -88,11 +81,6 @@ final class JListScrollToItemTask {
 
   @RunsInEDT
   // returns the index of first matching element and the point that the JList was scrolled to.
-  static Pair<Integer, Point> scrollToItemIfNotSelectedYet(JList list, Pattern pattern, JListCellReader cellReader) {
-    return scrollToItemIfNotSelectedYet(list, new PatternTextMatcher(pattern), cellReader);
-  }
-
-  @RunsInEDT
   static Pair<Integer, Point> scrollToItemIfNotSelectedYet(final JList list, final TextMatcher matcher,
       final JListCellReader cellReader) {
     return execute(new GuiQuery<Pair<Integer, Point>>() {

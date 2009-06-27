@@ -108,7 +108,7 @@ public class JListDriverTest {
       failWhenExpectingException();
     } catch (LocationUnavailableException expected) {
       assertThat(expected.getMessage()).isEqualTo(
-          "Unable to find item matching 'four' among the JList contents (['one', 'two', 'three']");
+          "Unable to find item matching the value 'four' among the JList contents ['one', 'two', 'three']");
     }
   }
 
@@ -124,7 +124,7 @@ public class JListDriverTest {
       failWhenExpectingException();
     } catch (LocationUnavailableException expected) {
       assertThat(expected.getMessage()).isEqualTo(
-          "Unable to find item matching pattern 'fou.*' among the JList contents (['one', 'two', 'three']");
+          "Unable to find item matching the pattern 'fou.*' among the JList contents ['one', 'two', 'three']");
     }
   }
 
@@ -234,7 +234,8 @@ public class JListDriverTest {
       driver.selectItem(dragList, "ten");
       failWhenExpectingException();
     } catch (LocationUnavailableException e) {
-      assertThat(e.getMessage()).isEqualTo("Unable to find item matching 'ten' among the JList contents (['one', 'two', 'three']");
+      assertThat(e.getMessage()).isEqualTo(
+          "Unable to find item matching the value 'ten' among the JList contents ['one', 'two', 'three']");
     }
   }
 
@@ -313,7 +314,8 @@ public class JListDriverTest {
       driver.selectItem(dragList, regex("ten"));
       failWhenExpectingException();
     } catch (LocationUnavailableException e) {
-      assertThat(e.getMessage()).isEqualTo("Unable to find item matching pattern 'ten' among the JList contents (['one', 'two', 'three']");
+      assertThat(e.getMessage()).isEqualTo(
+          "Unable to find item matching the pattern 'ten' among the JList contents ['one', 'two', 'three']");
     }
   }
 
@@ -375,7 +377,7 @@ public class JListDriverTest {
       failWhenExpectingException();
     } catch (LocationUnavailableException e) {
       assertThat(e.getMessage()).contains(
-          "Unable to find item matching the value(s) ['abc'] among the JList contents (['one', 'two', 'three']");
+          "Unable to find item matching the value 'abc' among the JList contents ['one', 'two', 'three']");
     }
   }
 
@@ -431,7 +433,7 @@ public class JListDriverTest {
       failWhenExpectingException();
     } catch (LocationUnavailableException e) {
       assertThat(e.getMessage()).contains(
-          "Unable to find item matching the pattern(s) ['abc'] among the JList contents (['one', 'two', 'three']");
+          "Unable to find item matching the pattern 'abc' among the JList contents ['one', 'two', 'three']");
     }
   }
 
