@@ -158,7 +158,7 @@ public class JListDriverTest {
   }
 
   public void shouldClickItemWithGivenText() {
-    setSelectedIndex(dragList, (-1));
+    clearDragListSelection();
     robot.waitForIdle();
     ClickRecorder recorder = ClickRecorder.attachTo(dragList);
     driver.clickItem(dragList, "two", RIGHT_BUTTON, 2);
@@ -168,8 +168,19 @@ public class JListDriverTest {
     assertThat(locationToIndex(dragList, pointClicked)).isEqualTo(1);
   }
 
+  public void shouldClickItemMatchingGivenPatternAsString() {
+    clearDragListSelection();
+    robot.waitForIdle();
+    ClickRecorder recorder = ClickRecorder.attachTo(dragList);
+    driver.clickItem(dragList, "tw.*", RIGHT_BUTTON, 2);
+    assertThat(recorder).clicked(RIGHT_BUTTON)
+                        .timesClicked(2);
+    Point pointClicked = recorder.pointClicked();
+    assertThat(locationToIndex(dragList, pointClicked)).isEqualTo(1);
+  }
+
   public void shouldClickItemMatchingGivenPattern() {
-    setSelectedIndex(dragList, (-1));
+    clearDragListSelection();
     robot.waitForIdle();
     ClickRecorder recorder = ClickRecorder.attachTo(dragList);
     driver.clickItem(dragList, regex("two"), RIGHT_BUTTON, 2);
@@ -556,14 +567,21 @@ public class JListDriverTest {
   }
 
   public void shouldPassIfSelectionValueIsEqualToExpectedOne() {
-    setSelectedIndex(dragList, 0);
+    selectFirstItemInDragList();
     robot.waitForIdle();
     driver.requireSelection(dragList, "one");
     assertCellReaderWasCalled();
   }
 
+  public void shouldPassIfSelectionValueMatchesPatternAsString() {
+    selectFirstItemInDragList();
+    robot.waitForIdle();
+    driver.requireSelection(dragList, "on.*");
+    assertCellReaderWasCalled();
+  }
+
   public void shouldFailIfExpectingSelectionValueButThereIsNone() {
-    setSelectedIndex(dragList, (-1));
+    clearDragListSelection();
     robot.waitForIdle();
     try {
       driver.requireSelection(dragList, "one");
@@ -580,18 +598,48 @@ public class JListDriverTest {
       driver.requireSelection(dragList, "one");
       failWhenExpectingException();
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("expected:<'one'> but was:<'two'>");
+      assertThat(e.getMessage()).contains("actual value:<'two'> is not equal to or does not match pattern:<'one'>");
     }
   }
 
+  public void shouldPassIfSelectionValueMatchesPattern() {
+    selectFirstItemInDragList();
+    robot.waitForIdle();
+    driver.requireSelection(dragList, regex("on.*"));
+    assertCellReaderWasCalled();
+  }
+
+  public void shouldFailIfExpectingSelectionMatchingPatternButThereIsNone() {
+    clearDragListSelection();
+    robot.waitForIdle();
+    try {
+      driver.requireSelection(dragList, regex("one"));
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("No selection");
+    }
+  }
+
+  public void shouldFailIfSelectionValueDoesNotMatchPattern() {
+    setSelectedIndex(dragList, 1);
+    robot.waitForIdle();
+    try {
+      driver.requireSelection(dragList, regex("one"));
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("actual value:<'two'> does not match pattern:<'one'>");
+    }
+  }
+
+
   public void shouldPassIfSelectionIndexIsEqualToExpectedOne() {
-    setSelectedIndex(dragList, 0);
+    selectFirstItemInDragList();
     robot.waitForIdle();
     driver.requireSelection(dragList, 0);
   }
 
   public void shouldFailIfExpectingSelectionIndexButThereIsNone() {
-    setSelectedIndex(dragList, (-1));
+    clearDragListSelection();
     robot.waitForIdle();
     try {
       driver.requireSelection(dragList, 0);
@@ -634,7 +682,7 @@ public class JListDriverTest {
   }
 
   public void shouldFailIfExpectingSelectedItemsButThereIsNone() {
-    setSelectedIndex(dragList, (-1));
+    clearDragListSelection();
     robot.waitForIdle();
     try {
       driver.requireSelectedItems(dragList, "one", "two");
@@ -667,13 +715,17 @@ public class JListDriverTest {
   }
 
   public void shouldPassIfDoesNotHaveSelectionAsAnticipated() {
-    setSelectedIndex(dragList, (-1));
+    clearDragListSelection();
     robot.waitForIdle();
     driver.requireNoSelection(dragList);
   }
 
+  private void clearDragListSelection() {
+    setSelectedIndex(dragList, (-1));
+  }
+
   public void shouldFailIfHasSelectionAndExpectingNoSelection() {
-    setSelectedIndex(dragList, 0);
+    selectFirstItemInDragList();
     robot.waitForIdle();
     try {
       driver.requireNoSelection(dragList);
@@ -682,6 +734,10 @@ public class JListDriverTest {
       assertThat(e.getMessage()).contains("property:'selectedIndex'")
                                 .contains("expected:<-1> but was:<0>");
     }
+  }
+
+  private void selectFirstItemInDragList() {
+    setSelectedIndex(dragList, 0);
   }
 
   public void shouldShowPopupMenuAtItemWithValue() {

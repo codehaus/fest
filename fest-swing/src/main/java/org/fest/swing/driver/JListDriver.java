@@ -30,6 +30,7 @@ import static org.fest.swing.driver.JListSelectedIndexQuery.selectedIndexOf;
 import static org.fest.swing.driver.JListSelectionValueQuery.NO_SELECTION_VALUE;
 import static org.fest.swing.driver.JListSelectionValueQuery.singleSelectionValue;
 import static org.fest.swing.driver.JListSelectionValuesQuery.selectionValues;
+import static org.fest.swing.driver.TextAssert.verifyThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.util.Arrays.format;
 import static org.fest.util.Strings.concat;
@@ -325,14 +326,35 @@ public class JListDriver extends JComponentDriver {
   /**
    * Verifies that the selected item in the <code>{@link JList}</code> matches the given value.
    * @param list the target <code>JList</code>.
-   * @param value the value to match.
+   * @param value the value to match. It can be a regular expression pattern.
    * @throws AssertionError if the selected item does not match the value.
+   * @see #cellReader(JListCellReader)
    */
   @RunsInEDT
   public void requireSelection(final JList list, String value) {
+    String selection = requiredSelection(list);
+    verifyThat(selection).as(selectedIndexProperty(list)).isEqualOrMatches(value);
+  }
+
+  /**
+   * Verifies that the selected item in the <code>{@link JList}</code> matches the given regular expression pattern.
+   * @param list the target <code>JList</code>.
+   * @param pattern the regular expression pattern to match.
+   * @throws AssertionError if the selected item does not match the given regular expression pattern.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @see #cellReader(JListCellReader)
+   * @since 1.2
+   */
+  @RunsInEDT
+  public void requireSelection(JList list, Pattern pattern) {
+    String selection = requiredSelection(list);
+    verifyThat(selection).as(selectedIndexProperty(list)).matches(pattern);
+  }
+
+  private String requiredSelection(final JList list) {
     Object selection = singleSelectionValue(list, cellReader);
     if (NO_SELECTION_VALUE == selection) failNoSelection(list);
-    assertThat(selection).as(selectedIndexProperty(list)).isEqualTo(value);
+    return (String)selection;
   }
 
   /**

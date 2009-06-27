@@ -261,6 +261,20 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  public void shouldRequireSelectionMatchingPattern() {
+    final Pattern p = regex("hello");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.requireSelection(target, p);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireSelection(p));
+      }
+    }.run();
+  }
+
   public void shouldRequireSelectionIndex() {
     new EasyMockTemplate(driver) {
       protected void expectations() {

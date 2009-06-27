@@ -606,13 +606,28 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
   /**
    * Verifies that the <code>String</code> representation of the selected item in this fixture's
    * <code>{@link JList}</code> matches the given text.
-   * @param text the text to match.
+   * @param text the text to match. It can be a regular expression pattern.
    * @return this fixture.
    * @throws AssertionError if the selected item does not match the given text.
    * @see #cellReader(JListCellReader)
    */
   public JListFixture requireSelection(String text) {
     driver.requireSelection(target, text);
+    return this;
+  }
+
+  /**
+   * Verifies that the <code>String</code> representation of the selected item in this fixture's
+   * <code>{@link JList}</code> matches the given regular expression pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws AssertionError if the selected item does not match the given regular expression pattern.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @see #cellReader(JListCellReader)
+   * @since 1.2
+   */
+  public JListFixture requireSelection(Pattern pattern) {
+    driver.requireSelection(target, pattern);
     return this;
   }
 
