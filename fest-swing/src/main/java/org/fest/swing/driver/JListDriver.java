@@ -16,7 +16,7 @@
 package org.fest.swing.driver;
 
 import static java.awt.event.KeyEvent.VK_SHIFT;
-import static java.lang.String.valueOf;
+import static java.util.Arrays.sort;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.Fail.fail;
 import static org.fest.swing.awt.AWT.visibleCenterOf;
@@ -27,6 +27,7 @@ import static org.fest.swing.driver.JListItemValueQuery.itemValue;
 import static org.fest.swing.driver.JListMatchingItemQuery.*;
 import static org.fest.swing.driver.JListScrollToItemTask.*;
 import static org.fest.swing.driver.JListSelectedIndexQuery.selectedIndexOf;
+import static org.fest.swing.driver.JListSelectionIndicesQuery.selectedIndices;
 import static org.fest.swing.driver.JListSelectionValueQuery.NO_SELECTION_VALUE;
 import static org.fest.swing.driver.JListSelectionValueQuery.singleSelectionValue;
 import static org.fest.swing.driver.JListSelectionValuesQuery.selectionValues;
@@ -66,7 +67,6 @@ import org.fest.swing.util.Range.To;
 public class JListDriver extends JComponentDriver {
 
   private static final String SELECTED_INDICES_PROPERTY = "selectedIndices";
-  private static final String SELECTED_INDICES_LENGTH_PROPERTY = concat(SELECTED_INDICES_PROPERTY, "#length");
   private static final String SELECTED_INDEX_PROPERTY = "selectedIndex";
 
   private JListCellReader cellReader;
@@ -226,15 +226,12 @@ public class JListDriver extends JComponentDriver {
    * the <code>JList</code>.
    */
   public void selectItems(final JList list, final int[] indices) {
-    if (indices == null) throw new NullPointerException("The array of indices should not be null");
-    if (isEmptyArray(indices)) throw new IllegalArgumentException("The array of indices should not be empty");
+    validateArrayOfIndices(indices);
     new MultipleSelectionTemplate(robot) {
       int elementCount() { return indices.length; }
       void selectElement(int index) { selectItem(list, indices[index]); }
     }.multiSelect();
   }
-
-  private boolean isEmptyArray(int[] array) { return array == null || array.length == 0; }
 
   /**
    * Clears the selection in the given <code>{@link JList}</code>. Since this method does not simulate user input, it
@@ -247,6 +244,7 @@ public class JListDriver extends JComponentDriver {
     robot.waitForIdle();
   }
 
+  @RunsInEDT
   private static void clearSelectionOf(final JList list) {
     execute(new GuiTask() {
       protected void executeInEDT() {
@@ -372,19 +370,6 @@ public class JListDriver extends JComponentDriver {
   }
 
   /**
-   * Verifies that the selected items in the <code>{@link JList}</code> match the given values.
-   * @param list the target <code>JList</code>.
-   * @param items the values to match.
-   * @throws NullPointerException if the given array is <code>null</code>.
-   * @throws AssertionError if the selected items do not match the given values.
-   */
-  @RunsInEDT
-  public void requireSelectedItems(JList list, String... items) {
-    if (items == null) throw new NullPointerException("The array of items should not be null");
-    requireEqualSelection(list, items, selectionOf(list));
-  }
-
-  /**
    * Returns an array of <code>String</code>s that represents the selection in the given <code>{@link JList}</code>,
    * using this driver's <code>{@link JListCellReader}</code>.
    * @param list the target <code>JList</code>.
@@ -393,18 +378,66 @@ public class JListDriver extends JComponentDriver {
    */
   @RunsInEDT
   public String[] selectionOf(JList list) {
-    return selectionValues(list, cellReader);
+    List<String> selection = selectionValues(list, cellReader);
+    return selection.toArray(new String[selection.size()]);
   }
 
-  private void requireEqualSelection(JList list, String[] expected, String[] actual) {
-    int selectionCount = actual.length;
-    if (selectionCount == 0) failNoSelection(list);
-    assertThat(selectionCount).as(propertyName(list, SELECTED_INDICES_LENGTH_PROPERTY)).isEqualTo(expected.length);
-    for (int i = 0; i < selectionCount; i++) {
-      Description description = propertyName(list, concat(SELECTED_INDICES_PROPERTY, "[", valueOf(i), "]"));
-      assertThat(actual[i]).as(description).isEqualTo(expected[i]);
-    }
+  /**
+   * Verifies that the selected items in the <code>{@link JList}</code> match the given values.
+   * @param list the target <code>JList</code>.
+   * @param items the values to match. Each value can be a regular expression pattern.
+   * @throws NullPointerException if the given array is <code>null</code>.
+   * @throws IllegalArgumentException if the given array is empty.
+   * @throws AssertionError if the selected items do not match the given values.
+   */
+  @RunsInEDT
+  public void requireSelectedItems(JList list, String... items) {
+    requireSelectedItems(list, new StringTextMatcher(items));
   }
+
+  /**
+   * Verifies that the selected items in the <code>{@link JList}</code> match the given regular expression patterns.
+   * @param list the target <code>JList</code>.
+   * @param patterns the regular expression patterns to match.
+   * @throws NullPointerException if the given array is <code>null</code>.
+   * @throws IllegalArgumentException if the given array is empty.
+   * @throws NullPointerException if any of the patterns in the array is <code>null</code>.
+   * @throws AssertionError if the selected items do not match the given values.
+   * @see #cellReader(JListCellReader)
+   * @since 1.2
+   */
+  @RunsInEDT
+  public void requireSelectedItems(JList list, Pattern... patterns) {
+    requireSelectedItems(list, new PatternTextMatcher(patterns));
+  }
+
+  @RunsInEDT
+  private void requireSelectedItems(JList list, TextMatcher matcher) {
+    List<String> matchingValues = matchingItemValues(list, matcher, cellReader);
+    assertThat(selectionValues(list, cellReader)).as(propertyName(list, SELECTED_INDICES_PROPERTY)).isEqualTo(matchingValues);
+  }
+
+  /**
+   * Verifies that the given item indices are selected in the <code>{@link JList}</code>.
+   * @param list the target <code>JList</code>.
+   * @param indices the expected indices of the selected items.
+   * @throws NullPointerException if the given array is <code>null</code>.
+   * @throws IllegalArgumentException if the given array is empty.
+   * @throws AssertionError if the selection in the <code>JList</code> does not match the given one.
+   */
+  @RunsInEDT
+  public void requireSelectedItems(JList list, int... indices) {
+    validateArrayOfIndices(indices);
+    sort(indices);
+    assertThat(selectedIndices(list)).as(propertyName(list, SELECTED_INDICES_PROPERTY)).isEqualTo(indices);
+  }
+
+  private void validateArrayOfIndices(int[] indices) {
+    if (indices == null) throw new NullPointerException("The array of indices should not be null");
+    if (isEmptyArray(indices)) throw new IllegalArgumentException("The array of indices should not be empty");
+  }
+
+  private boolean isEmptyArray(int[] array) { return array == null || array.length == 0; }
 
   /**
    * Verifies that the <code>{@link JList}</code> does not have a selection.

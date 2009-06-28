@@ -208,6 +208,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Deprecated
   public void shouldDoubleClickItemUnderIndex() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -221,6 +222,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Deprecated
   public void shouldDoubleClickItemWithValue() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -230,20 +232,6 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         assertThatReturnsThis(fixture.doubleClickItem("Frodo"));
-      }
-    }.run();
-  }
-
-  public void shouldDoubleClickItemMatchingPattern() {
-    final Pattern p = regex("hello");
-    new EasyMockTemplate(driver) {
-      protected void expectations() {
-        driver.clickItem(target, p, LEFT_BUTTON, 2);
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.doubleClickItem(p));
       }
     }.run();
   }
@@ -290,6 +278,34 @@ import org.testng.annotations.Test;
 
   public void shouldRequireSelectedItems() {
     final String[] items = array("Frodo", "Sam");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.requireSelectedItems(target, items);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireSelectedItems(items));
+      }
+    }.run();
+  }
+
+  public void shouldRequireSelectedItemsToMatchPatterns() {
+    final Pattern[] patterns = array(regex("Frodo"), regex("Sam"));
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.requireSelectedItems(target, patterns);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireSelectedItems(patterns));
+      }
+    }.run();
+  }
+
+  public void shouldRequireSelectedIndices() {
+    final int[] items = { 0, 1 };
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.requireSelectedItems(target, items);

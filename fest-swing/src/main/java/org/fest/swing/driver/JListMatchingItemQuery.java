@@ -63,7 +63,8 @@ final class JListMatchingItemQuery {
   }
 
   @RunsInEDT
-  static List<Integer> matchingItemIndices(final JList list, final TextMatcher matcher, final JListCellReader cellReader) {
+  static List<Integer> matchingItemIndices(final JList list, final TextMatcher matcher,
+      final JListCellReader cellReader) {
     return execute(new GuiQuery<List<Integer>>() {
       protected List<Integer> executeInEDT() {
         Set<Integer> indices = new HashSet<Integer>();
@@ -73,6 +74,22 @@ final class JListMatchingItemQuery {
         List<Integer> indexList = new ArrayList<Integer>(indices);
         sort(indexList);
         return indexList;
+      }
+    });
+  }
+
+  @RunsInEDT
+  static List<String> matchingItemValues(final JList list, final TextMatcher matcher,
+      final JListCellReader cellReader) {
+    return execute(new GuiQuery<List<String>>() {
+      protected List<String> executeInEDT() {
+        List<String> values = new ArrayList<String>();
+        int size = list.getModel().getSize();
+        for (int i = 0; i < size; i++) {
+          String value = cellReader.valueAt(list, i);
+          if (matcher.isMatching(value)) values.add(value);
+        }
+        return values;
       }
     });
   }

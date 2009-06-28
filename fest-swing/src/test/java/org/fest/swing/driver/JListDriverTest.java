@@ -568,21 +568,18 @@ public class JListDriverTest {
 
   public void shouldPassIfSelectionValueIsEqualToExpectedOne() {
     selectFirstItemInDragList();
-    robot.waitForIdle();
     driver.requireSelection(dragList, "one");
     assertCellReaderWasCalled();
   }
 
   public void shouldPassIfSelectionValueMatchesPatternAsString() {
     selectFirstItemInDragList();
-    robot.waitForIdle();
     driver.requireSelection(dragList, "on.*");
     assertCellReaderWasCalled();
   }
 
   public void shouldFailIfExpectingSelectionValueButThereIsNone() {
     clearDragListSelection();
-    robot.waitForIdle();
     try {
       driver.requireSelection(dragList, "one");
       failWhenExpectingException();
@@ -604,14 +601,12 @@ public class JListDriverTest {
 
   public void shouldPassIfSelectionValueMatchesPattern() {
     selectFirstItemInDragList();
-    robot.waitForIdle();
     driver.requireSelection(dragList, regex("on.*"));
     assertCellReaderWasCalled();
   }
 
   public void shouldFailIfExpectingSelectionMatchingPatternButThereIsNone() {
     clearDragListSelection();
-    robot.waitForIdle();
     try {
       driver.requireSelection(dragList, regex("one"));
       failWhenExpectingException();
@@ -634,13 +629,11 @@ public class JListDriverTest {
 
   public void shouldPassIfSelectionIndexIsEqualToExpectedOne() {
     selectFirstItemInDragList();
-    robot.waitForIdle();
     driver.requireSelection(dragList, 0);
   }
 
   public void shouldFailIfExpectingSelectionIndexButThereIsNone() {
     clearDragListSelection();
-    robot.waitForIdle();
     try {
       driver.requireSelection(dragList, 0);
       failWhenExpectingException();
@@ -660,46 +653,24 @@ public class JListDriverTest {
     }
   }
 
-  public void shouldPassIfSelectedItemsIsEqualToExpectedOnes() {
-    setSelectedIndices(dragList, 0, 1);
-    robot.waitForIdle();
-    driver.requireSelectedItems(dragList, "one", "two");
-    assertCellReaderWasCalled();
-  }
-
-  private static void setSelectedIndices(final JList list, final int... indices) {
-    execute(new GuiTask() {
-      protected void executeInEDT() {
-        list.setSelectionMode(MULTIPLE_INTERVAL_SELECTION);
-        list.setSelectedIndices(indices);
-      }
-    });
-  }
-
   @Test(expectedExceptions = NullPointerException.class)
   public void shouldThrowErrorIfExpectedSelectedItemsIsNull() {
     driver.requireSelectedItems(dragList, (String[])null);
   }
 
-  public void shouldFailIfExpectingSelectedItemsButThereIsNone() {
-    clearDragListSelection();
-    robot.waitForIdle();
-    try {
-      driver.requireSelectedItems(dragList, "one", "two");
-      failWhenExpectingException();
-    } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("No selection");
-    }
+  @Test(expectedExceptions = IllegalArgumentException.class)
+  public void shouldThrowErrorIfArrayOfExpectedSelectedItemsIsEmpty() {
+    driver.requireSelectedItems(dragList, new String[0]);
   }
 
-  public void shouldFailIfSelectedItemCountIsNotEqualToExpectedOnes() {
-    setSelectedIndex(dragList, 2);
-    robot.waitForIdle();
+  public void shouldFailIfExpectingSelectedItemsButThereIsNone() {
+    clearDragListSelection();
     try {
       driver.requireSelectedItems(dragList, "one", "two");
       failWhenExpectingException();
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("property:'selectedIndices#length'] expected:<2> but was:<1>");
+      assertThat(e.getMessage()).contains("property:'selectedIndices'")
+                                .contains("expected:<['one', 'two']> but was:<[]>");
     }
   }
 
@@ -710,23 +681,119 @@ public class JListDriverTest {
       driver.requireSelectedItems(dragList, "one");
       failWhenExpectingException();
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("expected:<'one'> but was:<'three'>");
+      assertThat(e.getMessage()).contains("property:'selectedIndices'")
+                                .contains("expected:<['one']> but was:<['three']>");
     }
+  }
+
+  public void shouldPassIfSelectedItemsIsEqualToExpectedOnes() {
+    setSelectedIndices(dragList, 0, 1);
+    robot.waitForIdle();
+    driver.requireSelectedItems(dragList, "two", "one");
+    assertCellReaderWasCalled();
+  }
+
+  @Test(expectedExceptions = NullPointerException.class)
+  public void shouldThrowErrorIfPatternForExpectedSelectedItemsIsNull() {
+    driver.requireSelectedItems(dragList, (Pattern[])null);
+  }
+
+  @Test(expectedExceptions = IllegalArgumentException.class)
+  public void shouldThrowErrorIfPatternForExpectedSelectedItemsIsEmpty() {
+    driver.requireSelectedItems(dragList, new Pattern[0]);
+  }
+
+  public void shouldFailIfExpectingSelectedItemsToMatchPatternButThereIsNone() {
+    clearDragListSelection();
+    try {
+      driver.requireSelectedItems(dragList, regex("one"));
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("property:'selectedIndices'")
+                                .contains("expected:<['one']> but was:<[]>");
+    }
+  }
+
+  public void shouldFailIfSelectedItemsMatchingPatternAreNotEqualToExpectedOnes() {
+    selectFirstItemInDragList();
+    try {
+      driver.requireSelectedItems(dragList, regex("t.*"));
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      System.out.println(e.getMessage());
+      assertThat(e.getMessage()).contains("expected:<['two', 'three']> but was:<['one']>");
+    }
+  }
+
+  public void shouldPassIfSelectedItemsMatchesPattern() {
+    setSelectedIndices(dragList, 1, 2);
+    robot.waitForIdle();
+    driver.requireSelectedItems(dragList, regex("t.*"));
+    assertCellReaderWasCalled();
+  }
+
+  @Test(expectedExceptions = NullPointerException.class)
+  public void shouldThrowErrorIfExpectedSelectedIndicesIsNull() {
+    driver.requireSelectedItems(dragList, (int[])null);
+  }
+
+  @Test(expectedExceptions = IllegalArgumentException.class)
+  public void shouldThrowErrorIfArrayOfExpectedSelectedIndicesIsEmpty() {
+    driver.requireSelectedItems(dragList, new int[0]);
+  }
+
+  public void shouldFailIfExpectingSelectedIndicesButThereIsNone() {
+    clearDragListSelection();
+    try {
+      driver.requireSelectedItems(dragList, 0, 1);
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("property:'selectedIndices'")
+                                .contains("expected:<[0, 1]> but was:<[]>");
+    }
+  }
+
+  public void shouldFailIfSelectedIndicesIsNotEqualToExpectedOnes() {
+    setSelectedIndex(dragList, 2);
+    robot.waitForIdle();
+    try {
+      driver.requireSelectedItems(dragList, 0, 1);
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      System.out.println(e.getMessage());
+      assertThat(e.getMessage()).contains("property:'selectedIndices'")
+                                .contains("expected:<[0, 1]> but was:<[2]>");
+    }
+  }
+
+  public void shouldPassIfSelectedIndicesIsEqualToExpectedOnes() {
+    setSelectedIndices(dragList, 0, 1);
+    robot.waitForIdle();
+    driver.requireSelectedItems(dragList, 1, 0);
+  }
+
+  @RunsInEDT
+  private static void setSelectedIndices(final JList list, final int... indices) {
+    execute(new GuiTask() {
+      protected void executeInEDT() {
+        list.setSelectionMode(MULTIPLE_INTERVAL_SELECTION);
+        list.setSelectedIndices(indices);
+      }
+    });
   }
 
   public void shouldPassIfDoesNotHaveSelectionAsAnticipated() {
     clearDragListSelection();
-    robot.waitForIdle();
     driver.requireNoSelection(dragList);
   }
 
   private void clearDragListSelection() {
     setSelectedIndex(dragList, (-1));
+    robot.waitForIdle();
   }
 
   public void shouldFailIfHasSelectionAndExpectingNoSelection() {
     selectFirstItemInDragList();
-    robot.waitForIdle();
     try {
       driver.requireNoSelection(dragList);
       failWhenExpectingException();
@@ -738,6 +805,7 @@ public class JListDriverTest {
 
   private void selectFirstItemInDragList() {
     setSelectedIndex(dragList, 0);
+    robot.waitForIdle();
   }
 
   public void shouldShowPopupMenuAtItemWithValue() {

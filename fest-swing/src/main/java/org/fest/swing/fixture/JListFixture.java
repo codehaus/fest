@@ -282,7 +282,10 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
    * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
    * @throws IndexOutOfBoundsException if the given index is negative or greater than the index of the last item in
    * the <code>JList</code>.
+   * @deprecated to be removed in version 2.0. Use <code>{@link #item(int)}</code> and
+   * <code>{@link JListItemFixture#doubleClick()}</code> instead.
    */
+  @Deprecated
   public JListFixture doubleClickItem(int index) {
     clickItem(index, LEFT_BUTTON, 2);
     return this;
@@ -295,25 +298,12 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
    * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
    * @throws LocationUnavailableException if an element matching the given <code>String</code> cannot be found.
+   * @deprecated to be removed in version 2.0. Use <code>{@link #item(String)}</code> and
+   * <code>{@link JListItemFixture#doubleClick()}</code> instead.
    */
+  @Deprecated
   public JListFixture doubleClickItem(String text) {
     driver.clickItem(target, text, LEFT_BUTTON, 2);
-    return this;
-  }
-
-  /**
-   * Simulates a user double-clicking an item in this fixture's <code>{@link JList}</code>. The value of the item to
-   * double-click should match the given regular expression pattern.
-   * @param pattern the regular expression pattern to match.
-   * @return this fixture.
-   * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
-   * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
-   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
-   * @throws LocationUnavailableException if an element matching the given regular expression pattern cannot be found.
-   * @since 1.2
-   */
-  public JListFixture doubleClickItem(Pattern pattern) {
-    driver.clickItem(target, pattern, LEFT_BUTTON, 2);
     return this;
   }
 
@@ -647,14 +637,46 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
   /**
    * Verifies that the <code>String</code> representations of the selected items in this fixture's
    * <code>{@link JList}</code> match the given text items.
-   * @param items text items to match.
+   * @param items text items to match. Each <code>String</code> can be a regular expression.
    * @return this fixture.
    * @throws NullPointerException if the given array is <code>null</code>.
+   * @throws IllegalArgumentException if the given array is empty.
    * @throws AssertionError if the selected items do not match the given text items.
    * @see #cellReader(JListCellReader)
    */
   public JListFixture requireSelectedItems(String... items) {
     driver.requireSelectedItems(target, items);
+    return this;
+  }
+
+  /**
+   * Verifies that the <code>String</code> representations of the selected items in this fixture's
+   * <code>{@link JList}</code> match the given regular expression patterns.
+   * @param patterns the regular expression patterns to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given array is <code>null</code>.
+   * @throws IllegalArgumentException if the given array is empty.
+   * @throws NullPointerException if any of the patterns in the given array is <code>null</code>.
+   * @throws AssertionError if the selected items do not match the given regular expression patterns.
+   * @see #cellReader(JListCellReader)
+   * @since 1.2
+   */
+  public JListFixture requireSelectedItems(Pattern[] patterns) {
+    driver.requireSelectedItems(target, patterns);
+    return this;
+  }
+
+  /**
+   * Verifies that the given item indices are selected in this fixture's <code>{@link JList}</code>.
+   * @param indices the expected indices of the selected items.
+   * @return this fixture.
+   * @throws NullPointerException if the given array is <code>null</code>.
+   * @throws IllegalArgumentException if the given array is empty.
+   * @throws AssertionError if the selection in this fixture's <code>JList</code> does not match the given one.
+   * @since 1.2
+   */
+  public JListFixture requireSelectedItems(int... indices) {
+    driver.requireSelectedItems(target, indices);
     return this;
   }
 

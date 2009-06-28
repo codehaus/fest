@@ -15,28 +15,25 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.TestGroups.GUI;
+import static org.fest.util.Arrays.array;
+import static org.fest.util.Collections.list;
+
 import java.awt.Dimension;
 import java.util.List;
 
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.testng.annotations.*;
-
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.cell.JListCellReader;
-import org.fest.swing.core.Robot;
 import org.fest.swing.core.BasicRobot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
+import org.fest.swing.core.Robot;
+import org.fest.swing.edt.*;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.TestGroups.GUI;
-import static org.fest.util.Arrays.array;
-import static org.fest.util.Collections.list;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JListSelectionValuesQuery}</code>.
@@ -67,7 +64,7 @@ public class JListSelectionValuesQueryTest {
   }
 
   public void shouldReturnEmptyArrayIfJListHasNoSelection() {
-    String[] selection = JListSelectionValuesQuery.selectionValues(list, cellReader);
+    List<String> selection = JListSelectionValuesQuery.selectionValues(list, cellReader);
     assertThat(selection).isEmpty();
   }
 
@@ -75,7 +72,7 @@ public class JListSelectionValuesQueryTest {
   public void shouldReturnSelectionOfJListAsText(List<Integer> indices, List<String> values) {
     setSelectedIndices(list, indices);
     robot.waitForIdle();
-    String[] selection = JListSelectionValuesQuery.selectionValues(list, cellReader);
+    List<String> selection = JListSelectionValuesQuery.selectionValues(list, cellReader);
     assertThat(selection).containsOnly(values.toArray());
   }
 

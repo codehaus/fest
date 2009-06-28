@@ -15,13 +15,16 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JList;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.cell.JListCellReader;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands an action, executed in the event dispatch thread, that returns an array of <code>String</code>s that
@@ -32,14 +35,13 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 final class JListSelectionValuesQuery {
 
   @RunsInEDT
-  static String[] selectionValues(final JList list, final JListCellReader cellReader) {
-    return execute(new GuiQuery<String[]>() {
-      protected String[] executeInEDT() {
+  static List<String> selectionValues(final JList list, final JListCellReader cellReader) {
+    return execute(new GuiQuery<List<String>>() {
+      protected List<String> executeInEDT() {
+        List<String> values = new ArrayList<String>();
         int[] selectedIndices = list.getSelectedIndices();
-        int count = selectedIndices.length;
-        String[] values = new String[count];
-        for (int i = 0; i < count; i++)
-          values[i] = cellReader.valueAt(list, selectedIndices[i]);
+        for (int index : selectedIndices)
+          values.add(cellReader.valueAt(list, index));
         return values;
       }
     });

@@ -106,16 +106,15 @@ public class JListMatchingItemQueryTest {
   }
 
   public void shouldReturnIndicesOfItemsMatchingPatternAsString() {
-    assertThat(findMatchingItems(".*")).hasSize(2).contains(0, 1);
+    String[] values = { ".*" };
+    Collection<Integer> matchingItems = JListMatchingItemQuery.matchingItemIndices(list, values, cellReader);
+    assertThat(matchingItems).hasSize(2).contains(0, 1);
   }
 
   public void shouldReturnIndicesOfItemsMatchingPatternsAsString() {
-    assertThat(findMatchingItems("Y.*", "L.*")).hasSize(2).contains(0, 1);
-  }
-
-  @RunsInEDT
-  private Collection<Integer> findMatchingItems(final String...values) {
-    return JListMatchingItemQuery.matchingItemIndices(list, values, cellReader);
+    String[] values = { "Y.*", "L.*" };
+    Collection<Integer> matchingItems = JListMatchingItemQuery.matchingItemIndices(list, values, cellReader);
+    assertThat(matchingItems).hasSize(2).contains(0, 1);
   }
 
   public void shouldReturnIndicesOfMatchingItems() {
@@ -127,12 +126,13 @@ public class JListMatchingItemQueryTest {
       }
 
       protected void codeToTest() {
-        assertThat(matchingItemIndices(matcher)).hasSize(1).containsOnly(1);
+        List<Integer> indices = JListMatchingItemQuery.matchingItemIndices(list, matcher, cellReader);
+        assertThat(indices).hasSize(1).containsOnly(1);
       }
     }.run();
   }
 
-  public void shouldReturnEmptyListIfMatchingItemsNotFound() {
+  public void shouldReturnEmptyListIfMatchingIndicesNotFound() {
     final TextMatcher matcher = mockTextMatcher();
     new EasyMockTemplate(matcher) {
       protected void expectations() {
@@ -141,19 +141,40 @@ public class JListMatchingItemQueryTest {
       }
 
       protected void codeToTest() {
-        assertThat(matchingItemIndices(matcher)).isEmpty();
+        List<Integer> indices = JListMatchingItemQuery.matchingItemIndices(list, matcher, cellReader);
+        assertThat(indices).isEmpty();
       }
     }.run();
   }
 
-  @RunsInEDT
-  private List<Integer> matchingItemIndices(final TextMatcher matcher) {
-    List<Integer> matchingIndices = execute(new GuiQuery<List<Integer>>() {
-      protected List<Integer> executeInEDT() {
-        return JListMatchingItemQuery.matchingItemIndices(list, matcher, cellReader);
+  public void shouldReturnValuesOfMatchingItems() {
+    final TextMatcher matcher = mockTextMatcher();
+    new EasyMockTemplate(matcher) {
+      protected void expectations() {
+        expect(matcher.isMatching("Yoda")).andReturn(false);
+        expect(matcher.isMatching("Luke")).andReturn(true);
       }
-    });
-    return matchingIndices;
+
+      protected void codeToTest() {
+        List<String> values = JListMatchingItemQuery.matchingItemValues(list, matcher, cellReader);
+        assertThat(values).hasSize(1).containsOnly("Luke");
+      }
+    }.run();
+  }
+
+  public void shouldReturnEmptyListIfMatchingValuesNotFound() {
+    final TextMatcher matcher = mockTextMatcher();
+    new EasyMockTemplate(matcher) {
+      protected void expectations() {
+        expect(matcher.isMatching("Yoda")).andReturn(false);
+        expect(matcher.isMatching("Luke")).andReturn(false);
+      }
+
+      protected void codeToTest() {
+        List<String> values = JListMatchingItemQuery.matchingItemValues(list, matcher, cellReader);
+        assertThat(values).isEmpty();
+      }
+    }.run();
   }
 
   private static TextMatcher mockTextMatcher() {
