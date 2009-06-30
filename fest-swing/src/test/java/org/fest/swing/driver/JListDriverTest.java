@@ -190,15 +190,6 @@ public class JListDriverTest {
     assertThat(locationToIndex(dragList, pointClicked)).isEqualTo(1);
   }
 
-  @RunsInEDT
-  private static int locationToIndex(final JList list, final Point p) {
-    return execute(new GuiQuery<Integer>() {
-      protected Integer executeInEDT() {
-        return list.locationToIndex(p);
-      }
-    });
-  }
-
   public void shouldClearSelection() {
     setSelectedIndex(dragList, 1);
     robot.waitForIdle();
@@ -814,7 +805,37 @@ public class JListDriverTest {
     driver.showPopupMenu(dragList, "one");
     assertThat(recorder).clicked(RIGHT_BUTTON);
     assertThat(isVisible(popupMenu)).isTrue();
+    assertThat(locationToIndex(dragList, recorder.pointClicked())).isEqualTo(0);
     assertCellReaderWasCalled();
+  }
+
+  public void shouldShowPopupMenuAtItemMatchingPatternAsString() {
+    JPopupMenu popupMenu = setJPopupMenuInDragList();
+    ClickRecorder recorder = ClickRecorder.attachTo(dragList);
+    driver.showPopupMenu(dragList, "o.*");
+    assertThat(recorder).clicked(RIGHT_BUTTON);
+    assertThat(isVisible(popupMenu)).isTrue();
+    assertThat(locationToIndex(dragList, recorder.pointClicked())).isEqualTo(0);
+    assertCellReaderWasCalled();
+  }
+
+  public void shouldShowPopupMenuAtItemMatchingPattern() {
+    JPopupMenu popupMenu = setJPopupMenuInDragList();
+    ClickRecorder recorder = ClickRecorder.attachTo(dragList);
+    driver.showPopupMenu(dragList, regex("o.*"));
+    assertThat(recorder).clicked(RIGHT_BUTTON);
+    assertThat(isVisible(popupMenu)).isTrue();
+    assertThat(locationToIndex(dragList, recorder.pointClicked())).isEqualTo(0);
+    assertCellReaderWasCalled();
+  }
+
+  @RunsInEDT
+  private static int locationToIndex(final JList list, final Point p) {
+    return execute(new GuiQuery<Integer>() {
+      protected Integer executeInEDT() {
+        return list.locationToIndex(p);
+      }
+    });
   }
 
   public void shouldThrowErrorWhenShowingPopupMenuAtItemWithValueInDisabledJList() {
@@ -896,6 +917,22 @@ public class JListDriverTest {
   public void shouldDragAndDropValueUsingGivenValues() {
     driver.drag(dragList, "two");
     driver.drop(dropList, "six");
+    assertThat(dragList.elements()).isEqualTo(array("one", "three"));
+    assertThat(dropList.elements()).isEqualTo(array("four", "five", "six", "two"));
+    assertCellReaderWasCalled();
+  }
+
+  public void shouldDragAndDropValuesMatchingPatternAsString() {
+    driver.drag(dragList, "tw.*");
+    driver.drop(dropList, "s.*");
+    assertThat(dragList.elements()).isEqualTo(array("one", "three"));
+    assertThat(dropList.elements()).isEqualTo(array("four", "five", "six", "two"));
+    assertCellReaderWasCalled();
+  }
+
+  public void shouldDragAndDropValuesMatchingPattern() {
+    driver.drag(dragList, regex("tw.*"));
+    driver.drop(dropList, regex("s.*"));
     assertThat(dragList.elements()).isEqualTo(array("one", "three"));
     assertThat(dropList.elements()).isEqualTo(array("four", "five", "six", "two"));
     assertCellReaderWasCalled();

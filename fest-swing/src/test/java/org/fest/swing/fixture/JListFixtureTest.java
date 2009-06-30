@@ -378,7 +378,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldDragElementWithElement() {
+  public void shouldDragElementMatchingValue() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.drag(target, "Frodo");
@@ -391,7 +391,21 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldDropElementWithElement() {
+  public void shouldDragElementMatchingPattern() {
+    final Pattern p = regex("Frodo");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.drag(target, p);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.drag(p));
+      }
+    }.run();
+  }
+
+  public void shouldDropElementMatchingValue() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.drop(target, "Frodo");
@@ -400,6 +414,20 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         assertThatReturnsThis(fixture.drop("Frodo"));
+      }
+    }.run();
+  }
+
+  public void shouldDropElementMatchingPattern() {
+    final Pattern p = regex("Frodo");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.drop(target, p);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.drop(p));
       }
     }.run();
   }
@@ -466,6 +494,21 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         JPopupMenuFixture result = fixture.showPopupMenuAt("Frodo");
+        assertThat(result.target).isSameAs(popup);
+      }
+    }.run();
+  }
+
+  public void shouldShowJPopupMenuAtItemMatchingPattern() {
+    final Pattern pattern = regex("Frodo");
+    final JPopupMenu popup = popupMenu().createNew();
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        expect(driver.showPopupMenu(target, pattern)).andReturn(popup);
+      }
+
+      protected void codeToTest() {
+        JPopupMenuFixture result = fixture.showPopupMenuAt(pattern);
         assertThat(result.target).isSameAs(popup);
       }
     }.run();

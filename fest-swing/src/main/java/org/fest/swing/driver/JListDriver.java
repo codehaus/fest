@@ -35,7 +35,6 @@ import static org.fest.swing.driver.TextAssert.verifyThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.util.Arrays.format;
 import static org.fest.util.Strings.concat;
-import static org.fest.util.Strings.quote;
 
 import java.awt.Point;
 import java.util.List;
@@ -462,23 +461,44 @@ public class JListDriver extends JComponentDriver {
   /**
    * Starts a drag operation at the location of the first item matching the given value.
    * @param list the target <code>JList</code>.
-   * @param value the value to match.
+   * @param value the value to match. It can be a regular expression.
    * @throws IllegalStateException if the <code>JList</code> is disabled.
    * @throws IllegalStateException if the <code>JList</code> is not showing on the screen.
    * @throws LocationUnavailableException if an element matching the given value cannot be found.
+   * @see #cellReader(JListCellReader)
    */
   @RunsInEDT
   public void drag(JList list, String value) {
-    Pair<Integer, Point> scrollInfo = scrollToItem(list, value, cellReader);
+    drag(list, new StringTextMatcher(value));
+  }
+
+  /**
+   * Starts a drag operation at the location of the first item matching the given regular expression pattern.
+   * @param list the target <code>JList</code>.
+   * @param pattern the regular expression pattern to match.
+   * @throws IllegalStateException if the <code>JList</code> is disabled.
+   * @throws IllegalStateException if the <code>JList</code> is not showing on the screen.
+   * @throws NullPointerException if the regular expression pattern is <code>null</code>.
+   * @throws LocationUnavailableException if an element matching the given regular expression pattern cannot be found.
+   * @see #cellReader(JListCellReader)
+   * @since 1.2
+   */
+  @RunsInEDT
+  public void drag(JList list, Pattern pattern) {
+    drag(list, new PatternTextMatcher(pattern));
+  }
+
+  private void drag(JList list, TextMatcher matcher) {
+    Pair<Integer, Point> scrollInfo = scrollToItem(list, matcher, cellReader);
     robot.waitForIdle();
-    verify(list, scrollInfo, value);
+    verify(list, scrollInfo, matcher);
     super.drag(list, cellCenterIn(scrollInfo));
   }
 
   /**
    * Ends a drag operation at the location of the first item matching the given value.
    * @param list the target <code>JList</code>.
-   * @param value the value to match.
+   * @param value the value to match. It can be a regular expression.
    * @throws IllegalStateException if the <code>JList</code> is disabled.
    * @throws IllegalStateException if the <code>JList</code> is not showing on the screen.
    * @throws LocationUnavailableException if an element matching the given value cannot be found.
@@ -486,10 +506,33 @@ public class JListDriver extends JComponentDriver {
    */
   @RunsInEDT
   public void drop(JList list, String value) {
-    Pair<Integer, Point> scrollInfo = scrollToItem(list, value, cellReader);
+    drop(list, new StringTextMatcher(value));
+  }
+
+  /**
+   * Ends a drag operation at the location of the first item matching the given regular expression pattern.
+   * @param list the target <code>JList</code>.
+   * @param pattern the regular expression pattern to match.
+   * @throws IllegalStateException if the <code>JList</code> is disabled.
+   * @throws IllegalStateException if the <code>JList</code> is not showing on the screen.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws LocationUnavailableException if an element matching the given value cannot be found.
+   * @throws ActionFailedException if there is no drag action in effect.
+   * @since 1.2
+   */
+  public void drop(JList list, Pattern pattern) {
+    drop(list, new PatternTextMatcher(pattern));
+  }
+
+  private void drop(JList list, TextMatcher matcher) {
+    Pair<Integer, Point> scrollInfo = scrollToItem(list, matcher, cellReader);
     robot.waitForIdle();
-    verify(list, scrollInfo, value);
+    verify(list, scrollInfo, matcher);
     super.drop(list, cellCenterIn(scrollInfo));
+  }
+
+  private void verify(JList list, Pair<Integer, Point> scrollInfo, TextMatcher matcher) {
+    if (ITEM_NOT_FOUND.equals(scrollInfo)) throw failMatchingNotFound(list, matcher);
   }
 
   /**
@@ -525,6 +568,7 @@ public class JListDriver extends JComponentDriver {
     super.drop(list, cellCenter);
   }
 
+
   /**
    * Ends a drag operation at the center of the <code>{@link JList}</code>.
    * @param list the target <code>JList</code>.
@@ -541,7 +585,7 @@ public class JListDriver extends JComponentDriver {
   /**
    * Shows a pop-up menu at the location of the specified item in the <code>{@link JList}</code>.
    * @param list the target <code>JList</code>.
-   * @param value the value to match.
+   * @param value the value to match. It can be a regular expression pattern.
    * @return a fixture that manages the displayed pop-up menu.
    * @throws IllegalStateException if the <code>JList</code> is disabled.
    * @throws IllegalStateException if the <code>JList</code> is not showing on the screen.
@@ -550,18 +594,32 @@ public class JListDriver extends JComponentDriver {
    */
   @RunsInEDT
   public JPopupMenu showPopupMenu(JList list, String value) {
-    Pair<Integer, Point> scrollInfo = scrollToItem(list, value, cellReader);
+    return showPopupMenu(list, new StringTextMatcher(value));
+  }
+
+  /**
+   * Shows a pop-up menu at the location of the specified item in the <code>{@link JList}</code>.
+   * @param list the target <code>JList</code>.
+   * @param pattern the regular expression pattern to match.
+   * @return a fixture that manages the displayed pop-up menu.
+   * @throws IllegalStateException if the <code>JList</code> is disabled.
+   * @throws IllegalStateException if the <code>JList</code> is not showing on the screen.
+   * @throws NullPointerException if the regular expression pattern is <code>null</code>.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   * @throws LocationUnavailableException if an element matching the given value cannot be found.
+   * @since 1.2
+   */
+  @RunsInEDT
+  public JPopupMenu showPopupMenu(JList list, Pattern pattern) {
+    return showPopupMenu(list, new PatternTextMatcher(pattern));
+  }
+
+  @RunsInEDT
+  private JPopupMenu showPopupMenu(JList list, TextMatcher matcher) {
+    Pair<Integer, Point> scrollInfo = scrollToItem(list, matcher, cellReader);
     robot.waitForIdle();
-    verify(list, scrollInfo, value);
+    verify(list, scrollInfo, matcher);
     return robot.showPopupMenu(list, cellCenterIn(scrollInfo));
-  }
-
-  private void verify(JList list, Pair<Integer, Point> scrollInfo, String value) {
-    if (ITEM_NOT_FOUND.equals(scrollInfo)) throw failMatchingNotFound(list, value);
-  }
-
-  private void verify(JList list, Pair<Integer, Point> scrollInfo, TextMatcher matcher) {
-    if (ITEM_NOT_FOUND.equals(scrollInfo)) throw failMatchingNotFound(list, matcher);
   }
 
   private Point cellCenterIn(Pair<Integer, Point> scrollInfo) {
@@ -608,12 +666,6 @@ public class JListDriver extends JComponentDriver {
   @RunsInEDT
   public int indexOf(JList list, String value) {
     return indexOf(list, new StringTextMatcher(value));
-  }
-
-  private LocationUnavailableException failMatchingNotFound(JList list, String value) {
-    throw new LocationUnavailableException(concat(
-        "Unable to find item matching ", quote(value),
-        " among the JList contents (", format(contents(list, cellReader))));
   }
 
   /**

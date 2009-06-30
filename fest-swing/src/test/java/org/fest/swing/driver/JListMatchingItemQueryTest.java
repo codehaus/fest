@@ -23,7 +23,6 @@ import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.util.Arrays.array;
 
 import java.awt.Dimension;
-import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JList;
@@ -103,18 +102,6 @@ public class JListMatchingItemQueryTest {
         return JListMatchingItemQuery.matchingItemIndex(list, matcher, cellReader);
       }
     });
-  }
-
-  public void shouldReturnIndicesOfItemsMatchingPatternAsString() {
-    String[] values = { ".*" };
-    Collection<Integer> matchingItems = JListMatchingItemQuery.matchingItemIndices(list, values, cellReader);
-    assertThat(matchingItems).hasSize(2).contains(0, 1);
-  }
-
-  public void shouldReturnIndicesOfItemsMatchingPatternsAsString() {
-    String[] values = { "Y.*", "L.*" };
-    Collection<Integer> matchingItems = JListMatchingItemQuery.matchingItemIndices(list, values, cellReader);
-    assertThat(matchingItems).hasSize(2).contains(0, 1);
   }
 
   public void shouldReturnIndicesOfMatchingItems() {

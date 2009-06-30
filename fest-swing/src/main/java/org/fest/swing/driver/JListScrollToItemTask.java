@@ -31,7 +31,8 @@ import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.cell.JListCellReader;
 import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.util.*;
+import org.fest.swing.util.Pair;
+import org.fest.swing.util.TextMatcher;
 
 /**
  * Understands actions, executed in the event dispatch thread, that perform scrolling to an element in a
@@ -56,11 +57,6 @@ final class JListScrollToItemTask {
   }
 
   @RunsInEDT
-  static Pair<Integer, Point> scrollToItem(JList list, String value, JListCellReader cellReader) {
-    return scrollToItem(list, new StringTextMatcher(value), cellReader);
-  }
-
-  @RunsInEDT
   // returns the index of first matching element and the point that the JList was scrolled to.
   static Pair<Integer, Point> scrollToItem(final JList list, final TextMatcher matcher, final JListCellReader cellReader) {
     return execute(new GuiQuery<Pair<Integer, Point>>() {
@@ -71,12 +67,6 @@ final class JListScrollToItemTask {
         return new Pair<Integer, Point>(index, scrollToItemWithIndex(list, index));
       }
     });
-  }
-
-  @RunsInEDT
-  // returns the index of first matching element and the point that the JList was scrolled to.
-  static Pair<Integer, Point> scrollToItemIfNotSelectedYet(JList list, String value, JListCellReader cellReader) {
-    return scrollToItemIfNotSelectedYet(list, new StringTextMatcher(value), cellReader);
   }
 
   @RunsInEDT

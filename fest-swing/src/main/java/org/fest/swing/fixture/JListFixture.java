@@ -438,12 +438,14 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
   }
 
   /**
-   * Simulates a user dragging an item from this fixture's <code>{@link JList}</code>.
-   * @param text the text of the item to drag.
+   * Simulates a drag operation at the location of the first item in this fixture's <code>{@link JList}</code> matching
+   * the given value.
+   * @param text the text of the item to drag. It can be a regular expression.
    * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
    * @throws LocationUnavailableException if an element matching the given text cannot be found.
    * @return this fixture.
+   * @see #cellReader(JListCellReader)
    */
   public JListFixture drag(String text) {
     driver.drag(target, text);
@@ -451,8 +453,8 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
   }
 
   /**
-   * Simulates a user dropping an item to this fixture's <code>{@link JList}</code>.
-   * @param text the text of the item to drop.
+   * Ends a drag operation at the location of the first item matching the given value.
+   * @param text the text of the item to drop. It can be a regular expression.
    * @return this fixture.
    * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
@@ -461,6 +463,40 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
    */
   public JListFixture drop(String text) {
     driver.drop(target, text);
+    return this;
+  }
+
+  /**
+   * Simulates a drag operation at the location of the first item in this fixture's <code>{@link JList}</code> matching
+   * the given regular expression pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
+   * @throws NullPointerException if the given regular expression pattern in <code>null</code>.
+   * @throws LocationUnavailableException if an element matching the given regular expression pattern cannot be found.
+   * @see #cellReader(JListCellReader)
+   * @since 1.2
+   */
+  public JListFixture drag(Pattern pattern) {
+    driver.drag(target, pattern);
+    return this;
+  }
+
+  /**
+   * Ends a drag operation at the location of the first item matching the given regular expression pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
+   * @throws NullPointerException if the given regular expression pattern in <code>null</code>.
+   * @throws LocationUnavailableException if an element matching the given text cannot be found.
+   * @throws ActionFailedException if there is no drag action in effect.
+   * @see #cellReader(JListCellReader)
+   * @since 1.2
+   */
+  public JListFixture drop(Pattern pattern) {
+    driver.drop(target, pattern);
     return this;
   }
 
@@ -520,8 +556,9 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
   }
 
   /**
-   * Shows a pop-up menu at the location of the specified item in this fixture's <code>{@link JList}</code>.
-   * @param text the text of the item.
+   * Shows a pop-up menu at the location of the first item matching the given value in this fixture's
+   * <code>{@link JList}</code>.
+   * @param text the text of the item. It can be a regular expression.
    * @return a fixture that manages the displayed pop-up menu.
    * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
@@ -530,6 +567,22 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
    */
   public JPopupMenuFixture showPopupMenuAt(String text) {
     return new JPopupMenuFixture(robot, driver.showPopupMenu(target, text));
+  }
+
+  /**
+   * Shows a pop-up menu at the location of the first item matching the given regular expression pattern in this
+   * fixture's <code>{@link JList}</code>.
+   * @param pattern the regular expression pattern to match.
+   * @return a fixture that manages the displayed pop-up menu.
+   * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   * @throws LocationUnavailableException if an element matching the given value cannot be found.
+   * @since 1.2
+   */
+  public JPopupMenuFixture showPopupMenuAt(Pattern pattern) {
+    return new JPopupMenuFixture(robot, driver.showPopupMenu(target, pattern));
   }
 
   /**

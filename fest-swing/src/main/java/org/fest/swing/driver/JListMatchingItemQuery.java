@@ -58,11 +58,6 @@ final class JListMatchingItemQuery {
   }
 
   @RunsInEDT
-  static List<Integer> matchingItemIndices(final JList list, final String[] values, final JListCellReader cellReader) {
-    return matchingItemIndices(list, new StringTextMatcher(values), cellReader);
-  }
-
-  @RunsInEDT
   static List<Integer> matchingItemIndices(final JList list, final TextMatcher matcher,
       final JListCellReader cellReader) {
     return execute(new GuiQuery<List<Integer>>() {
