@@ -15,18 +15,17 @@
  */
 package org.fest.swing.fixture;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.*;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JButtons.button;
 import static org.fest.swing.test.builder.JOptionPanes.optionPane;
 import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.swing.test.core.Regex.regex;
 
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import java.util.regex.Pattern;
+
+import javax.swing.*;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.core.ComponentFinder;
@@ -81,6 +80,20 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  public void shouldRequireTitleMatchingPattern() {
+    final Pattern p = regex("Title");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.requireTitle(target, p);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireTitle(p));
+      }
+    }.run();
+  }
+
   public void shouldRequireMessage() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -90,6 +103,20 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
 
       protected void codeToTest() {
         assertThatReturnsThis(fixture.requireMessage("A Message"));
+      }
+    }.run();
+  }
+
+  public void shouldRequireMessageMatchingPattern() {
+    final Pattern p = regex("Message");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.requireMessage(target, p);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireMessage(p));
       }
     }.run();
   }

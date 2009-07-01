@@ -17,14 +17,13 @@ package org.fest.swing.fixture;
 
 import static org.fest.swing.fixture.ComponentFixtureValidator.notNullRobot;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.text.JTextComponent;
 
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
-import org.fest.swing.core.Robot;
+import org.fest.swing.core.*;
 import org.fest.swing.driver.JOptionPaneDriver;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.timing.Timeout;
@@ -314,8 +313,8 @@ public class JOptionPaneFixture extends ComponentFixture<JOptionPane> implements
   }
 
   /**
-   * Asserts that this fixture's <code>{@link JOptionPane}</code> has the given title.
-   * @param title the title to match.
+   * Asserts that the title of this fixture's <code>{@link JOptionPane}</code> matches the given value.
+   * @param title the title to match. It can be a regular expression.
    * @return this fixture.
    * @throws AssertionError if this fixture's </code>JOptionPaneFixture</code> does not have the given title.
    */
@@ -325,13 +324,44 @@ public class JOptionPaneFixture extends ComponentFixture<JOptionPane> implements
   }
 
   /**
-   * Asserts that this fixture's <code>{@link JOptionPane}</code> shows the given message.
-   * @param message the message to verify.
+   * Asserts that the title of this fixture's <code>{@link JOptionPane}</code> matches the given regular expression
+   * pattern.
+   * @param pattern the regular expression pattern to match.
    * @return this fixture.
-   * @throws AssertionError if this fixture's </code>JOptionPaneFixture</code> does not show the given message.
+   * @throws NullPointerException if the given regular expression is <code>null</code>.
+   * @throws AssertionError if this fixture's </code>JOptionPaneFixture</code> does not have the given title.
+   * @since 1.2
+   */
+  public JOptionPaneFixture requireTitle(Pattern pattern) {
+    driver.requireTitle(target, pattern);
+    return this;
+  }
+
+  /**
+   * Asserts that the message of this fixture's <code>{@link JOptionPane}</code> matches the given value.
+   * @param message the message to verify. If it is a <code>String</code>, it can be specified as a regular expression.
+   * @return this fixture.
+   * @throws AssertionError if the message in this fixture's </code>JOptionPaneFixture</code> is not equal to or does
+   * not match the given message.
    */
   public JOptionPaneFixture requireMessage(Object message) {
     driver.requireMessage(target, message);
+    return this;
+  }
+
+  /**
+   * Asserts that the message of this fixture's <code>{@link JOptionPane}</code> matches the given regular expression
+   * pattern. If the message in the <code>JOptionPane</code> is not a <code>String</code>, this method will use the
+   * <code>toString</code> representation of such message.
+   * @param pattern the regular expression to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the message in this fixture's </code>JOptionPaneFixture</code> does not match the given
+   * regular expression pattern.
+   * @since 1.2
+   */
+  public JOptionPaneFixture requireMessage(Pattern pattern) {
+    driver.requireMessage(target, pattern);
     return this;
   }
 

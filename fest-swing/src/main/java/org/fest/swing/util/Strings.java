@@ -73,6 +73,19 @@ public final class Strings {
    * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
    */
   public static boolean match(Pattern p, String s) {
+    return match(p, (CharSequence)s);
+  }
+
+  /**
+   * Indicates if the given <code>CharSequence</code> matches the given regular expression pattern.
+   * @param p the given regular expression pattern.
+   * @param s the <code>CharSequence</code> to evaluate.
+   * @return <code>true</code> if the given <code>CharSequence</code> matches the given regular expression pattern,
+   * <code>false</code> otherwise. It also returns <code>false</code> if the given <code>CharSequence</code> is
+   * <code>null</code>.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   */
+  public static boolean match(Pattern p, CharSequence s) {
     if (p == null) throw new NullPointerException("The pattern to match should not be null");
     if (s == null) return false;
     return p.matcher(s).matches();

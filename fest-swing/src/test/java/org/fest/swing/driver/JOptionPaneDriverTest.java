@@ -1,51 +1,45 @@
 /*
  * Created on Mar 11, 2008
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
- * 
+ *
  * Copyright @2008-2009 the original author or authors.
  */
 package org.fest.swing.driver;
 
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.text.JTextComponent;
+import static javax.swing.JOptionPane.*;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
+import static org.fest.swing.driver.AbstractButtonTextQuery.textOf;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.Regex.regex;
+import static org.fest.swing.test.core.TestGroups.GUI;
+import static org.fest.swing.test.swing.JOptionPaneLauncher.launch;
+import static org.fest.util.Arrays.array;
+import static org.fest.util.Objects.*;
+import static org.fest.util.Strings.concat;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.exception.ComponentLookupException;
-
-import static javax.swing.JOptionPane.*;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.driver.AbstractButtonTextQuery.textOf;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
-import static org.fest.swing.test.swing.JOptionPaneLauncher.launch;
-import static org.fest.util.Arrays.array;
-import static org.fest.util.Strings.concat;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JOptionPaneDriver}</code>.
- * 
+ *
  * @author Alex Ruiz
  */
 @Test(groups = GUI)
@@ -57,7 +51,7 @@ public class JOptionPaneDriverTest {
   private static final Icon ICON = null;
   private static final String MESSAGE = "Message";
   private static final String TITLE = JOptionPaneDriverTest.class.getSimpleName();
-  
+
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
   }
@@ -84,7 +78,7 @@ public class JOptionPaneDriverTest {
     JButton button = driver.okButton(optionPane);
     assertThatButtonHasTextFromUIManager(button, "OptionPane.okButtonText");
   }
-  
+
   public void shouldFindCancelButton() {
     JOptionPane optionPane = inputMessage();
     launch(optionPane, TITLE);
@@ -114,12 +108,12 @@ public class JOptionPaneDriverTest {
       }
     });
   }
-  
+
   private void assertThatButtonHasTextFromUIManager(JButton button, String textKey) {
     String expected = UIManager.getString(textKey);
     assertThat(textOf(button)).isEqualTo(expected);
   }
-  
+
   public void shouldFindTextComponentInOptionPane() {
     JOptionPane optionPane = inputMessage();
     launch(optionPane, TITLE);
@@ -138,7 +132,7 @@ public class JOptionPaneDriverTest {
     });
   }
 
-  @Test(groups = GUI, expectedExceptions = ComponentLookupException.class) 
+  @Test(groups = GUI, expectedExceptions = ComponentLookupException.class)
   public void shouldNotFindTextComponentInOptionPaneIfNotInputMessage() {
     JOptionPane optionPane = errorMessage();
     launch(optionPane, TITLE);
@@ -151,6 +145,12 @@ public class JOptionPaneDriverTest {
     driver.requireTitle(optionPane, TITLE);
   }
 
+  public void shouldPassIfTitleMatchesPatternAsString() {
+    JOptionPane optionPane = informationMessage();
+    launch(optionPane, TITLE);
+    driver.requireTitle(optionPane, "JOptionP.*");
+  }
+
   public void shouldFailIfNotMatchingTitle() {
     JOptionPane optionPane = informationMessage();
     launch(optionPane, TITLE);
@@ -159,7 +159,26 @@ public class JOptionPaneDriverTest {
       failWhenExpectingException();
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("property:'title'")
-                               .contains(concat("expected:<'Yoda'> but was:<'", TITLE, "'>"));
+                                .contains(concat(
+                                    "actual value:<'", TITLE, "'> is not equal to or does not match pattern:<'Yoda'>"));
+    }
+  }
+
+  public void shouldPassIfTitleMatchesPattern() {
+    JOptionPane optionPane = informationMessage();
+    launch(optionPane, TITLE);
+    driver.requireTitle(optionPane, regex("JOptionP.*"));
+  }
+
+  public void shouldFailIfTitleDoesNotMatchPattern() {
+    JOptionPane optionPane = informationMessage();
+    launch(optionPane, TITLE);
+    try {
+      driver.requireTitle(optionPane, regex("Yoda"));
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("property:'title'")
+                                .contains(concat("actual value:<'", TITLE, "'> does not match pattern:<'Yoda'>"));
     }
   }
 
@@ -180,7 +199,7 @@ public class JOptionPaneDriverTest {
                                 .contains("expected:<['Third']> but was:<['First', 'Second']>");
     }
   }
-  
+
   @RunsInEDT
   private static JOptionPane messageWithOptions(final Object...options) {
     return execute(new GuiQuery<JOptionPane>() {
@@ -194,13 +213,31 @@ public class JOptionPaneDriverTest {
   }
 
   public void shouldPassIfMatchingMessage() {
-    JOptionPane optionPane = messageWithText("Leia");
+    JOptionPane optionPane = messageWithValue("Leia");
     launch(optionPane, TITLE);
     driver.requireMessage(optionPane, "Leia");
   }
 
+  public void shouldPassIfMessageMatchesPatternAsString() {
+    JOptionPane optionPane = messageWithValue("Leia");
+    launch(optionPane, TITLE);
+    driver.requireMessage(optionPane, "Le.*");
+  }
+
+  public void shouldPassIfMessagesMatchAndTheyAreNotString() {
+    JOptionPane optionPane = messageWithValue(new Person("Leia"));
+    launch(optionPane, TITLE);
+    driver.requireMessage(optionPane, new Person("Leia"));
+  }
+
+  public void shouldPassIfMessageMatchesPatternAsStringAndMessageIsNotString() {
+    JOptionPane optionPane = messageWithValue(new Person("Leia"));
+    launch(optionPane, TITLE);
+    driver.requireMessage(optionPane, "Le.*");
+  }
+
   public void shouldFailIfNotMatchingMessage() {
-    JOptionPane optionPane = messageWithText("Palpatine");
+    JOptionPane optionPane = messageWithValue("Palpatine");
     launch(optionPane, TITLE);
     try {
       driver.requireMessage(optionPane, "Anakin");
@@ -210,11 +247,62 @@ public class JOptionPaneDriverTest {
     }
   }
 
+  public void shouldPassIfMessageMatchesPattern() {
+    JOptionPane optionPane = messageWithValue("Leia");
+    launch(optionPane, TITLE);
+    driver.requireMessage(optionPane, regex("Le.*"));
+  }
+
+  public void shouldPassIfMessageMatchesPatternAndMessageIsNotString() {
+    JOptionPane optionPane = messageWithValue(new Person("Leia"));
+    launch(optionPane, TITLE);
+    driver.requireMessage(optionPane, regex("Le.*"));
+  }
+
+  public void shouldFailIfMessageDoesNotMatchPattern() {
+    JOptionPane optionPane = messageWithValue("Palpatine");
+    launch(optionPane, TITLE);
+    try {
+      driver.requireMessage(optionPane, regex("Anakin"));
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("property:'message'")
+                                .contains("actual value:<'Palpatine'> does not match pattern:<'Anakin'>");
+    }
+  }
+
+  private static class Person {
+    private final String name;
+
+    Person(String name) {
+      this.name = name;
+    }
+
+    @Override public int hashCode() {
+      final int prime = HASH_CODE_PRIME;
+      int result = 1;
+      result = prime * result + hashCodeFor(name);
+      return result;
+    }
+
+    @Override public boolean equals(Object obj) {
+      if (this == obj) return true;
+      if (obj == null) return false;
+      if (getClass() != obj.getClass()) return false;
+      Person other = (Person) obj;
+      return areEqual(name, other.name);
+    }
+
+    @Override public String toString() {
+      return name;
+    }
+  }
+
   @RunsInEDT
-  private static JOptionPane messageWithText(final String text) {
+  private static JOptionPane messageWithValue(final Object message) {
     return execute(new GuiQuery<JOptionPane>() {
       protected JOptionPane executeInEDT() {
-        return new JOptionPane(text);
+        return new JOptionPane(message);
       }
     });
   }
@@ -316,7 +404,7 @@ public class JOptionPaneDriverTest {
   private static JOptionPane plainMessage() {
     return messageOfType(PLAIN_MESSAGE);
   }
-  
+
   public void shouldFailIfExpectedMessageTypeIsPlainAndActualIsNot() {
     JOptionPane optionPane = errorMessage();
     launch(optionPane, TITLE);
