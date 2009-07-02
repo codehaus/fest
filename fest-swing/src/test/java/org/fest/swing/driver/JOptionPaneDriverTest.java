@@ -72,6 +72,20 @@ public class JOptionPaneDriverTest {
     assertThat(textOf(button)).isEqualTo("Second");
   }
 
+  public void shouldFindButtonWithTextMatchingPatternAsStringInOptionPane() {
+    JOptionPane optionPane = messageWithOptions("First", "Second");
+    launch(optionPane, TITLE);
+    JButton button = driver.buttonWithText(optionPane, "Sec.*");
+    assertThat(textOf(button)).isEqualTo("Second");
+  }
+
+  public void shouldFindButtonWithTextMatchingPatternInOptionPane() {
+    JOptionPane optionPane = messageWithOptions("First", "Second");
+    launch(optionPane, TITLE);
+    JButton button = driver.buttonWithText(optionPane, regex("Sec.*"));
+    assertThat(textOf(button)).isEqualTo("Second");
+  }
+
   public void shouldFindOKButton() {
     JOptionPane optionPane = informationMessage();
     launch(optionPane, TITLE);

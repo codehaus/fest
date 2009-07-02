@@ -197,13 +197,27 @@ public class JOptionPaneDriver extends JComponentDriver {
   /**
    * Finds a button in the <code>{@link JOptionPane}</code> containing the given text.
    * @param optionPane the target <code>JOptionPane</code>.
-   * @param text the text of the button to find and return.
+   * @param text the text of the button to find and return. It can be a regular expression.
    * @return a button containing the given text.
    * @throws ComponentLookupException if the a button with the given text cannot be found.
    */
   @RunsInEDT
   public JButton buttonWithText(JOptionPane optionPane, String text) {
     return robot.finder().find(optionPane, JButtonMatcher.withText(text).andShowing());
+  }
+
+  /**
+   * Finds a button in the <code>{@link JOptionPane}</code> whose text matches the given regular expression pattern.
+   * @param optionPane the target <code>JOptionPane</code>.
+   * @param pattern the regular expression pattern to match.
+   * @return a button containing the given text.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws ComponentLookupException if the a button with the given text cannot be found.
+   * @since 1.2
+   */
+  @RunsInEDT
+  public JButton buttonWithText(JOptionPane optionPane, Pattern pattern) {
+    return robot.finder().find(optionPane, JButtonMatcher.withText(pattern).andShowing());
   }
 
   /**

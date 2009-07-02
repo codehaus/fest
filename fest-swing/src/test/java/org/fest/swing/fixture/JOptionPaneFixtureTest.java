@@ -205,6 +205,21 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  public void shouldReturnButtonWithTextMatchingPattern() {
+    final Pattern p = regex("Butt.*");
+    final JButton button = button().createNew();
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        expect(driver.buttonWithText(target, p)).andReturn(button);
+      }
+
+      protected void codeToTest() {
+        JButtonFixture result = fixture.buttonWithText(p);
+        assertThat(result.target).isSameAs(button);
+      }
+    }.run();
+  }
+
   public void shouldReturnButton() {
     final JButton button = button().createNew();
     new EasyMockTemplate(driver) {

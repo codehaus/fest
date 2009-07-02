@@ -117,14 +117,27 @@ public class JOptionPaneFixture extends ComponentFixture<JOptionPane> implements
   }
 
   /**
-   * Finds and returns a fixture wrapping a button (this fixture's <code>{@link JOptionPane}</code>) containing the
+   * Finds and returns a fixture wrapping a button (this fixture's <code>{@link JOptionPane}</code>) matching the
    * given text.
-   * @param text the text of the button to find and return.
-   * @return a fixture wrapping a button containing the given text.
+   * @param text the text of the button to find. It can be a regular expression.
+   * @return a fixture wrapping a button matching the given text.
    * @throws ComponentLookupException if the a button with the given text cannot be found.
    */
   public JButtonFixture buttonWithText(String text) {
     return new JButtonFixture(robot, driver.buttonWithText(target, text));
+  }
+
+  /**
+   * Finds and returns a fixture wrapping a button (this fixture's <code>{@link JOptionPane}</code>) matching the
+   * given text.
+   * @param pattern the regular expression pattern to match.
+   * @return a fixture wrapping a button matching the given regular expression pattern.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws ComponentLookupException if the a button with the given text cannot be found.
+   * @since 1.2
+   */
+  public JButtonFixture buttonWithText(Pattern pattern) {
+    return new JButtonFixture(robot, driver.buttonWithText(target, pattern));
   }
 
   /**

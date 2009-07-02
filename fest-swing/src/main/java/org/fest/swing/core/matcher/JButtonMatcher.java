@@ -81,6 +81,7 @@ public final class JButtonMatcher extends NamedComponentMatcherTemplate<JButton>
    * </p>
    * @param namePattern the regular expression pattern that the name of a <code>JButton</code> needs to match.
    * @return the created matcher.
+   * @since 1.2
    */
   public static JButtonMatcher withName(Pattern namePattern) {
     return new JButtonMatcher(namePattern, ANY);
@@ -99,6 +100,7 @@ public final class JButtonMatcher extends NamedComponentMatcherTemplate<JButton>
    * Creates a new <code>{@link JButtonMatcher}</code> that matches a <code>{@link JButton}</code> by its text.
    * @param textPattern the regular expression pattern to match.
    * @return the created matcher.
+   * @since 1.2
    */
   public static JButtonMatcher withText(Pattern textPattern) {
     return new JButtonMatcher(ANY, textPattern);
