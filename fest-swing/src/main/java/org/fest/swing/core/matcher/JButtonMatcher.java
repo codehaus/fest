@@ -18,6 +18,8 @@ package org.fest.swing.core.matcher;
 import static java.lang.String.valueOf;
 import static org.fest.util.Strings.concat;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JButton;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
@@ -50,7 +52,7 @@ public final class JButtonMatcher extends NamedComponentMatcherTemplate<JButton>
    * JButtonMatcher m = {@link #withName(String) withName}("ok").{@link #andText(String) andText}("OK").{@link #andShowing() andShowing}();
    * </pre>
    * </p>
-   * @param name the id to match.
+   * @param name the name to match. It can be a regular expression.
    * @return the created matcher.
    */
   public static JButtonMatcher withName(String name) {
@@ -58,12 +60,48 @@ public final class JButtonMatcher extends NamedComponentMatcherTemplate<JButton>
   }
 
   /**
+   * Creates a new <code>{@link JButtonMatcher}</code> that matches a <code>{@link JButton}</code> that:
+   * <ol>
+   * <li>has a matching name</li>
+   * <li>(optionally) has matching text</li>
+   * <li>(optionally) is showing on the screen</li>
+   * <p>
+   * The following code listing shows how to match a <code>{@link JButton}</code> by name and text:
+   * <pre>
+   * Pattern namePattern = "o.*";
+   * JButtonMatcher m = {@link #withName(Pattern) withName}(namePattern).{@link #andText(String) andText}("OK");
+   * </pre>
+   * </p>
+   * <p>
+   * The following code listing shows how to match a <code>{@link JButton}</code>, that should be showing on the screen,
+   * by name and text:
+   * <pre>
+   * JButtonMatcher m = {@link #withName(Pattern) withName}(namePattern).{@link #andText(String) andText}("OK").{@link #andShowing() andShowing}();
+   * </pre>
+   * </p>
+   * @param namePattern the regular expression pattern that the name of a <code>JButton</code> needs to match.
+   * @return the created matcher.
+   */
+  public static JButtonMatcher withName(Pattern namePattern) {
+    return new JButtonMatcher(namePattern, ANY);
+  }
+
+  /**
    * Creates a new <code>{@link JButtonMatcher}</code> that matches a <code>{@link JButton}</code> by its text.
-   * @param text the text to match.
+   * @param text the text to match. It can be a regular expression.
    * @return the created matcher.
    */
   public static JButtonMatcher withText(String text) {
     return new JButtonMatcher(ANY, text);
+  }
+
+  /**
+   * Creates a new <code>{@link JButtonMatcher}</code> that matches a <code>{@link JButton}</code> by its text.
+   * @param textPattern the regular expression pattern to match.
+   * @return the created matcher.
+   */
+  public static JButtonMatcher withText(Pattern textPattern) {
+    return new JButtonMatcher(ANY, textPattern);
   }
 
   /**
@@ -80,13 +118,24 @@ public final class JButtonMatcher extends NamedComponentMatcherTemplate<JButton>
   }
 
   /**
-   * Specifies the text to match. If this matcher was created using <code>{@link #withText(String)}</code>, this method
-   * will simply update the text to match.
-   * @param newText the new text to match.
+   * Specifies the text to match. If this matcher was created using <code>{@link #withText(String)}</code> or
+   * <code>{@link #withText(Pattern)}</code>, this method will simply update the text to match.
+   * @param newText the new text to match. It can be a regular expression.
    * @return this matcher.
    */
   public JButtonMatcher andText(String newText) {
     text = newText;
+    return this;
+  }
+
+  /**
+   * Specifies the text to match. If this matcher was created using <code>{@link #withText(String)}</code> or
+   * <code>{@link #withText(Pattern)}</code>, this method will simply update the text to match.
+   * @param textPattern the regular expression pattern to match.
+   * @return this matcher.
+   */
+  public JButtonMatcher andText(Pattern textPattern) {
+    text = textPattern;
     return this;
   }
 

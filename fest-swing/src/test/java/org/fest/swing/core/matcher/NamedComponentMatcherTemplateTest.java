@@ -16,9 +16,13 @@
 package org.fest.swing.core.matcher;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.test.core.Regex.regex;
+import static org.fest.util.Objects.HASH_CODE_PRIME;
+import static org.fest.util.Objects.hashCodeFor;
 
 import javax.swing.JLabel;
 
+import org.fest.util.Objects;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -43,6 +47,10 @@ import org.testng.annotations.Test;
     assertThat(matcher.quoted(NamedComponentMatcherTemplate.ANY)).isSameAs(NamedComponentMatcherTemplate.ANY);
   }
 
+  public void shouldQuotePatternAsStringIfItIsPattern() {
+    assertThat(matcher.quoted(regex("hello"))).isEqualTo("'hello'");
+  }
+
   public void shouldQuoteIfNotAny() {
     assertThat(matcher.quoted("hello")).isEqualTo("'hello'");
   }
@@ -60,8 +68,53 @@ import org.testng.annotations.Test;
     assertThat(NamedComponentMatcherTemplate.ANY.toString()).isEqualTo("<Any>");
   }
 
-  private static class Matcher extends NamedComponentMatcherTemplate<JLabel> {
+  public void shouldAlwaysMatchIfExpectedValueIsAny() {
+    matcher = new Matcher(JLabel.class, NamedComponentMatcherTemplate.ANY);
+    assertThat(matcher.isNameMatching("hello")).isTrue();
+  }
 
+  public void shouldMatchNameIfGivenValueIsEqualToNameInMatcher() {
+    matcher = new Matcher(JLabel.class, "hello");
+    assertThat(matcher.isNameMatching("hello")).isTrue();
+  }
+
+  public void shouldMatchNameIfGivenValueMatchesNameInMatcherAsStringPattern() {
+    matcher = new Matcher(JLabel.class, "h.*");
+    assertThat(matcher.isNameMatching("hello")).isTrue();
+  }
+
+  public void shouldMatchNameIfGivenValueMatchesNameInMatcherAsPattern() {
+    matcher = new Matcher(JLabel.class, regex("h.*"));
+    assertThat(matcher.isNameMatching("hello")).isTrue();
+  }
+
+  public void shouldMatchValuesUsingEqualityIfExpectedAndActualValuesAreRegularObjects() {
+    matcher = new Matcher(JLabel.class, "hello");
+    assertThat(matcher.arePropertyValuesMatching(new Dog("Bob"), new Dog("Bob"))).isTrue();
+  }
+
+  private static class Dog {
+    private final String name;
+
+    Dog(String name) { this.name = name; }
+
+    @Override public int hashCode() {
+      final int prime = HASH_CODE_PRIME;
+      int result = 1;
+      result = prime * result + hashCodeFor(name);
+      return result;
+    }
+
+    @Override public boolean equals(Object obj) {
+      if (this == obj) return true;
+      if (obj == null) return false;
+      if (getClass() != obj.getClass()) return false;
+      Dog other = (Dog) obj;
+      return Objects.areEqual(name, other.name);
+    }
+  }
+
+  private static class Matcher extends NamedComponentMatcherTemplate<JLabel> {
     protected Matcher(Class<JLabel> supportedType) {
       super(supportedType);
     }
