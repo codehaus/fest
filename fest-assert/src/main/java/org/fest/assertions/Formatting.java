@@ -15,31 +15,31 @@
  */
 package org.fest.assertions;
 
+import org.fest.util.Arrays;
+import org.fest.util.Collections;
+import org.fest.util.Maps;
 import static org.fest.util.Strings.*;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.File;
 import java.util.Collection;
 import java.util.Map;
 
-import org.fest.util.*;
-import org.fest.util.Collections;
-
 /**
- * Understands utility methods related to formatting.
+ * Provides utility methods related to formatting.
  *
  * @author Yvonne Wang
  */
-final class Formatting {
+public final class Formatting {
 
   private static final String EMPTY_MESSAGE = "";
 
-  static String format(String message) {
+  public static String format(String message) {
     if (isEmpty(message)) return EMPTY_MESSAGE;
     return concat("[", message, "] ");
   }
 
-  static String inBrackets(Object o) {
+  public static String inBrackets(Object o) {
     if (isOneDimensionalArray(o)) return doBracketAround(Arrays.format(o)); // TODO just check for array, since format supports multi-dimensional arrays now
     if (o instanceof Class<?>) return doBracketAround((Class<?>)o);
     if (o instanceof Collection<?>) return doBracketAround((Collection<?>)o);
