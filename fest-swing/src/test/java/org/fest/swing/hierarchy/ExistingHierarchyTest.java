@@ -15,15 +15,18 @@
  */
 package org.fest.swing.hierarchy;
 
+import static java.util.Collections.emptyList;
+import static org.easymock.EasyMock.expect;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.swing.test.core.TestGroups.GUI;
+
 import java.awt.Component;
 import java.awt.Window;
 import java.util.Collection;
 
 import javax.swing.JTextField;
-
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.annotation.RunsInEDT;
@@ -33,14 +36,9 @@ import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.monitor.WindowMonitor;
 import org.fest.swing.test.core.MethodInvocations;
 import org.fest.swing.test.swing.TestWindow;
-
-import static java.util.Collections.emptyList;
-import static org.easymock.EasyMock.expect;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.builder.JTextFields.textField;
-import static org.fest.swing.test.core.TestGroups.GUI;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link ExistingHierarchy}</code>.
@@ -120,8 +118,6 @@ import static org.fest.swing.test.core.TestGroups.GUI;
 
     private boolean recording;
     private final MethodInvocations methodInvocations = new MethodInvocations();
-
-    boolean disposed;
 
     @RunsInEDT
     static MyWindow createAndShow() {

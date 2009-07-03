@@ -14,16 +14,25 @@
  */
 package org.fest.swing.awt;
 
-import static java.awt.event.InputEvent.BUTTON2_MASK;
 import static java.awt.event.InputEvent.BUTTON3_MASK;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.util.Platform.isWindows;
 import static org.fest.util.Strings.concat;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.event.InputEvent;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
@@ -38,9 +47,6 @@ public class AWT {
 
   private static final String APPLET_APPLET_VIEWER_CLASS = "sun.applet.AppletViewer";
   private static final String ROOT_FRAME_CLASSNAME = concat(SwingUtilities.class.getName(), "$");
-
-  // Abbot: Macintosh *used* to map button2 to the pop-up trigger (1.3). Not clear when this changed.
-  private static final boolean POPUP_ON_BUTTON2 = false;
 
   /**
    * Translates the given coordinates to the location on screen of the given <code>{@link Component}</code>.
@@ -213,7 +219,7 @@ public class AWT {
    * @return the <code>InputEvent</code> mask for the pop-up trigger button.
    */
   public static int popupMask() {
-    return POPUP_ON_BUTTON2 ? BUTTON2_MASK : BUTTON3_MASK;
+    return BUTTON3_MASK;
   }
 
   /**
@@ -241,7 +247,6 @@ public class AWT {
 
   // Try to lock the AWT tree lock; returns immediately if it can
   private static class ThreadStateChecker extends Thread {
-    public boolean started;
     private final Object lock;
 
     public ThreadStateChecker(Object lock) {
@@ -259,7 +264,6 @@ public class AWT {
 
     @Override public void run() {
       synchronized (this) {
-        started = true;
         notifyAll();
       }
       synchronized (lock) {
