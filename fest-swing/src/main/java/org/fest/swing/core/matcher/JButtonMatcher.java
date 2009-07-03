@@ -52,39 +52,11 @@ public final class JButtonMatcher extends NamedComponentMatcherTemplate<JButton>
    * JButtonMatcher m = {@link #withName(String) withName}("ok").{@link #andText(String) andText}("OK").{@link #andShowing() andShowing}();
    * </pre>
    * </p>
-   * @param name the name to match. It can be a regular expression.
+   * @param name the name to match.
    * @return the created matcher.
    */
   public static JButtonMatcher withName(String name) {
     return new JButtonMatcher(name, ANY);
-  }
-
-  /**
-   * Creates a new <code>{@link JButtonMatcher}</code> that matches a <code>{@link JButton}</code> that:
-   * <ol>
-   * <li>has a matching name</li>
-   * <li>(optionally) has matching text</li>
-   * <li>(optionally) is showing on the screen</li>
-   * <p>
-   * The following code listing shows how to match a <code>{@link JButton}</code> by name and text:
-   * <pre>
-   * Pattern namePattern = "o.*";
-   * JButtonMatcher m = {@link #withName(Pattern) withName}(namePattern).{@link #andText(String) andText}("OK");
-   * </pre>
-   * </p>
-   * <p>
-   * The following code listing shows how to match a <code>{@link JButton}</code>, that should be showing on the screen,
-   * by name and text:
-   * <pre>
-   * JButtonMatcher m = {@link #withName(Pattern) withName}(namePattern).{@link #andText(String) andText}("OK").{@link #andShowing() andShowing}();
-   * </pre>
-   * </p>
-   * @param namePattern the regular expression pattern that the name of a <code>JButton</code> needs to match.
-   * @return the created matcher.
-   * @since 1.2
-   */
-  public static JButtonMatcher withName(Pattern namePattern) {
-    return new JButtonMatcher(namePattern, ANY);
   }
 
   /**

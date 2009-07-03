@@ -60,18 +60,6 @@ import org.testng.annotations.*;
     assertThat(matcher.matches(button)).isTrue();
   }
 
-  public void shouldReturnTrueIfNameMatchesExpectedPatternAsString() {
-    JButtonMatcher matcher = JButtonMatcher.withName("b.*");
-    JButton button = button().withName("button").createNew();
-    assertThat(matcher.matches(button)).isTrue();
-  }
-
-  public void shouldReturnTrueIfNameMatchesExpectedPattern() {
-    JButtonMatcher matcher = JButtonMatcher.withName(regex("b.*"));
-    JButton button = button().withName("button").createNew();
-    assertThat(matcher.matches(button)).isTrue();
-  }
-
   public void shouldReturnFalseIfNameIsNotEqualToExpected() {
     JButtonMatcher matcher = JButtonMatcher.withName("button");
     JButton button = button().withName("label").createNew();
@@ -86,14 +74,14 @@ import org.testng.annotations.*;
     assertThat(matcher.matches(button)).isTrue();
   }
 
-  public void shouldReturnTrueIfNameAndTextMatchExpectedPatternsAsString() {
-    JButtonMatcher matcher = JButtonMatcher.withName("but.*").andText("Hel.*");
+  public void shouldReturnTrueIfNameMatchesAndTextMatchesPatternAsString() {
+    JButtonMatcher matcher = JButtonMatcher.withName("button").andText("Hel.*");
     JButton button = button().withName("button").withText("Hello").createNew();
     assertThat(matcher.matches(button)).isTrue();
   }
 
-  public void shouldReturnTrueIfNameAndTextMatchExpectedPatterns() {
-    JButtonMatcher matcher = JButtonMatcher.withName(regex("but.*")).andText(regex("Hel.*"));
+  public void shouldReturnTrueIfNameMatchesAndTextMatchesPattern() {
+    JButtonMatcher matcher = JButtonMatcher.withName("button").andText(regex("Hel.*"));
     JButton button = button().withName("button").withText("Hello").createNew();
     assertThat(matcher.matches(button)).isTrue();
   }

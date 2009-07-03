@@ -78,16 +78,6 @@ import org.testng.annotations.Test;
     assertThat(matcher.isNameMatching("hello")).isTrue();
   }
 
-  public void shouldMatchNameIfGivenValueMatchesNameInMatcherAsStringPattern() {
-    matcher = new Matcher(JLabel.class, "h.*");
-    assertThat(matcher.isNameMatching("hello")).isTrue();
-  }
-
-  public void shouldMatchNameIfGivenValueMatchesNameInMatcherAsPattern() {
-    matcher = new Matcher(JLabel.class, regex("h.*"));
-    assertThat(matcher.isNameMatching("hello")).isTrue();
-  }
-
   public void shouldMatchValuesUsingEqualityIfExpectedAndActualValuesAreRegularObjects() {
     matcher = new Matcher(JLabel.class, "hello");
     assertThat(matcher.arePropertyValuesMatching(new Dog("Bob"), new Dog("Bob"))).isTrue();

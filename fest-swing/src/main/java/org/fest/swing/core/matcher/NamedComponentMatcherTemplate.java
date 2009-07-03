@@ -96,7 +96,8 @@ public abstract class NamedComponentMatcherTemplate<T extends Component> extends
    * in this matcher. Otherwise <code>false</code>.
    */
   protected final boolean isNameMatching(String actual) {
-    return arePropertyValuesMatching(name, actual);
+    if (ANY.equals(name)) return true;
+    return areEqual(name, actual);
   }
 
   /**
