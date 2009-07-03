@@ -16,6 +16,7 @@
 package org.fest.swing.fixture;
 
 import java.awt.Component;
+import java.util.regex.Pattern;
 
 import javax.swing.JTabbedPane;
 
@@ -101,8 +102,8 @@ public class JTabbedPaneFixture extends JPopupMenuInvokerFixture<JTabbedPane> im
   }
 
   /**
-   * Simulates a user selecting the tab containing the given title.
-   * @param title the title to match.
+   * Simulates a user selecting the tab whose title matches the given value.
+   * @param title the title to match. It can be a regular expression.
    * @return this fixture.
    * @throws IllegalStateException if this fixture's <code>JTabbedPane</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JTabbedPane</code> is not showing on the screen.
@@ -110,6 +111,22 @@ public class JTabbedPaneFixture extends JPopupMenuInvokerFixture<JTabbedPane> im
    */
   public JTabbedPaneFixture selectTab(String title) {
     driver.selectTab(target, title);
+    return this;
+  }
+
+
+  /**
+   * Simulates a user selecting the tab whose title matches the given regular expression pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws IllegalStateException if this fixture's <code>JTabbedPane</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JTabbedPane</code> is not showing on the screen.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws LocationUnavailableException if a tab matching the given regular expression pattern could not be found.
+   * @since 1.2
+   */
+  public JTabbedPaneFixture selectTab(Pattern pattern) {
+    driver.selectTab(target, pattern);
     return this;
   }
 
@@ -313,14 +330,28 @@ public class JTabbedPaneFixture extends JPopupMenuInvokerFixture<JTabbedPane> im
   }
 
   /**
-   * Asserts that the title of the tab at the given index is equal to the given title.
-   * @param title the expected title.
+   * Asserts that the title of the tab at the given index matches the given value.
+   * @param title the expected title. It can be a regular expression.
    * @param index the index of the tab.
    * @return this fixture.
-   * @throws AssertionError if the title of the tab at the given index is not equal to the given one.
+   * @throws AssertionError if the title of the tab at the given index does not match the given one.
    */
   public JTabbedPaneFixture requireTitle(String title, Index index) {
     driver.requireTabTitle(target, title, index);
+    return this;
+  }
+
+  /**
+   * Asserts that the title of the tab at the given index matches the given regular expression pattern.
+   * @param pattern the regular expression pattern to match.
+   * @param index the index of the tab.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the title of the tab at the given index does not match the given regular expression 
+   * pattern.
+   */
+  public JTabbedPaneFixture requireTitle(Pattern pattern, Index index) {
+    driver.requireTabTitle(target, pattern, index);
     return this;
   }
 

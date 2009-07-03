@@ -15,13 +15,28 @@
  */
 package org.fest.swing.driver;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
+import static org.fest.swing.data.Index.atIndex;
+import static org.fest.swing.driver.JTabbedPaneSelectTabTask.setSelectedTab;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.CommonAssertions.assertActionFailureDueToDisabledComponent;
+import static org.fest.swing.test.core.CommonAssertions.assertActionFailureDueToNotShowingComponent;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.Regex.regex;
+import static org.fest.swing.test.core.TestGroups.GUI;
+import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
+import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
+import static org.fest.util.Arrays.array;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-
-import org.testng.annotations.*;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.annotation.RunsInEDT;
@@ -30,21 +45,11 @@ import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.exception.LocationUnavailableException;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.data.Index.atIndex;
-import static org.fest.swing.driver.JTabbedPaneSelectTabTask.setSelectedTab;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.CommonAssertions.*;
-import static org.fest.swing.test.core.TestGroups.GUI;
-import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
-import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
-import static org.fest.util.Arrays.array;
-import static org.fest.util.Strings.concat;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JTabbedPaneDriver}</code>.
@@ -157,13 +162,27 @@ public class JTabbedPaneDriverTest {
     return new Object[][] { { -1 }, { 2 } };
   }
 
-  public void shouldSelectFirstTab() {
-    driver.selectTab(tabbedPane, "One");
-    assertThatSelectedTabIndexIsEqualTo(0);
+  @Test(groups = GUI, dataProvider = "tabTitlesAndIndices")
+  public void shouldSelectTabWithEqualTitle(String title, int index) {
+    driver.selectTab(tabbedPane, title);
+    assertThatSelectedTabIndexIsEqualTo(index);
   }
 
-  public void shouldSelectSecondTab() {
-    driver.selectTab(tabbedPane, "Two");
+  @DataProvider(name = "tabTitlesAndIndices") public Object[][] tabTitlesAndIndices() {
+    return new Object[][] {
+        { "One", 0 },
+        { "Two", 1 }
+    };
+  }
+  
+  public void shouldSelectTabMatchingPatternAsString() {
+    driver.selectTab(tabbedPane, "Tw.*");
+    assertThatSelectedTabIndexIsEqualTo(1);
+  }
+
+
+  public void shouldSelectTabMatchingPattern() {
+    driver.selectTab(tabbedPane, regex("Tw.*"));
     assertThatSelectedTabIndexIsEqualTo(1);
   }
 
@@ -225,7 +244,7 @@ public class JTabbedPaneDriverTest {
       failWhenExpectingException();
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("property:'titleAt'")
-                                .contains("expected:<'Hello'> but was:<'One'>"); 
+                                .contains("actual value:<'One'> is not equal to or does not match pattern:<'Hello'>"); 
     }
   }
   
@@ -241,7 +260,25 @@ public class JTabbedPaneDriverTest {
         { 1, "Two" }
     };
   }
-  
+
+  public void shouldPassIfActualTabTitleMatchesPatternAsString() {
+    driver.requireTabTitle(tabbedPane, "O.*", atIndex(0));
+  }
+
+  public void shouldFailIfActualTabTitleDoesNotMatchPattern() {
+    try {
+      driver.requireTabTitle(tabbedPane, regex("Hello"), atIndex(0));
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("property:'titleAt'")
+                                .contains("actual value:<'One'> does not match pattern:<'Hello'>"); 
+    }
+  }
+
+  public void shouldPassIfActualTabTitleMatchesPattern() {
+    driver.requireTabTitle(tabbedPane, regex("O.*"), atIndex(0));
+  }
+
   public void shouldFailIfTabTitlesAreNotEqualToExpectedOnes() {
     try {
       driver.requireTabTitles(tabbedPane, array("Three", "Four"));

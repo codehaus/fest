@@ -14,6 +14,10 @@
  */
 package org.fest.swing.driver;
 
+import static java.lang.String.valueOf;
+import static org.fest.swing.driver.JTabbedPaneTabIndexQuery.indexOfTab;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -21,11 +25,8 @@ import javax.swing.JTabbedPane;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.exception.LocationUnavailableException;
-
-import static java.lang.String.valueOf;
-
-import static org.fest.swing.driver.JTabbedPaneTabIndexQuery.indexOfTab;
-import static org.fest.util.Strings.*;
+import org.fest.swing.util.StringTextMatcher;
+import org.fest.swing.util.TextMatcher;
 
 /**
  * Understands a location on a <code>{@link JTabbedPane}</code> (notably a tab).
@@ -47,10 +48,27 @@ public class JTabbedPaneLocation {
    * @throws LocationUnavailableException if a tab matching the given title could not be found.
    */
   @RunsInCurrentThread
-  public int indexOf(final JTabbedPane tabbedPane, final String title) {
-    int index = indexOfTab(tabbedPane, title);
+  public int indexOf(JTabbedPane tabbedPane, String title) {
+    return indexOf(tabbedPane, new StringTextMatcher(title));
+  }
+
+  /**
+   * Returns the index of the first tab whose title matches the value in the given <code>{@link TextMatcher}</code>.
+   * <p>
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * invoking this method in the EDT.
+   * </p>
+   * @param tabbedPane the target <code>JTabbedPane</code>.
+   * @param matcher indicates if the text of the <code>JTabbedPane</code> matches the value we are looking for.
+   * @return the index of the first tab that matches the given <code>String</code>.
+   * @throws LocationUnavailableException if a tab matching the given title could not be found.
+   */
+  @RunsInCurrentThread
+  public int indexOf(final JTabbedPane tabbedPane, final TextMatcher matcher) {
+    int index = indexOfTab(tabbedPane, matcher);
     if (index >= 0) return index;
-    throw new LocationUnavailableException(concat("Unable to find a tab with title ", quote(title)));
+    throw new LocationUnavailableException(concat(
+        "Unable to find a tab with title matching ", matcher.description(), " ", matcher.formattedValues()));
   }
 
   /**

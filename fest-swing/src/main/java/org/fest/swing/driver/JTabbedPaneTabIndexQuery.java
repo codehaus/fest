@@ -14,13 +14,13 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import javax.swing.JTabbedPane;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.util.Strings.areEqualOrMatch;
+import org.fest.swing.util.TextMatcher;
 
 /**
  * Understands an action that returns the index of a tab (in a <code>{@link JTabbedPane}</code>) whose title matches the
@@ -36,12 +36,12 @@ import static org.fest.swing.util.Strings.areEqualOrMatch;
 final class JTabbedPaneTabIndexQuery {
 
   @RunsInCurrentThread
-  static int indexOfTab(final JTabbedPane tabbedPane, final String title) {
+  static int indexOfTab(final JTabbedPane tabbedPane, final TextMatcher matcher) {
     return execute(new GuiQuery<Integer>() {
       protected Integer executeInEDT() {
         int tabCount = tabbedPane.getTabCount();
         for (int i = 0; i < tabCount; i++)
-          if (areEqualOrMatch(title, tabbedPane.getTitleAt(i))) return i;
+          if (matcher.isMatching(tabbedPane.getTitleAt(i))) return i;
         return -1;
       }
     });

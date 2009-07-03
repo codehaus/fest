@@ -76,7 +76,7 @@ public final class KeyPressInfo {
   public int keyCode() { return keyCode; }
 
   /**
-   * Returns the modifiers to use when pressing <code>{@link #keyCode the specified key}</code>.
+   * Returns the modifiers to use when pressing <code>{@link #keyCode() the specified key}</code>.
    * @return the modifiers to use.
    */
   public int[] modifiers() {
@@ -84,7 +84,7 @@ public final class KeyPressInfo {
   }
 
   /**
-   * Specifies the modifiers to use when pressing <code>{@link #keyCode the specified key}</code> (e.g.
+   * Specifies the modifiers to use when pressing <code>{@link #keyCode() the specified key}</code> (e.g.
    * <code>{@link Event#CTRL_MASK Event.CTRL_MASK}</code>.)
    * <p>
    * For platform-safe mask pressing (e.g. 'Control' in Windows or 'Command' in MacOS) use

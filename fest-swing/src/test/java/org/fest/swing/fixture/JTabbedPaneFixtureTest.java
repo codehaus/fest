@@ -22,9 +22,11 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.data.Index.atIndex;
 import static org.fest.swing.test.builder.JButtons.button;
 import static org.fest.swing.test.builder.JTabbedPanes.tabbedPane;
+import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.util.Arrays.array;
 
 import java.awt.Component;
+import java.util.regex.Pattern;
 
 import javax.swing.JTabbedPane;
 
@@ -102,6 +104,20 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  public void shouldRequireTitleMatchingPatternAtTabIndex() {
+    final Pattern pattern = regex("hello");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.requireTabTitle(target, pattern, atIndex(1));
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireTitle(pattern, atIndex(1)));
+      }
+    }.run();
+  }
+
   public void shouldRequireTabTitles() {
     final String[] titles = array("One", "Two");
     new EasyMockTemplate(driver) {
@@ -126,6 +142,20 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         assertThatReturnsThis(fixture.selectTab("A Tab"));
+      }
+    }.run();
+  }
+  
+  public void shouldSelectTabMatchingPattern() {
+    final Pattern pattern = regex("hello");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.selectTab(target, pattern);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.selectTab(pattern));
       }
     }.run();
   }

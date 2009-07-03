@@ -15,10 +15,14 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.TestGroups.ACTION;
+import static org.fest.swing.test.core.TestGroups.GUI;
+
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-
-import org.testng.annotations.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
@@ -26,11 +30,12 @@ import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.TestGroups.*;
+import org.fest.swing.util.StringTextMatcher;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JTabbedPaneTabIndexQuery}</code>.
@@ -89,7 +94,7 @@ public class JTabbedPaneTabIndexQueryTest {
   private static int indexOfTab(final JTabbedPane tabbedPane, final String title) {
     return execute(new GuiQuery<Integer>() {
       protected Integer executeInEDT() {
-        return JTabbedPaneTabIndexQuery.indexOfTab(tabbedPane, title);
+        return JTabbedPaneTabIndexQuery.indexOfTab(tabbedPane, new StringTextMatcher(title));
       }
     });
   }

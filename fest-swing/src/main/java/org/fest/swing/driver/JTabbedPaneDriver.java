@@ -15,25 +15,31 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
+import static org.fest.swing.driver.JTabbedPaneSelectTabTask.setSelectedTab;
+import static org.fest.swing.driver.JTabbedPaneTabTitlesQuery.tabTitlesOf;
+import static org.fest.swing.driver.TextAssert.verifyThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.Component;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.swing.JTabbedPane;
 
+import org.fest.assertions.Description;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
 import org.fest.swing.data.Index;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.exception.LocationUnavailableException;
 import org.fest.swing.util.Pair;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
-import static org.fest.swing.driver.JTabbedPaneSelectTabTask.setSelectedTab;
-import static org.fest.swing.driver.JTabbedPaneTabTitlesQuery.tabTitlesOf;
-import static org.fest.swing.edt.GuiActionRunner.execute;
+import org.fest.swing.util.PatternTextMatcher;
+import org.fest.swing.util.StringTextMatcher;
+import org.fest.swing.util.TextMatcher;
 
 /**
  * Understands simulation of user input on a <code>{@link JTabbedPane}</code>. Unlike <code>JTabbedPaneFixture</code>,
@@ -78,14 +84,35 @@ public class JTabbedPaneDriver extends JComponentDriver {
   /**
    * Simulates a user selecting the tab containing the given title.
    * @param tabbedPane the target <code>JTabbedPane</code>.
-   * @param title the given text to match.
+   * @param title the given text to match. It can be a regular expression.
    * @throws IllegalStateException if the <code>JTabbedPane</code> is disabled.
    * @throws IllegalStateException if the <code>JTabbedPane</code> is not showing on the screen.
    * @throws LocationUnavailableException if a tab matching the given title could not be found.
    */
   @RunsInEDT
   public void selectTab(JTabbedPane tabbedPane, String title) {
-    Pair<Integer, Point> tabToSelectInfo = tabToSelectInfo(location, tabbedPane, title);
+    selectTab(tabbedPane, new StringTextMatcher(title));
+  }
+  
+
+  /**
+   * Simulates a user selecting the tab whose title matches the given regular expression pattern.
+   * @param tabbedPane the target <code>JTabbedPane</code>.
+   * @param pattern the regular expression pattern to match.
+   * @throws IllegalStateException if the <code>JTabbedPane</code> is disabled.
+   * @throws IllegalStateException if the <code>JTabbedPane</code> is not showing on the screen.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws LocationUnavailableException if a tab matching the given regular expression pattern could not be found.
+   * @since 1.2
+   */
+  @RunsInEDT
+  public void selectTab(JTabbedPane tabbedPane, Pattern pattern) {
+    selectTab(tabbedPane, new PatternTextMatcher(pattern));
+  }
+
+  @RunsInEDT
+  private void selectTab(JTabbedPane tabbedPane, TextMatcher matcher) {
+    Pair<Integer, Point> tabToSelectInfo = tabToSelectInfo(location, tabbedPane, matcher);
     Point target = tabToSelectInfo.ii;
     if (target != null) {
       click(tabbedPane, target);
@@ -95,11 +122,12 @@ public class JTabbedPaneDriver extends JComponentDriver {
   }
 
   @RunsInEDT
-  private static Pair<Integer, Point> tabToSelectInfo(final JTabbedPaneLocation location, final JTabbedPane tabbedPane, final String title) {
+  private static Pair<Integer, Point> tabToSelectInfo(final JTabbedPaneLocation location, 
+      final JTabbedPane tabbedPane, final TextMatcher matcher) {
     return execute(new GuiQuery<Pair<Integer, Point>>() {
       protected Pair<Integer, Point> executeInEDT() {
         validateIsEnabledAndShowing(tabbedPane);
-        int index = location.indexOf(tabbedPane, title);
+        int index = location.indexOf(tabbedPane, matcher);
         Point point = null;
         try {
           point = location.pointAt(tabbedPane, index);
@@ -162,16 +190,36 @@ public class JTabbedPaneDriver extends JComponentDriver {
   }
 
   /**
-   * Asserts that the title of the tab at the given index is equal to the given title.
+   * Asserts that the title of the tab at the given index matches the given value.
    * @param tabbedPane the target <code>JTabbedPane</code>.
-   * @param title the expected title.
+   * @param title the expected title. It can be a regular expression.
    * @param index the index of the tab.
-   * @throws AssertionError if the title of the tab at the given index is not equal to the given one.
+   * @throws AssertionError if the title of the tab at the given index does not match the given one.
    */
   @RunsInEDT
   public void requireTabTitle(JTabbedPane tabbedPane, String title, Index index) {
     String actualTitle = titleAt(tabbedPane, index);
-    assertThat(actualTitle).as(propertyName(tabbedPane, "titleAt")).isEqualTo(title);
+    verifyThat(actualTitle).as(titleAtProperty(tabbedPane)).isEqualOrMatches(title);
+  }
+
+  /**
+   * Asserts that the title of the tab at the given index matches the given regular expression pattern.
+   * @param tabbedPane the target <code>JTabbedPane</code>.
+   * @param pattern the regular expression pattern to match.
+   * @param index the index of the tab.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the title of the tab at the given index does not match the given one.
+   * @since 1.2
+   */
+  @RunsInEDT
+  public void requireTabTitle(JTabbedPane tabbedPane, Pattern pattern, Index index) {
+    String actualTitle = titleAt(tabbedPane, index);
+    verifyThat(actualTitle).as(titleAtProperty(tabbedPane)).matches(pattern);
+  }
+
+  @RunsInEDT
+  private Description titleAtProperty(JTabbedPane tabbedPane) {
+    return propertyName(tabbedPane, "titleAt");
   }
 
   @RunsInEDT
