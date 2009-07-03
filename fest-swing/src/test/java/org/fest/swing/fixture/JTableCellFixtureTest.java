@@ -15,29 +15,31 @@
  */
 package org.fest.swing.fixture;
 
+import static java.awt.Color.BLUE;
+import static java.awt.Font.PLAIN;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
+import static org.fest.swing.core.MouseButton.RIGHT_BUTTON;
+import static org.fest.swing.core.MouseClickInfo.leftButton;
+import static org.fest.swing.data.TableCell.row;
+import static org.fest.swing.test.builder.JTables.table;
+import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.swing.test.core.Regex.regex;
+
 import java.awt.Component;
 import java.awt.Font;
-
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import java.util.regex.Pattern;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.core.MouseClickInfo;
 import org.fest.swing.core.Robot;
 import org.fest.swing.data.TableCell;
 import org.fest.swing.driver.JTableDriver;
-
-import static java.awt.Color.BLUE;
-import static java.awt.Font.PLAIN;
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.MouseButton.*;
-import static org.fest.swing.core.MouseClickInfo.leftButton;
-import static org.fest.swing.data.TableCell.row;
-import static org.fest.swing.test.builder.JTables.table;
-import static org.fest.swing.test.builder.JTextFields.textField;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JTableCellFixture}</code>.
@@ -165,6 +167,19 @@ public class JTableCellFixtureTest {
 
       protected void codeToTest() {
         assertThatReturnsThis(fixture.requireValue(content));
+      }
+    }.run();
+  }
+
+  @Test public void shouldPassIfContentMatchesPattern() {
+    final Pattern pattern = regex("Hello");
+    new EasyMockTemplate(table) {
+      protected void expectations() {
+        expect(table.requireCellValue(cell, pattern)).andReturn(table);
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireValue(pattern));
       }
     }.run();
   }

@@ -15,7 +15,11 @@
  */
 package org.fest.swing.fixture;
 
+import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
+import static org.fest.swing.core.MouseButton.RIGHT_BUTTON;
+
 import java.awt.Component;
+import java.util.regex.Pattern;
 
 import javax.swing.JTable;
 
@@ -26,8 +30,6 @@ import org.fest.swing.core.MouseClickInfo;
 import org.fest.swing.data.TableCell;
 import org.fest.swing.exception.ActionFailedException;
 import org.fest.swing.exception.ComponentLookupException;
-
-import static org.fest.swing.core.MouseButton.*;
 
 /**
  * Understands simulation of user events on a cell in a <code>{@link JTable}</code> and verification of the state of
@@ -276,13 +278,27 @@ public class JTableCellFixture implements ItemFixture {
   }
 
   /**
-   * Asserts that this fixture's table cell contains the given value.
-   * @param value the expected value of this fixture's table cell.
+   * Asserts that the value of this fixture's table cell matches the given value.
+   * @param value the expected value of this fixture's table cell. It can be a regular expression.
    * @return this fixture.
-   * @throws AssertionError if the value of this fixture's table cell is not equal to the expected one.
+   * @throws AssertionError if the value of this fixture's table cell does not match the expected one.
    */
   public JTableCellFixture requireValue(String value) {
     table.requireCellValue(cell, value);
+    return this;
+  }
+  
+  /**
+   * Asserts that the value of this fixture's table cell matches the given regular expression pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the value of this fixture's table cell does not match the expected the given regular 
+   * expression pattern.
+   * @since 1.2
+   */
+  public JTableCellFixture requireValue(Pattern pattern) {
+    table.requireCellValue(cell, pattern);
     return this;
   }
 
@@ -389,4 +405,5 @@ public class JTableCellFixture implements ItemFixture {
    * @return the column index of this fixture's table cell.
    */
   public int column() { return cell.column; }
+
 }
