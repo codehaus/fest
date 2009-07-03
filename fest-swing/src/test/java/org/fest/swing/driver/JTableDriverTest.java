@@ -365,16 +365,34 @@ public class JTableDriverTest {
     driver.requireCellValue(dragTable, row(0).column(0), "0-0");
   }
 
+  public void shouldPassIfCellValueMatchesPatternAsString() {
+    driver.requireCellValue(dragTable, row(0).column(0), "0.*");
+  }
+
   public void shouldFailIfCellValueIsNotEqualToExpected() {
     try {
       driver.requireCellValue(dragTable, row(0).column(0), "0-1");
       failWhenExpectingException();
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("property:'value [row=0, column=0]'")
-                                .contains("expected:<'0-1'> but was:<'0-0'>");
+                                .contains("actual value:<'0-0'> is not equal to or does not match pattern:<'0-1'>");
     }
   }
   
+  public void shouldPassIfCellValueMatchesPattern() {
+    driver.requireCellValue(dragTable, row(0).column(0), regex("0.*"));
+  }
+
+  public void shouldFailIfCellValueDoesNotMatchPattern() {
+    try {
+      driver.requireCellValue(dragTable, row(0).column(0), regex("0-1"));
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("property:'value [row=0, column=0]'")
+                                .contains("actual value:<'0-0'> does not match pattern:<'0-1'>");
+    }
+  }
+
   public void shouldClickCellGivenNumberOfTimes() {
     ClickRecorder recorder = attachTo(dragTable);
     TableCell cell = row(0).column(1);

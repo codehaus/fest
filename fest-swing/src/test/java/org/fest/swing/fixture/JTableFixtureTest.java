@@ -415,6 +415,20 @@ public class JTableFixtureTest extends CommonComponentFixtureTestCase<JTable> {
     }.run();
   }
 
+  public void shouldRequireCellValueMatchingPattern() {
+    final Pattern pattern = regex("Hello");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.requireCellValue(target, cell, pattern);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireCellValue(cell, pattern));
+      }
+    }.run();
+  }
+
   public void shouldRequireEditableCell() {
     new EasyMockTemplate(driver) {
       protected void expectations() {

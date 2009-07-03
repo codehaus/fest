@@ -659,16 +659,32 @@ public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements C
   }
 
   /**
-   * Asserts that the value of the given cell is equal to the expected one.
+   * Asserts that the value of the given cell matches the given value.
    * @param cell the given table cell.
-   * @param value the expected value.
+   * @param value the expected value. It can be a regular expression.
    * @return this fixture.
    * @throws NullPointerException if the cell is <code>null</code>.
    * @throws IndexOutOfBoundsException if any of the indices (row and column) is out of bounds.
-   * @throws AssertionError if the value of the given cell is not equal to the expected one.
+   * @throws AssertionError if the value of the given cell does not match the given value.
    */
   public JTableFixture requireCellValue(TableCell cell, String value) {
     driver.requireCellValue(target, cell, value);
+    return this;
+  }
+
+  /**
+   * Asserts that the value of the given cell matches the given regular expression pattern.
+   * @param cell the given table cell.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the cell is <code>null</code>.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws IndexOutOfBoundsException if any of the indices (row and column) is out of bounds.
+   * @throws AssertionError if the value of the given cell does not match the given regular expression pattern.
+   * @since 1.2
+   */
+  public JTableFixture requireCellValue(TableCell cell, Pattern pattern) {
+    driver.requireCellValue(target, cell, pattern);
     return this;
   }
 

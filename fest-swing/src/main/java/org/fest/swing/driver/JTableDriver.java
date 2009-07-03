@@ -33,6 +33,7 @@ import static org.fest.swing.driver.JTableHasSelectionQuery.hasSelection;
 import static org.fest.swing.driver.JTableHeaderQuery.tableHeader;
 import static org.fest.swing.driver.JTableMatchingCellQuery.cellWithValue;
 import static org.fest.swing.driver.JTableSingleRowCellSelectedQuery.isCellSelected;
+import static org.fest.swing.driver.TextAssert.verifyThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.exception.ActionFailedException.actionFailure;
 import static org.fest.swing.util.Arrays.equal;
@@ -533,22 +534,38 @@ public class JTableDriver extends JComponentDriver {
   }
 
   /**
-   * Asserts that the value of the given cell is equal to the expected one.
+   * Asserts that the value of the given cell matches the given value.
    * @param table the target <code>JTable</code>.
    * @param cell the given table cell.
-   * @param value the expected value.
+   * @param value the expected value. It can be a regular expression.
    * @throws NullPointerException if the cell is <code>null</code>.
    * @throws IndexOutOfBoundsException if any of the indices (row and column) is out of bounds.
-   * @throws AssertionError if the value of the given cell is not equal to the expected one.
+   * @throws AssertionError if the value of the given cell does not match the given value.
    */
   @RunsInEDT
   public void requireCellValue(JTable table, TableCell cell, String value) {
-    assertThat(value(table, cell)).as(cellProperty(table, concat(VALUE_PROPERTY, " ", cell))).isEqualTo(value);
+    verifyThat(value(table, cell)).as(cellValueProperty(table, cell)).isEqualOrMatches(value);
+  }
+
+  /**
+   * Asserts that the value of the given cell matches the given regular expression pattern.
+   * @param table the target <code>JTable</code>.
+   * @param cell the given table cell.
+   * @param pattern the regular expression pattern to match.
+   * @throws NullPointerException if the cell is <code>null</code>.
+   * @throws IndexOutOfBoundsException if any of the indices (row and column) is out of bounds.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the value of the given cell does not match the given regular expression pattern.
+   * @since 1.2
+   */
+  @RunsInEDT
+  public void requireCellValue(JTable table, TableCell cell, Pattern pattern) {
+    verifyThat(value(table, cell)).as(cellValueProperty(table, cell)).matches(pattern);
   }
 
   @RunsInEDT
-  private static Description cellProperty(JTable table, String propertyName) {
-    return propertyName(table, propertyName);
+  private Description cellValueProperty(JTable table, TableCell cell) {
+    return cellProperty(table, concat(VALUE_PROPERTY, " ", cell));
   }
 
   /**
@@ -607,6 +624,11 @@ public class JTableDriver extends JComponentDriver {
       }
     });
     assertThat(cellEditable).as(cellProperty(table, concat(EDITABLE_PROPERTY, " ", cell))).isEqualTo(editable);
+  }
+
+  @RunsInEDT
+  private static Description cellProperty(JTable table, String propertyName) {
+    return propertyName(table, propertyName);
   }
 
   /**
