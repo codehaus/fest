@@ -15,6 +15,11 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.data.TableCell.row;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.exception.ActionFailedException.actionFailure;
+import static org.fest.util.Strings.concat;
+
 import javax.swing.JTable;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
@@ -22,12 +27,7 @@ import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.cell.JTableCellReader;
 import org.fest.swing.data.TableCell;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.swing.data.TableCell.row;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.exception.ActionFailedException.actionFailure;
-import static org.fest.util.Objects.areEqual;
-import static org.fest.util.Strings.*;
+import org.fest.swing.util.TextMatcher;
 
 /**
  * Understands an action, executed in the event dispatch thread, that returns the first cell in a 
@@ -38,28 +38,28 @@ import static org.fest.util.Strings.*;
 final class JTableMatchingCellQuery {
 
   @RunsInEDT
-  static TableCell cellWithValue(final JTable table, final String value, final JTableCellReader cellReader) {
+  static TableCell cellWithValue(final JTable table, final TextMatcher matcher, final JTableCellReader cellReader) {
     return execute(new GuiQuery<TableCell>() {
       protected TableCell executeInEDT() {
-        return findMatchingCell(table, value, cellReader);
+        return findMatchingCell(table, matcher, cellReader);
       }
     });
   }
 
   @RunsInCurrentThread
-  private static TableCell findMatchingCell(JTable table, String value, JTableCellReader cellReader) {
+  private static TableCell findMatchingCell(JTable table, TextMatcher matcher, JTableCellReader cellReader) {
     int rCount = table.getRowCount();
     int cCount = table.getColumnCount();
     for (int r = 0; r < rCount; r++)
       for (int c = 0; c < cCount; c++)
-        if (cellHasValue(table, r, c, value, cellReader)) return row(r).column(c);
-    throw actionFailure(concat("Unable to find cell with value ", quote(value)));
+        if (cellHasValue(table, r, c, matcher, cellReader)) return row(r).column(c);
+    throw actionFailure(concat("Unable to find cell matching ", matcher.description(), " ", matcher.formattedValues()));
   }
 
   @RunsInCurrentThread
-  private static boolean cellHasValue(JTable table, int row, int column, String value, 
+  private static boolean cellHasValue(JTable table, int row, int column, TextMatcher matcher, 
       JTableCellReader cellReader) {
-    return areEqual(value, cellReader.valueAt(table, row, column));
+    return matcher.isMatching(cellReader.valueAt(table, row, column));
   }
   
   private JTableMatchingCellQuery() {}

@@ -14,9 +14,14 @@
  */
 package org.fest.swing.fixture;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.driver.ComponentDriver.propertyName;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
+import java.util.regex.Pattern;
 
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
@@ -37,10 +42,6 @@ import org.fest.swing.exception.ActionFailedException;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.exception.WaitTimedOutError;
 import org.fest.swing.timing.Timeout;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.driver.ComponentDriver.propertyName;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands simulation of user events on a <code>{@link JTable}</code> and verification of the state of such
@@ -149,7 +150,7 @@ public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements C
 
   /**
    * Returns a fixture that manages the table cell whose value matches the given one.
-   * @param value the value of the cell to look for.
+   * @param value the value of the cell to look for. It can be a regular expression.
    * @return a fixture that manages the table cell whose value matches the given one.
    * @throws ActionFailedException if a cell with a matching value cannot be found.
    */
@@ -157,6 +158,18 @@ public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements C
     return driver.cell(target, value);
   }
 
+  /**
+   * Returns a fixture that manages the table cell whose value matches the given regular expression pattern.
+   * @param valuePattern the regular expression pattern to match. 
+   * @return a fixture that manages the table cell whose value matches the given one.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws ActionFailedException if a cell with a matching value cannot be found.
+   * @since 1.2
+   */
+  public TableCell cell(Pattern valuePattern) {
+    return driver.cell(target, valuePattern);
+  }
+  
   /**
    * Returns a fixture that manages the table cell specified by the given row index and column name.
    * @param cell the cell of interest.

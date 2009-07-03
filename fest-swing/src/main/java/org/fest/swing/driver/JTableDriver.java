@@ -14,10 +14,38 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.Fail.fail;
+import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
+import static org.fest.swing.data.TableCell.row;
+import static org.fest.swing.driver.CommonValidations.validateCellReader;
+import static org.fest.swing.driver.CommonValidations.validateCellWriter;
+import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
+import static org.fest.swing.driver.JTableCellEditableQuery.isCellEditable;
+import static org.fest.swing.driver.JTableCellValidator.validateCellIndices;
+import static org.fest.swing.driver.JTableCellValidator.validateIndices;
+import static org.fest.swing.driver.JTableCellValidator.validateNotNull;
+import static org.fest.swing.driver.JTableCellValidator.validateRowIndex;
+import static org.fest.swing.driver.JTableColumnByIdentifierQuery.columnIndexByIdentifier;
+import static org.fest.swing.driver.JTableColumnCountQuery.columnCountOf;
+import static org.fest.swing.driver.JTableContentsQuery.tableContents;
+import static org.fest.swing.driver.JTableHasSelectionQuery.hasSelection;
+import static org.fest.swing.driver.JTableHeaderQuery.tableHeader;
+import static org.fest.swing.driver.JTableMatchingCellQuery.cellWithValue;
+import static org.fest.swing.driver.JTableSingleRowCellSelectedQuery.isCellSelected;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.exception.ActionFailedException.actionFailure;
+import static org.fest.swing.util.Arrays.equal;
+import static org.fest.util.Arrays.format;
+import static org.fest.util.Arrays.isEmpty;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Point;
+import java.util.regex.Pattern;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
@@ -38,27 +66,8 @@ import org.fest.swing.exception.ActionFailedException;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.util.Arrays;
 import org.fest.swing.util.Pair;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.Fail.fail;
-import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
-import static org.fest.swing.data.TableCell.row;
-import static org.fest.swing.driver.CommonValidations.*;
-import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
-import static org.fest.swing.driver.JTableCellEditableQuery.isCellEditable;
-import static org.fest.swing.driver.JTableCellValidator.*;
-import static org.fest.swing.driver.JTableColumnByIdentifierQuery.columnIndexByIdentifier;
-import static org.fest.swing.driver.JTableColumnCountQuery.columnCountOf;
-import static org.fest.swing.driver.JTableContentsQuery.tableContents;
-import static org.fest.swing.driver.JTableHasSelectionQuery.hasSelection;
-import static org.fest.swing.driver.JTableHeaderQuery.tableHeader;
-import static org.fest.swing.driver.JTableMatchingCellQuery.cellWithValue;
-import static org.fest.swing.driver.JTableSingleRowCellSelectedQuery.isCellSelected;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.exception.ActionFailedException.actionFailure;
-import static org.fest.swing.util.Arrays.equal;
-import static org.fest.util.Arrays.*;
-import static org.fest.util.Strings.*;
+import org.fest.swing.util.PatternTextMatcher;
+import org.fest.swing.util.StringTextMatcher;
 
 /**
  * Understands simulation of user input on a <code>{@link JTable}</code>. Unlike <code>JTableFixture</code>, this
@@ -154,15 +163,28 @@ public class JTableDriver extends JComponentDriver {
   /**
    * Returns a cell from the given <code>{@link JTable}</code> whose value matches the given one.
    * @param table the target <code>JTable</code>.
-   * @param value the value of the cell to look for.
+   * @param value the value of the cell to look for. It can be a regular expression.
    * @return a cell from the given <code>JTable</code> whose value matches the given one.
    * @throws ActionFailedException if a cell with a matching value cannot be found.
    */
   @RunsInEDT
   public TableCell cell(JTable table, String value) {
-    return cellWithValue(table, value, cellReader);
+    return cellWithValue(table, new StringTextMatcher(value), cellReader);
   }
 
+  /**
+   * Returns a cell from the given <code>{@link JTable}</code> whose value matches the given regular expression pattern.
+   * @param table the target <code>JTable</code>.
+   * @param pattern the regular expression pattern to match
+   * @return a cell from the given <code>JTable</code> whose value matches the given one.
+   * @throws NullPointerException if the given regular expression is <code>null</code>.
+   * @throws ActionFailedException if a cell with a matching value cannot be found.
+   * @since 1.2
+   */
+  @RunsInEDT
+  public TableCell cell(JTable table, Pattern pattern) {
+    return cellWithValue(table, new PatternTextMatcher(pattern), cellReader);
+  }
 
   /**
    * Returns the <code>String</code> representation of the value at the given cell, using this driver's
@@ -383,7 +405,8 @@ public class JTableDriver extends JComponentDriver {
    */
   @RunsInEDT
   public void click(JTable table, TableCell cell, MouseButton mouseButton, int times) {
-    // TODO validate times
+    if (times <= 0) 
+      throw new IllegalArgumentException("The number of times to click a cell should be greater than zero");
     Point pointAtCell = scrollToPointAtCell(table, cell, location);
     robot.click(table, pointAtCell, mouseButton, times);
   }

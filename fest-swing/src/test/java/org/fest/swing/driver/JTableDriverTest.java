@@ -15,15 +15,47 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.*;
+import static java.awt.Color.BLUE;
+import static java.awt.Font.PLAIN;
+import static java.lang.Integer.parseInt;
+import static javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
+import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
+import static org.fest.swing.core.MouseButton.RIGHT_BUTTON;
+import static org.fest.swing.data.TableCell.row;
+import static org.fest.swing.driver.JTableCellEditableQuery.isCellEditable;
+import static org.fest.swing.driver.JTableCellValueQuery.cellValueOf;
+import static org.fest.swing.driver.JTableClearSelectionTask.clearSelectionOf;
+import static org.fest.swing.driver.JTableRowCountQuery.rowCountOf;
+import static org.fest.swing.driver.JTableSelectedRowCountQuery.selectedRowCountOf;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.swing.test.core.CommonAssertions.assertActionFailureDueToDisabledComponent;
+import static org.fest.swing.test.core.CommonAssertions.assertActionFailureDueToNotShowingComponent;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.Regex.regex;
+import static org.fest.swing.test.core.TestGroups.GUI;
+import static org.fest.swing.test.recorder.ClickRecorder.attachTo;
+import static org.fest.swing.test.swing.TestTable.columnNames;
+import static org.fest.swing.test.swing.TestTable.createCellTextUsing;
+import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
+import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Point;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
-
-import org.testng.annotations.*;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.annotation.RunsInEDT;
@@ -37,34 +69,15 @@ import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ActionFailedException;
 import org.fest.swing.test.core.MethodInvocations;
+import org.fest.swing.test.data.ZeroAndNegativeProvider;
 import org.fest.swing.test.recorder.ClickRecorder;
 import org.fest.swing.test.swing.TestTable;
 import org.fest.swing.test.swing.TestWindow;
-
-import static java.awt.Color.BLUE;
-import static java.awt.Font.PLAIN;
-import static java.lang.Integer.parseInt;
-import static javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.core.MouseButton.RIGHT_BUTTON;
-import static org.fest.swing.data.TableCell.row;
-import static org.fest.swing.driver.JTableCellEditableQuery.isCellEditable;
-import static org.fest.swing.driver.JTableCellValueQuery.cellValueOf;
-import static org.fest.swing.driver.JTableClearSelectionTask.clearSelectionOf;
-import static org.fest.swing.driver.JTableRowCountQuery.rowCountOf;
-import static org.fest.swing.driver.JTableSelectedRowCountQuery.selectedRowCountOf;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.builder.JTextFields.textField;
-import static org.fest.swing.test.core.CommonAssertions.*;
-import static org.fest.swing.test.core.TestGroups.GUI;
-import static org.fest.swing.test.recorder.ClickRecorder.attachTo;
-import static org.fest.swing.test.swing.TestTable.*;
-import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
-import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JTableDriver}</code>.
@@ -234,11 +247,18 @@ public class JTableDriverTest {
     assertThat(cell.column).isEqualTo(column);
     assertCellReaderWasCalled();
   }
-
+  
   @DataProvider(name = "cells") public Object[][] cells() {
     return new Object[][] { { 6, 5 }, { 0, 0 }, { 8, 3 }, { 5, 2 } };
   }
 
+  public void shouldFindCellMatchingPatternAsString() {
+    TableCell cell = driver.cell(dragTable, "1.*");
+    assertThat(cell.row).isEqualTo(1);
+    assertThat(cell.column).isEqualTo(0);
+    assertCellReaderWasCalled();
+  }
+  
   public void shouldThrowErrorIfCellCannotBeFoundWithGivenValue() {
     try {
       driver.cell(dragTable, "Hello World");
@@ -246,6 +266,13 @@ public class JTableDriverTest {
     } catch (ActionFailedException expected) {
       assertThat(expected.getMessage()).contains("Unable to find cell with value 'Hello World'");
     }
+  }
+  
+  public void shouldFindCellMatchingPattern() {
+    TableCell cell = driver.cell(dragTable, regex("1.*"));
+    assertThat(cell.row).isEqualTo(1);
+    assertThat(cell.column).isEqualTo(0);
+    assertCellReaderWasCalled();
   }
 
   @Test(groups = GUI, dataProvider = "columnNames")
@@ -347,15 +374,33 @@ public class JTableDriverTest {
                                 .contains("expected:<'0-1'> but was:<'0-0'>");
     }
   }
+  
+  public void shouldClickCellGivenNumberOfTimes() {
+    ClickRecorder recorder = attachTo(dragTable);
+    TableCell cell = row(0).column(1);
+    driver.click(dragTable, cell, LEFT_BUTTON, 3);
+    assertThat(recorder).clicked(LEFT_BUTTON).timesClicked(3);
+    assertThatCellWasClicked(cell, recorder.pointClicked());
+  }
+  
+  @Test(groups = GUI, expectedExceptions = IllegalArgumentException.class, 
+      dataProvider = "zeroAndNegative", dataProviderClass = ZeroAndNegativeProvider.class)
+  public void shouldThrowErrorIfNumberOfTimesToClickCellIsZeroOrNegative(int index) {
+    driver.click(dragTable, row(0).column(1), LEFT_BUTTON, index);
+  }
 
   public void shouldShowPopupMenuAtCell() {
     setJPopupMenuToJTable(dragTable);
     robot.waitForIdle();
     ClickRecorder recorder = attachTo(dragTable);
-    driver.showPopupMenuAt(dragTable, row(0).column(1));
-    recorder.clicked(RIGHT_BUTTON).timesClicked(1);
-    Point pointClicked = recorder.pointClicked();
-    Point pointAtCell = new JTableLocation().pointAt(dragTable, 0, 1);
+    TableCell cell = row(0).column(1);
+    driver.showPopupMenuAt(dragTable, cell);
+    assertThat(recorder).clicked(RIGHT_BUTTON).timesClicked(1);
+    assertThatCellWasClicked(cell, recorder.pointClicked());
+  }
+
+  private void assertThatCellWasClicked(TableCell cell, Point pointClicked) {
+    Point pointAtCell = new JTableLocation().pointAt(dragTable, cell.row, cell.column);
     assertThat(pointClicked).isEqualTo(pointAtCell);
   }
 

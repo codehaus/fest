@@ -29,8 +29,12 @@ import static org.fest.swing.test.builder.JPopupMenus.popupMenu;
 import static org.fest.swing.test.builder.JTableHeaders.tableHeader;
 import static org.fest.swing.test.builder.JTables.table;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.Regex.regex;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Point;
+import java.util.regex.Pattern;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
@@ -475,6 +479,20 @@ public class JTableFixtureTest extends CommonComponentFixtureTestCase<JTable> {
 
       protected void codeToTest() {
         TableCell result = fixture.cell(value);
+        assertThat(result).isEqualTo(cell);
+      }
+    }.run();
+  }
+
+  public void shouldFindCellByValueMatchingPattern() {
+    final Pattern pattern = regex("Hello");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        expect(driver.cell(target, pattern)).andReturn(cell);
+      }
+
+      protected void codeToTest() {
+        TableCell result = fixture.cell(pattern);
         assertThat(result).isEqualTo(cell);
       }
     }.run();
