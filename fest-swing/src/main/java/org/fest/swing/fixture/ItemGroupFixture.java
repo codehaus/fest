@@ -16,6 +16,7 @@
 package org.fest.swing.fixture;
 
 import java.awt.Component;
+import java.util.regex.Pattern;
 
 /**
  * Understands simulation of user events on a <code>{@link Component}</code> that contains or displays a group of items,
@@ -48,10 +49,20 @@ public interface ItemGroupFixture {
 
   /**
    * Simulates a user selecting an item in this fixture's <code>{@link Component}</code>.
-   * @param value the value of the item to select.
+   * @param value the value of the item to select. It can be a regular expression.
    * @return this fixture.
    */
   ItemGroupFixture selectItem(String value);
+
+  /**
+   * Simulates a user selecting an item in this fixture's <code>{@link Component}</code>. The text of the item to
+   * select must match the given regular expression pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @since 1.2
+   */
+  ItemGroupFixture selectItem(Pattern pattern);
 
   /**
    * Returns the value of an item in the <code>{@link Component}</code> managed by this fixture. If the value is not
@@ -62,14 +73,25 @@ public interface ItemGroupFixture {
   Object valueAt(int index);
 
   /**
-   * Verifies that the value the selected item in this fixture's <code>{@link Component}</code> matches the given
+   * Verifies that the value of the selected item in this fixture's <code>{@link Component}</code> matches the given
    * value.
-   * @param value the value to match.
+   * @param value the value to match. It can be a regular expression.
    * @return this fixture.
    * @throws AssertionError if the selected item does not match the given value.
    */
   ItemGroupFixture requireSelection(String value);
 
+  /**
+   * Verifies that the value of the selected item in this fixture's <code>{@link Component}</code> matches the given 
+   * regular expression pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the selected item does not match the given regular expression pattern.
+   * @since 1.2
+   */
+  ItemGroupFixture requireSelection(Pattern pattern);
+  
   /**
    * Verifies that the index of the selected item in this fixture's <code>{@link Component}</code> is equal to the given
    * value.
