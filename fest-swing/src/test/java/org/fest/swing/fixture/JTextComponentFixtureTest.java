@@ -19,6 +19,9 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.swing.test.core.Regex.regex;
+
+import java.util.regex.Pattern;
 
 import javax.swing.text.JTextComponent;
 
@@ -153,6 +156,20 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
 
       protected void codeToTest() {
         assertThatReturnsThis(fixture.requireText("A Label"));
+      }
+    }.run();
+  }
+
+  public void shouldRequireTextToMatchPattern() {
+    final Pattern pattern = regex(".");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.requireText(target, pattern);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireText(pattern));
       }
     }.run();
   }

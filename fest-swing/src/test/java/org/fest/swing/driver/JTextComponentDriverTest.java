@@ -23,21 +23,32 @@ import static org.fest.swing.driver.JTextComponentSelectedTextQuery.selectedText
 import static org.fest.swing.driver.JTextComponentSetEditableTask.setTextFieldEditable;
 import static org.fest.swing.driver.JTextComponentTextQuery.textOf;
 import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.CommonAssertions.*;
+import static org.fest.swing.test.core.CommonAssertions.assertActionFailureDueToDisabledComponent;
+import static org.fest.swing.test.core.CommonAssertions.assertActionFailureDueToNotShowingComponent;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
 
 import java.awt.Dimension;
 
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JViewport;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
-import org.fest.swing.edt.*;
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ActionFailedException;
 import org.fest.swing.test.swing.TestWindow;
 import org.fest.swing.test.task.ComponentSetVisibleTask;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JTextComponentDriver}</code>.
@@ -329,13 +340,35 @@ public class JTextComponentDriverTest {
     driver.requireText(textField, "Hi");
   }
 
+  public void shouldPassIfTextMatchesPatternAsString() {
+    setTextFieldText("Hi");
+    driver.requireText(textField, "H.*");
+  }
+
   public void shouldFailIfDoesNotHaveExpectedText() {
     setTextFieldText("Hi");
     try {
       driver.requireText(textField, "Bye");
       failWhenExpectingException();
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("property:'text'").contains("expected:<'Bye'> but was:<'Hi'>");
+      assertThat(e.getMessage()).contains("property:'text'")
+                                .contains("actual value:<'Hi'> is not equal to or does not match pattern:<'Bye'>");
+    }
+  }
+
+  public void shouldPassIfTextMatchesPattern() {
+    setTextFieldText("Hi");
+    driver.requireText(textField, regex("H.*"));
+  }
+
+  public void shouldFailIfTextDoesNotMatchPattern() {
+    setTextFieldText("Hi");
+    try {
+      driver.requireText(textField, regex("Bye"));
+      failWhenExpectingException();
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("property:'text'")
+                                .contains("actual value:<'Hi'> does not match pattern:<'Bye'>");
     }
   }
 

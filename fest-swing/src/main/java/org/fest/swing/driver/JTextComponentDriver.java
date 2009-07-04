@@ -26,14 +26,22 @@ import static org.fest.swing.driver.JTextComponentSelectTextTask.selectTextInRan
 import static org.fest.swing.driver.JTextComponentSetTextTask.setTextIn;
 import static org.fest.swing.driver.JTextComponentTextQuery.textOf;
 import static org.fest.swing.driver.PointAndParentForScrollingJTextFieldQuery.pointAndParentForScrolling;
+import static org.fest.swing.driver.TextAssert.verifyThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.exception.ActionFailedException.actionFailure;
 import static org.fest.swing.format.Formatting.format;
-import static org.fest.util.Strings.*;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.isEmpty;
+import static org.fest.util.Strings.quote;
 
-import java.awt.*;
+import java.awt.Container;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.regex.Pattern;
 
-import javax.swing.*;
+import javax.swing.CellRendererPane;
+import javax.swing.JComponent;
+import javax.swing.JTextField;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 
@@ -295,14 +303,28 @@ public class JTextComponentDriver extends JComponentDriver {
   }
 
   /**
-   * Asserts that the text in the given <code>{@link JTextComponent}</code> is equal to the specified <code>String</code>.
+   * Asserts that the text in the given <code>{@link JTextComponent}</code> is equal to the specified value.
    * @param textBox the given <code>JTextComponent</code>.
-   * @param expected the text to match.
+   * @param expected the text to match. It can be a regular expression pattern.
    * @throws AssertionError if the text of the <code>JTextComponent</code> is not equal to the given one.
    */
   @RunsInEDT
   public void requireText(JTextComponent textBox, String expected) {
-    assertThat(textOf(textBox)).as(textProperty(textBox)).isEqualTo(expected);
+    verifyThat(textOf(textBox)).as(textProperty(textBox)).isEqualOrMatches(expected);
+  }
+
+  /**
+   * Asserts that the text in the given <code>{@link JTextComponent}</code> matches the given regular expression 
+   * pattern.
+   * @param textBox the given <code>JTextComponent</code>.
+   * @param pattern the regular expression pattern to match.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>. 
+   * @throws AssertionError if the text of the <code>JTextComponent</code> is not equal to the given one.
+   * @since 1.2
+   */
+  @RunsInEDT
+  public void requireText(JTextComponent textBox, Pattern pattern) {
+    verifyThat(textOf(textBox)).as(textProperty(textBox)).matches(pattern);
   }
 
   /**

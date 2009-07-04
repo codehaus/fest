@@ -15,6 +15,8 @@
  */
 package org.fest.swing.fixture;
 
+import java.util.regex.Pattern;
+
 import javax.swing.text.JTextComponent;
 
 import org.fest.swing.core.KeyPressInfo;
@@ -296,14 +298,27 @@ public class JTextComponentFixture extends JPopupMenuInvokerFixture<JTextCompone
   }
 
   /**
-   * Asserts that the text of this fixture's <code>{@link JTextComponent}</code> is equal to the specified
-   * <code>String</code>.
-   * @param expected the text to match.
+   * Asserts that the text of this fixture's <code>{@link JTextComponent}</code> is equal to the specified value.
+   * @param expected the text to match. It can be a regular expression pattern.
    * @return this fixture.
    * @throws AssertionError if the text of this fixture's <code>JTextComponent</code> is not equal to the given one.
    */
   public JTextComponentFixture requireText(String expected) {
     driver.requireText(target, expected);
+    return this;
+  }
+
+  /**
+   * Asserts that the text of this fixture's <code>{@link JTextComponent}</code> matches the given regular expression 
+   * pattern.
+   * @param pattern the regular expression pattern to match. 
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the text of this fixture's <code>JTextComponent</code> is not eual to the given one.
+   * @since 1.2
+   */
+  public JTextComponentFixture requireText(Pattern pattern) {
+    driver.requireText(target, pattern);
     return this;
   }
 
