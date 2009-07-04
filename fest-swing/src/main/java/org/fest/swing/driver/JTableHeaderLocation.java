@@ -14,6 +14,9 @@
  */
 package org.fest.swing.driver;
 
+import static java.lang.String.valueOf;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -21,11 +24,8 @@ import javax.swing.table.JTableHeader;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.exception.LocationUnavailableException;
-
-import static java.lang.String.valueOf;
-
-import static org.fest.swing.util.Strings.areEqualOrMatch;
-import static org.fest.util.Strings.*;
+import org.fest.swing.util.StringTextMatcher;
+import org.fest.swing.util.TextMatcher;
 
 /**
  * Understands the location of a <code>{@link JTableHeader}</code> (a coordinate, column index or value.)
@@ -42,15 +42,32 @@ public class JTableHeaderLocation {
    * invoking this method in the EDT.
    * </p>
    * @param tableHeader the target <code>JTableHeader</code>.
-   * @param columnName the column name to match
+   * @param columnName the column name to match. It can be a regular expression.
    * @return the coordinates of the column under the given index.
    * @throws LocationUnavailableException if a column with a matching name cannot be found.
    */
   @RunsInCurrentThread
   public Point pointAt(JTableHeader tableHeader, String columnName) {
-    int index = indexOf(tableHeader, columnName);
+    return pointAt(tableHeader, new StringTextMatcher(columnName));
+  }
+
+  /**
+   * Returns the coordinates of the column which name matches the value in the given <code>{@link TextMatcher}</code>.
+   * <p>
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * invoking this method in the EDT.
+   * </p>
+   * @param tableHeader the target <code>JTableHeader</code>.
+   * @param matcher indicates which is the matching column name.
+   * @return the coordinates of the column under the given index.
+   * @throws LocationUnavailableException if a column with a matching value cannot be found.
+   */
+  @RunsInCurrentThread
+  public Point pointAt(JTableHeader tableHeader, TextMatcher matcher) {
+    int index = indexOf(tableHeader, matcher);
     if (isValidIndex(tableHeader, index)) return point(tableHeader, index);
-    throw new LocationUnavailableException(concat("Unable to find column with name ", quote(columnName)));
+    throw new LocationUnavailableException(
+        concat("Unable to find column with name matching ", matcher.description(), " ", matcher.formattedValues()));
   }
 
   @RunsInCurrentThread
@@ -97,14 +114,30 @@ public class JTableHeaderLocation {
    * invoking this method in the EDT.
    * </p>
    * @param tableHeader the target <code>JTableHeader</code>.
-   * @param columnName the column name to match.
+   * @param columnName the column name to match. It can be a regular expression.
    * @return the index of the column which name matches the given value or -1 if a matching column was not found.
    */
   @RunsInCurrentThread
   public int indexOf(JTableHeader tableHeader, String columnName) {
+    return indexOf(tableHeader, new StringTextMatcher(columnName));
+  }
+
+  /**
+   * Returns the index of the column which name matches the value in the given <code>{@link TextMatcher}</code>, or -1 
+   * if a matching column was not found.
+   * <p>
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * invoking this method in the EDT.
+   * </p>
+   * @param tableHeader the target <code>JTableHeader</code>.
+   * @param matcher indicates which is the matching column name.
+   * @return the index of a matching column or -1 if a matching column was not found.
+   */
+  @RunsInCurrentThread
+  public int indexOf(JTableHeader tableHeader, TextMatcher matcher) {
     int size = columnCount(tableHeader);
     for (int i = 0; i < size; i++)
-      if (areEqualOrMatch(columnName, columnName(tableHeader, i))) return i;
+      if (matcher.isMatching(columnName(tableHeader, i))) return i;
     return -1;
   }
 

@@ -15,29 +15,36 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.Regex.regex;
+import static org.fest.swing.test.core.TestGroups.GUI;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.regex.Pattern;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 
-import org.testng.annotations.*;
-
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
 import org.fest.swing.core.BasicRobot;
+import org.fest.swing.core.Robot;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.exception.LocationUnavailableException;
 import org.fest.swing.test.swing.TestTable;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.TestGroups.GUI;
+import org.fest.swing.util.PatternTextMatcher;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JTableHeaderLocation}</code>.
@@ -114,6 +121,24 @@ public class JTableHeaderLocationTest {
     return new Object[][] { { -1 }, { 2 } };
   }
 
+  public void shouldThrowErrorIfColumnNameNotMatching() {
+    try {
+      pointAt(location, tableHeader, "Hello");
+      failWhenExpectingException();
+    } catch (LocationUnavailableException e) {
+      assertThat(e.getMessage()).isEqualTo("Unable to find column with name matching value 'Hello'");
+    }
+  }
+  
+  public void shouldThrowErrorIfColumnNameNotMatchingPattern() {
+    try {
+      pointAt(location, tableHeader, regex("Hello"));
+      failWhenExpectingException();
+    } catch (LocationUnavailableException e) {
+      assertThat(e.getMessage()).isEqualTo("Unable to find column with name matching pattern 'Hello'");
+    }
+  }
+
   @RunsInEDT
   private static Point pointAt(final JTableHeaderLocation location, final JTableHeader tableHeader, final int index) {
     return execute(new GuiQuery<Point>() {
@@ -123,11 +148,6 @@ public class JTableHeaderLocationTest {
     });
   }
 
-  @Test(groups = GUI, expectedExceptions = LocationUnavailableException.class)
-  public void shouldThrowErrorIfColumnNameNotMatching() {
-    pointAt(location, tableHeader, "Hello");
-  }
-  
   @RunsInEDT
   private static Point pointAt(final JTableHeaderLocation location, final JTableHeader tableHeader, 
       final String columnName) {
@@ -138,6 +158,16 @@ public class JTableHeaderLocationTest {
     });
   }
 
+  @RunsInEDT
+  private static Point pointAt(final JTableHeaderLocation location, final JTableHeader tableHeader, 
+      final Pattern columnNamePattern) {
+    return execute(new GuiQuery<Point>() {
+      protected Point executeInEDT() throws Throwable {
+        return location.pointAt(tableHeader, new PatternTextMatcher(columnNamePattern));
+      }
+    });
+  }
+  
   private static class MyWindow extends TestWindow {
     private static final long serialVersionUID = 1L;
 

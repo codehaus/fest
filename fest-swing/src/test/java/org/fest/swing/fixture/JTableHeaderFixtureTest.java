@@ -23,6 +23,9 @@ import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
 import static org.fest.swing.core.MouseClickInfo.leftButton;
 import static org.fest.swing.test.builder.JPopupMenus.popupMenu;
 import static org.fest.swing.test.builder.JTableHeaders.tableHeader;
+import static org.fest.swing.test.core.Regex.regex;
+
+import java.util.regex.Pattern;
 
 import javax.swing.JPopupMenu;
 import javax.swing.table.JTableHeader;
@@ -112,6 +115,20 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
     }.run();
   }
 
+  public void shouldClickColumnWithNameMatchingPattern() {
+    final Pattern pattern = regex("first");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.clickColumn(target, pattern);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.clickColumn(pattern));
+      }
+    }.run();
+  }
+
   public void shouldClickColumnWithMatchingNameUsingGivingMouseButtonAndTimes() {
     final String name = "first";
     final MouseButton mouseButton = LEFT_BUTTON;
@@ -124,6 +141,22 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
 
       protected void codeToTest() {
         assertThatReturnsThis(fixture.clickColumn(name, leftButton().times(2)));
+      }
+    }.run();
+  }
+
+  public void shouldClickColumnWithNameMatchingPatternUsingGivingMouseButtonAndTimes() {
+    final Pattern pattern = regex("first");
+    final MouseButton mouseButton = LEFT_BUTTON;
+    final int times = 2;
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.clickColumn(target, pattern, mouseButton, times);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.clickColumn(pattern, leftButton().times(2)));
       }
     }.run();
   }
@@ -166,6 +199,21 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
 
       protected void codeToTest() {
         JPopupMenuFixture result = fixture.showPopupMenuAt(name);
+        assertThat(result.component()).isSameAs(popupMenu);
+      }
+    }.run();
+  }
+
+  public void shouldShowPopupMenuAtColumnWithNameMatchingPattern() {
+    final JPopupMenu popupMenu = popupMenu().createNew();
+    final Pattern pattern = regex("1");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        expect(driver.showPopupMenu(target, pattern)).andReturn(popupMenu);
+      }
+
+      protected void codeToTest() {
+        JPopupMenuFixture result = fixture.showPopupMenuAt(pattern);
         assertThat(result.component()).isSameAs(popupMenu);
       }
     }.run();

@@ -15,6 +15,20 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
+import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
+import static org.fest.swing.core.MouseButton.RIGHT_BUTTON;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.query.ComponentVisibleQuery.isVisible;
+import static org.fest.swing.test.builder.JMenuItems.menuItem;
+import static org.fest.swing.test.builder.JPopupMenus.popupMenu;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.Regex.regex;
+import static org.fest.swing.test.core.TestGroups.GUI;
+import static org.fest.swing.test.recorder.ClickRecorder.attachTo;
+import static org.fest.swing.test.task.ComponentSetPopupMenuTask.setPopupMenu;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -25,8 +39,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 
-import org.testng.annotations.*;
-
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
@@ -35,17 +47,11 @@ import org.fest.swing.exception.LocationUnavailableException;
 import org.fest.swing.test.recorder.ClickRecorder;
 import org.fest.swing.test.swing.TestTable;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.MouseButton.RIGHT_BUTTON;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.query.ComponentVisibleQuery.isVisible;
-import static org.fest.swing.test.builder.JMenuItems.menuItem;
-import static org.fest.swing.test.builder.JPopupMenus.popupMenu;
-import static org.fest.swing.test.core.TestGroups.GUI;
-import static org.fest.swing.test.recorder.ClickRecorder.attachTo;
-import static org.fest.swing.test.task.ComponentSetPopupMenuTask.setPopupMenu;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JTableHeaderDriver}</code>.
@@ -84,11 +90,6 @@ public class JTableHeaderDriverTest {
     return new Object[][] { { -1 }, { 2 } };
   }
 
-  @Test(groups = GUI, expectedExceptions = LocationUnavailableException.class)
-  public void shouldThrowErrorIfColumnNameNotMatching() {
-    driver.clickColumn(tableHeader, "Hello");
-  }
-
   @Test(groups = GUI, dataProvider = "columnIndices")
   public void shouldClickColumnUnderGivenIndex(int columnIndex) {
     ClickRecorder recorder = attachTo(tableHeader);
@@ -105,14 +106,54 @@ public class JTableHeaderDriverTest {
   public void shouldClickColumnWithName(String columnName, int columnIndex) {
     ClickRecorder recorder = attachTo(tableHeader);
     driver.clickColumn(tableHeader, columnName);
-    recorder.wasClicked();
+    assertThat(recorder).wasClicked();
     assertColumnClicked(recorder, columnIndex);
+  }
+
+  public void shouldFailIfNameOfColumnToClickDoesNotMatch() {
+    try {
+      driver.clickColumn(tableHeader, "hello");
+      failWhenExpectingException();
+    } catch (LocationUnavailableException e) {
+      assertThat(e.getMessage()).isEqualTo("Unable to find column with name matching value 'hello'");
+    }
+  }
+
+  public void shouldFailIfNameOfColumnToClickDoesNotMatchPattern() {
+    try {
+      driver.clickColumn(tableHeader, regex("hello"));
+      failWhenExpectingException();
+    } catch (LocationUnavailableException e) {
+      assertThat(e.getMessage()).isEqualTo("Unable to find column with name matching pattern 'hello'");
+    }
+  }
+
+  public void shouldClickColumnWithNameMatchingPattern() {
+    ClickRecorder recorder = attachTo(tableHeader);
+    driver.clickColumn(tableHeader, regex("0.*"));
+    assertThat(recorder).wasClicked();
+    assertColumnClicked(recorder, 0);
+  }
+
+  @Test(groups = GUI, dataProvider = "columnNames")
+  public void shouldClickColumnWithNameWithGivenButtonAndTheGivenTimes(String columnName, int columnIndex) {
+    ClickRecorder recorder = attachTo(tableHeader);
+    driver.clickColumn(tableHeader, columnName, LEFT_BUTTON, 3);
+    assertThat(recorder).wasClickedWith(LEFT_BUTTON).timesClicked(3);
+    assertColumnClicked(recorder, columnIndex);
+  }
+
+  public void shouldClickColumnWithNameMatchingPatternWithGivenButtonAndTheGivenTimes() {
+    ClickRecorder recorder = attachTo(tableHeader);
+    driver.clickColumn(tableHeader, regex("0.*"), LEFT_BUTTON, 3);
+    assertThat(recorder).wasClickedWith(LEFT_BUTTON).timesClicked(3);
+    assertColumnClicked(recorder, 0);
   }
 
   @DataProvider(name = "columnNames") public Object[][] columnNames() {
     return new Object[][] { { "0", 0 }, { "1", 1 } };
   }
-
+  
   public void shouldShowPopupMenuAtItemWithIndex() {
     JPopupMenu popupMenu = createAndSetPopupMenuForTableHeader();
     ClickRecorder recorder = attachTo(tableHeader);
@@ -126,6 +167,24 @@ public class JTableHeaderDriverTest {
     JPopupMenu popupMenu = createAndSetPopupMenuForTableHeader();
     ClickRecorder recorder = attachTo(tableHeader);
     driver.showPopupMenu(tableHeader, "1");
+    recorder.clicked(RIGHT_BUTTON).timesClicked(1);
+    assertColumnClicked(recorder, 1);
+    assertThat(isVisible(popupMenu)).isTrue();
+  }
+
+  public void shouldShowPopupMenuAtItemWithNameMatchingPatternAsString() {
+    JPopupMenu popupMenu = createAndSetPopupMenuForTableHeader();
+    ClickRecorder recorder = attachTo(tableHeader);
+    driver.showPopupMenu(tableHeader, "1.*");
+    recorder.clicked(RIGHT_BUTTON).timesClicked(1);
+    assertColumnClicked(recorder, 1);
+    assertThat(isVisible(popupMenu)).isTrue();
+  }
+
+  public void shouldShowPopupMenuAtItemWithNameMatchingPattern() {
+    JPopupMenu popupMenu = createAndSetPopupMenuForTableHeader();
+    ClickRecorder recorder = attachTo(tableHeader);
+    driver.showPopupMenu(tableHeader, regex("1.*"));
     recorder.clicked(RIGHT_BUTTON).timesClicked(1);
     assertColumnClicked(recorder, 1);
     assertThat(isVisible(popupMenu)).isTrue();
