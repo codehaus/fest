@@ -15,6 +15,8 @@
  */
 package org.fest.swing.fixture;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JToggleButton;
 
 import org.fest.swing.core.KeyPressInfo;
@@ -254,14 +256,28 @@ public class JToggleButtonFixture extends TwoStateButtonFixture<JToggleButton> {
   }
 
   /**
-   * Asserts that the text of this fixture's <code>{@link JToggleButton}</code> is equal to the specified
-   * <code>String</code>.
-   * @param expected the text to match.
+   * Asserts that the text of this fixture's <code>{@link JToggleButton}</code> matches the specified value.
+   * @param expected the text to match. It can be a regular expression.
    * @return this fixture.
-   * @throws AssertionError if the text of the target JToggleButton is not equal to the given one.
+   * @throws AssertionError if the text of the target JToggleButton does not match the given one.
    */
   public JToggleButtonFixture requireText(String expected) {
     driver.requireText(target, expected);
+    return this;
+  }
+
+  /**
+   * Asserts that the text of this fixture's <code>{@link JToggleButton}</code> matches the given regular expression 
+   * pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the text of the target <code>JToggleButton</code> does not match the given regular 
+   * expression pattern.
+   * @since 1.2
+   */
+  public JToggleButtonFixture requireText(Pattern pattern) {
+    driver.requireText(target, pattern);
     return this;
   }
 

@@ -194,6 +194,13 @@
       <action dev="alruiz" type="add" issue="FEST-160" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'requireText(Pattern)' to JTextComponentFixture.
       </action>
+      <action dev="alruiz" type="add" issue="FEST-161" due-to="Juhos Csaba-Zsolt">
+        Added support for regular expression matching to the method 'requireText(String)' in JToggleButtonFixture, where 
+        the given String can be a regular expression.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-161" due-to="Juhos Csaba-Zsolt">
+        Added overloaded method 'requireText(Pattern)' to JToggleButtonFixture.
+      </action>
     </release>
     <release version="1.2a2" date="2009-05-26" description="Subsequent release">
       <action dev="alruiz" type="add" issue="FEST-32" due-to="Juhos Csaba-Zsolt">

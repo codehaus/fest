@@ -19,7 +19,10 @@ import java.util.regex.Pattern;
 
 import javax.swing.JRadioButton;
 
-import org.fest.swing.core.*;
+import org.fest.swing.core.KeyPressInfo;
+import org.fest.swing.core.MouseButton;
+import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.core.Robot;
 import org.fest.swing.driver.AbstractButtonDriver;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.timing.Timeout;
@@ -315,11 +318,10 @@ public class JRadioButtonFixture extends TwoStateButtonFixture<JRadioButton> {
   }
 
   /**
-   * Asserts that the text of this fixture's <code>{@link JRadioButton}</code> is equal to the specified
-   * <code>String</code>.
+   * Asserts that the text of this fixture's <code>{@link JRadioButton}</code> matches the specified value.
    * @param expected the text to match. It can be a regular expression.
    * @return this fixture.
-   * @throws AssertionError if the text of the target JRadioButton is not equal to the given one.
+   * @throws AssertionError if the text of the target JRadioButton does not match the given one.
    */
   public JRadioButtonFixture requireText(String expected) {
     driver.requireText(target, expected);

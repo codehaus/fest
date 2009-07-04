@@ -20,6 +20,9 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JToggleButtons.toggleButton;
+import static org.fest.swing.test.core.Regex.regex;
+
+import java.util.regex.Pattern;
 
 import javax.swing.JToggleButton;
 
@@ -106,6 +109,20 @@ public class JToggleButtonFixtureTest extends CommonComponentFixtureTestCase<JTo
 
       protected void codeToTest() {
         assertThatReturnsThis(fixture.requireText("A ToggleButton"));
+      }
+    }.run();
+  }
+
+  public void shouldRequireTextToMatchPattern() {
+    final Pattern pattern = regex(".");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.requireText(target, pattern);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireText(pattern));
       }
     }.run();
   }
