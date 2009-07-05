@@ -61,6 +61,19 @@ public final class JButtonMatcher extends NamedComponentMatcherTemplate<JButton>
 
   /**
    * Creates a new <code>{@link JButtonMatcher}</code> that matches a <code>{@link JButton}</code> by its text.
+   * <p>
+   * The following code listing shows how to match a <code>{@link JButton}</code> by text:
+   * <pre>
+   * JButtonMatcher m = {@link #withText(String) withText}("OK");
+   * </pre>
+   * </p>
+   * <p>
+   * The following code listing shows how to match a <code>{@link JButton}</code>, that should be showing on the screen,
+   * by text:
+   * <pre>
+   * JButtonMatcher m = {@link #withText(String) withText}("OK").{@link #andShowing() andShowing}();
+   * </pre>
+   * </p>
    * @param text the text to match. It can be a regular expression.
    * @return the created matcher.
    */
@@ -70,6 +83,20 @@ public final class JButtonMatcher extends NamedComponentMatcherTemplate<JButton>
 
   /**
    * Creates a new <code>{@link JButtonMatcher}</code> that matches a <code>{@link JButton}</code> by its text.
+   * <p>
+   * The following code listing shows how to match a <code>{@link JButton}</code> by text, using a regular expression
+   * pattern:
+   * <pre>
+   * JButtonMatcher m = {@link #withText(Pattern) withText}(Pattern.compile("O.*"));
+   * </pre>
+   * </p>
+   * <p>
+   * The following code listing shows how to match a <code>{@link JButton}</code>, that should be showing on the screen,
+   * by text:
+   * <pre>
+   * JButtonMatcher m = {@link #withText(Pattern) withText}(Pattern.compile("O.*")).{@link #andShowing() andShowing}();
+   * </pre>
+   * </p>
    * @param textPattern the regular expression pattern to match.
    * @return the created matcher.
    * @since 1.2
