@@ -19,11 +19,12 @@ import static java.lang.String.valueOf;
 import static org.fest.util.Strings.concat;
 
 import java.awt.Dialog;
+import java.util.regex.Pattern;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 
 /**
- * Understands matching a <code>{@link Dialog}</code> whose title is equal to the provided one.
+ * Understands matching a <code>{@link Dialog}</code> by name, title and visibility on the screen.
  *
  * @author Alex Ruiz
  */
@@ -40,14 +41,14 @@ public final class DialogMatcher extends NamedComponentMatcherTemplate<Dialog> {
    * <p>
    * The following code listing shows how to match a <code>{@link Dialog}</code> by name and title:
    * <pre>
-   * DialogMatcher m = {@link #withName(String) withName}("ok").{@link #andTitle(String) andTitle}("OK");
+   * DialogMatcher m = {@link #withName(String) withName}("ok").{@link #andTitle(String) andTitle}("Save File");
    * </pre>
    * </p>
    * <p>
    * The following code listing shows how to match a <code>{@link Dialog}</code>, that should be showing on the screen,
    * by name and title:
    * <pre>
-   * DialogMatcher m = {@link #withName(String) withName}("ok").{@link #andTitle(String) andTitle}("OK").{@link #andShowing() andShowing}();
+   * DialogMatcher m = {@link #withName(String) withName}("ok").{@link #andTitle(String) andTitle}("Save File").{@link #andShowing() andShowing}();
    * </pre>
    * </p>
    * @param name the id to match.
@@ -59,11 +60,47 @@ public final class DialogMatcher extends NamedComponentMatcherTemplate<Dialog> {
 
   /**
    * Creates a new <code>{@link DialogMatcher}</code> that matches a <code>{@link Dialog}</code> by its title.
+   * <p>
+   * The following code listing shows how to match a <code>{@link Dialog}</code> title:
+   * <pre>
+   * DialogMatcher m = {@link #withTitle(String) withTitle}("Save File");
+   * </pre>
+   * </p>
+   * <p>
+   * The following code listing shows how to match a <code>{@link Dialog}</code>, that should be showing on the screen,
+   * by title:
+   * <pre>
+   * DialogMatcher m = {@link #withTitle(String) withTitle}("Save File").{@link #andShowing() andShowing}();
+   * </pre>
+   * </p>
    * @param title the title to match.
    * @return the created matcher.
    */
   public static DialogMatcher withTitle(String title) {
     return new DialogMatcher(ANY, title);
+  }
+
+  /**
+   * Creates a new <code>{@link DialogMatcher}</code> that matches a <code>{@link Dialog}</code> by its title.
+   * <p>
+   * The following code listing shows how to match a <code>{@link Dialog}</code> title, using a regular expression
+   * pattern:
+   * <pre>
+   * DialogMatcher m = {@link #withTitle(String) withTitle}("Save File");
+   * </pre>
+   * </p>
+   * <p>
+   * The following code listing shows how to match a <code>{@link Dialog}</code>, that should be showing on the screen,
+   * by title, using a regular expression pattern:
+   * <pre>
+   * DialogMatcher m = {@link #withTitle(String) withTitle}("Save File").{@link #andShowing() andShowing}();
+   * </pre>
+   * </p>
+   * @param titlePattern the regular expression pattern to match.
+   * @return the created matcher.
+   */
+  public static DialogMatcher withTitle(Pattern titlePattern) {
+    return new DialogMatcher(ANY, titlePattern);
   }
 
   /**
@@ -80,13 +117,25 @@ public final class DialogMatcher extends NamedComponentMatcherTemplate<Dialog> {
   }
 
   /**
-   * Specifies the title to match. If this matcher was created using <code>{@link #withTitle(String)}</code>, this method
-   * will simply update the title to match.
+   * Specifies the title to match. If this matcher was created using <code>{@link #withTitle(String)}</code> or
+   * <code>{@link #withTitle(Pattern)}</code>, this method will simply update the title to match.
    * @param newTitle the new title to match.
    * @return this matcher.
    */
   public DialogMatcher andTitle(String newTitle) {
     title = newTitle;
+    return this;
+  }
+
+
+  /**
+   * Specifies the title to match. If this matcher was created using <code>{@link #withTitle(String)}</code>, or 
+   * <code>{@link #withTitle(Pattern)}</code> this method will simply update the title to match.
+   * @param titlePattern the regular expression pattern to match.
+   * @return this matcher.
+   */
+  public DialogMatcher andTitle(Pattern titlePattern) {
+    title = titlePattern;
     return this;
   }
 
@@ -100,14 +149,17 @@ public final class DialogMatcher extends NamedComponentMatcherTemplate<Dialog> {
   }
 
   /**
-   * Indicates whether the title of the given <code>{@link Dialog}</code> is equal to the title in this matcher.
+   * Indicates whether:
+   * <ul>
+   * <li>the name of the given <code>Dialog</code> is equal to the name in this matcher, and</li>
+   * <li>the title of the given <code>Dialog</code> matches the text (or pattern) in this matcher</li>
+   * </ul>
    * <p>
    * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param dialog the <code>Dialog</code> to match.
-   * @return <code>true</code> if the title in the <code>Dialog</code> is equal to the title in this matcher,
-   * <code>false</code> otherwise.
+   * @return <code>true</code> if the <code>Dialog</code> matches the search criteria in this matcher.
    */
   @RunsInCurrentThread
   protected boolean isMatching(Dialog dialog) {

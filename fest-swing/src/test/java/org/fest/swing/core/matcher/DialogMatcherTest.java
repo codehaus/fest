@@ -18,6 +18,7 @@ package org.fest.swing.core.matcher;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JDialogs.dialog;
 import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.swing.test.core.TestGroups.GUI;
 
 import javax.swing.JDialog;
@@ -26,7 +27,9 @@ import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.swing.TestDialog;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link DialogMatcher}</code>.
@@ -34,7 +37,8 @@ import org.testng.annotations.*;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test public class DialogMatcherTest {
+@Test(groups = GUI)
+public class DialogMatcherTest {
 
   @BeforeMethod public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
@@ -64,14 +68,24 @@ import org.testng.annotations.*;
   }
 
   public void shouldReturnTrueIfNameAndTitleAreEqualToExpected() {
-    String name = "dialog";
-    String title = "Hello";
-    DialogMatcher matcher = DialogMatcher.withName(name).andTitle(title);
-    JDialog dialog = dialog().withName(name).withTitle(title).createNew();
+    DialogMatcher matcher = DialogMatcher.withName("dialog").andTitle("Hello");
+    JDialog dialog = dialog().withName("dialog").withTitle("Hello").createNew();
+    assertThat(matcher.matches(dialog)).isTrue();
+  }
+  
+  public void shouldReturnTrueIfNameMatchesAndTitleMatchesPatternAsString() {
+    DialogMatcher matcher = DialogMatcher.withName("dialog").andTitle("Hel.*");
+    JDialog dialog = dialog().withName("dialog").withTitle("Hello").createNew();
     assertThat(matcher.matches(dialog)).isTrue();
   }
 
-  @Test(dataProvider = "notMatchingNameAndTitle")
+  public void shouldReturnTrueIfNameMatchesAndTitleMatchesPattern() {
+    DialogMatcher matcher = DialogMatcher.withName("dialog").andTitle(regex("Hel.*"));
+    JDialog dialog = dialog().withName("dialog").withTitle("Hello").createNew();
+    assertThat(matcher.matches(dialog)).isTrue();
+  }
+
+  @Test(groups = GUI, dataProvider = "notMatchingNameAndTitle")
   public void shouldReturnFalseIfNameAndTitleAreNotEqualToExpected(String name, String title) {
     DialogMatcher matcher = DialogMatcher.withName("someName").andTitle("someTitle");
     JDialog dialog = dialog().withName(name).withTitle(title).createNew();
@@ -88,9 +102,20 @@ import org.testng.annotations.*;
   }
 
   public void shouldReturnTrueIfTitleIsEqualToExpected() {
-    String title = "Hello";
-    DialogMatcher matcher = DialogMatcher.withTitle(title);
-    JDialog dialog = dialog().withTitle(title).createNew();
+    DialogMatcher matcher = DialogMatcher.withTitle("Hello");
+    JDialog dialog = dialog().withTitle("Hello").createNew();
+    assertThat(matcher.matches(dialog)).isTrue();
+  }
+
+  public void shouldReturnTrueIfTitleMatchesPatternAsString() {
+    DialogMatcher matcher = DialogMatcher.withTitle("He.*");
+    JDialog dialog = dialog().withTitle("Hello").createNew();
+    assertThat(matcher.matches(dialog)).isTrue();
+  }
+
+  public void shouldReturnTrueIfTitleMatchesPattern() {
+    DialogMatcher matcher = DialogMatcher.withTitle(regex("He.*"));
+    JDialog dialog = dialog().withTitle("Hello").createNew();
     assertThat(matcher.matches(dialog)).isTrue();
   }
 
@@ -100,7 +125,6 @@ import org.testng.annotations.*;
     assertThat(matcher.matches(dialog)).isFalse();
   }
 
-  @Test(groups = GUI)
   public void shouldReturnTrueIfDialogIsShowingAndTitleIsEqualToExpected() {
     ScreenLock.instance().acquire(this);
     String title = "Hello";
@@ -120,7 +144,6 @@ import org.testng.annotations.*;
     assertThat(matcher.matches(dialog)).isFalse();
   }
 
-  @Test(groups = GUI)
   public void shouldReturnFalseIfDialogIsShowingAndTitleIsNotEqualToExpected() {
     ScreenLock.instance().acquire(this);
     TestWindow window = TestWindow.createAndShowNewWindow(DialogMatcher.class);

@@ -128,6 +128,13 @@
       <action dev="alruiz" type="add" issue="FEST-153" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'withText(Pattern)' to JButtonMatcher.
       </action>
+      <action dev="alruiz" type="add" issue="FEST-153" due-to="Juhos Csaba-Zsolt">
+        Added support for regular expression matching to the method 'andText(String)' in JButtonMatcher, where the given
+        String can be a regular expression.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-153" due-to="Juhos Csaba-Zsolt">
+        Added overloaded method 'andText(Pattern)' to JButtonMatcher.
+      </action>
       <action dev="alruiz" type="add" issue="FEST-154" due-to="Juhos Csaba-Zsolt">
         Added support for regular expression matching to the method 'requireText(String)' in JRadioButtonFixture, where 
         the given String can be a regular expression.
@@ -209,6 +216,20 @@
       </action>
       <action dev="alruiz" type="add" issue="FEST-163" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'requireSelection(Pattern)' to the interface ItemGroupFixture.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-164" due-to="Juhos Csaba-Zsolt">
+        Added support for regular expression matching to the method 'withTitle(String)' in DialogMatcher, where the 
+        given String can be a regular expression.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-164" due-to="Juhos Csaba-Zsolt">
+        Added overloaded method 'withTitle(Pattern)' to DialogMatcher.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-164" due-to="Juhos Csaba-Zsolt">
+        Added support for regular expression matching to the method 'andTitle(String)' in DialogMatcher, where the given
+        String can be a regular expression.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-164" due-to="Juhos Csaba-Zsolt">
+        Added overloaded method 'andTitle(Pattern)' to DialogMatcher.
       </action>
     </release>
     <release version="1.2a2" date="2009-05-26" description="Subsequent release">

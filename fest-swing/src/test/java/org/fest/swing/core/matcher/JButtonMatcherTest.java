@@ -29,7 +29,9 @@ import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JButtonMatcher}</code>.
@@ -37,7 +39,7 @@ import org.testng.annotations.*;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test public class JButtonMatcherTest {
+@Test(groups = GUI) public class JButtonMatcherTest {
 
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
@@ -86,7 +88,7 @@ import org.testng.annotations.*;
     assertThat(matcher.matches(button)).isTrue();
   }
 
-  @Test(dataProvider = "notMatchingNameAndText")
+  @Test(groups = GUI, dataProvider = "notMatchingNameAndText")
   public void shouldReturnFalseIfNameAndTextAreNotEqualToExpected(String name, String text) {
     JButtonMatcher matcher = JButtonMatcher.withName("someName").andText("someText");
     JButton button = button().withName(name).withText(text).createNew();
@@ -103,9 +105,8 @@ import org.testng.annotations.*;
   }
 
   public void shouldReturnTrueIfTextIsEqualToExpected() {
-    String text = "Hello";
-    JButtonMatcher matcher = JButtonMatcher.withText(text);
-    JButton button = button().withText(text).createNew();
+    JButtonMatcher matcher = JButtonMatcher.withText("Hello");
+    JButton button = button().withText("Hello").createNew();
     assertThat(matcher.matches(button)).isTrue();
   }
 
@@ -127,7 +128,6 @@ import org.testng.annotations.*;
     assertThat(matcher.matches(button)).isFalse();
   }
 
-  @Test(groups = GUI)
   public void shouldReturnTrueIfButtonIsShowingAndTextIsEqualToExpected() {
     ScreenLock.instance().acquire(this);
     MyWindow window = MyWindow.createAndShow();

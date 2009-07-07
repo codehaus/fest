@@ -25,7 +25,7 @@ import javax.swing.JButton;
 import org.fest.swing.annotation.RunsInCurrentThread;
 
 /**
- * Understands matching a <code>{@link JButton}</code> by type, name or text.
+ * Understands matching a <code>{@link JButton}</code> by name, text and visibility on the screen.
  *
  * @author Alex Ruiz
  */
@@ -92,7 +92,7 @@ public final class JButtonMatcher extends NamedComponentMatcherTemplate<JButton>
    * </p>
    * <p>
    * The following code listing shows how to match a <code>{@link JButton}</code>, that should be showing on the screen,
-   * by text:
+   * by text, using a regular expression pattern:
    * <pre>
    * JButtonMatcher m = {@link #withText(Pattern) withText}(Pattern.compile("O.*")).{@link #andShowing() andShowing}();
    * </pre>
@@ -150,14 +150,17 @@ public final class JButtonMatcher extends NamedComponentMatcherTemplate<JButton>
   }
 
   /**
-   * Indicates whether the text of the given <code>{@link JButton}</code> is equal to the text in this matcher.
+   * Indicates whether:
+   * <ul>
+   * <li>the name of the given <code>JButton</code> is equal to the name in this matcher, and</li>
+   * <li>the text of the given <code>JButton</code> matches the text (or pattern) in this matcher</li>
+   * </ul>
    * <p>
    * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param button the <code>JButton</code> to match.
-   * @return <code>true</code> if the text in the <code>JButton</code> is equal to the text in this matcher,
-   * <code>false</code> otherwise.
+   * @return <code>true</code> if the <code>JButton</code> matches the search criteria in this matcher.
    */
   @RunsInCurrentThread
   protected boolean isMatching(JButton button) {
