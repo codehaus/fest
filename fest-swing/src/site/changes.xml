@@ -100,6 +100,9 @@
       <action dev="alruiz" type="add" issue="FEST-146" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'showPopupMenuAt(Pattern)' to JListFixture.
       </action>
+      <action dev="alruiz" type="fix" issue="FEST-149" due-to="Kwen K. Liu">
+        Updated EDT-related threading rules in ComponentFixture's Javadocs.
+      </action>
       <action dev="alruiz" type="add" issue="FEST-151" due-to="Juhos Csaba-Zsolt">
         Added support for regular expression matching to the method 'requireTitle(String)' in JOptionPaneFixture, where 
         the given String can be a regular expression.

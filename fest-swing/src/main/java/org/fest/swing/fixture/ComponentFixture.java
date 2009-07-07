@@ -29,6 +29,7 @@ import java.awt.Component;
 import org.fest.swing.core.Robot;
 import org.fest.swing.core.Settings;
 import org.fest.swing.driver.ComponentDriver;
+import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.exception.ComponentLookupException;
 
 /**
@@ -46,16 +47,25 @@ public abstract class ComponentFixture<T extends Component> {
 
   /** Name of the property "background". */
   protected static final String BACKGROUND_PROPERTY = "background";
-  
+
   /** Name of the property "foreground". */
   protected static final String FOREGROUND_PROPERTY = "foreground";
 
   /** Performs simulation of user events on <code>{@link #target}</code> */
   public final Robot robot;
 
-  /** This fixture's <code>{@link Component}</code>. */
+  /**
+   * This fixture's <code>{@link Component}</code>.
+   * <p>
+   * <strong>Note:</strong> Access to this GUI component <em>must</em> be executed in the event dispatch thread. To do
+   * so, please execute a <code>{@link org.fest.swing.edt.GuiQuery GuiQuery}</code> or
+   * <code>{@link org.fest.swing.edt.GuiTask GuiTask}</code> (depending on what you need to do,) inside a
+   * <code>{@link GuiActionRunner}</code>. To learn more about Swing threading, please read the
+   * <a href="http://java.sun.com/javase/6/docs/api/javax/swing/package-summary.html#threading" target="_blank">Swing Threading Policy</a>.
+   * </p>
+   */
   public final T target;
-  
+
   /**
    * Creates a new <code>{@link ComponentFixture}</code>.
    * @param robot performs simulation of user events on a <code>Component</code>.
@@ -77,7 +87,7 @@ public abstract class ComponentFixture<T extends Component> {
   static void validateNotNull(ComponentDriver driver) {
     if (driver == null) throw new NullPointerException("The driver should not be null");
   }
-  
+
   /**
    * Creates a new <code>{@link ComponentFixture}</code>.
    * @param robot performs simulation of user events on a <code>Component</code>.
@@ -105,14 +115,14 @@ public abstract class ComponentFixture<T extends Component> {
   /**
    * Returns whether showing components are the only ones participating in a component lookup. The returned value is
    * obtained from the <code>{@link Settings#componentLookupScope() component lookup scope}</code> stored in this
-   * fixture's <code>{@link Robot}</code>. 
+   * fixture's <code>{@link Robot}</code>.
    * @return <code>true</code> if only showing components can participate in a component lookup, <code>false</code>
    * otherwise.
    */
   protected boolean requireShowing() {
     return requireShowing(robot);
   }
-  
+
   private static boolean requireShowing(Robot robot) {
     return robot.settings().componentLookupScope().requireShowing();
   }
@@ -144,7 +154,7 @@ public abstract class ComponentFixture<T extends Component> {
   public final ColorFixture background() {
     return new ColorFixture(backgroundOf(target), propertyName(target, BACKGROUND_PROPERTY));
   }
-  
+
   /**
    * Returns a fixture that verifies the foreground color of this fixture's <code>{@link Component}</code>.
    * @return a fixture that verifies the foreground color of this fixture's <code>Component</code>.
@@ -164,9 +174,16 @@ public abstract class ComponentFixture<T extends Component> {
     assertThat(target).as(format(target)).isInstanceOf(type);
     return type.cast(target);
   }
-  
+
   /**
    * Returns the GUI component in this fixture (same as <code>{@link #target}</code>.)
+   * <p>
+   * <strong>Note:</strong> Access to the GUI component returned by this method <em>must</em> be executed in the event
+   * dispatch thread. To do so, please execute a <code>{@link org.fest.swing.edt.GuiQuery GuiQuery}</code> or
+   * <code>{@link org.fest.swing.edt.GuiTask GuiTask}</code> (depending on what you need to do,) inside a
+   * <code>{@link GuiActionRunner}</code>. To learn more about Swing threading, please read the
+   * <a href="http://java.sun.com/javase/6/docs/api/javax/swing/package-summary.html#threading" target="_blank">Swing Threading Policy</a>.
+   * </p>
    * @return the GUI component in this fixture.
    */
   public final T component() {
