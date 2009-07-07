@@ -18,6 +18,8 @@ package org.fest.swing.core.matcher;
 import static java.lang.String.valueOf;
 import static org.fest.util.Strings.concat;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JLabel;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
@@ -40,14 +42,14 @@ public final class JLabelMatcher extends NamedComponentMatcherTemplate<JLabel> {
    * <p>
    * The following code listing shows how to match a <code>{@link JLabel}</code> by name and text:
    * <pre>
-   * JLabelMatcher m = {@link #withName(String) withName}("ok").{@link #andText(String) andText}("OK");
+   * JLabelMatcher m = {@link #withName(String) withName}("firstName").{@link #andText(String) andText}("First Name:");
    * </pre>
    * </p>
    * <p>
    * The following code listing shows how to match a <code>{@link JLabel}</code>, that should be showing on the screen,
    * by name and text:
    * <pre>
-   * JLabelMatcher m = {@link #withName(String) withName}("ok").{@link #andText(String) andText}("OK").{@link #andShowing() andShowing}();
+   * JLabelMatcher m = {@link #withName(String) withName}("firstName").{@link #andText(String) andText}("First Name:").{@link #andShowing() andShowing}();
    * </pre>
    * </p>
    * @param name the id to match.
@@ -59,11 +61,47 @@ public final class JLabelMatcher extends NamedComponentMatcherTemplate<JLabel> {
 
   /**
    * Creates a new <code>{@link JLabelMatcher}</code> that matches a <code>{@link JLabel}</code> by its text.
-   * @param text the text to match.
+   * <p>
+   * The following code listing shows how to match a <code>{@link JLabel}</code> by text:
+   * <pre>
+   * JLabelMatcher m = {@link #withText(String) withText}("First Name:");
+   * </pre>
+   * </p>
+   * <p>
+   * The following code listing shows how to match a <code>{@link JLabel}</code>, that should be showing on the screen,
+   * by text:
+   * <pre>
+   * JLabelMatcher m = {@link #withText(String) withText}("First Name:").{@link #andShowing() andShowing}();
+   * </pre>
+   * </p>
+   * @param text the text to match. It can be a regular expression.
    * @return the created matcher.
    */
   public static JLabelMatcher withText(String text) {
     return new JLabelMatcher(ANY, text);
+  }
+
+  /**
+   * Creates a new <code>{@link JLabelMatcher}</code> that matches a <code>{@link JLabel}</code> by its text.
+   * <p>
+   * The following code listing shows how to match a <code>{@link JLabel}</code> by text:
+   * <pre>
+   * JLabelMatcher m = {@link #withText(Pattern) withText}(Pattern.compile("F.*");
+   * </pre>
+   * </p>
+   * <p>
+   * The following code listing shows how to match a <code>{@link JLabel}</code>, that should be showing on the screen,
+   * by text:
+   * <pre>
+   * JLabelMatcher m = {@link #withText(Pattern) withText}(Pattern.compile("F.*").{@link #andShowing() andShowing}();
+   * </pre>
+   * </p>
+   * @param textPattern the regular expression pattern to match.
+   * @return the created matcher.
+   * @since 1.2
+   */
+  public static JLabelMatcher withText(Pattern textPattern) {
+    return new JLabelMatcher(ANY, textPattern);
   }
 
   /**
@@ -80,13 +118,25 @@ public final class JLabelMatcher extends NamedComponentMatcherTemplate<JLabel> {
   }
 
   /**
-   * Specifies the text to match. If this matcher was created using <code>{@link #withText(String)}</code>, this method
-   * will simply update the text to match.
-   * @param newText the new text to match.
+   * Specifies the text to match. If this matcher was created using <code>{@link #withText(String)}</code> or
+   * <code>{@link #withText(Pattern)}</code>, this method will simply update the text to match.
+   * @param newText the new text to match. It can be a regular expression.
    * @return this matcher.
    */
   public JLabelMatcher andText(String newText) {
     text = newText;
+    return this;
+  }
+
+  /**
+   * Specifies the text to match. If this matcher was created using <code>{@link #withText(String)}</code> or
+   * <code>{@link #withText(Pattern)}</code>, this method will simply update the text to match.
+   * @param textPattern the regular expression pattern to match.
+   * @return this matcher.
+   * @since 1.2
+   */
+  public JLabelMatcher andText(Pattern textPattern) {
+    text = textPattern;
     return this;
   }
 

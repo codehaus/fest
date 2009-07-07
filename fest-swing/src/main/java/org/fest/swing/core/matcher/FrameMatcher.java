@@ -73,7 +73,7 @@ public final class FrameMatcher extends NamedComponentMatcherTemplate<Frame> {
    * FrameMatcher m = {@link #withTitle(String) withTitle}("My App").{@link #andShowing() andShowing}();
    * </pre>
    * </p>
-   * @param title the title to match.
+   * @param title the title to match. It can be a regular expression.
    * @return the created matcher.
    */
   public static FrameMatcher withTitle(String title) {
@@ -86,14 +86,14 @@ public final class FrameMatcher extends NamedComponentMatcherTemplate<Frame> {
    * The following code listing shows how to match a <code>{@link Frame}</code> by title, using a regular expression
    * matcher:
    * <pre>
-   * FrameMatcher m = {@link #withTitle(Pattern) withTitle}(Pattern.compile("My App"));
+   * FrameMatcher m = {@link #withTitle(Pattern) withTitle}(Pattern.compile("My.*"));
    * </pre>
    * </p>
    * <p>
    * The following code listing shows how to match a <code>{@link Frame}</code>, that should be showing on the screen,
    * by title:
    * <pre>
-   * FrameMatcher m = {@link #withTitle(Pattern) withTitle}(Pattern.compile("My App")).{@link #andShowing() andShowing}();
+   * FrameMatcher m = {@link #withTitle(Pattern) withTitle}(Pattern.compile("My.*")).{@link #andShowing() andShowing}();
    * </pre>
    * </p>
    * @param titlePattern the title to match.
@@ -120,7 +120,7 @@ public final class FrameMatcher extends NamedComponentMatcherTemplate<Frame> {
   /**
    * Specifies the title to match. If this matcher was created using <code>{@link #withTitle(String)}</code> or
    * <code>{@link FrameMatcher#withTitle(Pattern)}</code>, this method will simply update the title to match.
-   * @param newTitle the new title to match.
+   * @param newTitle the new title to match. It can be a regular expression.
    * @return this matcher.
    */
   public FrameMatcher andTitle(String newTitle) {

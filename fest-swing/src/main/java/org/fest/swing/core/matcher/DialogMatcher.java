@@ -73,7 +73,7 @@ public final class DialogMatcher extends NamedComponentMatcherTemplate<Dialog> {
    * DialogMatcher m = {@link #withTitle(String) withTitle}("Save File").{@link #andShowing() andShowing}();
    * </pre>
    * </p>
-   * @param title the title to match.
+   * @param title the title to match. It can be a regular expression.
    * @return the created matcher.
    */
   public static DialogMatcher withTitle(String title) {
@@ -86,14 +86,14 @@ public final class DialogMatcher extends NamedComponentMatcherTemplate<Dialog> {
    * The following code listing shows how to match a <code>{@link Dialog}</code> title, using a regular expression
    * pattern:
    * <pre>
-   * DialogMatcher m = {@link #withTitle(Pattern) withTitle}(Pattern.compile("Save File"));
+   * DialogMatcher m = {@link #withTitle(Pattern) withTitle}(Pattern.compile("Sav.*"));
    * </pre>
    * </p>
    * <p>
    * The following code listing shows how to match a <code>{@link Dialog}</code>, that should be showing on the screen,
    * by title, using a regular expression pattern:
    * <pre>
-   * DialogMatcher m = {@link #withTitle(Pattern) withTitle}(Pattern.compile("Save File")).{@link #andShowing() andShowing}();
+   * DialogMatcher m = {@link #withTitle(Pattern) withTitle}(Pattern.compile("Sav.*")).{@link #andShowing() andShowing}();
    * </pre>
    * </p>
    * @param titlePattern the regular expression pattern to match.
@@ -120,7 +120,7 @@ public final class DialogMatcher extends NamedComponentMatcherTemplate<Dialog> {
   /**
    * Specifies the title to match. If this matcher was created using <code>{@link #withTitle(String)}</code> or
    * <code>{@link #withTitle(Pattern)}</code>, this method will simply update the title to match.
-   * @param newTitle the new title to match.
+   * @param newTitle the new title to match. It can be a regular expression.
    * @return this matcher.
    */
   public DialogMatcher andTitle(String newTitle) {

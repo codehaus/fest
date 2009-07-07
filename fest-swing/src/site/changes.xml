@@ -245,6 +245,20 @@
       <action dev="alruiz" type="add" issue="FEST-172" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'andTitle(Pattern)' to FrameMatcher.
       </action>
+      <action dev="alruiz" type="add" issue="FEST-173" due-to="Juhos Csaba-Zsolt">
+        Added support for regular expression matching to the method 'withText(String)' in JLabelMatcher, where the 
+        given String can be a regular expression.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-173" due-to="Juhos Csaba-Zsolt">
+        Added overloaded method 'withText(Pattern)' to JLabelMatcher.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-173" due-to="Juhos Csaba-Zsolt">
+        Added support for regular expression matching to the method 'andText(String)' in JLabelMatcher, where the given
+        String can be a regular expression.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-173" due-to="Juhos Csaba-Zsolt">
+        Added overloaded method 'andText(Pattern)' to JLabelMatcher.
+      </action>
     </release>
     <release version="1.2a2" date="2009-05-26" description="Subsequent release">
       <action dev="alruiz" type="add" issue="FEST-32" due-to="Juhos Csaba-Zsolt">
