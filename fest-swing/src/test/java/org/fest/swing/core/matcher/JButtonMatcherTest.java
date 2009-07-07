@@ -69,10 +69,8 @@ import org.testng.annotations.Test;
   }
 
   public void shouldReturnTrueIfNameAndTextAreEqualToExpected() {
-    String name = "button";
-    String text = "Hello";
-    JButtonMatcher matcher = JButtonMatcher.withName(name).andText(text);
-    JButton button = button().withName(name).withText(text).createNew();
+    JButtonMatcher matcher = JButtonMatcher.withName("button").andText("Hello");
+    JButton button = button().withName("button").withText("Hello").createNew();
     assertThat(matcher.matches(button)).isTrue();
   }
 

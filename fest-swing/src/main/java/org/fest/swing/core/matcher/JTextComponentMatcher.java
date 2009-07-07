@@ -18,6 +18,8 @@ package org.fest.swing.core.matcher;
 import static java.lang.String.valueOf;
 import static org.fest.util.Strings.concat;
 
+import java.util.regex.Pattern;
+
 import javax.swing.text.JTextComponent;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
@@ -40,14 +42,14 @@ public final class JTextComponentMatcher extends NamedComponentMatcherTemplate<J
    * <p>
    * The following code listing shows how to match a <code>{@link JTextComponent}</code> by name and text:
    * <pre>
-   * JTextComponentMatcher m = {@link #withName(String) withName}("ok").{@link #andText(String) andText}("OK");
+   * JTextComponentMatcher m = {@link #withName(String) withName}("lastName").{@link #andText(String) andText}("Wang");
    * </pre>
    * </p>
    * <p>
    * The following code listing shows how to match a <code>{@link JTextComponent}</code>, that should be showing on the screen,
    * by name and text:
    * <pre>
-   * JTextComponentMatcher m = {@link #withName(String) withName}("ok").{@link #andText(String) andText}("OK").{@link #andShowing() andShowing}();
+   * JTextComponentMatcher m = {@link #withName(String) withName}("lastName").{@link #andText(String) andText}("Wang").{@link #andShowing() andShowing}();
    * </pre>
    * </p>
    * @param name the id to match.
@@ -58,12 +60,50 @@ public final class JTextComponentMatcher extends NamedComponentMatcherTemplate<J
   }
 
   /**
-   * Creates a new <code>{@link JTextComponentMatcher}</code> that matches a <code>{@link JTextComponent}</code> by its text.
-   * @param text the text to match.
+   * Creates a new <code>{@link JTextComponentMatcher}</code> that matches a <code>{@link JTextComponent}</code> by its
+   * text.
+   * <p>
+   * The following code listing shows how to match a <code>{@link JTextComponent}</code> by text:
+   * <pre>
+   * JTextComponentMatcher m = {@link #withText(String) withText}("Wang");
+   * </pre>
+   * </p>
+   * <p>
+   * The following code listing shows how to match a <code>{@link JTextComponent}</code>, that should be showing on the
+   * screen, by text:
+   * <pre>
+   * JTextComponentMatcher m = {@link #withText(String) withText}("Wang").{@link #andShowing() andShowing}();
+   * </pre>
+   * </p>
+   * @param text the text to match. It can be a regular expression.
    * @return the created matcher.
    */
   public static JTextComponentMatcher withText(String text) {
     return new JTextComponentMatcher(ANY, text);
+  }
+
+  /**
+   * Creates a new <code>{@link JTextComponentMatcher}</code> that matches a <code>{@link JTextComponent}</code> by its
+   * text.
+   * <p>
+   * The following code listing shows how to match a <code>{@link JTextComponent}</code> by text, using a regular
+   * expression pattern:
+   * <pre>
+   * JTextComponentMatcher m = {@link #withText(Pattern) withText}(Pattern.compile("W.*"));
+   * </pre>
+   * </p>
+   * <p>
+   * The following code listing shows how to match a <code>{@link JTextComponent}</code>, that should be showing on the
+   * screen, by text, using a regular expression pattern:
+   * <pre>
+   * JTextComponentMatcher m = {@link #withText(Pattern) withText}(Pattern.compile("W.*")).{@link #andShowing() andShowing}();
+   * </pre>
+   * </p>
+   * @param textPattern the text to match. It can be a regular expression.
+   * @return the created matcher.
+   */
+  public static JTextComponentMatcher withText(Pattern textPattern) {
+    return new JTextComponentMatcher(ANY, textPattern);
   }
 
   /**
@@ -80,13 +120,25 @@ public final class JTextComponentMatcher extends NamedComponentMatcherTemplate<J
   }
 
   /**
-   * Specifies the text to match. If this matcher was created using <code>{@link #withText(String)}</code>, this method
-   * will simply update the text to match.
-   * @param newText the new text to match.
+   * Specifies the text to match. If this matcher was created using <code>{@link #withText(String)}</code> or
+   * <code>{@link #withText(Pattern)}</code>, this method will simply update the text to match.
+   * @param newText the new text to match. It can be a regular expression.
    * @return this matcher.
    */
   public JTextComponentMatcher andText(String newText) {
     text = newText;
+    return this;
+  }
+
+  /**
+   * Specifies the text to match. If this matcher was created using <code>{@link #withText(String)}</code> or
+   * <code>{@link #withText(Pattern)}</code>, this method will simply update the text to match.
+   * @param textPattern the regular expression pattern to match.
+   * @return this matcher.
+   * @since 1.2
+   */
+  public JTextComponentMatcher andText(Pattern textPattern) {
+    text = textPattern;
     return this;
   }
 

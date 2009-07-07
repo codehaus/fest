@@ -19,6 +19,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.builder.JDialogs.dialog;
 import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.swing.test.core.TestGroups.GUI;
 
 import javax.swing.JTextField;
@@ -36,7 +37,8 @@ import org.testng.annotations.*;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test public class JTextComponentMatcherTest {
+@Test(groups = GUI)
+public class JTextComponentMatcherTest {
 
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
@@ -66,14 +68,24 @@ import org.testng.annotations.*;
   }
 
   public void shouldReturnTrueIfNameAndTextAreEqualToExpected() {
-    String name = "textField";
-    String text = "Hello";
-    JTextComponentMatcher matcher = JTextComponentMatcher.withName(name).andText(text);
-    JTextField textField = textField().withName(name).withText(text).createNew();
+    JTextComponentMatcher matcher = JTextComponentMatcher.withName("textField").andText("Hello");
+    JTextField textField = textField().withName("textField").withText("Hello").createNew();
     assertThat(matcher.matches(textField)).isTrue();
   }
 
-  @Test(dataProvider = "notMatchingNameAndText")
+  public void shouldReturnTrueIfNameMatchesAndTextMatchesPatternAsString() {
+    JTextComponentMatcher matcher = JTextComponentMatcher.withName("textField").andText("He.*");
+    JTextField textField = textField().withName("textField").withText("Hello").createNew();
+    assertThat(matcher.matches(textField)).isTrue();
+  }
+
+  public void shouldReturnTrueIfNameMatchesAndTextMatchesPattern() {
+    JTextComponentMatcher matcher = JTextComponentMatcher.withName("textField").andText(regex("He.*"));
+    JTextField textField = textField().withName("textField").withText("Hello").createNew();
+    assertThat(matcher.matches(textField)).isTrue();
+  }
+
+  @Test(groups = GUI, dataProvider = "notMatchingNameAndText")
   public void shouldReturnFalseIfNameAndTextAreNotEqualToExpected(String name, String text) {
     JTextComponentMatcher matcher = JTextComponentMatcher.withName("someName").andText("someText");
     JTextField textField = textField().withName(name).withText(text).createNew();
@@ -102,7 +114,18 @@ import org.testng.annotations.*;
     assertThat(matcher.matches(textField)).isFalse();
   }
 
-  @Test(groups = GUI)
+  public void shouldReturnTrueIfTextMatchesExpectedPatternAsString() {
+    JTextComponentMatcher matcher = JTextComponentMatcher.withText("He.*");
+    JTextField textField = textField().withText("Bye").createNew();
+    assertThat(matcher.matches(textField)).isFalse();
+  }
+
+  public void shouldReturnTrueIfTextMatchesExpectedPattern() {
+    JTextComponentMatcher matcher = JTextComponentMatcher.withText(regex("He.*"));
+    JTextField textField = textField().withText("Bye").createNew();
+    assertThat(matcher.matches(textField)).isFalse();
+  }
+
   public void shouldReturnTrueIfTextComponentIsShowingAndTextIsEqualToExpected() {
     ScreenLock.instance().acquire(this);
     MyWindow window = MyWindow.createAndShow();
@@ -122,7 +145,6 @@ import org.testng.annotations.*;
     assertThat(matcher.matches(textField)).isFalse();
   }
 
-  @Test(groups = GUI)
   public void shouldReturnFalseIfTextComponentIsShowingAndTextIsNotEqualToExpected() {
     ScreenLock.instance().acquire(this);
     MyWindow window = MyWindow.createAndShow();
