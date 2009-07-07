@@ -18,6 +18,7 @@ package org.fest.swing.core.matcher;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JFrames.frame;
 import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.swing.test.core.TestGroups.GUI;
 
 import javax.swing.JFrame;
@@ -33,7 +34,8 @@ import org.testng.annotations.*;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test public class FrameMatcherTest {
+@Test(groups = GUI)
+public class FrameMatcherTest {
 
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
@@ -63,14 +65,24 @@ import org.testng.annotations.*;
   }
 
   public void shouldReturnTrueIfNameAndTitleAreEqualToExpected() {
-    String name = "frame";
-    String title = "Hello";
-    FrameMatcher matcher = FrameMatcher.withName(name).andTitle(title);
-    JFrame frame = frame().withName(name).withTitle(title).createNew();
+    FrameMatcher matcher = FrameMatcher.withName("frame").andTitle("Hello");
+    JFrame frame = frame().withName("frame").withTitle("Hello").createNew();
     assertThat(matcher.matches(frame)).isTrue();
   }
 
-  @Test(dataProvider = "notMatchingNameAndTitle")
+  public void shouldReturnTrueIfNameMatchesAndTitleMatchesPatternAsString() {
+    FrameMatcher matcher = FrameMatcher.withName("frame").andTitle("Hel.*");
+    JFrame frame = frame().withName("frame").withTitle("Hello").createNew();
+    assertThat(matcher.matches(frame)).isTrue();
+  }
+
+  public void shouldReturnTrueIfNameMatchesAndTitleMatchesPattern() {
+    FrameMatcher matcher = FrameMatcher.withName("frame").andTitle(regex("Hel.*"));
+    JFrame frame = frame().withName("frame").withTitle("Hello").createNew();
+    assertThat(matcher.matches(frame)).isTrue();
+  }
+
+  @Test(groups = GUI, dataProvider = "notMatchingNameAndTitle")
   public void shouldReturnFalseIfNameAndTitleAreNotEqualToExpected(String name, String title) {
     FrameMatcher matcher = FrameMatcher.withName("someName").andTitle("someTitle");
     JFrame frame = frame().withName(name).withTitle(title).createNew();
@@ -87,9 +99,20 @@ import org.testng.annotations.*;
   }
 
   public void shouldReturnTrueIfTitleIsEqualToExpected() {
-    String title = "Hello";
-    FrameMatcher matcher = FrameMatcher.withTitle(title);
-    JFrame frame = frame().withTitle(title).createNew();
+    FrameMatcher matcher = FrameMatcher.withTitle("Hello");
+    JFrame frame = frame().withTitle("Hello").createNew();
+    assertThat(matcher.matches(frame)).isTrue();
+  }
+
+  public void shouldReturnTrueIfTitleMatchesPatternAsString() {
+    FrameMatcher matcher = FrameMatcher.withTitle("He.*");
+    JFrame frame = frame().withTitle("Hello").createNew();
+    assertThat(matcher.matches(frame)).isTrue();
+  }
+
+  public void shouldReturnTrueIfTitleMatchesPattern() {
+    FrameMatcher matcher = FrameMatcher.withTitle(regex("He.*"));
+    JFrame frame = frame().withTitle("Hello").createNew();
     assertThat(matcher.matches(frame)).isTrue();
   }
 
@@ -99,7 +122,6 @@ import org.testng.annotations.*;
     assertThat(matcher.matches(frame)).isFalse();
   }
 
-  @Test(groups = GUI)
   public void shouldReturnTrueIfFrameIsShowingAndTitleIsEqualToExpected() {
     ScreenLock.instance().acquire(this);
     Class<FrameMatcher> testType = FrameMatcher.class;
@@ -122,7 +144,6 @@ import org.testng.annotations.*;
     assertThat(matcher.matches(frame)).isFalse();
   }
 
-  @Test(groups = GUI)
   public void shouldReturnFalseIfFrameIsShowingAndTitleIsNotEqualToExpected() {
     ScreenLock.instance().acquire(this);
     TestWindow frame = TestWindow.createAndShowNewWindow(FrameMatcher.class);

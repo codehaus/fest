@@ -19,6 +19,7 @@ import static java.lang.String.valueOf;
 import static org.fest.util.Strings.concat;
 
 import java.awt.Frame;
+import java.util.regex.Pattern;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 
@@ -40,14 +41,14 @@ public final class FrameMatcher extends NamedComponentMatcherTemplate<Frame> {
    * <p>
    * The following code listing shows how to match a <code>{@link Frame}</code> by name and title:
    * <pre>
-   * FrameMatcher m = {@link #withName(String) withName}("ok").{@link #andTitle(String) andTitle}("OK");
+   * FrameMatcher m = {@link #withName(String) withName}("myApp").{@link #andTitle(String) andTitle}("My App");
    * </pre>
    * </p>
    * <p>
    * The following code listing shows how to match a <code>{@link Frame}</code>, that should be showing on the screen,
    * by name and title:
    * <pre>
-   * FrameMatcher m = {@link #withName(String) withName}("ok").{@link #andTitle(String) andTitle}("OK").{@link #andShowing() andShowing}();
+   * FrameMatcher m = {@link #withName(String) withName}("myApp").{@link #andTitle(String) andTitle}("My App").{@link #andShowing() andShowing}();
    * </pre>
    * </p>
    * @param name the id to match.
@@ -59,11 +60,48 @@ public final class FrameMatcher extends NamedComponentMatcherTemplate<Frame> {
 
   /**
    * Creates a new <code>{@link FrameMatcher}</code> that matches a <code>{@link Frame}</code> by its title.
+   * <p>
+   * The following code listing shows how to match a <code>{@link Frame}</code> by title:
+   * <pre>
+   * FrameMatcher m = {@link #withTitle(String) withTitle}("My App");
+   * </pre>
+   * </p>
+   * <p>
+   * The following code listing shows how to match a <code>{@link Frame}</code>, that should be showing on the screen,
+   * by title:
+   * <pre>
+   * FrameMatcher m = {@link #withTitle(String) withTitle}("My App").{@link #andShowing() andShowing}();
+   * </pre>
+   * </p>
    * @param title the title to match.
    * @return the created matcher.
    */
   public static FrameMatcher withTitle(String title) {
     return new FrameMatcher(ANY, title);
+  }
+
+  /**
+   * Creates a new <code>{@link FrameMatcher}</code> that matches a <code>{@link Frame}</code> by its title.
+   * <p>
+   * The following code listing shows how to match a <code>{@link Frame}</code> by title, using a regular expression
+   * matcher:
+   * <pre>
+   * FrameMatcher m = {@link #withTitle(Pattern) withTitle}(Pattern.compile("My App"));
+   * </pre>
+   * </p>
+   * <p>
+   * The following code listing shows how to match a <code>{@link Frame}</code>, that should be showing on the screen,
+   * by title:
+   * <pre>
+   * FrameMatcher m = {@link #withTitle(Pattern) withTitle}(Pattern.compile("My App")).{@link #andShowing() andShowing}();
+   * </pre>
+   * </p>
+   * @param titlePattern the title to match.
+   * @return the created matcher.
+   * @since 1.2
+   */
+  public static FrameMatcher withTitle(Pattern titlePattern) {
+    return new FrameMatcher(ANY, titlePattern);
   }
 
   /**
@@ -80,13 +118,25 @@ public final class FrameMatcher extends NamedComponentMatcherTemplate<Frame> {
   }
 
   /**
-   * Specifies the title to match. If this matcher was created using <code>{@link #withTitle(String)}</code>, this method
-   * will simply update the title to match.
+   * Specifies the title to match. If this matcher was created using <code>{@link #withTitle(String)}</code> or
+   * <code>{@link FrameMatcher#withTitle(Pattern)}</code>, this method will simply update the title to match.
    * @param newTitle the new title to match.
    * @return this matcher.
    */
   public FrameMatcher andTitle(String newTitle) {
     title = newTitle;
+    return this;
+  }
+
+  /**
+   * Specifies the title to match. If this matcher was created using <code>{@link #withTitle(String)}</code> or
+   * <code>{@link FrameMatcher#withTitle(Pattern)}</code>, this method will simply update the title to match.
+   * @param titlePattern the regular expression pattern to match.
+   * @return this matcher.
+   * @since 1.2
+   */
+  public FrameMatcher andTitle(Pattern titlePattern) {
+    title = titlePattern;
     return this;
   }
 

@@ -231,6 +231,20 @@
       <action dev="alruiz" type="add" issue="FEST-164" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'andTitle(Pattern)' to DialogMatcher.
       </action>
+      <action dev="alruiz" type="add" issue="FEST-172" due-to="Juhos Csaba-Zsolt">
+        Added support for regular expression matching to the method 'withTitle(String)' in FrameMatcher, where the 
+        given String can be a regular expression.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-172" due-to="Juhos Csaba-Zsolt">
+        Added overloaded method 'withTitle(Pattern)' to FrameMatcher.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-172" due-to="Juhos Csaba-Zsolt">
+        Added support for regular expression matching to the method 'andTitle(String)' in FrameMatcher, where the given
+        String can be a regular expression.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-172" due-to="Juhos Csaba-Zsolt">
+        Added overloaded method 'andTitle(Pattern)' to FrameMatcher.
+      </action>
     </release>
     <release version="1.2a2" date="2009-05-26" description="Subsequent release">
       <action dev="alruiz" type="add" issue="FEST-32" due-to="Juhos Csaba-Zsolt">

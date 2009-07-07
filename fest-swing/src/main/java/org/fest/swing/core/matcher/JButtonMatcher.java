@@ -134,6 +134,7 @@ public final class JButtonMatcher extends NamedComponentMatcherTemplate<JButton>
    * <code>{@link #withText(Pattern)}</code>, this method will simply update the text to match.
    * @param textPattern the regular expression pattern to match.
    * @return this matcher.
+   * @since 1.2
    */
   public JButtonMatcher andText(Pattern textPattern) {
     text = textPattern;
