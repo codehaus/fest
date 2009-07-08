@@ -39,7 +39,10 @@ public interface ComponentFinder {
   ComponentPrinter printer();
 
   /**
-   * Finds a <code>{@link Component}</code> by type. The component to find does not have to be showing.
+   * Finds a <code>{@link Component}</code> by type. If this finder is attached to a <code>{@link Robot}</code>, it will
+   * use the component lookup scope in the <code>Robot</code>'s <code>{@link Settings}</code> to determine whether the
+   * component to find should be showing or not. If this finder is <em>not</em> attached to any <code>Robot</code>, the
+   * component to find does not have to be showing.
    * <p>
    * Example:
    * <pre>
@@ -51,6 +54,9 @@ public interface ComponentFinder {
    * @return the found component.
    * @throws ComponentLookupException if a matching component could not be found.
    * @throws ComponentLookupException if more than one matching component is found.
+   * @see Robot#settings()
+   * @see Settings#componentLookupScope()
+   * @see ComponentLookupScope
    */
   <T extends Component> T findByType(Class<T> type);
 
@@ -68,8 +74,10 @@ public interface ComponentFinder {
 
   /**
    * <p>
-   * Finds a <code>{@link Component}</code> by type in the hierarchy under the given root. The component to find does
-   * not have to be showing.
+   * Finds a <code>{@link Component}</code> by type in the hierarchy under the given root. If this finder is attached to
+   * a <code>{@link Robot}</code>, it will use the component lookup scope in the <code>Robot</code>'s
+   * <code>{@link Settings}</code> to determine whether the component to find should be showing or not. If this finder
+   * is <em>not</em> attached to any <code>Robot</code>, the component to find does not have to be showing.
    * </p>
    * <p>
    * Let's assume we have the following <code>{@link javax.swing.JFrame}</code> containing a
@@ -97,6 +105,9 @@ public interface ComponentFinder {
    * @return the found component.
    * @throws ComponentLookupException if a matching component could not be found.
    * @throws ComponentLookupException if more than one matching component is found.
+   * @see Robot#settings()
+   * @see Settings#componentLookupScope()
+   * @see ComponentLookupScope
    */
   <T extends Component> T findByType(Container root, Class<T> type);
 
@@ -115,8 +126,10 @@ public interface ComponentFinder {
 
   /**
    * <p>
-   * Finds a <code>{@link Component}</code> by by the text of its associated <code>{@link JLabel}</code>. The component
-   * to find does not have to be showing.
+   * Finds a <code>{@link Component}</code> by by the text of its associated <code>{@link JLabel}</code>. If this finder
+   * is attached to  a <code>{@link Robot}</code>, it will use the component lookup scope in the <code>Robot</code>'s
+   * <code>{@link Settings}</code> to determine whether the component to find should be showing or not. If this finder
+   * is <em>not</em> attached to any <code>Robot</code>, the component to find does not have to be showing.
    * </p>
    * <p>
    * Let's assume we have the <code>{@link javax.swing.JTextField}</code> with a <code>{@link JLabel}</code> with text
@@ -154,12 +167,18 @@ public interface ComponentFinder {
    * @throws ComponentLookupException if more than one matching component is found.
    * @see JLabel#getLabelFor()
    * @see JLabel#setLabelFor(Component)
+   * @see Robot#settings()
+   * @see Settings#componentLookupScope()
+   * @see ComponentLookupScope
    */
   Component findByLabel(String label);
 
   /**
-   * Finds a <code>{@link Component}</code> by the text of its associated <code>{@link JLabel}</code> and type. The
-   * component to find does not have to be showing.
+   * Finds a <code>{@link Component}</code> by the text of its associated <code>{@link JLabel}</code> and type. If this
+   * finder is attached to  a <code>{@link Robot}</code>, it will use the component lookup scope in the
+   * <code>Robot</code>'s <code>{@link Settings}</code> to determine whether the component to find should be showing or
+   * not. If this finder is <em>not</em> attached to any <code>Robot</code>, the component to find does not have to be
+   * showing.
    * @param <T> the parameterized type of the component to find.
    * @param label the text of the <code>JLabel</code> associated to the component to find.
    * @param type the type of the component to find.
@@ -169,6 +188,9 @@ public interface ComponentFinder {
    * @see #findByLabel(String)
    * @see JLabel#getLabelFor()
    * @see JLabel#setLabelFor(Component)
+   * @see Robot#settings()
+   * @see Settings#componentLookupScope()
+   * @see ComponentLookupScope
    */
   <T extends Component> T findByLabel(String label, Class<T> type);
 
@@ -202,7 +224,10 @@ public interface ComponentFinder {
 
   /**
    * Finds a <code>{@link Component}</code> by the text of its associated <code>{@link JLabel}</code>, in the hierarchy
-   * under the given root. The component to find does not have to be showing.
+   * under the given root. If this finder is attached to  a <code>{@link Robot}</code>, it will use the component lookup
+   * scope in the <code>Robot</code>'s <code>{@link Settings}</code> to determine whether the component to find should
+   * be showing or not. If this finder is <em>not</em> attached to any <code>Robot</code>, the component to find does
+   * not have to be showing.
    * @param root the root used as the starting point of the search.
    * @param label the text of the <code>JLabel</code> associated to the component to find.
    * @return the found component.
@@ -211,6 +236,9 @@ public interface ComponentFinder {
    * @see #findByLabel(String)
    * @see JLabel#getLabelFor()
    * @see JLabel#setLabelFor(Component)
+   * @see Robot#settings()
+   * @see Settings#componentLookupScope()
+   * @see ComponentLookupScope
    */
   Component findByLabel(Container root, String label);
 
@@ -231,7 +259,10 @@ public interface ComponentFinder {
 
   /**
    * Finds a <code>{@link Component}</code> by the text of its associated <code>{@link JLabel}</code> and type, in the
-   * hierarchy under the given root. The component to find does not have to be showing.
+   * hierarchy under the given root. If this finder is attached to  a <code>{@link Robot}</code>, it will use the
+   * component lookup scope in the <code>Robot</code>'s <code>{@link Settings}</code> to determine whether the component
+   * to find should be showing or not. If this finder is <em>not</em> attached to any <code>Robot</code>, the component
+   * to find does not have to be showing.
    * @param <T> the parameterized type of the component to find.
    * @param root the root used as the starting point of the search.
    * @param label the text of the <code>JLabel</code> associated to the component to find.
@@ -242,6 +273,9 @@ public interface ComponentFinder {
    * @see #findByLabel(String)
    * @see JLabel#getLabelFor()
    * @see JLabel#setLabelFor(Component)
+   * @see Robot#settings()
+   * @see Settings#componentLookupScope()
+   * @see ComponentLookupScope
    */
   <T extends Component> T findByLabel(Container root, String label, Class<T> type);
 
@@ -264,7 +298,10 @@ public interface ComponentFinder {
 
   /**
    * <p>
-   * Finds a <code>{@link Component}</code> by name. The component to find does not have to be showing.
+   * Finds a <code>{@link Component}</code> by name. If this finder is attached to  a <code>{@link Robot}</code>, it
+   * will use the component lookup scope in the <code>Robot</code>'s <code>{@link Settings}</code> to determine whether
+   * the component to find should be showing or not. If this finder is <em>not</em> attached to any <code>Robot</code>,
+   * the component to find does not have to be showing.
    * </p>
    * <p>
    * Let's assume we have the <code>{@link javax.swing.JTextField}</code> with name "myTextBox";
@@ -297,17 +334,26 @@ public interface ComponentFinder {
    * @return the found component.
    * @throws ComponentLookupException if a matching component could not be found.
    * @throws ComponentLookupException if more than one matching component is found.
+   * @see Robot#settings()
+   * @see Settings#componentLookupScope()
+   * @see ComponentLookupScope
    */
   Component findByName(String name);
 
   /**
-   * Finds a <code>{@link Component}</code> by name and type. The component to find does not have to be showing.
+   * Finds a <code>{@link Component}</code> by name and type. If this finder is attached to a
+   * <code>{@link Robot}</code>, it will use the component lookup scope in the <code>Robot</code>'s
+   * <code>{@link Settings}</code> to determine whether the component to find should be showing or not. If this finder
+   * is <em>not</em> attached to any <code>Robot</code>, the component to find does not have to be showing.
    * @param <T> the parameterized type of the component to find.
    * @param name the name of the component to find.
    * @param type the type of the component to find.
    * @return the found component.
    * @throws ComponentLookupException if a matching component could not be found.
    * @throws ComponentLookupException if more than one matching component is found.
+   * @see Robot#settings()
+   * @see Settings#componentLookupScope()
+   * @see ComponentLookupScope
    * @see #findByName(String)
    */
   <T extends Component> T findByName(String name, Class<T> type);
@@ -337,13 +383,18 @@ public interface ComponentFinder {
   Component findByName(String name, boolean showing);
 
   /**
-   * Finds a <code>{@link Component}</code> by name, in the hierarchy under the given root. The component to find does
-   * not have to be showing.
+   * Finds a <code>{@link Component}</code> by name, in the hierarchy under the given root. If this finder is attached
+   * to a <code>{@link Robot}</code>, it will use the component lookup scope in the <code>Robot</code>'s
+   * <code>{@link Settings}</code> to determine whether the component to find should be showing or not. If this finder
+   * is <em>not</em> attached to any <code>Robot</code>, the component to find does not have to be showing.
    * @param root the root used as the starting point of the search.
    * @param name the name of the component to find.
    * @return the found component.
    * @throws ComponentLookupException if a matching component could not be found.
    * @throws ComponentLookupException if more than one matching component is found.
+   * @see Robot#settings()
+   * @see Settings#componentLookupScope()
+   * @see ComponentLookupScope
    * @see #findByName(String)
    */
   Component findByName(Container root, String name);
@@ -361,8 +412,10 @@ public interface ComponentFinder {
   Component findByName(Container root, String name, boolean showing);
 
   /**
-   * Finds a <code>{@link Component}</code> by name and type, in the hierarchy under the given root. The component to
-   * find does not have to be showing.
+   * Finds a <code>{@link Component}</code> by name and type, in the hierarchy under the given root. If this finder is
+   * attached to a <code>{@link Robot}</code>, it will use the component lookup scope in the <code>Robot</code>'s
+   * <code>{@link Settings}</code> to determine whether the component to find should be showing or not. If this finder
+   * is <em>not</em> attached to any <code>Robot</code>, the component to find does not have to be showing.
    * @param <T> the parameterized type of the component to find.
    * @param root the root used as the starting point of the search.
    * @param name the name of the component to find.
@@ -370,6 +423,9 @@ public interface ComponentFinder {
    * @return the found component.
    * @throws ComponentLookupException if a matching component could not be found.
    * @throws ComponentLookupException if more than one matching component is found.
+   * @see Robot#settings()
+   * @see Settings#componentLookupScope()
+   * @see ComponentLookupScope
    * @see #findByName(String)
    */
   <T extends Component> T findByName(Container root, String name, Class<T> type);

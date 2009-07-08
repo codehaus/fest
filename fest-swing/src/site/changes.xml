@@ -6,6 +6,10 @@
   </properties>
   <body>
     <release version="1.2a3" date="2009-05-26" description="Subsequent release">
+      <action dev="alruiz" type="fix" issue="FEST-139" due-to="Woody Folsom">
+        Lookup methods in ComponentFinder use the ComponentLookupScope in the Settings of the Robot the finder is
+        attached to.
+      </action>
       <action dev="alruiz" type="add" issue="FEST-142" due-to="Juhos Csaba-Zsolt">
         Added support for regular expression matching to the method 'requireText(String)' in JButtonFixture, where the 
         given String can be a regular expression.

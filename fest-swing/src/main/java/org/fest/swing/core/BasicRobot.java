@@ -130,7 +130,7 @@ public class BasicRobot implements Robot {
     settings = new Settings();
     eventGenerator = new RobotEventGenerator(settings);
     eventPoster = new AWTEventPoster(toolkit, inputState, windowMonitor, settings);
-    finder = new BasicComponentFinder(this.hierarchy);
+    finder = new BasicComponentFinder(this.hierarchy, settings);
     unexpectedJOptionPaneFinder = new UnexpectedJOptionPaneFinder(finder);
     active = true;
   }

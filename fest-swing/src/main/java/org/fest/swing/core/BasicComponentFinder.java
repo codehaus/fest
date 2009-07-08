@@ -43,6 +43,7 @@ public final class BasicComponentFinder implements ComponentFinder {
 
   private final ComponentHierarchy hierarchy;
   private final ComponentPrinter printer;
+  private final Settings settings;
 
   private final FinderDelegate finderDelegate = new FinderDelegate();
 
@@ -68,11 +69,22 @@ public final class BasicComponentFinder implements ComponentFinder {
   }
 
   /**
-   * Creates a new <code>{@link BasicComponentFinder}</code>.
+   * Creates a new <code>{@link BasicComponentFinder}</code>. The created finder does not use any
+   * <code>{@link Settings}</code>.
    * @param hierarchy the component hierarchy to use.
    */
   protected BasicComponentFinder(ComponentHierarchy hierarchy) {
+    this(hierarchy, null);
+  }
+
+  /**
+   * Creates a new <code>{@link BasicComponentFinder}</code>.
+   * @param hierarchy the component hierarchy to use.
+   * @param settings the configuration settings to use. It can be <code>null</code>.
+   */
+  protected BasicComponentFinder(ComponentHierarchy hierarchy, Settings settings) {
     this.hierarchy = hierarchy;
+    this.settings = settings;
     printer = new BasicComponentPrinter(hierarchy);
     includeHierarchyIfComponentNotFound(true);
   }
@@ -82,7 +94,7 @@ public final class BasicComponentFinder implements ComponentFinder {
 
   /** {@inheritDoc} */
   public <T extends Component> T findByType(Class<T> type) {
-    return findByType(type, false);
+    return findByType(type, requireShowingFromSettingsOrFalse());
   }
 
   /** {@inheritDoc} */
@@ -94,7 +106,7 @@ public final class BasicComponentFinder implements ComponentFinder {
   /** {@inheritDoc} */
   @RunsInEDT
   public <T extends Component> T findByType(Container root, Class<T> type) {
-    return findByType(root, type, false);
+    return findByType(root, type, requireShowingFromSettingsOrFalse());
   }
 
   /** {@inheritDoc} */
@@ -106,7 +118,7 @@ public final class BasicComponentFinder implements ComponentFinder {
   /** {@inheritDoc} */
   @RunsInEDT
   public <T extends Component> T findByName(String name, Class<T> type) {
-    return findByName(name, type, false);
+    return findByName(name, type, requireShowingFromSettingsOrFalse());
   }
 
   /** {@inheritDoc} */
@@ -119,7 +131,7 @@ public final class BasicComponentFinder implements ComponentFinder {
   /** {@inheritDoc} */
   @RunsInEDT
   public Component findByName(String name) {
-    return findByName(name, false);
+    return findByName(name, requireShowingFromSettingsOrFalse());
   }
 
   /** {@inheritDoc} */
@@ -131,7 +143,7 @@ public final class BasicComponentFinder implements ComponentFinder {
   /** {@inheritDoc} */
   @RunsInEDT
   public <T extends Component> T findByLabel(String label, Class<T> type) {
-    return findByLabel(label, type, false);
+    return findByLabel(label, type, requireShowingFromSettingsOrFalse());
   }
 
   /** {@inheritDoc} */
@@ -144,7 +156,7 @@ public final class BasicComponentFinder implements ComponentFinder {
   /** {@inheritDoc} */
   @RunsInEDT
   public Component findByLabel(String label) {
-    return findByLabel(label, false);
+    return findByLabel(label, requireShowingFromSettingsOrFalse());
   }
 
   /** {@inheritDoc} */
@@ -170,7 +182,7 @@ public final class BasicComponentFinder implements ComponentFinder {
   /** {@inheritDoc} */
   @RunsInEDT
   public <T extends Component> T findByName(Container root, String name, Class<T> type) {
-    return findByName(root, name, type, false);
+    return findByName(root, name, type, requireShowingFromSettingsOrFalse());
   }
 
   /** {@inheritDoc} */
@@ -183,7 +195,7 @@ public final class BasicComponentFinder implements ComponentFinder {
   /** {@inheritDoc} */
   @RunsInEDT
   public Component findByName(Container root, String name) {
-    return findByName(root, name, false);
+    return findByName(root, name, requireShowingFromSettingsOrFalse());
   }
 
   /** {@inheritDoc} */
@@ -195,7 +207,7 @@ public final class BasicComponentFinder implements ComponentFinder {
   /** {@inheritDoc} */
   @RunsInEDT
   public <T extends Component> T findByLabel(Container root, String label, Class<T> type) {
-    return findByLabel(root, label, type, false);
+    return findByLabel(root, label, type, requireShowingFromSettingsOrFalse());
   }
 
   /** {@inheritDoc} */
@@ -208,7 +220,11 @@ public final class BasicComponentFinder implements ComponentFinder {
   /** {@inheritDoc} */
   @RunsInEDT
   public Component findByLabel(Container root, String label) {
-    return findByLabel(root, label, false);
+    return findByLabel(root, label, requireShowingFromSettingsOrFalse());
+  }
+
+  private boolean requireShowingFromSettingsOrFalse() {
+    return requireShowingFromSettingsOr(false);
   }
 
   /** {@inheritDoc} */
@@ -315,6 +331,19 @@ public final class BasicComponentFinder implements ComponentFinder {
   /** {@inheritDoc} */
   public <T extends Component> Collection<T> findAll(Container root, GenericTypeMatcher<T> m) {
     return finderDelegate.find(hierarchy(root), m);
+  }
+
+  /**
+   * Returns the value of the flag "requireShowing" in the <code>{@link ComponentLookupScope}</code> this finder's
+   * <code>{@link Settings}</code>. If the settings object is <code>null</code>, this method will return the provided
+   * default value.
+   * @param defaultValue the value to return if this matcher does not have any configuration settings.
+   * @return the value of the flag "requireShowing" in this finder's settings, or the provided default value if this
+   * finder does not have configuration settings.
+   */
+  protected final boolean requireShowingFromSettingsOr(boolean defaultValue) {
+    if (settings == null) return defaultValue;
+    return settings.componentLookupScope().requireShowing();
   }
 
   private ComponentHierarchy hierarchy(Container root) {
