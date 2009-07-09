@@ -15,15 +15,16 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.TestGroups.GUI;
+
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
@@ -31,12 +32,7 @@ import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.exception.LocationUnavailableException;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JTabbedPaneLocation}</code>.
@@ -76,7 +72,7 @@ public class JTabbedPaneLocationTest {
       location.indexOf(tabbedPane, "three");
       failWhenExpectingException();
     } catch (LocationUnavailableException e) {
-      assertThat(e.getMessage()).isEqualTo("Unable to find a tab with title 'three'");
+      assertThat(e.getMessage()).isEqualTo("Unable to find a tab with title matching value 'three'");
     }
   }
 
@@ -115,7 +111,7 @@ public class JTabbedPaneLocationTest {
         }
       });
     }
- 
+
     private MyWindow() {
       super(JTabbedPaneLocationTest.class);
       tabbedPane.addTab("one", new JPanel());

@@ -14,6 +14,8 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.driver.JPopupMenuElementsAsTextQuery.menuElementsAsText;
+
 import java.awt.Container;
 
 import javax.swing.JMenuItem;
@@ -24,14 +26,13 @@ import org.fest.swing.core.GenericTypeMatcher;
 import org.fest.swing.core.Robot;
 import org.fest.swing.exception.ComponentLookupException;
 
-import static org.fest.swing.driver.JPopupMenuElementsAsTextQuery.menuElementsAsText;
-
 /**
  * Understands simulation of user input on a <code>{@link JPopupMenu}</code>. Unlike <code>JPopupMenuFixture</code>,
  * this driver only focuses on behavior present only in <code>{@link JPopupMenu}</code>s. This class is intended for
  * internal use only.
  *
  * @author Yvonne Wang
+ * @author Alex Ruiz
  */
 public class JPopupMenuDriver extends JComponentDriver {
 
@@ -64,7 +65,7 @@ public class JPopupMenuDriver extends JComponentDriver {
    */
   @RunsInEDT
   public JMenuItem menuItem(JPopupMenu popupMenu, String name) {
-    return robot.finder().findByName(popupMenu, name, JMenuItem.class);
+    return robot.finder().findByName(popupMenu, name, JMenuItem.class, false);
   }
 
   /**

@@ -257,7 +257,8 @@ public class JOptionPaneDriverTest {
       driver.requireMessage(optionPane, "Anakin");
       failWhenExpectingException();
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("property:'message'").contains("expected:<'Anakin'> but was:<'Palpatine'>");
+      assertThat(e.getMessage()).contains("property:'message'")
+                                .contains("actual value:<'Palpatine'> is not equal to or does not match pattern:<'Anakin'>");
     }
   }
 

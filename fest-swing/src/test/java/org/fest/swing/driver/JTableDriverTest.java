@@ -34,9 +34,7 @@ import static org.fest.swing.driver.JTableRowCountQuery.rowCountOf;
 import static org.fest.swing.driver.JTableSelectedRowCountQuery.selectedRowCountOf;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.builder.JTextFields.textField;
-import static org.fest.swing.test.core.CommonAssertions.assertActionFailureDueToDisabledComponent;
-import static org.fest.swing.test.core.CommonAssertions.assertActionFailureDueToNotShowingComponent;
-import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.CommonAssertions.*;
 import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.test.recorder.ClickRecorder.attachTo;
@@ -45,16 +43,9 @@ import static org.fest.swing.test.swing.TestTable.createCellTextUsing;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
 import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Point;
+import java.awt.*;
 
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.JTableHeader;
 
 import org.fest.mocks.EasyMockTemplate;
@@ -64,20 +55,14 @@ import org.fest.swing.cell.JTableCellWriter;
 import org.fest.swing.core.Robot;
 import org.fest.swing.data.TableCell;
 import org.fest.swing.data.TableCellByColumnId;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
+import org.fest.swing.edt.*;
 import org.fest.swing.exception.ActionFailedException;
 import org.fest.swing.test.core.MethodInvocations;
 import org.fest.swing.test.data.ZeroAndNegativeProvider;
 import org.fest.swing.test.recorder.ClickRecorder;
 import org.fest.swing.test.swing.TestTable;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JTableDriver}</code>.
@@ -247,7 +232,7 @@ public class JTableDriverTest {
     assertThat(cell.column).isEqualTo(column);
     assertCellReaderWasCalled();
   }
-  
+
   @DataProvider(name = "cells") public Object[][] cells() {
     return new Object[][] { { 6, 5 }, { 0, 0 }, { 8, 3 }, { 5, 2 } };
   }
@@ -258,16 +243,16 @@ public class JTableDriverTest {
     assertThat(cell.column).isEqualTo(0);
     assertCellReaderWasCalled();
   }
-  
+
   public void shouldThrowErrorIfCellCannotBeFoundWithGivenValue() {
     try {
       driver.cell(dragTable, "Hello World");
       failWhenExpectingException();
     } catch (ActionFailedException expected) {
-      assertThat(expected.getMessage()).contains("Unable to find cell with value 'Hello World'");
+      assertThat(expected.getMessage()).contains("Unable to find cell matching value 'Hello World'");
     }
   }
-  
+
   public void shouldFindCellMatchingPattern() {
     TableCell cell = driver.cell(dragTable, regex("1.*"));
     assertThat(cell.row).isEqualTo(1);
@@ -378,7 +363,7 @@ public class JTableDriverTest {
                                 .contains("actual value:<'0-0'> is not equal to or does not match pattern:<'0-1'>");
     }
   }
-  
+
   public void shouldPassIfCellValueMatchesPattern() {
     driver.requireCellValue(dragTable, row(0).column(0), regex("0.*"));
   }
@@ -400,8 +385,8 @@ public class JTableDriverTest {
     assertThat(recorder).clicked(LEFT_BUTTON).timesClicked(3);
     assertThatCellWasClicked(cell, recorder.pointClicked());
   }
-  
-  @Test(groups = GUI, expectedExceptions = IllegalArgumentException.class, 
+
+  @Test(groups = GUI, expectedExceptions = IllegalArgumentException.class,
       dataProvider = "zeroAndNegative", dataProviderClass = ZeroAndNegativeProvider.class)
   public void shouldThrowErrorIfNumberOfTimesToClickCellIsZeroOrNegative(int index) {
     driver.click(dragTable, row(0).column(1), LEFT_BUTTON, index);
