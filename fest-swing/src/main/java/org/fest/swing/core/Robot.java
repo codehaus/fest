@@ -1,6 +1,10 @@
 package org.fest.swing.core;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Window;
+import java.awt.event.InputEvent;
 
 import javax.swing.JPopupMenu;
 
@@ -324,14 +328,18 @@ public interface Robot {
   void releaseKey(int keyCode);
 
   /**
-   * Presses the appropriate modifiers corresponding to the given mask.
+   * Presses the appropriate modifiers corresponding to the given mask. Use mask values from 
+   * <code>{@link InputEvent}</code>.
    * @param modifierMask the given mask.
+   * @see InputEvent
    */
   void pressModifiers(int modifierMask);
 
   /**
-   * Releases the appropriate modifiers corresponding to the given mask.
+   * Releases the appropriate modifiers corresponding to the given mask. Use mask values from 
+   * <code>{@link InputEvent}</code>.
    * @param modifierMask the given mask.
+   * @see InputEvent
    */
   void releaseModifiers(int modifierMask);
 

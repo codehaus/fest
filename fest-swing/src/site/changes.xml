@@ -6,6 +6,10 @@
   </properties>
   <body>
     <release version="1.2a3" date="2009-05-26" description="Subsequent release">
+      <action dev="alruiz" type="fix" issue="FEST-136" due-to="Steve (neals01)">
+        Updated Javadocs in methods 'pressModifiers' and 'releaseModifiers' in Robot, to indicate the valid values for
+        the modifiers.
+      </action>
       <action dev="alruiz" type="fix" issue="FEST-139" due-to="Woody Folsom">
         Lookup methods in ComponentFinder use the ComponentLookupScope in the Settings of the Robot the finder is
         attached to.
