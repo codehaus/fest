@@ -15,17 +15,27 @@
  */
 package org.fest.swing.driver;
 
+import static java.awt.Color.BLUE;
+import static java.awt.Color.WHITE;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.query.ComponentBackgroundQuery.backgroundOf;
+import static org.fest.swing.query.ComponentFontQuery.fontOf;
+import static org.fest.swing.query.ComponentForegroundQuery.foregroundOf;
+import static org.fest.swing.test.core.TestGroups.GUI;
+import static org.fest.util.Arrays.array;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 
-import javax.swing.*;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.JToolBar;
 import javax.swing.table.DefaultTableModel;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
@@ -36,15 +46,10 @@ import org.fest.swing.edt.GuiTask;
 import org.fest.swing.test.data.BooleanProvider;
 import org.fest.swing.test.swing.CustomCellRenderer;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.query.ComponentBackgroundQuery.backgroundOf;
-import static org.fest.swing.query.ComponentFontQuery.fontOf;
-import static org.fest.swing.query.ComponentForegroundQuery.foregroundOf;
-import static org.fest.swing.test.core.TestGroups.GUI;
-import static org.fest.util.Arrays.array;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link BasicJTableCellReader}</code>.
@@ -164,6 +169,8 @@ public class BasicJTableCellReaderTest {
     return execute(new GuiQuery<JLabel>() {
       protected JLabel executeInEDT() {
         JLabel label = new JLabel("Hello");
+        label.setBackground(BLUE);
+        label.setForeground(WHITE);
         setCellRendererComponent(table, label);
         return label;
       }

@@ -10,6 +10,9 @@
         Updated Javadocs in methods 'pressModifiers' and 'releaseModifiers' in Robot, to indicate the valid values for
         the modifiers.
       </action>
+      <action dev="alruiz" type="fix" issue="FEST-138" due-to="Joel Shellman">
+        JTableCellFixture now returns the correct cell background when using table decorators.
+      </action>
       <action dev="alruiz" type="fix" issue="FEST-139" due-to="Woody Folsom">
         Lookup methods in ComponentFinder use the ComponentLookupScope in the Settings of the Robot the finder is
         attached to.

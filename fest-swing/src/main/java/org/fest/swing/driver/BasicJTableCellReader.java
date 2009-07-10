@@ -15,6 +15,9 @@
  */
 package org.fest.swing.driver;
 
+import static java.lang.String.valueOf;
+import static org.fest.swing.driver.ModelValueToString.asText;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -23,14 +26,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.table.TableCellRenderer;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.cell.JTableCellReader;
-
-import static java.lang.String.valueOf;
-
-import static org.fest.swing.driver.ModelValueToString.asText;
 
 /**
  * Understands the default implementation of <code>{@link JTableCellReader}</code>.
@@ -154,9 +152,6 @@ public class BasicJTableCellReader implements JTableCellReader {
 
   @RunsInCurrentThread
   private Component cellRendererIn(final JTable table, final int row, final int column) {
-    Object value = table.getValueAt(row, column);
-    TableCellRenderer cellRenderer = table.getCellRenderer(row, column);
-    boolean cellSelected = table.isCellSelected(row, column);
-    return cellRenderer.getTableCellRendererComponent(table, value, cellSelected, false, row, column);
+    return table.prepareRenderer(table.getCellRenderer(row, column), row, column);
   }
 }
