@@ -16,10 +16,12 @@
 package org.fest.swing.monitor;
 
 import static java.lang.Math.max;
+import static java.util.logging.Level.WARNING;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
 
 import java.awt.*;
+import java.util.logging.Logger;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
@@ -34,6 +36,8 @@ import org.fest.swing.util.RobotFactory;
  * @author Alex Ruiz
  */
 class WindowStatus {
+
+  private static final Logger LOGGER = Logger.getAnonymousLogger();
 
   private static final int ARBITRARY_EXTRA_VALUE = 20;
 
@@ -63,8 +67,17 @@ class WindowStatus {
    * @param w the given window.
    */
   @RunsInEDT
-  void checkIfReady(final Window w) {
+  void checkIfReady(Window w) {
     if (robot == null) return;
+    try {
+      checkSafelyIfReady(w);
+    } catch (Exception ignored) {
+      // We are getting InterruptedException in Xwnc
+      LOGGER.log(WARNING, "Error ocurred when checking if window is ready", ignored);
+    }
+  }
+
+  private void checkSafelyIfReady(final Window w) {
     // Must avoid frame borders, which are insensitive to mouse motion (at least on w32).
     Pair<WindowMetrics, Point> metricsAndCenter = metricsAndCenter(w);
     final WindowMetrics metrics = metricsAndCenter.i;
