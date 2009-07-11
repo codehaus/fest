@@ -1,16 +1,16 @@
 /*
  * Created on Jul 9, 2009
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * Copyright @2009 the original author or authors.
  */
 package org.fest.swing.fixture;
@@ -35,15 +35,12 @@ import org.fest.swing.core.Robot;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 /**
  * Test case for bug <a href="http://jira.codehaus.org/browse/FEST-130"
  * target="_blank">FEST-130</a>.
- * 
+ *
  * @author neals01
  * @author Alex Ruiz
  */
@@ -57,7 +54,7 @@ public class FEST130_WrongModifierBehaviorInJTableFixture {
   @BeforeClass public void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
   }
-  
+
   @BeforeMethod public void setUp() {
     robot = BasicRobot.robotWithNewAwtHierarchy();
     frame = new FrameFixture(robot, MyWindow.createNew());
@@ -94,7 +91,7 @@ public class FEST130_WrongModifierBehaviorInJTableFixture {
     for (int i = 0; i < rows.length; i++)
       assertThat(selectedRows[i]).isEqualTo(rows[i]);
   }
-  
+
   private int[] selectedRowsInTable() {
     return selectedRowsIn(table.component());
   }
@@ -118,9 +115,9 @@ public class FEST130_WrongModifierBehaviorInJTableFixture {
         }
       });
     }
-    
+
     final JTable table = new JTable();
-    
+
     private MyWindow() {
       super(FEST130_WrongModifierBehaviorInJTableFixture.class);
       table.setName("Table");
@@ -130,7 +127,7 @@ public class FEST130_WrongModifierBehaviorInJTableFixture {
       addComponents(table);
     }
   }
-  
+
   private static class MyTableModel extends AbstractTableModel {
     private static final long serialVersionUID = 1L;
     private final List<String> values;
@@ -138,7 +135,7 @@ public class FEST130_WrongModifierBehaviorInJTableFixture {
     MyTableModel(List<String> values) {
       this.values = values;
     }
-    
+
     @Override public String getColumnName(int col) {
       return "Col" + col;
     }
@@ -157,7 +154,7 @@ public class FEST130_WrongModifierBehaviorInJTableFixture {
       return false;
     }
 
-    @Override public int getRowCount() {
+    public int getRowCount() {
       return values.size();
     }
   }
