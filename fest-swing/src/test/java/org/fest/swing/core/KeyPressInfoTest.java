@@ -13,7 +13,7 @@
  * 
  * Copyright @2008-2009 the original author or authors.
  */
-package org.fest.swing.fixture;
+package org.fest.swing.core;
 
 import org.testng.annotations.Test;
 
