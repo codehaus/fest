@@ -15,6 +15,10 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.driver.JComboBoxEditableQuery.isEditable;
+import static org.fest.swing.driver.JTableStopCellEditingTask.stopEditing;
+import static org.fest.util.Collections.list;
+
 import java.awt.Point;
 
 import javax.swing.JComboBox;
@@ -23,8 +27,6 @@ import javax.swing.JTable;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.cell.JTableCellWriter;
 import org.fest.swing.core.Robot;
-
-import static org.fest.swing.driver.JTableStopCellEditingTask.stopEditing;
 
 /**
  * Understands an implementation of <code>{@link JTableCellWriter}</code> that knows how to use
@@ -46,10 +48,20 @@ public class JTableComboBoxEditorCellWriter extends AbstractJTableCellWriter {
   @RunsInEDT
   public void enterValue(JTable table, int row, int column, String value) {
     JComboBox editor = doStartCellEditing(table, row, column);
-    driver.selectItem(editor, value);
+    selectOrType(editor, value);
     stopEditing(table, row, column);
   }
 
+  private void selectOrType(JComboBox editor, String value) {
+    boolean selectValue = !isEditable(editor);
+    if (!selectValue) selectValue = list(driver.contentsOf(editor)).contains(value);
+    if (selectValue) {
+      driver.selectItem(editor, value);
+      return;
+    }
+    driver.enterText(editor, value);
+  }
+  
   /** {@inheritDoc} */
   @RunsInEDT
   public void startCellEditing(JTable table, int row, int column) {
