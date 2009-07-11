@@ -73,6 +73,7 @@ class WindowStatus {
       checkSafelyIfReady(w);
     } catch (Exception ignored) {
       // We are getting InterruptedException in Xwnc
+      // http://groups.google.com/group/easytesting/browse_frm/thread/116cc070ab7b22e6
       LOGGER.log(WARNING, "Error ocurred when checking if window is ready", ignored);
     }
   }
