@@ -32,10 +32,11 @@ import javax.swing.table.AbstractTableModel;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.BasicRobot;
 import org.fest.swing.core.Robot;
-import org.fest.swing.data.TableCell;
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.test.swing.TestWindow;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -53,6 +54,9 @@ public class FEST130_WrongModifierBehaviorInJTableFixture {
   private FrameFixture frame;
   private JTableFixture table;
 
+  @BeforeClass public void setUpOnce() {
+    FailOnThreadViolationRepaintManager.install();
+  }
   
   @BeforeMethod public void setUp() {
     robot = BasicRobot.robotWithNewAwtHierarchy();
@@ -75,11 +79,11 @@ public class FEST130_WrongModifierBehaviorInJTableFixture {
     assertThatSelectedRowsAre(1, 3, 7);
   }
 
-  public void testShiftModifier() {
-    table.cell(TableCell.row(1).column(0)).click();
+  public void shouldUseShiftModifierCorrectly() {
+    table.cell(row(1).column(0)).click();
     assertThatSelectedRowsAre(1);
     robot.pressModifiers(SHIFT_MASK);
-    table.cell(TableCell.row(4).column(0)).click();
+    table.cell(row(4).column(0)).click();
     robot.releaseModifiers(SHIFT_MASK);
     assertThatSelectedRowsAre(1, 2, 3, 4);
   }
