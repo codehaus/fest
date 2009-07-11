@@ -18,9 +18,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.driver.ComponentDriver.propertyName;
 import static org.fest.util.Strings.concat;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Point;
+import java.awt.*;
 import java.util.regex.Pattern;
 
 import javax.swing.JTable;
@@ -29,18 +27,12 @@ import javax.swing.table.JTableHeader;
 import org.fest.assertions.Description;
 import org.fest.swing.cell.JTableCellReader;
 import org.fest.swing.cell.JTableCellWriter;
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.core.*;
 import org.fest.swing.core.Robot;
 import org.fest.swing.data.TableCell;
 import org.fest.swing.data.TableCellByColumnId;
-import org.fest.swing.driver.BasicJTableCellReader;
-import org.fest.swing.driver.BasicJTableCellWriter;
-import org.fest.swing.driver.JTableDriver;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.WaitTimedOutError;
+import org.fest.swing.driver.*;
+import org.fest.swing.exception.*;
 import org.fest.swing.timing.Timeout;
 
 /**
@@ -160,7 +152,7 @@ public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements C
 
   /**
    * Returns a fixture that manages the table cell whose value matches the given regular expression pattern.
-   * @param valuePattern the regular expression pattern to match. 
+   * @param valuePattern the regular expression pattern to match.
    * @return a fixture that manages the table cell whose value matches the given one.
    * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
    * @throws ActionFailedException if a cell with a matching value cannot be found.
@@ -169,7 +161,7 @@ public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements C
   public TableCell cell(Pattern valuePattern) {
     return driver.cell(target, valuePattern);
   }
-  
+
   /**
    * Returns a fixture that manages the table cell specified by the given row index and column name.
    * @param cell the cell of interest.
@@ -721,5 +713,16 @@ public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements C
    */
   public int columnIndexFor(Object columnName) {
     return driver.columnIndex(target, columnName);
+  }
+
+  /**
+   * Returns the index of the selected row in this fixture's <code>{@link JTable}</code>.
+   * @return the index of the selected row in this fixture's <code>JTable</code>.
+   * @throws IllegalStateException if this fixture's <code>JTable</code> does not have a selected row, or if it has
+   * more than one selected rows.
+   * @since 1.2
+   */
+  public int selectedRow() {
+    return driver.selectedRow(target);
   }
 }

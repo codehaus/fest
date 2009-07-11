@@ -61,12 +61,18 @@ public class JTableCellFixture implements ItemFixture {
    * @throws NullPointerException if <code>cell</code> is <code>null</code>.
    */
   protected JTableCellFixture(JTableFixture table, TableCell cell) {
-    if (table == null) 
-      throw new NullPointerException("The JTableFixture should not be null");
-    if (cell == null) 
-      throw new NullPointerException("The TableCell should not be null");
+    validateNotNull(table);
+    validateNotNull(cell);
     this.table = table;
     this.cell = cell;
+  }
+
+  private void validateNotNull(JTableFixture newTable) {
+    if (newTable == null) throw new NullPointerException("The JTableFixture should not be null");
+  }
+
+  private void validateNotNull(TableCell newCell) {
+    if (newCell == null) throw new NullPointerException("The TableCell should not be null");
   }
 
   JTableFixture table() { return table; }
@@ -287,13 +293,13 @@ public class JTableCellFixture implements ItemFixture {
     table.requireCellValue(cell, value);
     return this;
   }
-  
+
   /**
    * Asserts that the value of this fixture's table cell matches the given regular expression pattern.
    * @param pattern the regular expression pattern to match.
    * @return this fixture.
    * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
-   * @throws AssertionError if the value of this fixture's table cell does not match the expected the given regular 
+   * @throws AssertionError if the value of this fixture's table cell does not match the expected the given regular
    * expression pattern.
    * @since 1.2
    */

@@ -6,6 +6,9 @@
   </properties>
   <body>
     <release version="1.2a3" date="2009-05-26" description="Subsequent release">
+      <action dev="alruiz" type="add" issue="FEST-43" due-to="Ken Geis">
+        Added the method 'selectedRow' to JTableFixture.
+      </action>
       <action dev="alruiz" type="fix" issue="FEST-122" due-to="Dario Consoli">
         Added support for editable JComboBoxes as JTable editors.
       </action>

@@ -22,10 +22,7 @@ import static org.fest.swing.driver.CommonValidations.validateCellReader;
 import static org.fest.swing.driver.CommonValidations.validateCellWriter;
 import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
 import static org.fest.swing.driver.JTableCellEditableQuery.isCellEditable;
-import static org.fest.swing.driver.JTableCellValidator.validateCellIndices;
-import static org.fest.swing.driver.JTableCellValidator.validateIndices;
-import static org.fest.swing.driver.JTableCellValidator.validateNotNull;
-import static org.fest.swing.driver.JTableCellValidator.validateRowIndex;
+import static org.fest.swing.driver.JTableCellValidator.*;
 import static org.fest.swing.driver.JTableColumnByIdentifierQuery.columnIndexByIdentifier;
 import static org.fest.swing.driver.JTableColumnCountQuery.columnCountOf;
 import static org.fest.swing.driver.JTableContentsQuery.tableContents;
@@ -42,10 +39,7 @@ import static org.fest.util.Arrays.isEmpty;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.Point;
+import java.awt.*;
 import java.util.regex.Pattern;
 
 import javax.swing.JPopupMenu;
@@ -65,10 +59,7 @@ import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ActionFailedException;
 import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.util.Arrays;
-import org.fest.swing.util.Pair;
-import org.fest.swing.util.PatternTextMatcher;
-import org.fest.swing.util.StringTextMatcher;
+import org.fest.swing.util.*;
 
 /**
  * Understands simulation of user input on a <code>{@link JTable}</code>. Unlike <code>JTableFixture</code>, this
@@ -356,7 +347,7 @@ public class JTableDriver extends JComponentDriver {
       protected void executeInEDT() {
         if (!hasSelection(table)) return;
         String message = concat("[", propertyName(table, SELECTION_PROPERTY).value(),
-            "] expected no selection but was:<rows=", format(table.getSelectedRows()), ", columns=",
+            "] expected no selection but was:<rows=", format(selectedRowsOf(table)), ", columns=",
             format(table.getSelectedColumns()), ">");
         fail(message);
       }
@@ -406,7 +397,7 @@ public class JTableDriver extends JComponentDriver {
    */
   @RunsInEDT
   public void click(JTable table, TableCell cell, MouseButton mouseButton, int times) {
-    if (times <= 0) 
+    if (times <= 0)
       throw new IllegalArgumentException("The number of times to click a cell should be greater than zero");
     Point pointAtCell = scrollToPointAtCell(table, cell, location);
     robot.click(table, pointAtCell, mouseButton, times);
@@ -808,5 +799,32 @@ public class JTableDriver extends JComponentDriver {
   @RunsInEDT
   public void requireColumnCount(JTable table, int columnCount) {
     assertThat(columnCountOf(table)).as(propertyName(table, "columnCount")).isEqualTo(columnCount);
+  }
+
+  /**
+   * Returns the index of the selected row in the given <code>{@link JTable}</code>.
+   * @param table the target <code>JTable</code>.
+   * @return the index of the selected row in the <code>JTable</code>.
+   * @throws IllegalStateException if the <code>JTable</code> does not have a selected row, or if it has more than one
+   * selected rows.
+   * @since 1.2
+   */
+  public int selectedRow(JTable table) {
+    int[] selectedRows = selectedRowsOf(table);
+    if (selectedRows == null || selectedRows.length == 0)
+      throw new IllegalStateException("The JTable does not have any selected row(s)");
+    if (selectedRows.length > 1)
+      throw new IllegalStateException(concat(
+          "Expecting JTable to have only one selected row, but had:<", format(selectedRows), ">"));
+    return selectedRows[0];
+  }
+
+  @RunsInEDT
+  private static int[] selectedRowsOf(final JTable table) {
+    return execute(new GuiQuery<int[]>() {
+      protected int[] executeInEDT() {
+        return table.getSelectedRows();
+      }
+    });
   }
 }

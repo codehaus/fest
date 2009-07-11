@@ -42,6 +42,8 @@ import static org.fest.swing.test.swing.TestTable.columnNames;
 import static org.fest.swing.test.swing.TestTable.createCellTextUsing;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
 import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
+import static org.fest.swing.util.Range.from;
+import static org.fest.swing.util.Range.to;
 
 import java.awt.*;
 
@@ -62,6 +64,8 @@ import org.fest.swing.test.data.ZeroAndNegativeProvider;
 import org.fest.swing.test.recorder.ClickRecorder;
 import org.fest.swing.test.swing.TestTable;
 import org.fest.swing.test.swing.TestWindow;
+import org.fest.swing.util.Range.From;
+import org.fest.swing.util.Range.To;
 import org.testng.annotations.*;
 
 /**
@@ -167,14 +171,6 @@ public class JTableDriverTest {
     robot.waitForIdle();
     driver.selectCells(dragTable, new TableCell[] { row(0).column(0) });
     assertThat(isCellSelected(dragTable, 0, 0)).isTrue();
-  }
-
-  private static void setMultipleIntervalSelectionTo(final JTable table) {
-    execute(new GuiTask() {
-      protected void executeInEDT() {
-        table.setSelectionMode(MULTIPLE_INTERVAL_SELECTION);
-      }
-    });
   }
 
   public void shouldThrowErrorWhenSelectingCellsInDisabledJTable() {
@@ -659,6 +655,62 @@ public class JTableDriverTest {
 
   public void shouldPassIfColumnCountIsEqualToExpected() {
     driver.requireColumnCount(dragTable, COLUMN_COUNT);
+  }
+
+  public void shouldReturnSelectedRowIndex() {
+    selectRow(dragTable, 1);
+    robot.waitForIdle();
+    assertThat(driver.selectedRow(dragTable)).isEqualTo(1);
+  }
+
+  public void shouldThrowErrorIfTableDoesNotHaveSelectedRowAndExpectingOneSelectedRow() {
+    clearSelectionOf(dragTable);
+    robot.waitForIdle();
+    try {
+      driver.selectedRow(dragTable);
+      failWhenExpectingException();
+    } catch (IllegalStateException e) {
+      assertThat(e.getMessage()).isEqualTo("The JTable does not have any selected row(s)");
+    }
+  }
+
+  public void shouldThrowErrorIfTableHasMoreThanOneSelectedRowAndExpectingOneSelectedRow() {
+    selectRows(dragTable, from(0), to(2));
+    robot.waitForIdle();
+    try {
+      driver.selectedRow(dragTable);
+      failWhenExpectingException();
+    } catch (IllegalStateException e) {
+      assertThat(e.getMessage()).isEqualTo("Expecting JTable to have only one selected row, but had:<[0, 1, 2]>");
+    }
+  }
+
+  @RunsInEDT
+  private static void selectRow(JTable table, int row) {
+    selectRows(table, row, row);
+  }
+
+  @RunsInEDT
+  private static void selectRows(JTable table, From from, To to) {
+    selectRows(table, from.value, to.value);
+  }
+
+  @RunsInEDT
+  private static void selectRows(final JTable table, final int from, final int to) {
+    execute(new GuiTask() {
+      protected void executeInEDT() {
+        if (from != to) table.setSelectionMode(MULTIPLE_INTERVAL_SELECTION);
+        table.setRowSelectionInterval(from, to);
+      }
+    });
+  }
+
+  private static void setMultipleIntervalSelectionTo(final JTable table) {
+    execute(new GuiTask() {
+      protected void executeInEDT() {
+        table.setSelectionMode(MULTIPLE_INTERVAL_SELECTION);
+      }
+    });
   }
 
   @RunsInEDT
