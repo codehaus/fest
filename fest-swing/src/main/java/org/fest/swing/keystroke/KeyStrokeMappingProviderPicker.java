@@ -24,16 +24,15 @@ import java.util.Locale;
  */
 class KeyStrokeMappingProviderPicker {
 
-  private static final String GERMAN = "de";
+//  private static final String GERMAN = "de";
 
   KeyStrokeMappingProvider providerFor(Locale locale) {
-    if (isGerman(locale)) return new KeyStrokeMappingProvider_de();
-    // for now by default is the "English" keyboard mapping.
-    // we'll support for other languages when users request it.
+    // removed support for German-specific mapping, until FEST-175 is fixed.
+    // if (isGerman(locale)) return new KeyStrokeMappingProvider_de();
     return new KeyStrokeMappingProvider_en();
   }
 
-  private boolean isGerman(Locale locale) {
-    return GERMAN.equalsIgnoreCase(locale.getDisplayLanguage()) || GERMAN.equalsIgnoreCase(locale.getLanguage());
-  }
+//  private boolean isGerman(Locale locale) {
+//    return GERMAN.equalsIgnoreCase(locale.getDisplayLanguage()) || GERMAN.equalsIgnoreCase(locale.getLanguage());
+//  }
 }
