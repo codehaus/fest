@@ -3,13 +3,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <groupId>org.easytesting</groupId>
   <artifactId>fest-swing</artifactId>
-  <version>1.2a1</version>
+  <version>1.2a3-SNAPSHOT</version>
   <versioning>
-    <versions>
-      <version>1.2a1</version>
-      <version>1.2a2</version>
-      <version>1.2a3-SNAPSHOT</version>
-    </versions>
+    <snapshot>
+      <localCopy>true</localCopy>
+    </snapshot>
     <lastUpdated>20090712034629</lastUpdated>
   </versioning>
 </metadata>
