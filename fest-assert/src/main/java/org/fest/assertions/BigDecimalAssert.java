@@ -15,11 +15,10 @@
  */
 package org.fest.assertions;
 
-import java.math.BigDecimal;
-
-import static java.math.BigDecimal.ZERO;
-
 import static org.fest.assertions.Fail.*;
+
+import java.math.BigDecimal;
+import static java.math.BigDecimal.ZERO;
 
 /**
  * Understands assertion methods for <code>{@link BigDecimal}</code>. To create a new instance of this class use the
@@ -232,7 +231,25 @@ public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
    */
   public BigDecimalAssert isEqualByComparingTo(BigDecimal expected) {
     isNotNull();
+    failIfNull(description(), expected);
     if (actual.compareTo(expected) != 0) fail(errorMessageIfNotEqual(actual, expected));
+    return this;
+  }
+
+  /**
+   * Verifies that the actual <code>{@link BigDecimal}</code> is <b>not</b> equal to the given one. Two
+   * <code>{@link BigDecimal}</code> objects that are equal in value but have a different scale (like 2.0 and 2.00)
+   * are considered equal by this method.
+   * @param expected the given <code>BigDecimal</code> to use to compare to the actual <code>BigDecimal</code>.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>BigDecimal</code> is <code>null</code>.
+   * @throws AssertionError if the actual <code>BigDecimal</code> is equal to the given one.
+   * @see BigDecimal#compareTo(BigDecimal)
+   */
+  public BigDecimalAssert isNotEqualByComparingTo(BigDecimal expected) {
+    isNotNull();
+    failIfNull(description(), expected);
+    if (actual.compareTo(expected) == 0) fail(errorMessageIfEqual(actual, expected));
     return this;
   }
 
