@@ -15,6 +15,25 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.Fail.fail;
+import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
+import static org.fest.swing.driver.CommonValidations.validateCellReader;
+import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
+import static org.fest.swing.driver.JTreeChildrenShowUpCondition.untilChildrenShowUp;
+import static org.fest.swing.driver.JTreeEditableQuery.isEditable;
+import static org.fest.swing.driver.JTreeExpandPathTask.expandPath;
+import static org.fest.swing.driver.JTreeMatchingPathQuery.findMatchingPathInVisibleAndEnabledJTree;
+import static org.fest.swing.driver.JTreeMatchingPathQuery.matchingPathFor;
+import static org.fest.swing.driver.JTreeToggleExpandStateTask.toggleExpandState;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.exception.ActionFailedException.actionFailure;
+import static org.fest.swing.timing.Pause.pause;
+import static org.fest.util.Arrays.format;
+import static org.fest.util.Arrays.isEmpty;
+import static org.fest.util.Collections.list;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
@@ -37,23 +56,7 @@ import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.exception.LocationUnavailableException;
 import org.fest.swing.exception.WaitTimedOutError;
 import org.fest.swing.util.Pair;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.Fail.fail;
-import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
-import static org.fest.swing.driver.CommonValidations.validateCellReader;
-import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
-import static org.fest.swing.driver.JTreeChildrenShowUpCondition.untilChildrenShowUp;
-import static org.fest.swing.driver.JTreeEditableQuery.isEditable;
-import static org.fest.swing.driver.JTreeExpandPathTask.expandPath;
-import static org.fest.swing.driver.JTreeMatchingPathQuery.*;
-import static org.fest.swing.driver.JTreeToggleExpandStateTask.toggleExpandState;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.exception.ActionFailedException.actionFailure;
-import static org.fest.swing.timing.Pause.pause;
-import static org.fest.util.Arrays.*;
-import static org.fest.util.Collections.list;
-import static org.fest.util.Strings.concat;
+import org.fest.swing.util.Triple;
 
 /**
  * Understands simulation of user input on a <code>{@link JTree}</code>. Unlike <code>JTreeFixture</code>, this
@@ -81,6 +84,41 @@ public class JTreeDriver extends JComponentDriver {
   }
 
   /**
+   * Expands the given row, is possible. If the row is already expanded, this method does not do anything.
+   * <p>
+   * NOTE: a reasonable assumption is that the toggle control is just to the left of the row bounds and is roughly a
+   * square the dimensions of the row height. Clicking in the center of that square should work.
+   * </p>
+   * @param tree the target <code>JTree</code>.
+   * @param row the given row.
+   * @throws IllegalStateException if the <code>JTree</code> is disabled.
+   * @throws IllegalStateException if the <code>JTree</code> is not showing on the screen.
+   * @throws IndexOutOfBoundsException if the given row is less than zero or equal than or greater than the number of
+   * visible rows in the <code>JTree</code>.
+   * @throws LocationUnavailableException if a tree path for the given row cannot be found.
+   * @throws ActionFailedException if is not possible to expand the row for the <code>JTree</code>'s <code>TreeUI</code>.
+   */
+  public void expandRow(JTree tree, int row) {
+    Triple<Boolean, Point, Integer> expandRowInfo = expandRowInfo(tree, row, location);
+    boolean alreadyExpanded = expandRowInfo.i;
+    if (alreadyExpanded) return;
+    toggleCell(tree, expandRowInfo.ii, expandRowInfo.iii);
+  }
+
+  @RunsInEDT
+  private static Triple<Boolean, Point, Integer> expandRowInfo(final JTree tree, final int row, final JTreeLocation location) {
+    return execute(new GuiQuery<Triple<Boolean, Point, Integer>>() {
+      protected Triple<Boolean, Point, Integer> executeInEDT() {
+        validateIsEnabledAndShowing(tree);
+        scrollToVisible(tree, row, location);
+        Point p = location.pointAt(tree, row);
+        if (tree.isExpanded(row)) return new Triple<Boolean, Point, Integer>(true, null, null);
+        return new Triple<Boolean, Point, Integer>(false, p, tree.getToggleClickCount());
+      }
+    });
+  }
+
+  /**
    * Change the open/closed state of the given row, if possible.
    * <p>
    * NOTE: a reasonable assumption is that the toggle control is just to the left of the row bounds and is roughly a
@@ -93,21 +131,12 @@ public class JTreeDriver extends JComponentDriver {
    * @throws IndexOutOfBoundsException if the given row is less than zero or equal than or greater than the number of
    * visible rows in the <code>JTree</code>.
    * @throws LocationUnavailableException if a tree path for the given row cannot be found.
-   * @throws ActionFailedException if is not possible to toggle row for the <code>JTree</code>'s <code>TreeUI</code>.
+   * @throws ActionFailedException if is not possible to toggle the row for the <code>JTree</code>'s <code>TreeUI</code>.
    */
   @RunsInEDT
   public void toggleRow(JTree tree, int row) {
     Pair<Point, Integer> toggleRowInfo = toggleRowInfo(tree, row, location);
-    // Alternatively, we can reflect into the UI and do a single click on the appropriate expand location, but this is
-    // safer.
-    Point p = toggleRowInfo.i;
-    int toggleClickCount = toggleRowInfo.ii;
-    if (toggleClickCount == 0) {
-      toggleRowThroughTreeUI(tree, p);
-      robot.waitForIdle();
-      return;
-    }
-    robot.click(tree, p, LEFT_BUTTON, toggleClickCount);
+    toggleCell(tree, toggleRowInfo.i, toggleRowInfo.ii);
   }
 
   @RunsInEDT
@@ -115,10 +144,20 @@ public class JTreeDriver extends JComponentDriver {
     return execute(new GuiQuery<Pair<Point, Integer>>() {
       protected Pair<Point, Integer> executeInEDT() {
         validateIsEnabledAndShowing(tree);
+        scrollToVisible(tree, row, location);
         Point p = location.pointAt(tree, row);
         return new Pair<Point, Integer>(p, tree.getToggleClickCount());
       }
     });
+  }
+
+  private void toggleCell(JTree tree, Point p, int toggleClickCount) {
+    if (toggleClickCount == 0) {
+      toggleRowThroughTreeUI(tree, p);
+      robot.waitForIdle();
+      return;
+    }
+    robot.click(tree, p, LEFT_BUTTON, toggleClickCount);
   }
   
   @RunsInEDT
@@ -293,11 +332,17 @@ public class JTreeDriver extends JComponentDriver {
     return execute(new GuiQuery<Point>() {
       protected Point executeInEDT() {
         validateIsEnabledAndShowing(tree);
-        Rectangle rowBounds = tree.getRowBounds(location.validIndex(tree, row));
-        tree.scrollRectToVisible(rowBounds);
+        Rectangle rowBounds = scrollToVisible(tree, row, location);
         return new Point(rowBounds.x + 1, rowBounds.y + rowBounds.height / 2);
       }
     });
+  }
+
+  private static Rectangle scrollToVisible(final JTree tree, final int row,
+      final JTreeLocation location) {
+    Rectangle rowBounds = tree.getRowBounds(location.validIndex(tree, row));
+    tree.scrollRectToVisible(rowBounds);
+    return rowBounds;
   }
 
   /**

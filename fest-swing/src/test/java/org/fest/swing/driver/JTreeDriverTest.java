@@ -19,7 +19,9 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.driver.JTreeSetEditableTask.setEditable;
 import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.CommonAssertions.*;
+import static org.fest.swing.test.core.CommonAssertions.assertActionFailureDueToDisabledComponent;
+import static org.fest.swing.test.core.CommonAssertions.assertActionFailureDueToNotShowingComponent;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
 import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.test.swing.TreeNodeFactory.node;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
@@ -32,16 +34,31 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.DefaultTreeSelectionModel;
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
-import org.fest.swing.edt.*;
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.LocationUnavailableException;
 import org.fest.swing.test.swing.TestTree;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JTreeDriver}</code>.
@@ -76,6 +93,38 @@ public class JTreeDriverTest {
   @AfterMethod public void tearDown() {
     robot.cleanUp();
   }
+  
+  public void shouldExpandNodeByRow() {
+    assertThat(isRowExpanded(dragTree, 5)).isFalse();
+    driver.expandRow(dragTree, 5);
+    assertThat(isRowExpanded(dragTree, 5)).isTrue();
+  }
+  
+  public void shouldNotDoAnythingIfRowAlreadyExpanded() {
+    assertThat(isRowExpanded(dragTree, 0)).isTrue();
+    driver.expandRow(dragTree, 0);
+    assertThat(isRowExpanded(dragTree, 0)).isTrue();
+  }
+  
+  public void shouldThrowErrorWhenExpandingRowInDisabledJTree() {
+    disableDragTree();
+    try {
+      driver.expandRow(dragTree, 0);
+      failWhenExpectingException();
+    } catch (IllegalStateException e) {
+      assertActionFailureDueToDisabledComponent(e);
+    }
+  }
+
+  public void shouldThrowErrorWhenExpandingRowInNotShowingJTree() {
+    hideWindow();
+    try {
+      driver.expandRow(dragTree, 0);
+      failWhenExpectingException();
+    } catch (IllegalStateException e) {
+      assertActionFailureDueToNotShowingComponent(e);
+    }
+  }
 
   public void shouldSelectNodeByRow() {
     clearSelectionOf(dragTree);
@@ -88,7 +137,7 @@ public class JTreeDriverTest {
     driver.selectRow(dragTree, 0);
     assertThat(selectionRowsOf(dragTree)).isEqualTo(new int[] { 0 });
   }
-
+  
   public void shouldThrowErrorWhenSelectingNodeByRowInDisabledJTree() {
     disableDragTree();
     try {
@@ -163,11 +212,11 @@ public class JTreeDriverTest {
   }
 
   public void shouldToggleNodeByRow() {
-    assertThat(isRowExpanded(dragTree, 1)).isFalse();
-    driver.toggleRow(dragTree, 1);
-    assertThat(isRowExpanded(dragTree, 1)).isTrue();
-    driver.toggleRow(dragTree, 1);
-    assertThat(isRowExpanded(dragTree, 1)).isFalse();
+    assertThat(isRowExpanded(dragTree, 5)).isFalse();
+    driver.toggleRow(dragTree, 5);
+    assertThat(isRowExpanded(dragTree, 5)).isTrue();
+    driver.toggleRow(dragTree, 5);
+    assertThat(isRowExpanded(dragTree, 5)).isFalse();
   }
 
   @RunsInEDT
@@ -623,7 +672,12 @@ public class JTreeDriverTest {
                 ),
                 node("branch1.2")
             ),
-            node("branch2")
+            node("branch2"),
+            node("branch3"),
+            node("branch4"),
+            node("branch5",
+                node("branch5.1")
+            )
         );
       return new DefaultTreeModel(root);
     }
