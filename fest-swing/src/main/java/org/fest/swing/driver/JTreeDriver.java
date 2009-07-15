@@ -96,24 +96,47 @@ public class JTreeDriver extends JComponentDriver {
    * @throws IndexOutOfBoundsException if the given row is less than zero or equal than or greater than the number of
    * visible rows in the <code>JTree</code>.
    * @throws LocationUnavailableException if a tree path for the given row cannot be found.
-   * @throws ActionFailedException if is not possible to expand the row for the <code>JTree</code>'s <code>TreeUI</code>.
+   * @throws ActionFailedException if is not possible to expand the row for the <code>JTree</code>'s 
+   * <code>TreeUI</code>.
    */
   public void expandRow(JTree tree, int row) {
-    Triple<Boolean, Point, Integer> expandRowInfo = expandRowInfo(tree, row, location);
-    boolean alreadyExpanded = expandRowInfo.i;
-    if (alreadyExpanded) return;
-    toggleCell(tree, expandRowInfo.ii, expandRowInfo.iii);
+    Triple<Boolean, Point, Integer> info = rowToExpandOrCollapseInfo(tree, row, location);
+    boolean expanded = info.i;
+    if (expanded) return;
+    toggleCell(tree, info.ii, info.iii);
+  }
+
+  /**
+   * Collapses the given row, is possible. If the row is already collapsed, this method does not do anything.
+   * <p>
+   * NOTE: a reasonable assumption is that the toggle control is just to the left of the row bounds and is roughly a
+   * square the dimensions of the row height. Clicking in the center of that square should work.
+   * </p>
+   * @param tree the target <code>JTree</code>.
+   * @param row the given row.
+   * @throws IllegalStateException if the <code>JTree</code> is disabled.
+   * @throws IllegalStateException if the <code>JTree</code> is not showing on the screen.
+   * @throws IndexOutOfBoundsException if the given row is less than zero or equal than or greater than the number of
+   * visible rows in the <code>JTree</code>.
+   * @throws LocationUnavailableException if a tree path for the given row cannot be found.
+   * @throws ActionFailedException if is not possible to collapse the row for the <code>JTree</code>'s 
+   * <code>TreeUI</code>.
+   */
+  public void collapseRow(JTree tree, int row) {
+    Triple<Boolean, Point, Integer> info = rowToExpandOrCollapseInfo(tree, row, location);
+    boolean expanded = info.i;
+    if (!expanded) return;
+    toggleCell(tree, info.ii, info.iii);
   }
 
   @RunsInEDT
-  private static Triple<Boolean, Point, Integer> expandRowInfo(final JTree tree, final int row, final JTreeLocation location) {
+  private static Triple<Boolean, Point, Integer> rowToExpandOrCollapseInfo(final JTree tree, final int row, final JTreeLocation location) {
     return execute(new GuiQuery<Triple<Boolean, Point, Integer>>() {
       protected Triple<Boolean, Point, Integer> executeInEDT() {
         validateIsEnabledAndShowing(tree);
         scrollToVisible(tree, row, location);
         Point p = location.pointAt(tree, row);
-        if (tree.isExpanded(row)) return new Triple<Boolean, Point, Integer>(true, null, null);
-        return new Triple<Boolean, Point, Integer>(false, p, tree.getToggleClickCount());
+        return new Triple<Boolean, Point, Integer>(tree.isExpanded(row), p, tree.getToggleClickCount());
       }
     });
   }

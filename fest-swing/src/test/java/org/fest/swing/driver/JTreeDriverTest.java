@@ -106,6 +106,11 @@ public class JTreeDriverTest {
     assertThat(isRowExpanded(dragTree, 0)).isTrue();
   }
   
+  @Test(groups = GUI, dataProvider = "invalidRowIndicesForDragTree", expectedExceptions = IndexOutOfBoundsException.class)
+  public void shouldThrowErrorIfRowToExpandIsInvalid(int invalidRow) {
+    driver.expandRow(dragTree, invalidRow);
+  }
+  
   public void shouldThrowErrorWhenExpandingRowInDisabledJTree() {
     disableDragTree();
     try {
@@ -120,6 +125,50 @@ public class JTreeDriverTest {
     hideWindow();
     try {
       driver.expandRow(dragTree, 0);
+      failWhenExpectingException();
+    } catch (IllegalStateException e) {
+      assertActionFailureDueToNotShowingComponent(e);
+    }
+  }
+
+  public void shouldCollapseNodeByRow() {
+    assertThat(isRowExpanded(dragTree, 0)).isTrue();
+    driver.collapseRow(dragTree, 0);
+    assertThat(isRowExpanded(dragTree, 0)).isFalse();
+  }
+  
+  public void shouldNotDoAnythingIfRowAlreadyCollapsed() {
+    assertThat(isRowExpanded(dragTree, 1)).isFalse();
+    driver.collapseRow(dragTree, 1);
+    assertThat(isRowExpanded(dragTree, 1)).isFalse();
+  }
+  
+  @Test(groups = GUI, dataProvider = "invalidRowIndicesForDragTree", expectedExceptions = IndexOutOfBoundsException.class)
+  public void shouldThrowErrorIfRowToCollapseIsInvalid(int invalidRow) {
+    driver.collapseRow(dragTree, invalidRow);
+  }
+
+  @DataProvider(name = "invalidRowIndicesForDragTree") 
+  public Object[][] invalidRowIndicesForDragTree() {
+    return new Object[][] {
+        { -1 }, { 6 }, { 100 }  
+    };
+  }
+
+  public void shouldThrowErrorWhenCollapsingRowInDisabledJTree() {
+    disableDragTree();
+    try {
+      driver.collapseRow(dragTree, 0);
+      failWhenExpectingException();
+    } catch (IllegalStateException e) {
+      assertActionFailureDueToDisabledComponent(e);
+    }
+  }
+
+  public void shouldThrowErrorWhenCollapsingRowInNotShowingJTree() {
+    hideWindow();
+    try {
+      driver.collapseRow(dragTree, 0);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertActionFailureDueToNotShowingComponent(e);
@@ -374,7 +423,7 @@ public class JTreeDriverTest {
     driver.drag(dragTree, 2);
     driver.drop(dropTree, 0);
     DefaultMutableTreeNode sourceRoot = rootOf(dragTree);
-    assertThat(childCountOf(sourceRoot)).isEqualTo(1);
+    assertThat(childCountOf(sourceRoot)).isEqualTo(4);
     DefaultMutableTreeNode destinationRoot = rootOf(dropTree);
     assertThat(childCountOf(destinationRoot)).isEqualTo(1);
     assertThat(textOf(firstChildOf(destinationRoot))).isEqualTo("branch2");
