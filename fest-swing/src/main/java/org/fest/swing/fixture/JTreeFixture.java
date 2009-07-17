@@ -20,15 +20,10 @@ import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 
 import org.fest.swing.cell.JTreeCellReader;
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
-import org.fest.swing.core.Robot;
+import org.fest.swing.core.*;
 import org.fest.swing.driver.BasicJTreeCellReader;
 import org.fest.swing.driver.JTreeDriver;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.LocationUnavailableException;
+import org.fest.swing.exception.*;
 import org.fest.swing.timing.Timeout;
 
 /**
@@ -289,17 +284,81 @@ public class JTreeFixture extends JPopupMenuInvokerFixture<JTree> implements Com
 
   /**
    * Simulates a user toggling the open/closed state of the tree node at the given row.
-   * @param row the index of the row to select.
+   * @param row the index of the row to toggle.
    * @return this fixture.
    * @throws IllegalStateException if this fixture's <code>JTree</code> is disabled.
    * @throws IllegalStateException if this fixture's <code>JTree</code> is not showing on the screen.
    * @throws IndexOutOfBoundsException if the given row is less than zero or equal than or greater than the number of
    * visible rows in the <code>JTree</code>.
    * @throws LocationUnavailableException if a tree path for the given row cannot be found.
-   * @throws ActionFailedException if is not possible to toggle row for the <code>JTree</code>'s <code>TreeUI</code>.
+   * @throws ActionFailedException if this method fails to toggle the row.
    */
   public JTreeFixture toggleRow(int row) {
     driver.toggleRow(target, row);
+    return this;
+  }
+
+  /**
+   * Simulates a user expanding the tree node at the given row.
+   * @param row the index of the row to expand.
+   * @return this fixture.
+   * @throws IllegalStateException if this fixture's <code>JTree</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JTree</code> is not showing on the screen.
+   * @throws IndexOutOfBoundsException if the given row is less than zero or equal than or greater than the number of
+   * visible rows in the <code>JTree</code>.
+   * @throws LocationUnavailableException if a tree path for the given row cannot be found.
+   * @throws ActionFailedException if this method fails to expand the row.
+   * @since 1.2
+   */
+  public JTreeFixture expandRow(int row) {
+    driver.expandRow(target, row);
+    return this;
+  }
+
+  /**
+   * Simulates a user collapsing the tree node at the given row.
+   * @param row the index of the row to collapse.
+   * @return this fixture.
+   * @throws IllegalStateException if this fixture's <code>JTree</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JTree</code> is not showing on the screen.
+   * @throws IndexOutOfBoundsException if the given row is less than zero or equal than or greater than the number of
+   * visible rows in the <code>JTree</code>.
+   * @throws LocationUnavailableException if a tree path for the given row cannot be found.
+   * @throws ActionFailedException if this method fails to collapse the row.
+   * @since 1.2
+   */
+  public JTreeFixture collapseRow(int row) {
+    driver.collapseRow(target, row);
+    return this;
+  }
+
+  /**
+   * Simulates a user expanding the tree node at the given path.
+   * @param path the path of the row to expand.
+   * @return this fixture.
+   * @throws IllegalStateException if this fixture's <code>JTree</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JTree</code> is not showing on the screen.
+   * @throws LocationUnavailableException if the given path cannot be found.
+   * @throws ActionFailedException if this method fails to expand the path.
+   * @since 1.2
+   */
+  public JTreeFixture expandPath(String path) {
+    driver.expandPath(target, path);
+    return this;
+  }
+
+  /**
+   * Simulates a user collapsing the tree node at the given path.
+   * @param path the path of the row to collapse.
+   * @return this fixture.
+   * @throws IllegalStateException if this fixture's <code>JTree</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JTree</code> is not showing on the screen.
+   * @throws LocationUnavailableException if the given path cannot be found.
+   * @throws ActionFailedException if this method fails to collapse the path.
+   * @since 1.2
+   */
+  public JTreeFixture collapsePath(String path) {
+    driver.collapsePath(target, path);
     return this;
   }
 

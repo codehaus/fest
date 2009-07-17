@@ -12,6 +12,12 @@
       <action dev="alruiz" type="add" issue="FEST-7" due-to="Cephei">
         Added the method 'collapseRow(int)' to JTreeFixture.
       </action>
+      <action dev="alruiz" type="add" issue="FEST-7" due-to="Cephei">
+        Added the method 'expandPath(String)' to JTreeFixture.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-7" due-to="Cephei">
+        Added the method 'collapsePath(String)' to JTreeFixture.
+      </action>
       <action dev="alruiz" type="add" issue="FEST-43" due-to="Ken Geis">
         Added the method 'selectedRow' to JTableFixture.
       </action>

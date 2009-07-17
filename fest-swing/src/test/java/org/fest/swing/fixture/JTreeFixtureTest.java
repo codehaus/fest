@@ -64,6 +64,58 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     verifyLookup(new JTreeFixture(robot(), name));
   }
 
+  public void shouldExpandRow() {
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.expandRow(target, 8);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.expandRow(8));
+      }
+    }.run();
+  }
+
+  public void shouldCollapseRow() {
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.collapseRow(target, 8);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.collapseRow(8));
+      }
+    }.run();
+  }
+
+  public void shouldExpandPath() {
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.expandPath(target, "root");
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.expandPath("root"));
+      }
+    }.run();
+  }
+
+  public void shouldCollapsePath() {
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.collapsePath(target, "root");
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.collapsePath("root"));
+      }
+    }.run();
+  }
+
   public void shouldDragAtRow() {
     new EasyMockTemplate(driver) {
       protected void expectations() {

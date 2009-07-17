@@ -93,8 +93,8 @@ public class JTreeDriver extends JComponentDriver {
    * @throws IndexOutOfBoundsException if the given row is less than zero or equal than or greater than the number of
    * visible rows in the <code>JTree</code>.
    * @throws LocationUnavailableException if a tree path for the given row cannot be found.
-   * @throws ActionFailedException if is not possible to expand the row for the <code>JTree</code>'s
-   * <code>TreeUI</code>.
+   * @throws ActionFailedException if this method fails to expand the row.
+   * @since 1.2
    */
   public void expandRow(JTree tree, int row) {
     Triple<Boolean, Point, Integer> info = scrollToRowAndGetToggleInfo(tree, row, location);
@@ -116,8 +116,8 @@ public class JTreeDriver extends JComponentDriver {
    * @throws IndexOutOfBoundsException if the given row is less than zero or equal than or greater than the number of
    * visible rows in the <code>JTree</code>.
    * @throws LocationUnavailableException if a tree path for the given row cannot be found.
-   * @throws ActionFailedException if is not possible to collapse the row for the <code>JTree</code>'s
-   * <code>TreeUI</code>.
+   * @throws ActionFailedException if this method fails to collapse the row.
+   * @since 1.2
    */
   public void collapseRow(JTree tree, int row) {
     Triple<Boolean, Point, Integer> info = scrollToRowAndGetToggleInfo(tree, row, location);
@@ -139,7 +139,7 @@ public class JTreeDriver extends JComponentDriver {
    * @throws IndexOutOfBoundsException if the given row is less than zero or equal than or greater than the number of
    * visible rows in the <code>JTree</code>.
    * @throws LocationUnavailableException if a tree path for the given row cannot be found.
-   * @throws ActionFailedException if is not possible to toggle the row for the <code>JTree</code>'s <code>TreeUI</code>.
+   * @throws ActionFailedException if this method fails to toggle the row.
    */
   @RunsInEDT
   public void toggleRow(JTree tree, int row) {
@@ -168,18 +168,44 @@ public class JTreeDriver extends JComponentDriver {
   }
 
   /**
-   * Selects the given path, if possible. If the node matching the given path is already expanded, this method will not
-   * do anything.
+   * Expands the given path, is possible. If the path is already expanded, this method will not do anything.
+   * <p>
+   * NOTE: a reasonable assumption is that the toggle control is just to the left of the row bounds and is roughly a
+   * square the dimensions of the row height. Clicking in the center of that square should work.
+   * </p>
    * @param tree the target <code>JTree</code>.
-   * @param path the path to select.
+   * @param path the path to expand.
    * @throws IllegalStateException if the <code>JTree</code> is disabled.
    * @throws IllegalStateException if the <code>JTree</code> is not showing on the screen.
    * @throws LocationUnavailableException if the given path cannot be found.
+   * @throws ActionFailedException if this method fails to expand the path.
+   * @since 1.2
    */
   @RunsInEDT
   public void expandPath(JTree tree, String path) {
     Triple<Boolean, Point, Integer> info = scrollToMatchingPathAndGetToggleInfo(tree, path, pathFinder, location);
     if (info.i) return; // already expanded
+    toggleCell(tree, info.ii, info.iii);
+  }
+
+  /**
+   * Collapses the given path, is possible. If the path is already expanded, this method will not do anything.
+   * <p>
+   * NOTE: a reasonable assumption is that the toggle control is just to the left of the row bounds and is roughly a
+   * square the dimensions of the row height. Clicking in the center of that square should work.
+   * </p>
+   * @param tree the target <code>JTree</code>.
+   * @param path the path to collapse.
+   * @throws IllegalStateException if the <code>JTree</code> is disabled.
+   * @throws IllegalStateException if the <code>JTree</code> is not showing on the screen.
+   * @throws LocationUnavailableException if the given path cannot be found.
+   * @throws ActionFailedException if this method fails to collapse the path.
+   * @since 1.2
+   */
+  @RunsInEDT
+  public void collapsePath(JTree tree, String path) {
+    Triple<Boolean, Point, Integer> info = scrollToMatchingPathAndGetToggleInfo(tree, path, pathFinder, location);
+    if (!info.i) return; // already collapsed
     toggleCell(tree, info.ii, info.iii);
   }
 
