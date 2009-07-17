@@ -24,13 +24,12 @@ import org.fest.swing.edt.GuiQuery;
 final class JTreeMatchingPathQuery {
 
   @RunsInEDT
-  static TreePath findMatchingPathInVisibleAndEnabledJTree(final JTree tree, final String path,
+  static TreePath verifyJTreeIsReadyAndFindMatchingPath(final JTree tree, final String path,
       final JTreePathFinder pathFinder) {
     return execute(new GuiQuery<TreePath>() {
       protected TreePath executeInEDT() {
         validateIsEnabledAndShowing(tree);
-        TreePath matchingPath = pathFinder.findMatchingPath(tree, path);
-        return addRootIfInvisible(tree, matchingPath);
+        return matchingPathWithRootIfInvisible(tree, path, pathFinder);
       }
     });
   }
@@ -39,10 +38,16 @@ final class JTreeMatchingPathQuery {
   static TreePath matchingPathFor(final JTree tree, final String path, final JTreePathFinder pathFinder) {
     return execute(new GuiQuery<TreePath>() {
       protected TreePath executeInEDT() {
-        TreePath matchingPath = pathFinder.findMatchingPath(tree, path);
-        return addRootIfInvisible(tree, matchingPath);
+        return matchingPathWithRootIfInvisible(tree, path, pathFinder);
       }
     });
+  }
+
+  @RunsInCurrentThread
+  private static TreePath matchingPathWithRootIfInvisible(final JTree tree, final String path,
+      final JTreePathFinder pathFinder) {
+    TreePath matchingPath = pathFinder.findMatchingPath(tree, path);
+    return addRootIfInvisible(tree, matchingPath);
   }
 
   /*

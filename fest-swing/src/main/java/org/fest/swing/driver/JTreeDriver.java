@@ -15,6 +15,7 @@
  */
 package org.fest.swing.driver;
 
+import static java.util.Arrays.sort;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.Fail.fail;
 import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
@@ -22,21 +23,20 @@ import static org.fest.swing.driver.CommonValidations.validateCellReader;
 import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
 import static org.fest.swing.driver.JTreeChildrenShowUpCondition.untilChildrenShowUp;
 import static org.fest.swing.driver.JTreeEditableQuery.isEditable;
-import static org.fest.swing.driver.JTreeExpandPathTask.expandPath;
-import static org.fest.swing.driver.JTreeMatchingPathQuery.findMatchingPathInVisibleAndEnabledJTree;
+import static org.fest.swing.driver.JTreeExpandPathTask.expandTreePath;
 import static org.fest.swing.driver.JTreeMatchingPathQuery.matchingPathFor;
+import static org.fest.swing.driver.JTreeMatchingPathQuery.verifyJTreeIsReadyAndFindMatchingPath;
 import static org.fest.swing.driver.JTreeToggleExpandStateTask.toggleExpandState;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.exception.ActionFailedException.actionFailure;
 import static org.fest.swing.timing.Pause.pause;
 import static org.fest.util.Arrays.format;
 import static org.fest.util.Arrays.isEmpty;
-import static org.fest.util.Collections.list;
 import static org.fest.util.Strings.concat;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.List;
+import java.util.Arrays;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
@@ -51,10 +51,7 @@ import org.fest.swing.cell.JTreeCellReader;
 import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.LocationUnavailableException;
-import org.fest.swing.exception.WaitTimedOutError;
+import org.fest.swing.exception.*;
 import org.fest.swing.util.Pair;
 import org.fest.swing.util.Triple;
 
@@ -84,7 +81,7 @@ public class JTreeDriver extends JComponentDriver {
   }
 
   /**
-   * Expands the given row, is possible. If the row is already expanded, this method does not do anything.
+   * Expands the given row, is possible. If the row is already expanded, this method will not do anything.
    * <p>
    * NOTE: a reasonable assumption is that the toggle control is just to the left of the row bounds and is roughly a
    * square the dimensions of the row height. Clicking in the center of that square should work.
@@ -96,18 +93,18 @@ public class JTreeDriver extends JComponentDriver {
    * @throws IndexOutOfBoundsException if the given row is less than zero or equal than or greater than the number of
    * visible rows in the <code>JTree</code>.
    * @throws LocationUnavailableException if a tree path for the given row cannot be found.
-   * @throws ActionFailedException if is not possible to expand the row for the <code>JTree</code>'s 
+   * @throws ActionFailedException if is not possible to expand the row for the <code>JTree</code>'s
    * <code>TreeUI</code>.
    */
   public void expandRow(JTree tree, int row) {
-    Triple<Boolean, Point, Integer> info = rowToExpandOrCollapseInfo(tree, row, location);
-    boolean expanded = info.i;
-    if (expanded) return;
+    Triple<Boolean, Point, Integer> info = scrollToRowAndGetToggleInfo(tree, row, location);
+    robot.waitForIdle();
+    if (info.i) return; // already expanded
     toggleCell(tree, info.ii, info.iii);
   }
 
   /**
-   * Collapses the given row, is possible. If the row is already collapsed, this method does not do anything.
+   * Collapses the given row, is possible. If the row is already collapsed, this method will not do anything.
    * <p>
    * NOTE: a reasonable assumption is that the toggle control is just to the left of the row bounds and is roughly a
    * square the dimensions of the row height. Clicking in the center of that square should work.
@@ -119,26 +116,14 @@ public class JTreeDriver extends JComponentDriver {
    * @throws IndexOutOfBoundsException if the given row is less than zero or equal than or greater than the number of
    * visible rows in the <code>JTree</code>.
    * @throws LocationUnavailableException if a tree path for the given row cannot be found.
-   * @throws ActionFailedException if is not possible to collapse the row for the <code>JTree</code>'s 
+   * @throws ActionFailedException if is not possible to collapse the row for the <code>JTree</code>'s
    * <code>TreeUI</code>.
    */
   public void collapseRow(JTree tree, int row) {
-    Triple<Boolean, Point, Integer> info = rowToExpandOrCollapseInfo(tree, row, location);
-    boolean expanded = info.i;
-    if (!expanded) return;
+    Triple<Boolean, Point, Integer> info = scrollToRowAndGetToggleInfo(tree, row, location);
+    robot.waitForIdle();
+    if (!info.i) return; // already collapsed
     toggleCell(tree, info.ii, info.iii);
-  }
-
-  @RunsInEDT
-  private static Triple<Boolean, Point, Integer> rowToExpandOrCollapseInfo(final JTree tree, final int row, final JTreeLocation location) {
-    return execute(new GuiQuery<Triple<Boolean, Point, Integer>>() {
-      protected Triple<Boolean, Point, Integer> executeInEDT() {
-        validateIsEnabledAndShowing(tree);
-        scrollToVisible(tree, row, location);
-        Point p = location.pointAt(tree, row);
-        return new Triple<Boolean, Point, Integer>(tree.isExpanded(row), p, tree.getToggleClickCount());
-      }
-    });
   }
 
   /**
@@ -158,18 +143,62 @@ public class JTreeDriver extends JComponentDriver {
    */
   @RunsInEDT
   public void toggleRow(JTree tree, int row) {
-    Pair<Point, Integer> toggleRowInfo = toggleRowInfo(tree, row, location);
-    toggleCell(tree, toggleRowInfo.i, toggleRowInfo.ii);
+    Triple<Boolean, Point, Integer> info = scrollToRowAndGetToggleInfo(tree, row, location);
+    robot.waitForIdle();
+    toggleCell(tree, info.ii, info.iii);
   }
 
+  /*
+   * Returns:
+   * 1. if the row is expanded
+   * 2. the location of the row
+   * 3. the number of mouse clicks to toggle a row
+   */
   @RunsInEDT
-  private static Pair<Point, Integer> toggleRowInfo(final JTree tree, final int row, final JTreeLocation location) {
-    return execute(new GuiQuery<Pair<Point, Integer>>() {
-      protected Pair<Point, Integer> executeInEDT() {
+  private static Triple<Boolean, Point, Integer> scrollToRowAndGetToggleInfo(final JTree tree, final int row,
+      final JTreeLocation location) {
+    return execute(new GuiQuery<Triple<Boolean, Point, Integer>>() {
+      protected Triple<Boolean, Point, Integer> executeInEDT() {
         validateIsEnabledAndShowing(tree);
         scrollToVisible(tree, row, location);
         Point p = location.pointAt(tree, row);
-        return new Pair<Point, Integer>(p, tree.getToggleClickCount());
+        return new Triple<Boolean, Point, Integer>(tree.isExpanded(row), p, tree.getToggleClickCount());
+      }
+    });
+  }
+
+  /**
+   * Selects the given path, if possible. If the node matching the given path is already expanded, this method will not
+   * do anything.
+   * @param tree the target <code>JTree</code>.
+   * @param path the path to select.
+   * @throws IllegalStateException if the <code>JTree</code> is disabled.
+   * @throws IllegalStateException if the <code>JTree</code> is not showing on the screen.
+   * @throws LocationUnavailableException if the given path cannot be found.
+   */
+  @RunsInEDT
+  public void expandPath(JTree tree, String path) {
+    Triple<Boolean, Point, Integer> info = scrollToMatchingPathAndGetToggleInfo(tree, path, pathFinder, location);
+    if (info.i) return; // already expanded
+    toggleCell(tree, info.ii, info.iii);
+  }
+
+  /*
+   * Returns:
+   * 1. if the node is expanded
+   * 2. the location of the node
+   * 3. the number of mouse clicks to toggle a node
+   */
+  @RunsInEDT
+  private static Triple<Boolean, Point, Integer> scrollToMatchingPathAndGetToggleInfo(final JTree tree,
+      final String path, final JTreePathFinder pathFinder, final JTreeLocation location) {
+    return execute(new GuiQuery<Triple<Boolean, Point, Integer>>() {
+      protected Triple<Boolean, Point, Integer> executeInEDT() {
+        validateIsEnabledAndShowing(tree);
+        TreePath matchingPath = matchingPathFor(tree, path, pathFinder);
+        tree.scrollRectToVisible(tree.getPathBounds(matchingPath));
+        Point p = location.pointAt(tree, matchingPath);
+        return new Triple<Boolean, Point, Integer>(tree.isExpanded(matchingPath), p, tree.getToggleClickCount());
       }
     });
   }
@@ -182,7 +211,7 @@ public class JTreeDriver extends JComponentDriver {
     }
     robot.click(tree, p, LEFT_BUTTON, toggleClickCount);
   }
-  
+
   @RunsInEDT
   private static void toggleRowThroughTreeUI(final JTree tree, final Point p) {
     execute(new GuiTask() {
@@ -202,7 +231,7 @@ public class JTreeDriver extends JComponentDriver {
    * @throws IllegalArgumentException if the array of rows is empty.
    * @throws IllegalStateException if the <code>JTree</code> is disabled.
    * @throws IllegalStateException if the <code>JTree</code> is not showing on the screen.
-   * @throws IndexOutOfBoundsException if any of the given rows is less than zero or equal than or greater than the 
+   * @throws IndexOutOfBoundsException if any of the given rows is less than zero or equal than or greater than the
    * number of visible rows in the <code>JTree</code>.
    * @throws LocationUnavailableException if a tree path for any of the given rows cannot be found.
    */
@@ -312,8 +341,7 @@ public class JTreeDriver extends JComponentDriver {
    */
   @RunsInEDT
   public JPopupMenu showPopupMenu(JTree tree, String path) {
-    TreePath matchingPath = findMatchingPathInVisibleAndEnabledJTree(tree, path, pathFinder);
-    matchingPath = addRootIfInvisible(tree, matchingPath);
+    TreePath matchingPath = verifyJTreeIsReadyAndFindMatchingPath(tree, path, pathFinder);
     makeVisible(tree, matchingPath, false);
     return robot.showPopupMenu(tree, pointAtPath(tree, matchingPath, location));
   }
@@ -345,11 +373,11 @@ public class JTreeDriver extends JComponentDriver {
 
   @RunsInEDT
   private Point scrollAndSelectRow(JTree tree, int row) {
-    Point p = scrollToRowToSelect(tree, row, location); 
+    Point p = scrollToRowToSelect(tree, row, location);
     robot.click(tree, p);
     return p;
   }
-  
+
   @RunsInEDT
   private static Point scrollToRowToSelect(final JTree tree, final int row, final JTreeLocation location) {
     return execute(new GuiQuery<Point>() {
@@ -361,6 +389,7 @@ public class JTreeDriver extends JComponentDriver {
     });
   }
 
+  @RunsInCurrentThread
   private static Rectangle scrollToVisible(final JTree tree, final int row,
       final JTreeLocation location) {
     Rectangle rowBounds = tree.getRowBounds(location.validIndex(tree, row));
@@ -383,13 +412,13 @@ public class JTreeDriver extends JComponentDriver {
   public void drop(JTree tree, int row) {
     drop(tree, scrollToRow(tree, row, location));
   }
-  
+
   @RunsInEDT
   private static Point scrollToRow(final JTree tree, final int row, final JTreeLocation location) {
     return execute(new GuiQuery<Point>() {
       protected Point executeInEDT() {
         validateIsEnabledAndShowing(tree);
-        tree.scrollRectToVisible(tree.getRowBounds(row));
+        scrollToVisible(tree, row, location);
         return location.pointAt(tree, row);
       }
     });
@@ -412,40 +441,34 @@ public class JTreeDriver extends JComponentDriver {
 
   @RunsInEDT
   private Point selectMatchingPath(JTree tree, String path) {
-    TreePath matchingPath = findMatchingPathInVisibleAndEnabledJTree(tree, path, pathFinder);
-    matchingPath = addRootIfInvisible(tree, matchingPath);
-    makeVisible(tree, matchingPath, false);
-    Point p = scrollToPathToSelect(tree, matchingPath, location);
+    Point p = scrollToMatchingPath(tree, path).ii;
+    robot.waitForIdle();
     robot.click(tree, p);
     return p;
   }
-  
+
   @RunsInEDT
-  private static TreePath addRootIfInvisible(final JTree tree, final TreePath path) {
-    return execute(new GuiQuery<TreePath>() {
-      protected TreePath executeInEDT() {
-        if (tree.isRootVisible()) return path;
-        Object root = tree.getModel().getRoot();
-        if (path.getPathCount() > 0) {
-          Object first = path.getPathComponent(0);
-          if (root == first) return path;
-        }
-        List<Object> newPath = list(path.getPath());
-        newPath.add(0, root);
-        return new TreePath(newPath.toArray());
-      }
-    });
+  private Pair<TreePath, Point> scrollToMatchingPath(JTree tree, String path) {
+    TreePath matchingPath = verifyJTreeIsReadyAndFindMatchingPath(tree, path, pathFinder);
+    makeVisible(tree, matchingPath, false);
+    Point p = scrollToPathToSelect(tree, matchingPath, location);
+    return new Pair<TreePath, Point>(matchingPath, p);
   }
-  
+
   @RunsInEDT
   private static Point scrollToPathToSelect(final JTree tree, final TreePath path, final JTreeLocation location) {
     return execute(new GuiQuery<Point>() {
       protected Point executeInEDT() {
-        Rectangle pathBounds = tree.getPathBounds(path);
-        tree.scrollRectToVisible(pathBounds);
-        return new Point(pathBounds.x + 1, pathBounds.y + pathBounds.height / 2);
+        return scrollToTreePath(tree, path);
       }
     });
+  }
+
+  @RunsInCurrentThread
+  private static Point scrollToTreePath(final JTree tree, final TreePath path) {
+    Rectangle pathBounds = tree.getPathBounds(path);
+    tree.scrollRectToVisible(pathBounds);
+    return new Point(pathBounds.x + 1, pathBounds.y + pathBounds.height / 2);
   }
 
   /**
@@ -465,7 +488,7 @@ public class JTreeDriver extends JComponentDriver {
   }
 
   @RunsInEDT
-  private static Point scrollToMatchingPath(final JTree tree, final String path, 
+  private static Point scrollToMatchingPath(final JTree tree, final String path,
       final JTreePathFinder pathFinder, final JTreeLocation location) {
     return execute(new GuiQuery<Point>() {
       protected Point executeInEDT() {
@@ -490,11 +513,11 @@ public class JTreeDriver extends JComponentDriver {
     boolean changed = false;
     if (path.getPathCount() > 1) changed = makeParentVisible(tree, path);
     if (!expandWhenFound) return changed;
-    expandPath(tree, path);
+    expandTreePath(tree, path);
     waitForChildrenToShowUp(tree, path);
     return true;
   }
-  
+
   @RunsInEDT
   private boolean makeParentVisible(JTree tree, TreePath path) {
     boolean changed = makeVisible(tree, path.getParentPath(), true);
@@ -511,7 +534,7 @@ public class JTreeDriver extends JComponentDriver {
       throw new LocationUnavailableException(e.getMessage());
     }
   }
-  
+
   /**
    * Asserts that the given <code>{@link JTree}</code>'s selected rows are equal to the given one.
    * @param tree the target <code>JTree</code>.
@@ -526,7 +549,7 @@ public class JTreeDriver extends JComponentDriver {
   }
 
   @RunsInEDT
-  private static void requireSelection(final JTree tree, final int[] rows, final JTreePathFinder pathFinder, 
+  private static void requireSelection(final JTree tree, final int[] rows, final JTreePathFinder pathFinder,
       final Description errorMessage) {
     execute(new GuiTask() {
       protected void executeInEDT() {
@@ -540,17 +563,13 @@ public class JTreeDriver extends JComponentDriver {
       final Description errorMessage) {
     int[] selectionRows = tree.getSelectionRows();
     if (isEmptyArray(selectionRows)) failNoSelection(errorMessage);
-    int rowCount = rows.length;
-    for (int i = 0; i < rowCount; i++)
-      assertHasSelection(rows[i], selectionRows, errorMessage);
+    sort(rows);
+    if (Arrays.equals(selectionRows, rows)) return;
+    fail(concat(
+        "[", errorMessage.value(), "] expecting selection:<", format(rows), "> but was:<", format(selectionRows), ">"));
   }
 
   private static boolean isEmptyArray(int[] array) { return array == null || array.length == 0; }
-
-  @RunsInEDT
-  private static void assertHasSelection(int row, int[] selectionRows, final Description errorMessage) {
-    assertThat(selectionRows).as(errorMessage).contains(row);
-  }
 
   /**
    * Asserts that the given <code>{@link JTree}</code>'s selected paths are equal to the given one.
@@ -568,7 +587,7 @@ public class JTreeDriver extends JComponentDriver {
   }
 
   @RunsInEDT
-  private static void requireSelection(final JTree tree, final String[] paths, final JTreePathFinder pathFinder, 
+  private static void requireSelection(final JTree tree, final String[] paths, final JTreePathFinder pathFinder,
       final Description errorMessage) {
     execute(new GuiTask() {
       protected void executeInEDT() {
@@ -576,26 +595,21 @@ public class JTreeDriver extends JComponentDriver {
       }
     });
   }
-  
+
   @RunsInCurrentThread
   private static void assertHasSelection(final JTree tree, final String[] paths, final JTreePathFinder pathFinder,
       final Description errorMessage) {
     TreePath[] selectionPaths = tree.getSelectionPaths();
     if (isEmpty(selectionPaths)) failNoSelection(errorMessage);
-    int pathCount = paths.length;
-    for (int i = 0; i < pathCount; i++)
-      assertHasSelection(matchingPathFor(tree, paths[i], pathFinder), selectionPaths, errorMessage);
+    if (Arrays.equals(selectionPaths, paths)) return;
+    fail(concat(
+        "[", errorMessage.value(), "] expecting selection:<", format(paths), "> but was:<", format(selectionPaths), ">"));
   }
 
   private static void failNoSelection(final Description errorMessage) {
     fail(concat("[", errorMessage.value(), "] No selection"));
   }
 
-  @RunsInEDT
-  private static void assertHasSelection(TreePath path, TreePath[] selectionPaths, final Description errorMessage) {
-    assertThat(selectionPaths).as(errorMessage).contains(path);
-  }
-  
   /**
    * Asserts that the given <code>{@link JTree}</code> does not have any selection.
    * @param tree the given <code>JTree</code>.
@@ -617,7 +631,7 @@ public class JTreeDriver extends JComponentDriver {
       }
     });
   }
-  
+
   @RunsInEDT
   private Description selectionProperty(JTree tree) {
     return propertyName(tree, SELECTION_PROPERTY);
@@ -681,4 +695,7 @@ public class JTreeDriver extends JComponentDriver {
     validateCellReader(newCellReader);
     pathFinder.cellReader(newCellReader);
   }
+
+  // for testing only
+  JTreeCellReader cellReader() { return pathFinder.cellReader(); }
 }

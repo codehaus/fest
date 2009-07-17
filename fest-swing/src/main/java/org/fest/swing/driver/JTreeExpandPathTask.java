@@ -37,7 +37,7 @@ import org.fest.swing.edt.GuiTask;
 final class JTreeExpandPathTask {
 
   @RunsInEDT
-  static void expandPath(final JTree tree, final TreePath path) {
+  static void expandTreePath(final JTree tree, final TreePath path) {
     execute(new GuiTask() {
       protected void executeInEDT() {
         TreePath realPath = addRootToPathIfNecessary(tree, path);

@@ -66,7 +66,7 @@ public class JTreeExpandPathTaskTest {
   public void shouldExpandPath() {
     TreePath rootPath = new TreePath(window.root);
     assertThat(isExpanded(tree, rootPath)).isFalse();
-    JTreeExpandPathTask.expandPath(tree, rootPath);
+    JTreeExpandPathTask.expandTreePath(tree, rootPath);
     robot.waitForIdle();
     assertThat(isExpanded(tree, rootPath)).isTrue();
   }
@@ -75,7 +75,7 @@ public class JTreeExpandPathTaskTest {
     hideRoot();
     TreePath nodePath = new TreePath(array(window.root, window.node));
     assertThat(isExpanded(tree, nodePath)).isFalse();
-    JTreeExpandPathTask.expandPath(tree, new TreePath(window.node));
+    JTreeExpandPathTask.expandTreePath(tree, new TreePath(window.node));
     robot.waitForIdle();
     assertThat(isExpanded(tree, nodePath)).isTrue();
   }
