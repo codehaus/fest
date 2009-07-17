@@ -28,6 +28,9 @@
         Updated Javadocs in methods 'pressModifiers' and 'releaseModifiers' in Robot, to indicate the valid values for
         the modifiers.
       </action>
+      <action dev="alruiz" type="fix" issue="FEST-137" due-to="Woody Folsom">
+        Delay between events is set to zero, when clicking the mouse button more than once.
+      </action>
       <action dev="alruiz" type="fix" issue="FEST-138" due-to="Joel Shellman">
         JTableCellFixture now returns the correct cell background when using table decorators.
       </action>

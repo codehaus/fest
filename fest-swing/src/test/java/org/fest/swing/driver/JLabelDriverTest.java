@@ -104,7 +104,7 @@ public class JLabelDriverTest {
     }
 
     private MyWindow() {
-      super(JTextComponentDriverTest.class);
+      super(JLabelDriverTest.class);
       add(label);
       setPreferredSize(new Dimension(100, 50));
     }

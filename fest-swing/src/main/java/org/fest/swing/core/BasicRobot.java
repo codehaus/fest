@@ -385,7 +385,7 @@ public class BasicRobot implements Robot {
   }
 
   private boolean shouldSetDelayBetweenEventsToZeroWhenClicking(int times) {
-    return times > 1 && settings.delayBetweenEvents() * 2 > 200;
+    return times > 1 /*FEST-137: && settings.delayBetweenEvents() * 2 > 200*/;
   }
 
   /** {@inheritDoc} */
