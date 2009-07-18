@@ -42,7 +42,8 @@ import org.fest.swing.util.Range;
  * @author Yvonne Wang
  * @author Fabien Barbero
  */
-public class JListFixture extends JPopupMenuInvokerFixture<JList> implements CommonComponentFixture, ItemGroupFixture {
+public class JListFixture extends JPopupMenuInvokerFixture<JList> implements CommonComponentFixture, JComponentFixture,
+    ItemGroupFixture {
 
   private JListDriver driver;
 
@@ -740,6 +741,32 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
    */
   public JListFixture requireNoSelection() {
     driver.requireNoSelection(target);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JList}</code> matches the given value.
+   * @param expected the given value. It can be a regular expression.
+   * @return this fixture.
+   * @throws AssertionError if the toolTip in this fixture's <code>JList</code> does not match the given value.
+   * @since 1.2
+   */
+  public JListFixture requireToolTip(String expected) {
+    driver.requireToolTip(target, expected);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JList}</code> matches the given regular expression
+   * pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the toolTip in this fixture's <code>JList</code> does not match the given value.
+   * @since 1.2
+   */
+  public JListFixture requireToolTip(Pattern pattern) {
+    driver.requireToolTip(target, pattern);
     return this;
   }
 

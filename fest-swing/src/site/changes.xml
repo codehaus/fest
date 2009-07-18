@@ -317,6 +317,9 @@
       <action dev="alruiz" type="add" issue="FEST-181" due-to="Morten Breum Mikkelsen">
         Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JLabelFixture.
       </action>
+      <action dev="alruiz" type="add" issue="FEST-182" due-to="Morten Breum Mikkelsen">
+        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JListFixture.
+      </action>
     </release>
     <release version="1.2a2" date="2009-05-26" description="Subsequent release">
       <action dev="alruiz" type="add" issue="FEST-32" due-to="Juhos Csaba-Zsolt">
