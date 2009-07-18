@@ -14,8 +14,18 @@
  */
 package org.fest.swing.driver;
 
+import static java.awt.event.KeyEvent.VK_UNDEFINED;
+import static org.fest.swing.driver.Actions.findActionKey;
+import static org.fest.swing.driver.JComponentToolTipQuery.toolTipOf;
+import static org.fest.swing.driver.KeyStrokes.findKeyStrokesForAction;
+import static org.fest.swing.driver.TextAssert.verifyThat;
+import static org.fest.swing.exception.ActionFailedException.actionFailure;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.regex.Pattern;
 
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
@@ -25,13 +35,6 @@ import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
 import org.fest.swing.exception.ActionFailedException;
 
-import static java.awt.event.KeyEvent.VK_UNDEFINED;
-
-import static org.fest.swing.driver.Actions.findActionKey;
-import static org.fest.swing.driver.KeyStrokes.findKeyStrokesForAction;
-import static org.fest.swing.exception.ActionFailedException.actionFailure;
-import static org.fest.util.Strings.*;
-
 /**
  * Understands simulation of user input on a <code>{@link JComponent}</code>. This class is intended for internal use
  * only.
@@ -40,6 +43,8 @@ import static org.fest.util.Strings.*;
  * @author Yvonne Wang
  */
 public class JComponentDriver extends ContainerDriver {
+
+  private static final String TOOL_TIP_TEXT_PROPERTY = "toolTipText";
 
   /**
    * Creates a new </code>{@link JComponentDriver}</code>.
@@ -52,7 +57,7 @@ public class JComponentDriver extends ContainerDriver {
   /**
    * Invoke <code>{@link JComponent#scrollRectToVisible(Rectangle)}</code> on the given <code>{@link JComponent}</code>.
    * <p>
-   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param c the given <code>JComponent</code>.
@@ -72,7 +77,7 @@ public class JComponentDriver extends ContainerDriver {
    * Indicates whether the given <code>{@link JComponent}</code>'s visible <code>{@link Rectangle}</code> contains the
    * given one.
    * <p>
-   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param c the given <code>JComponent</code>.
@@ -89,7 +94,7 @@ public class JComponentDriver extends ContainerDriver {
    * Indicates whether the given <code>{@link JComponent}</code>'s visible <code>{@link Rectangle}</code> contains
    * the given <code>{@link Point}</code>.
    * <p>
-   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param c the given <code>JComponent</code>.
@@ -137,5 +142,28 @@ public class JComponentDriver extends ContainerDriver {
       return;
     }
     robot.pressAndReleaseKey(keyStroke.getKeyCode(), keyStroke.getModifiers());
+  }
+
+  /**
+   * Asserts that the toolTip in the given <code>{@link JComponent}</code> matches the given value.
+   * @param c the given <code>JComponent</code>.
+   * @param expected the expected toolTip. It can be a regular expression.
+   * @throws AssertionError if the toolTip of the given <code>JComponent</code> does not match the given value.
+   * @since 1.2
+   */
+  public void requireToolTip(JComponent c, String expected) {
+    verifyThat(toolTipOf(c)).as(propertyName(c, TOOL_TIP_TEXT_PROPERTY)).isEqualOrMatches(expected);
+  }
+
+  /**
+   * Asserts that the toolTip in the given <code>{@link JComponent}</code> matches the given regular expression pattern.
+   * @param c the given <code>JComponent</code>.
+   * @param pattern the regular expression pattern to match.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the toolTip of the given <code>JComponent</code> does not match the given value.
+   * @since 1.2
+   */
+  public void requireToolTip(JComponent c, Pattern pattern) {
+    verifyThat(toolTipOf(c)).as(propertyName(c, TOOL_TIP_TEXT_PROPERTY)).matches(pattern);
   }
 }
