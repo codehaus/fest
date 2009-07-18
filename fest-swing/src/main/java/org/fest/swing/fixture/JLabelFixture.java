@@ -31,7 +31,7 @@ import org.fest.swing.timing.Timeout;
  * @author Alex Ruiz
  */
 public class JLabelFixture extends JPopupMenuInvokerFixture<JLabel> implements CommonComponentFixture,
-    TextDisplayFixture {
+    JComponentFixture, TextDisplayFixture {
 
   private JLabelDriver driver;
 
@@ -232,6 +232,32 @@ public class JLabelFixture extends JPopupMenuInvokerFixture<JLabel> implements C
    */
   public JLabelFixture requireText(Pattern pattern) {
     driver.requireText(target, pattern);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JLabel}</code> matches the given value.
+   * @param expected the given value. It can be a regular expression.
+   * @return this fixture.
+   * @throws AssertionError if the toolTip in this fixture's <code>JLabel</code> does not match the given value.
+   * @since 1.2
+   */
+  public JLabelFixture requireToolTip(String expected) {
+    driver.requireToolTip(target, expected);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JLabel}</code> matches the given regular expression
+   * pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the toolTip in this fixture's <code>JLabel</code> does not match the given value.
+   * @since 1.2
+   */
+  public JLabelFixture requireToolTip(Pattern pattern) {
+    driver.requireToolTip(target, pattern);
     return this;
   }
 
