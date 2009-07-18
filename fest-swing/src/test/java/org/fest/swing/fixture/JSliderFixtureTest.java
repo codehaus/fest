@@ -18,6 +18,9 @@ package org.fest.swing.fixture;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.swing.test.builder.JSliders.slider;
+import static org.fest.swing.test.core.Regex.regex;
+
+import java.util.regex.Pattern;
 
 import javax.swing.JSlider;
 
@@ -92,6 +95,33 @@ public class JSliderFixtureTest extends CommonComponentFixtureTestCase<JSlider> 
 
       protected void codeToTest() {
         assertThatReturnsThis(fixture.slideToMinimum());
+      }
+    }.run();
+  }
+
+  public void shouldRequireToolTip() {
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.requireToolTip(target, "A ToolTip");
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
+      }
+    }.run();
+  }
+
+  public void shouldRequireToolTipToMatchPattern() {
+    final Pattern pattern = regex(".");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.requireToolTip(target, pattern);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireToolTip(pattern));
       }
     }.run();
   }
