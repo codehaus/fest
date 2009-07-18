@@ -21,15 +21,10 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 
 import org.fest.swing.cell.JComboBoxCellReader;
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
-import org.fest.swing.core.Robot;
+import org.fest.swing.core.*;
 import org.fest.swing.driver.BasicJComboBoxCellReader;
 import org.fest.swing.driver.JComboBoxDriver;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.LocationUnavailableException;
+import org.fest.swing.exception.*;
 import org.fest.swing.timing.Timeout;
 
 /**
@@ -45,7 +40,7 @@ import org.fest.swing.timing.Timeout;
  * @author Yvonne Wang
  */
 public class JComboBoxFixture extends JPopupMenuInvokerFixture<JComboBox> implements CommonComponentFixture,
-    ItemGroupFixture, EditableComponentFixture {
+    JComponentFixture, ItemGroupFixture, EditableComponentFixture {
 
   private JComboBoxDriver driver;
 
@@ -479,6 +474,32 @@ public class JComboBoxFixture extends JPopupMenuInvokerFixture<JComboBox> implem
    */
   public JComboBoxFixture requireNoSelection() {
     driver.requireNoSelection(target);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JComboBox}</code> matches the given value.
+   * @param expected the given value. It can be a regular expression.
+   * @return this fixture.
+   * @throws AssertionError if the toolTip in this fixture's <code>JComboBox</code> does not match the given value.
+   * @since 1.2
+   */
+  public JComboBoxFixture requireToolTip(String expected) {
+    driver.requireToolTip(target, expected);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JComboBox}</code> matches the given regular expression
+   * pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the toolTip in this fixture's <code>JComboBox</code> does not match the given value.
+   * @since 1.2
+   */
+  public JComboBoxFixture requireToolTip(Pattern pattern) {
+    driver.requireToolTip(target, pattern);
     return this;
   }
 
