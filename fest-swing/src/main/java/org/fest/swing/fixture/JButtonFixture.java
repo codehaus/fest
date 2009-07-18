@@ -19,10 +19,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
-import org.fest.swing.core.Robot;
+import org.fest.swing.core.*;
 import org.fest.swing.driver.AbstractButtonDriver;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.exception.WaitTimedOutError;
@@ -36,7 +33,7 @@ import org.fest.swing.timing.Timeout;
  * @author Alex Ruiz
  */
 public class JButtonFixture extends JPopupMenuInvokerFixture<JButton> implements CommonComponentFixture,
-    TextDisplayFixture {
+    JComponentFixture, TextDisplayFixture {
 
   private AbstractButtonDriver driver;
 
@@ -299,6 +296,32 @@ public class JButtonFixture extends JPopupMenuInvokerFixture<JButton> implements
    */
   public JButtonFixture requireText(Pattern pattern) {
     driver.requireText(target, pattern);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JButton}</code> matches the given value.
+   * @param expected the given value. It can be a regular expression.
+   * @return this fixture.
+   * @throws AssertionError if the toolTip in this fixture's <code>JButton</code> does not match the given value.
+   * @since 1.2
+   */
+  public JButtonFixture requireToolTip(String expected) {
+    driver.requireToolTip(target, expected);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JButton}</code> matches the given regular expression
+   * pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the toolTip in this fixture's <code>JButton</code> does not match the given value.
+   * @since 1.2
+   */
+  public JButtonFixture requireToolTip(Pattern pattern) {
+    driver.requireToolTip(target, pattern);
     return this;
   }
 }
