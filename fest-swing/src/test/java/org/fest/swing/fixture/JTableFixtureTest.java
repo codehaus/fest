@@ -31,7 +31,9 @@ import static org.fest.swing.test.builder.JTables.table;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
 import static org.fest.swing.test.core.Regex.regex;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Point;
 import java.util.regex.Pattern;
 
 import javax.swing.JPopupMenu;
@@ -45,7 +47,7 @@ import org.fest.swing.core.MouseButton;
 import org.fest.swing.core.MouseClickInfo;
 import org.fest.swing.data.TableCell;
 import org.fest.swing.data.TableCellByColumnId;
-import org.fest.swing.driver.ComponentDriver;
+import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JTableDriver;
 import org.fest.swing.exception.ActionFailedException;
 import org.testng.annotations.Test;
@@ -57,7 +59,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  */
 @Test
-public class JTableFixtureTest extends CommonComponentFixtureTestCase<JTable> {
+public class JTableFixtureTest extends JComponentFixtureTestCase<JTable> {
 
   private JTableDriver driver;
   private JTable target;
@@ -570,34 +572,7 @@ public class JTableFixtureTest extends CommonComponentFixtureTestCase<JTable> {
     }.run();
   }
 
-  public void shouldRequireToolTip() {
-    new EasyMockTemplate(driver) {
-      protected void expectations() {
-        driver.requireToolTip(target, "A ToolTip");
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
-      }
-    }.run();
-  }
-
-  public void shouldRequireToolTipToMatchPattern() {
-    final Pattern pattern = regex(".");
-    new EasyMockTemplate(driver) {
-      protected void expectations() {
-        driver.requireToolTip(target, pattern);
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip(pattern));
-      }
-    }.run();
-  }
-
-  ComponentDriver driver() { return driver; }
+  JComponentDriver driver() { return driver; }
   JTable target() { return target; }
   JTableFixture fixture() { return fixture; }
 }

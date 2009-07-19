@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 import javax.swing.JTabbedPane;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.driver.ComponentDriver;
+import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JTabbedPaneDriver;
 import org.testng.annotations.Test;
 
@@ -41,7 +41,7 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test public class JTabbedPaneFixtureTest extends CommonComponentFixtureTestCase<JTabbedPane> {
+@Test public class JTabbedPaneFixtureTest extends JComponentFixtureTestCase<JTabbedPane> {
 
   private JTabbedPaneDriver driver;
   private JTabbedPane target;
@@ -174,34 +174,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldRequireToolTip() {
-    new EasyMockTemplate(driver) {
-      protected void expectations() {
-        driver.requireToolTip(target, "A ToolTip");
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
-      }
-    }.run();
-  }
-
-  public void shouldRequireToolTipToMatchPattern() {
-    final Pattern pattern = regex(".");
-    new EasyMockTemplate(driver) {
-      protected void expectations() {
-        driver.requireToolTip(target, pattern);
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip(pattern));
-      }
-    }.run();
-  }
-
-  ComponentDriver driver() { return driver; }
+  JComponentDriver driver() { return driver; }
   JTabbedPane target() { return target; }
   JTabbedPaneFixture fixture() { return fixture; }
 }

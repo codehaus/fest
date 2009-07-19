@@ -15,36 +15,36 @@
  */
 package org.fest.swing.fixture;
 
-import java.awt.Component;
-
-import org.testng.annotations.Test;
-
-import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
-import org.fest.swing.timing.Timeout;
-
 import static java.awt.event.InputEvent.SHIFT_MASK;
-import static java.awt.event.KeyEvent.*;
+import static java.awt.event.KeyEvent.VK_A;
+import static java.awt.event.KeyEvent.VK_B;
+import static java.awt.event.KeyEvent.VK_C;
 import static org.easymock.EasyMock.expectLastCall;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.core.KeyPressInfo.keyCode;
 import static org.fest.swing.core.MouseButton.MIDDLE_BUTTON;
 import static org.fest.swing.core.MouseClickInfo.middleButton;
 import static org.fest.swing.timing.Timeout.timeout;
 
+import java.awt.Component;
+
+import org.fest.mocks.EasyMockTemplate;
+import org.fest.swing.core.KeyPressInfo;
+import org.fest.swing.core.MouseButton;
+import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.timing.Timeout;
+import org.testng.annotations.Test;
+
 
 /**
  * Understands test methods for implementations of <code>{@link CommonComponentFixture}</code>.
- * @param <T> the type of component tested by this test class. 
+ * @param <T> the type of component supported by the fixture to test. 
  *
  * @author Alex Ruiz
  */
 @Test
-public abstract class CommonComponentFixtureTestCase<T extends Component> extends ComponentFixtureTestCase<T> implements
-    KeyboardInputSimulationFixtureTestCase, StateVerificationFixtureTestCase {
+public abstract class CommonComponentFixtureTestCase<T extends Component> extends ComponentFixtureTestCase<T> 
+    implements KeyboardInputSimulationFixtureTestCase, StateVerificationFixtureTestCase {
 
   public void shouldClick() {
     new EasyMockTemplate(driver()) {

@@ -18,14 +18,11 @@ package org.fest.swing.fixture;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.swing.test.builder.JSliders.slider;
-import static org.fest.swing.test.core.Regex.regex;
-
-import java.util.regex.Pattern;
 
 import javax.swing.JSlider;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.driver.ComponentDriver;
+import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JSliderDriver;
 import org.testng.annotations.Test;
 
@@ -36,7 +33,7 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  */
 @Test
-public class JSliderFixtureTest extends CommonComponentFixtureTestCase<JSlider> {
+public class JSliderFixtureTest extends JComponentFixtureTestCase<JSlider> {
 
   private JSliderDriver driver;
   private JSlider target;
@@ -99,34 +96,7 @@ public class JSliderFixtureTest extends CommonComponentFixtureTestCase<JSlider> 
     }.run();
   }
 
-  public void shouldRequireToolTip() {
-    new EasyMockTemplate(driver) {
-      protected void expectations() {
-        driver.requireToolTip(target, "A ToolTip");
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
-      }
-    }.run();
-  }
-
-  public void shouldRequireToolTipToMatchPattern() {
-    final Pattern pattern = regex(".");
-    new EasyMockTemplate(driver) {
-      protected void expectations() {
-        driver.requireToolTip(target, pattern);
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip(pattern));
-      }
-    }.run();
-  }
-
-  ComponentDriver driver() { return driver; }
+  JComponentDriver driver() { return driver; }
   JSlider target() { return target; }
   JSliderFixture fixture() { return fixture; }
 }

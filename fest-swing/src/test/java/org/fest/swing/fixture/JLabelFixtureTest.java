@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 import javax.swing.JLabel;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.driver.ComponentDriver;
+import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JLabelDriver;
 import org.testng.annotations.Test;
 
@@ -37,7 +37,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-@Test public class JLabelFixtureTest extends CommonComponentFixtureTestCase<JLabel> {
+@Test public class JLabelFixtureTest extends JComponentFixtureTestCase<JLabel> {
 
   private JLabelDriver driver;
   private JLabel target;
@@ -101,34 +101,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldRequireToolTip() {
-    new EasyMockTemplate(driver) {
-      protected void expectations() {
-        driver.requireToolTip(target, "A ToolTip");
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
-      }
-    }.run();
-  }
-
-  public void shouldRequireToolTipToMatchPattern() {
-    final Pattern pattern = regex(".");
-    new EasyMockTemplate(driver) {
-      protected void expectations() {
-        driver.requireToolTip(target, pattern);
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip(pattern));
-      }
-    }.run();
-  }
-
-  ComponentDriver driver() { return driver; }
+  JComponentDriver driver() { return driver; }
   JLabel target() { return target; }
   JLabelFixture fixture() { return fixture; }
 }

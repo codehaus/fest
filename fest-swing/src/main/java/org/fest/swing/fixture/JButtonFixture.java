@@ -19,7 +19,10 @@ import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 
-import org.fest.swing.core.*;
+import org.fest.swing.core.KeyPressInfo;
+import org.fest.swing.core.MouseButton;
+import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.core.Robot;
 import org.fest.swing.driver.AbstractButtonDriver;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.exception.WaitTimedOutError;
@@ -317,7 +320,8 @@ public class JButtonFixture extends JPopupMenuInvokerFixture<JButton> implements
    * @param pattern the regular expression pattern to match.
    * @return this fixture.
    * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
-   * @throws AssertionError if the toolTip in this fixture's <code>JButton</code> does not match the given value.
+   * @throws AssertionError if the toolTip in this fixture's <code>JButton</code> does not match the given regular 
+   * expression.
    * @since 1.2
    */
   public JButtonFixture requireToolTip(Pattern pattern) {

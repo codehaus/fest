@@ -34,7 +34,7 @@ import javax.swing.JPopupMenu;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.cell.JListCellReader;
-import org.fest.swing.driver.ComponentDriver;
+import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JListDriver;
 import org.fest.swing.util.Range.From;
 import org.fest.swing.util.Range.To;
@@ -46,7 +46,7 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test public class JListFixtureTest extends CommonComponentFixtureTestCase<JList> {
+@Test public class JListFixtureTest extends JComponentFixtureTestCase<JList> {
 
   private JListDriver driver;
   private JList target;
@@ -331,33 +331,6 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldRequireToolTip() {
-    new EasyMockTemplate(driver) {
-      protected void expectations() {
-        driver.requireToolTip(target, "A ToolTip");
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
-      }
-    }.run();
-  }
-
-  public void shouldRequireToolTipToMatchPattern() {
-    final Pattern pattern = regex(".");
-    new EasyMockTemplate(driver) {
-      protected void expectations() {
-        driver.requireToolTip(target, pattern);
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip(pattern));
-      }
-    }.run();
-  }
-
   public void shouldReturnValueAtIndex() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -555,7 +528,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  ComponentDriver driver() { return driver; }
+  JComponentDriver driver() { return driver; }
   JList target() { return target; }
   JListFixture fixture() { return fixture; }
 }

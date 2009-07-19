@@ -15,7 +15,9 @@
  */
 package org.fest.swing.fixture;
 
-import static java.awt.event.KeyEvent.*;
+import static java.awt.event.KeyEvent.VK_A;
+import static java.awt.event.KeyEvent.VK_B;
+import static java.awt.event.KeyEvent.VK_C;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
@@ -33,8 +35,8 @@ import javax.swing.JList;
 import org.easymock.classextension.EasyMock;
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.cell.JComboBoxCellReader;
-import org.fest.swing.driver.ComponentDriver;
 import org.fest.swing.driver.JComboBoxDriver;
+import org.fest.swing.driver.JComponentDriver;
 import org.testng.annotations.Test;
 
 /**
@@ -43,7 +45,7 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test public class JComboBoxFixtureTest extends CommonComponentFixtureTestCase<JComboBox> {
+@Test public class JComboBoxFixtureTest extends JComponentFixtureTestCase<JComboBox> {
 
   private JComboBoxDriver driver;
   private JComboBox target;
@@ -308,34 +310,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldRequireToolTip() {
-    new EasyMockTemplate(driver) {
-      protected void expectations() {
-        driver.requireToolTip(target, "A ToolTip");
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
-      }
-    }.run();
-  }
-
-  public void shouldRequireToolTipToMatchPattern() {
-    final Pattern pattern = regex(".");
-    new EasyMockTemplate(driver) {
-      protected void expectations() {
-        driver.requireToolTip(target, pattern);
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip(pattern));
-      }
-    }.run();
-  }
-
-  ComponentDriver driver() { return driver; }
+  JComponentDriver driver() { return driver; }
   JComboBox target() { return target; }
   JComboBoxFixture fixture() { return fixture; }
 }

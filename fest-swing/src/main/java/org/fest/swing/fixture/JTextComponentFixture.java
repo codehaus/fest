@@ -36,7 +36,7 @@ import org.fest.swing.timing.Timeout;
  * @author Alex Ruiz
  */
 public class JTextComponentFixture extends JPopupMenuInvokerFixture<JTextComponent>
-    implements CommonComponentFixture, TextInputFixture {
+    implements CommonComponentFixture, JComponentFixture, TextInputFixture {
 
   private JTextComponentDriver driver;
 

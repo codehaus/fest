@@ -15,15 +15,22 @@
  */
 package org.fest.swing.fixture;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 
 import org.fest.swing.cell.JTreeCellReader;
-import org.fest.swing.core.*;
+import org.fest.swing.core.KeyPressInfo;
+import org.fest.swing.core.MouseButton;
+import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.core.Robot;
 import org.fest.swing.driver.BasicJTreeCellReader;
 import org.fest.swing.driver.JTreeDriver;
-import org.fest.swing.exception.*;
+import org.fest.swing.exception.ActionFailedException;
+import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.exception.LocationUnavailableException;
 import org.fest.swing.timing.Timeout;
 
 /**
@@ -62,7 +69,8 @@ import org.fest.swing.timing.Timeout;
  * @author Yvonne Wang
  * @author Fabien Barbero
  */
-public class JTreeFixture extends JPopupMenuInvokerFixture<JTree> implements CommonComponentFixture {
+public class JTreeFixture extends JPopupMenuInvokerFixture<JTree> implements CommonComponentFixture, 
+    JComponentFixture {
 
   private JTreeDriver driver;
 
@@ -581,6 +589,33 @@ public class JTreeFixture extends JPopupMenuInvokerFixture<JTree> implements Com
     return this;
   }
 
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JTree}</code> matches the given value.
+   * @param expected the given value. It can be a regular expression.
+   * @return this fixture.
+   * @throws AssertionError if the toolTip in this fixture's <code>JTree</code> does not match the given value.
+   * @since 1.2
+   */
+  public JTreeFixture requireToolTip(String expected) {
+    driver.requireToolTip(target, expected);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JTree}</code> matches the given regular expression
+   * pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the toolTip in this fixture's <code>JTree</code> does not match the given regular 
+   * expression.
+   * @since 1.2
+   */
+  public JTreeFixture requireToolTip(Pattern pattern) {
+    driver.requireToolTip(target, pattern);
+    return this;
+  }
+  
   /**
    * Returns the separator to use when converting <code>{@link TreePath}</code>s to <code>String</code>s.
    * @return the separator to use when converting <code>{@link TreePath}</code>s to <code>String</code>s.
