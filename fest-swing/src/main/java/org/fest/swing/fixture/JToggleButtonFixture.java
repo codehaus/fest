@@ -33,7 +33,7 @@ import org.fest.swing.timing.Timeout;
  *
  * @author Alex Ruiz
  */
-public class JToggleButtonFixture extends TwoStateButtonFixture<JToggleButton> {
+public class JToggleButtonFixture extends TwoStateButtonFixture<JToggleButton> implements JComponentFixture {
 
   private AbstractButtonDriver driver;
 
@@ -339,6 +339,34 @@ public class JToggleButtonFixture extends TwoStateButtonFixture<JToggleButton> {
    */
   public JToggleButtonFixture requireNotVisible() {
     driver.requireNotVisible(target);
+    return this;
+  }
+
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JToggleButton}</code> matches the given value.
+   * @param expected the given value. It can be a regular expression.
+   * @return this fixture.
+   * @throws AssertionError if the toolTip in this fixture's <code>JToggleButton</code> does not match the given value.
+   * @since 1.2
+   */
+  public JToggleButtonFixture requireToolTip(String expected) {
+    driver.requireToolTip(target, expected);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JToggleButton}</code> matches the given regular expression
+   * pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the toolTip in this fixture's <code>JToggleButton</code> does not match the given 
+   * regular expression.
+   * @since 1.2
+   */
+  public JToggleButtonFixture requireToolTip(Pattern pattern) {
+    driver.requireToolTip(target, pattern);
     return this;
   }
 }

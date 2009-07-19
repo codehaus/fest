@@ -341,6 +341,9 @@
       <action dev="alruiz" type="add" issue="FEST-189" due-to="Morten Breum Mikkelsen">
         Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JRadioButtonFixture.
       </action>
+      <action dev="alruiz" type="add" issue="FEST-190" due-to="Morten Breum Mikkelsen">
+        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JToggleButtonFixture.
+      </action>
     </release>
     <release version="1.2a2" date="2009-05-26" description="Subsequent release">
       <action dev="alruiz" type="add" issue="FEST-32" due-to="Juhos Csaba-Zsolt">

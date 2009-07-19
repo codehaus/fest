@@ -28,7 +28,7 @@ import javax.swing.JToggleButton;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.AbstractButtonDriver;
-import org.fest.swing.driver.ComponentDriver;
+import org.fest.swing.driver.JComponentDriver;
 import org.testng.annotations.Test;
 
 /**
@@ -37,7 +37,7 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  */
 @Test
-public class JToggleButtonFixtureTest extends CommonComponentFixtureTestCase<JToggleButton> {
+public class JToggleButtonFixtureTest extends JComponentFixtureTestCase<JToggleButton> {
 
   private AbstractButtonDriver driver;
   private JToggleButton target;
@@ -153,7 +153,7 @@ public class JToggleButtonFixtureTest extends CommonComponentFixtureTestCase<JTo
     }.run();
   }
 
-  ComponentDriver driver() { return driver; }
+  JComponentDriver driver() { return driver; }
   JToggleButton target() { return target; }
   JToggleButtonFixture fixture() { return fixture; }
 }
