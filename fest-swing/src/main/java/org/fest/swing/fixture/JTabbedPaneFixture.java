@@ -20,10 +20,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JTabbedPane;
 
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
-import org.fest.swing.core.Robot;
+import org.fest.swing.core.*;
 import org.fest.swing.data.Index;
 import org.fest.swing.driver.JTabbedPaneDriver;
 import org.fest.swing.exception.ComponentLookupException;
@@ -37,7 +34,8 @@ import org.fest.swing.timing.Timeout;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JTabbedPaneFixture extends JPopupMenuInvokerFixture<JTabbedPane> implements CommonComponentFixture {
+public class JTabbedPaneFixture extends JPopupMenuInvokerFixture<JTabbedPane> implements CommonComponentFixture,
+    JComponentFixture {
 
   private JTabbedPaneDriver driver;
 
@@ -347,7 +345,7 @@ public class JTabbedPaneFixture extends JPopupMenuInvokerFixture<JTabbedPane> im
    * @param index the index of the tab.
    * @return this fixture.
    * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
-   * @throws AssertionError if the title of the tab at the given index does not match the given regular expression 
+   * @throws AssertionError if the title of the tab at the given index does not match the given regular expression
    * pattern.
    */
   public JTabbedPaneFixture requireTitle(Pattern pattern, Index index) {
@@ -365,6 +363,32 @@ public class JTabbedPaneFixture extends JPopupMenuInvokerFixture<JTabbedPane> im
    */
   public JTabbedPaneFixture requireTabTitles(String... titles) {
     driver.requireTabTitles(target, titles);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JTabbedPane}</code> matches the given value.
+   * @param expected the given value. It can be a regular expression.
+   * @return this fixture.
+   * @throws AssertionError if the toolTip in this fixture's <code>JTabbedPane</code> does not match the given value.
+   * @since 1.2
+   */
+  public JTabbedPaneFixture requireToolTip(String expected) {
+    driver.requireToolTip(target, expected);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JTabbedPane}</code> matches the given regular expression
+   * pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the toolTip in this fixture's <code>JTabbedPane</code> does not match the given value.
+   * @since 1.2
+   */
+  public JTabbedPaneFixture requireToolTip(Pattern pattern) {
+    driver.requireToolTip(target, pattern);
     return this;
   }
 }

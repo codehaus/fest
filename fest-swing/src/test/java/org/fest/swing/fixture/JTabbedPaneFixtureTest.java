@@ -145,7 +145,7 @@ import org.testng.annotations.Test;
       }
     }.run();
   }
-  
+
   public void shouldSelectTabMatchingPattern() {
     final Pattern pattern = regex("hello");
     new EasyMockTemplate(driver) {
@@ -170,6 +170,33 @@ import org.testng.annotations.Test;
       protected void codeToTest() {
         String[] result = fixture.tabTitles();
         assertThat(result).isSameAs(titles);
+      }
+    }.run();
+  }
+
+  public void shouldRequireToolTip() {
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.requireToolTip(target, "A ToolTip");
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
+      }
+    }.run();
+  }
+
+  public void shouldRequireToolTipToMatchPattern() {
+    final Pattern pattern = regex(".");
+    new EasyMockTemplate(driver) {
+      protected void expectations() {
+        driver.requireToolTip(target, pattern);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireToolTip(pattern));
       }
     }.run();
   }
