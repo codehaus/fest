@@ -326,6 +326,9 @@
       <action dev="alruiz" type="add" issue="FEST-184" due-to="Morten Breum Mikkelsen">
         Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JTabbedPaneFixture.
       </action>
+      <action dev="alruiz" type="add" issue="FEST-185" due-to="Morten Breum Mikkelsen">
+        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JTableFixture.
+      </action>
     </release>
     <release version="1.2a2" date="2009-05-26" description="Subsequent release">
       <action dev="alruiz" type="add" issue="FEST-32" due-to="Juhos Csaba-Zsolt">

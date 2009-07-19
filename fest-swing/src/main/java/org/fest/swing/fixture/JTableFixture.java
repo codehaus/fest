@@ -49,7 +49,8 @@ import org.fest.swing.timing.Timeout;
  * @author Fabien Barbero
  * @author Andriy Tsykholyas
  */
-public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements CommonComponentFixture {
+public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements CommonComponentFixture,
+    JComponentFixture {
 
   private JTableDriver driver;
 
@@ -611,6 +612,32 @@ public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements C
    */
   public JTableFixture requireNotVisible() {
     driver.requireNotVisible(target);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JTable}</code> matches the given value.
+   * @param expected the given value. It can be a regular expression.
+   * @return this fixture.
+   * @throws AssertionError if the toolTip in this fixture's <code>JTable</code> does not match the given value.
+   * @since 1.2
+   */
+  public JTableFixture requireToolTip(String expected) {
+    driver.requireToolTip(target, expected);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JTable}</code> matches the given regular expression
+   * pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the toolTip in this fixture's <code>JTable</code> does not match the given value.
+   * @since 1.2
+   */
+  public JTableFixture requireToolTip(Pattern pattern) {
+    driver.requireToolTip(target, pattern);
     return this;
   }
 
