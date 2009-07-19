@@ -219,6 +219,33 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
     }.run();
   }
 
+  public void shouldRequireToolTip() {
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        driver.requireToolTip(target(), "A ToolTip");
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
+      }
+    }.run();
+  }
+
+  public void shouldRequireToolTipToMatchPattern() {
+    final Pattern pattern = regex(".");
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        driver.requireToolTip(target(), pattern);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireToolTip(pattern));
+      }
+    }.run();
+  }
+  
   ComponentDriver driver() { return driver; }
 
   JTableHeader target() { return target; }
