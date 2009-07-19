@@ -28,7 +28,7 @@ import javax.swing.JCheckBox;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.AbstractButtonDriver;
-import org.fest.swing.driver.ComponentDriver;
+import org.fest.swing.driver.JComponentDriver;
 import org.testng.annotations.Test;
 
 /**
@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
  *
  * @author Alex Ruiz
  */
-@Test public class JCheckBoxFixtureTest extends CommonComponentFixtureTestCase<JCheckBox> {
+@Test public class JCheckBoxFixtureTest extends JComponentFixtureTestCase<JCheckBox> {
 
   private AbstractButtonDriver driver;
   private JCheckBox target;
@@ -152,7 +152,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  ComponentDriver driver() { return driver; }
+  JComponentDriver driver() { return driver; }
   JCheckBox target() { return target; }
   JCheckBoxFixture fixture() { return fixture; }
 }

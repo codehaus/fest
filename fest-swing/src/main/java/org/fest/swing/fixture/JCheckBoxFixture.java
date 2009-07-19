@@ -19,7 +19,10 @@ import java.util.regex.Pattern;
 
 import javax.swing.JCheckBox;
 
-import org.fest.swing.core.*;
+import org.fest.swing.core.KeyPressInfo;
+import org.fest.swing.core.MouseButton;
+import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.core.Robot;
 import org.fest.swing.driver.AbstractButtonDriver;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.timing.Timeout;
@@ -30,7 +33,7 @@ import org.fest.swing.timing.Timeout;
  *
  * @author Alex Ruiz
  */
-public class JCheckBoxFixture extends TwoStateButtonFixture<JCheckBox> {
+public class JCheckBoxFixture extends TwoStateButtonFixture<JCheckBox> implements JComponentFixture {
 
   private AbstractButtonDriver driver;
 
@@ -336,6 +339,34 @@ public class JCheckBoxFixture extends TwoStateButtonFixture<JCheckBox> {
    */
   public JCheckBoxFixture requireText(Pattern pattern) {
     driver.requireText(target, pattern);
+    return this;
+  }
+
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JCheckBox}</code> matches the given value.
+   * @param expected the given value. It can be a regular expression.
+   * @return this fixture.
+   * @throws AssertionError if the toolTip in this fixture's <code>JCheckBox</code> does not match the given value.
+   * @since 1.2
+   */
+  public JCheckBoxFixture requireToolTip(String expected) {
+    driver.requireToolTip(target, expected);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JCheckBox}</code> matches the given regular expression
+   * pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the toolTip in this fixture's <code>JCheckBox</code> does not match the given regular 
+   * expression.
+   * @since 1.2
+   */
+  public JCheckBoxFixture requireToolTip(Pattern pattern) {
+    driver.requireToolTip(target, pattern);
     return this;
   }
 }
