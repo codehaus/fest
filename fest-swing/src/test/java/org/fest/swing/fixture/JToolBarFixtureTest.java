@@ -29,7 +29,7 @@ import java.awt.Point;
 import javax.swing.JToolBar;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.driver.ComponentDriver;
+import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JToolBarDriver;
 import org.fest.swing.fixture.JToolBarFixture.UnfloatConstraint;
 import org.testng.annotations.DataProvider;
@@ -42,7 +42,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  */
 @Test
-public class JToolBarFixtureTest extends CommonComponentFixtureTestCase<JToolBar> {
+public class JToolBarFixtureTest extends JComponentFixtureTestCase<JToolBar> {
 
   private JToolBarDriver driver;
   private JToolBar target;
@@ -115,7 +115,7 @@ public class JToolBarFixtureTest extends CommonComponentFixtureTestCase<JToolBar
     return new Object[][] { { NORTH }, { EAST }, { SOUTH }, { WEST } };
   }
 
-  ComponentDriver driver() { return driver; }
+  JComponentDriver driver() { return driver; }
   JToolBar target() { return target; }
   JToolBarFixture fixture() { return fixture; }
 }

@@ -17,6 +17,7 @@ package org.fest.swing.fixture;
 
 import java.awt.BorderLayout;
 import java.awt.Point;
+import java.util.regex.Pattern;
 
 import javax.swing.JToolBar;
 
@@ -36,7 +37,8 @@ import org.fest.swing.timing.Timeout;
  *
  * @author Alex Ruiz
  */
-public class JToolBarFixture extends ContainerFixture<JToolBar> implements CommonComponentFixture {
+public class JToolBarFixture extends ContainerFixture<JToolBar> implements CommonComponentFixture, 
+    JComponentFixture {
 
   /**
    * Understands constraints used to unfloat a floating <code>{@link JToolBar}</code>.
@@ -294,6 +296,34 @@ public class JToolBarFixture extends ContainerFixture<JToolBar> implements Commo
    */
   public JToolBarFixture requireNotVisible() {
     driver.requireNotVisible(target);
+    return this;
+  }
+
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JToolBar}</code> matches the given value.
+   * @param expected the given value. It can be a regular expression.
+   * @return this fixture.
+   * @throws AssertionError if the toolTip in this fixture's <code>JToolBar</code> does not match the given value.
+   * @since 1.2
+   */
+  public JToolBarFixture requireToolTip(String expected) {
+    driver.requireToolTip(target, expected);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JToolBar}</code> matches the given regular expression
+   * pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the toolTip in this fixture's <code>JToolBar</code> does not match the given regular 
+   * expression.
+   * @since 1.2
+   */
+  public JToolBarFixture requireToolTip(Pattern pattern) {
+    driver.requireToolTip(target, pattern);
     return this;
   }
 }
