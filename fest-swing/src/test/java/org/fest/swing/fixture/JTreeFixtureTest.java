@@ -28,7 +28,7 @@ import javax.swing.JTree;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.cell.JTreeCellReader;
-import org.fest.swing.driver.ComponentDriver;
+import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JTreeDriver;
 import org.testng.annotations.Test;
 
@@ -40,7 +40,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  */
 @Test
-public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
+public class JTreeFixtureTest extends JComponentFixtureTestCase<JTree> {
 
   private JTreeDriver driver;
   private JTree target;
@@ -392,7 +392,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
-  ComponentDriver driver() { return driver; }
+  JComponentDriver driver() { return driver; }
   JTree target() { return target; }
   JTreeFixture fixture() { return fixture; }
 }
