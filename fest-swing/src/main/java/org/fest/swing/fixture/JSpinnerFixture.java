@@ -15,12 +15,19 @@
  */
 package org.fest.swing.fixture;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JSpinner;
 import javax.swing.text.JTextComponent;
 
-import org.fest.swing.core.*;
+import org.fest.swing.core.KeyPressInfo;
+import org.fest.swing.core.MouseButton;
+import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.core.Robot;
 import org.fest.swing.driver.JSpinnerDriver;
-import org.fest.swing.exception.*;
+import org.fest.swing.exception.ActionFailedException;
+import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.exception.UnexpectedException;
 import org.fest.swing.timing.Timeout;
 
 /**
@@ -30,7 +37,8 @@ import org.fest.swing.timing.Timeout;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JSpinnerFixture extends JPopupMenuInvokerFixture<JSpinner> implements CommonComponentFixture {
+public class JSpinnerFixture extends JPopupMenuInvokerFixture<JSpinner> implements CommonComponentFixture, 
+    JComponentFixture {
 
   private JSpinnerDriver driver;
 
@@ -379,4 +387,32 @@ public class JSpinnerFixture extends JPopupMenuInvokerFixture<JSpinner> implemen
   public String text() {
     return driver.textOf(target);
   }
+  
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JSpinner}</code> matches the given value.
+   * @param expected the given value. It can be a regular expression.
+   * @return this fixture.
+   * @throws AssertionError if the toolTip in this fixture's <code>JSpinner</code> does not match the given value.
+   * @since 1.2
+   */
+  public JSpinnerFixture requireToolTip(String expected) {
+    driver.requireToolTip(target, expected);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JSpinner}</code> matches the given regular expression
+   * pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the toolTip in this fixture's <code>JSpinner</code> does not match the given regular 
+   * expression.
+   * @since 1.2
+   */
+  public JSpinnerFixture requireToolTip(Pattern pattern) {
+    driver.requireToolTip(target, pattern);
+    return this;
+  }  
 }

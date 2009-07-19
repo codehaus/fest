@@ -24,7 +24,7 @@ import static org.fest.swing.test.builder.JSpinners.spinner;
 import javax.swing.JSpinner;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.driver.ComponentDriver;
+import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JSpinnerDriver;
 import org.testng.annotations.Test;
 
@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-@Test public class JSpinnerFixtureTest extends CommonComponentFixtureTestCase<JSpinner> {
+@Test public class JSpinnerFixtureTest extends JComponentFixtureTestCase<JSpinner> {
 
   private JSpinnerDriver driver;
   private JSpinner target;
@@ -175,7 +175,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  ComponentDriver driver() { return driver; }
+  JComponentDriver driver() { return driver; }
   JSpinner target() { return target; }
   JSpinnerFixture fixture() { return fixture; }
 }
