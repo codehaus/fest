@@ -342,7 +342,6 @@ public class JCheckBoxFixture extends TwoStateButtonFixture<JCheckBox> implement
     return this;
   }
 
-
   /**
    * Asserts that the toolTip in this fixture's <code>{@link JCheckBox}</code> matches the given value.
    * @param expected the given value. It can be a regular expression.
