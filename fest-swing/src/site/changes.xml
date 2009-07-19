@@ -338,6 +338,9 @@
       <action dev="alruiz" type="add" issue="FEST-188" due-to="Morten Breum Mikkelsen">
         Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JCheckBoxFixture.
       </action>
+      <action dev="alruiz" type="add" issue="FEST-189" due-to="Morten Breum Mikkelsen">
+        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JRadioButtonFixture.
+      </action>
     </release>
     <release version="1.2a2" date="2009-05-26" description="Subsequent release">
       <action dev="alruiz" type="add" issue="FEST-32" due-to="Juhos Csaba-Zsolt">

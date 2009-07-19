@@ -28,7 +28,7 @@ import javax.swing.JRadioButton;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.AbstractButtonDriver;
-import org.fest.swing.driver.ComponentDriver;
+import org.fest.swing.driver.JComponentDriver;
 import org.testng.annotations.Test;
 
 /**
@@ -38,7 +38,7 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  */
 @Test
-public class JRadioButtonFixtureTest extends CommonComponentFixtureTestCase<JRadioButton> {
+public class JRadioButtonFixtureTest extends JComponentFixtureTestCase<JRadioButton> {
 
   private AbstractButtonDriver driver;
   private JRadioButton target;
@@ -154,7 +154,7 @@ public class JRadioButtonFixtureTest extends CommonComponentFixtureTestCase<JRad
     }.run();
   }
 
-  ComponentDriver driver() { return driver; }
+  JComponentDriver driver() { return driver; }
   JRadioButton target() { return target; }
   JRadioButtonFixture fixture() { return fixture; }
 }
