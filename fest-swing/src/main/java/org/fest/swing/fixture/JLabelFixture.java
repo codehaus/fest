@@ -19,7 +19,10 @@ import java.util.regex.Pattern;
 
 import javax.swing.JLabel;
 
-import org.fest.swing.core.*;
+import org.fest.swing.core.KeyPressInfo;
+import org.fest.swing.core.MouseButton;
+import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.core.Robot;
 import org.fest.swing.driver.JLabelDriver;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.timing.Timeout;
@@ -253,7 +256,8 @@ public class JLabelFixture extends JPopupMenuInvokerFixture<JLabel> implements C
    * @param pattern the regular expression pattern to match.
    * @return this fixture.
    * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
-   * @throws AssertionError if the toolTip in this fixture's <code>JLabel</code> does not match the given value.
+   * @throws AssertionError if the toolTip in this fixture's <code>JLabel</code> does not match the given regular 
+   * expression pattern.
    * @since 1.2
    */
   public JLabelFixture requireToolTip(Pattern pattern) {

@@ -20,7 +20,10 @@ import java.util.regex.Pattern;
 
 import javax.swing.JTabbedPane;
 
-import org.fest.swing.core.*;
+import org.fest.swing.core.KeyPressInfo;
+import org.fest.swing.core.MouseButton;
+import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.core.Robot;
 import org.fest.swing.data.Index;
 import org.fest.swing.driver.JTabbedPaneDriver;
 import org.fest.swing.exception.ComponentLookupException;
@@ -384,7 +387,8 @@ public class JTabbedPaneFixture extends JPopupMenuInvokerFixture<JTabbedPane> im
    * @param pattern the regular expression pattern to match.
    * @return this fixture.
    * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
-   * @throws AssertionError if the toolTip in this fixture's <code>JTabbedPane</code> does not match the given value.
+   * @throws AssertionError if the toolTip in this fixture's <code>JTabbedPane</code> does not match the given regular
+   * expression pattern.
    * @since 1.2
    */
   public JTabbedPaneFixture requireToolTip(Pattern pattern) {

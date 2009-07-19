@@ -19,7 +19,10 @@ import java.util.regex.Pattern;
 
 import javax.swing.JSlider;
 
-import org.fest.swing.core.*;
+import org.fest.swing.core.KeyPressInfo;
+import org.fest.swing.core.MouseButton;
+import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.core.Robot;
 import org.fest.swing.driver.JSliderDriver;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.exception.WaitTimedOutError;
@@ -320,7 +323,8 @@ public class JSliderFixture extends JPopupMenuInvokerFixture<JSlider> implements
    * @param pattern the regular expression pattern to match.
    * @return this fixture.
    * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
-   * @throws AssertionError if the toolTip in this fixture's <code>JSlider</code> does not match the given value.
+   * @throws AssertionError if the toolTip in this fixture's <code>JSlider</code> does not match the given regular 
+   * expression pattern.
    * @since 1.2
    */
   public JSliderFixture requireToolTip(Pattern pattern) {
