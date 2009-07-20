@@ -19,6 +19,7 @@ import static org.fest.swing.driver.Actions.findActionKey;
 import static org.fest.swing.driver.JComponentToolTipQuery.toolTipOf;
 import static org.fest.swing.driver.KeyStrokes.findKeyStrokesForAction;
 import static org.fest.swing.driver.TextAssert.verifyThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.exception.ActionFailedException.actionFailure;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
@@ -33,6 +34,7 @@ import javax.swing.KeyStroke;
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
+import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.exception.ActionFailedException;
 
 /**
@@ -151,6 +153,7 @@ public class JComponentDriver extends ContainerDriver {
    * @throws AssertionError if the toolTip of the given <code>JComponent</code> does not match the given value.
    * @since 1.2
    */
+  @RunsInEDT
   public void requireToolTip(JComponent c, String expected) {
     verifyThat(toolTipOf(c)).as(propertyName(c, TOOL_TIP_TEXT_PROPERTY)).isEqualOrMatches(expected);
   }
@@ -163,7 +166,31 @@ public class JComponentDriver extends ContainerDriver {
    * @throws AssertionError if the toolTip of the given <code>JComponent</code> does not match the given value.
    * @since 1.2
    */
+  @RunsInEDT
   public void requireToolTip(JComponent c, Pattern pattern) {
     verifyThat(toolTipOf(c)).as(propertyName(c, TOOL_TIP_TEXT_PROPERTY)).matches(pattern);
+  }
+
+  /**
+   * Returns the client property stored in the given <code>{@link JComponent}</code>, under the given key.
+   * @param c the given <code>JComponent</code>.
+   * @param key the key to use to retrieve the client property.
+   * @return the value of the client property stored under the given key, or <code>null</code> if the property was
+   * not found.
+   * @throws NullPointerException if the given key is <code>null</code>.
+   * @since 1.2
+   */
+  @RunsInEDT
+  public Object clientProperty(JComponent c, Object key) {
+    if (key == null) throw new NullPointerException("The key of the client property to return should not be null");
+    return clientPropertyIn(c, key);
+  }
+
+  private static Object clientPropertyIn(final JComponent c, final Object key) {
+    return execute(new GuiQuery<Object>() {
+      protected Object executeInEDT() {
+        return c.getClientProperty(key);
+      }
+    });
   }
 }
