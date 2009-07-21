@@ -1,16 +1,15 @@
 /*
  * Created on Jun 7, 2007
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * 
  * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- *
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ * 
  * Copyright @2007-2009 the original author or authors.
  */
 package org.fest.assertions;
@@ -30,9 +29,9 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Understands assertion methods for images. To create a new instance of this class use the
- * method <code>{@link Assertions#assertThat(BufferedImage)}</code>.
- *
+ * Understands assertion methods for images. To create a new instance of this class use the method
+ * <code>{@link Assertions#assertThat(BufferedImage)}</code>.
+ * 
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
@@ -53,11 +52,7 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
     File imageFile = new File(imageFilePath);
     if (!imageFile.isFile())
       throw new IllegalArgumentException(concat("The path ", quote(imageFilePath), " does not belong to a file"));
-    try {
-      return imageReader.read(imageFile);
-    } catch (IOException e) {
-      throw new IOException(concat("Unable to read image from file ", quote(imageFilePath)), e);
-    }
+    return imageReader.read(imageFile);
   }
 
   ImageAssert(BufferedImage actual) {
@@ -70,9 +65,11 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * failure will not show the provided description.
    * <p>
    * For example:
+   * 
    * <pre>
-   * assertThat(picture).<strong>as</strong>(&quot;Vacation Picture&quot;).hasSize(new Dimension(800, 600));
+   * assertThat(picture).&lt;strong&gt;as&lt;/strong&gt;(&quot;Vacation Picture&quot;).hasSize(new Dimension(800, 600));
    * </pre>
+   * 
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
@@ -83,14 +80,16 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
   }
 
   /**
-   * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in
-   * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
+   * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in <a href="http://groovy.codehaus.org/"
+   * target="_blank">Groovy</a>. This method should be called before any assertion method, otherwise any assertion
+   * failure will not show the provided description.
    * <p>
    * For example:
+   * 
    * <pre>
-   * assertThat(picture).<strong>describedAs</strong>(&quot;Vacation Picture&quot;).hasSize(new Dimension(800, 600));
+   * assertThat(picture).&lt;strong&gt;describedAs&lt;/strong&gt;(&quot;Vacation Picture&quot;).hasSize(new Dimension(800, 600));
    * </pre>
+   * 
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
@@ -105,9 +104,11 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * failure will not show the provided description.
    * <p>
    * For example:
+   * 
    * <pre>
-   * assertThat(picture).<strong>as</strong>(new BasicDescription(&quot;Vacation Picture&quot;)).hasSize(new Dimension(800, 600));
+   * assertThat(picture).&lt;strong&gt;as&lt;/strong&gt;(new BasicDescription(&quot;Vacation Picture&quot;)).hasSize(new Dimension(800, 600));
    * </pre>
+   * 
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
@@ -118,14 +119,16 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
   }
 
   /**
-   * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in
-   * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
+   * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in <a
+   * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
    * For example:
+   * 
    * <pre>
-   * assertThat(picture).<strong>describedAs</strong>(new BasicDescription(&quot;Vacation Picture&quot;)).hasSize(new Dimension(800, 600));
+   * assertThat(picture).&lt;strong&gt;describedAs&lt;/strong&gt;(new BasicDescription(&quot;Vacation Picture&quot;)).hasSize(new Dimension(800, 600));
    * </pre>
+   * 
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
@@ -173,13 +176,12 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * Verifies that the actual image is equal to the given one. Two images are equal if:
    * <ol>
    * <li>they have the same size</li>
-   * <li>the difference between the RGB values of the color of each pixel is less than or equal to the given
-   * threshold</li>
+   * <li>the difference between the RGB values of the color of each pixel is less than or equal to the given threshold</li>
    * </ol>
    * @param expected the given image to compare the actual image to.
-   * @param threshold the threshold to use to decide if the color of two pixels are similar: two pixels that
-   * are identical to the human eye may still have slightly different color values. For example, by using a threshold
-   * of 1 we can indicate that a blue value of 60 is similar to a blue value of 61.
+   * @param threshold the threshold to use to decide if the color of two pixels are similar: two pixels that are
+   *          identical to the human eye may still have slightly different color values. For example, by using a
+   *          threshold of 1 we can indicate that a blue value of 60 is similar to a blue value of 61.
    * @return this assertion object.
    * @throws AssertionError if the actual image is not equal to the given one.
    * @since 1.1
@@ -198,8 +200,7 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
   }
 
   private void failIfNotEqual(Dimension a, Dimension e) {
-    if (!areEqual(a, e))
-      fail(concat("image size, expected:", inBrackets(e), " but was:", inBrackets(a)));
+    if (!areEqual(a, e)) fail(concat("image size, expected:", inBrackets(e), " but was:", inBrackets(a)));
   }
 
   private void failIfNotEqualColor(BufferedImage expected, Threshold threshold) {
@@ -212,8 +213,7 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
 
   private void failIfNotEqual(RGBColor a, RGBColor e, Threshold threshold, int x, int y) {
     if (a.isEqualTo(e, threshold.value())) return;
-    fail(concat(
-        "expected:", inBrackets(a), " but was:", inBrackets(e), " at pixel [", valueOf(x), ",", valueOf(y), "]"));
+    fail(concat("expected:", inBrackets(a), " but was:", inBrackets(e), " at pixel [", valueOf(x), ",", valueOf(y), "]"));
   }
 
   /**
@@ -290,5 +290,7 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
     return this;
   }
 
-  static void imageReader(ImageReader newImageReader) { imageReader = newImageReader; }
+  static void imageReader(ImageReader newImageReader) {
+    imageReader = newImageReader;
+  }
 }
