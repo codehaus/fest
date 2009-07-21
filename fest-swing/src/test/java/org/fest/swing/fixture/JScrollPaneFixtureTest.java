@@ -154,6 +154,18 @@ public class JScrollPaneFixtureTest extends CommonComponentFixtureTestCase<JScro
     }.run();
   }
 
+  public void shouldReturnClientProperty() {
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        expect(driver.clientProperty(target, "name")).andReturn("Luke");
+      }
+
+      protected void codeToTest() {
+        assertThat(fixture.clientProperty("name")).isEqualTo("Luke");
+      }
+    }.run();
+  }
+  
   ComponentDriver driver() { return driver; }
   JScrollPane target() { return target; }
   JScrollPaneFixture fixture() { return fixture; }

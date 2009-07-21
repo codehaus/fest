@@ -219,33 +219,6 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
     }.run();
   }
 
-  public void shouldRequireToolTip() {
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        driver.requireToolTip(target(), "A ToolTip");
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
-      }
-    }.run();
-  }
-
-  public void shouldRequireToolTipToMatchPattern() {
-    final Pattern pattern = regex(".");
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        driver.requireToolTip(target(), pattern);
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip(pattern));
-      }
-    }.run();
-  }
-
   public void shouldShowPopupMenu() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     new EasyMockTemplate(driver()) {
@@ -277,6 +250,45 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
     }.run();
   }
 
+  public void shouldRequireToolTip() {
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        driver.requireToolTip(target(), "A ToolTip");
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
+      }
+    }.run();
+  }
+
+  public void shouldRequireToolTipToMatchPattern() {
+    final Pattern pattern = regex(".");
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        driver.requireToolTip(target(), pattern);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireToolTip(pattern));
+      }
+    }.run();
+  }
+
+  public void shouldReturnClientProperty() {
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        expect(driver.clientProperty(target, "name")).andReturn("Luke");
+      }
+
+      protected void codeToTest() {
+        assertThat(fixture.clientProperty("name")).isEqualTo("Luke");
+      }
+    }.run();
+  }
+  
   JComponentDriver driver() { return driver; }
   JScrollBar target() { return target; }
   JScrollBarFixture fixture() { return fixture; }

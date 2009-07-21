@@ -37,7 +37,7 @@ import org.fest.swing.timing.Timeout;
  * @author Alex Ruiz
  */
 public class JScrollPaneFixture extends ComponentFixture<JScrollPane> implements CommonComponentFixture, 
-    JPopupMenuInvokerFixture, ToolTipDisplayFixture {
+    JPopupMenuInvokerFixture, JComponentFixture {
 
   private JScrollPaneDriver driver;
 
@@ -342,5 +342,18 @@ public class JScrollPaneFixture extends ComponentFixture<JScrollPane> implements
    */
   public JPopupMenuFixture showPopupMenuAt(Point p) {
     return new JPopupMenuFixture(robot, driver.invokePopupMenu(target, p));
+  }
+
+
+  /**
+   * Returns the client property stored in this fixture's <code>{@link JScrollPane}</code>, under the given key.
+   * @param key the key to use to retrieve the client property.
+   * @return the value of the client property stored under the given key, or <code>null</code> if the property was
+   * not found.
+   * @throws NullPointerException if the given key is <code>null</code>.
+   * @since 1.2
+   */  
+  public Object clientProperty(Object key) {
+    return driver.clientProperty(target, key);
   }
 }

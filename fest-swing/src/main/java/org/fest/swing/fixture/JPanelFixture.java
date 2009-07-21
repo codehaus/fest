@@ -35,7 +35,7 @@ import org.fest.swing.timing.Timeout;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JPanelFixture extends ContainerFixture<JPanel> implements CommonComponentFixture, ToolTipDisplayFixture,
+public class JPanelFixture extends ContainerFixture<JPanel> implements CommonComponentFixture, JComponentFixture, 
     JPopupMenuInvokerFixture {
 
   private JComponentDriver driver;
@@ -298,5 +298,17 @@ public class JPanelFixture extends ContainerFixture<JPanel> implements CommonCom
    */
   public JPopupMenuFixture showPopupMenuAt(Point p) {
     return new JPopupMenuFixture(robot, driver.invokePopupMenu(target, p));
+  }
+
+  /**
+   * Returns the client property stored in this fixture's <code>{@link JPanel}</code>, under the given key.
+   * @param key the key to use to retrieve the client property.
+   * @return the value of the client property stored under the given key, or <code>null</code> if the property was
+   * not found.
+   * @throws NullPointerException if the given key is <code>null</code>.
+   * @since 1.2
+   */  
+  public Object clientProperty(Object key) {
+    return driver.clientProperty(target, key);
   }
 }

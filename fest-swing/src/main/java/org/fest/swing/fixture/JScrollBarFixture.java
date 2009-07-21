@@ -36,7 +36,7 @@ import org.fest.swing.timing.Timeout;
  * @author Alex Ruiz
  */
 public class JScrollBarFixture extends ComponentFixture<JScrollBar> implements CommonComponentFixture, 
-    JPopupMenuInvokerFixture, ToolTipDisplayFixture {
+    JComponentFixture, JPopupMenuInvokerFixture {
 
   private JScrollBarDriver driver;
 
@@ -411,7 +411,31 @@ public class JScrollBarFixture extends ComponentFixture<JScrollBar> implements C
     driver.requireNotVisible(target);
     return this;
   }
-
+  
+  /**
+   * Shows a pop-up menu using this fixture's <code>{@link JScrollBar}</code> as the invoker of the pop-up menu.
+   * @return a fixture that manages the displayed pop-up menu.
+   * @throws IllegalStateException if this fixture's <code>JScrollBar</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JScrollBar</code> is not showing on the screen.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   */
+  public JPopupMenuFixture showPopupMenu() {
+    return new JPopupMenuFixture(robot, driver.invokePopupMenu(target));
+  }
+  
+  /**
+   * Shows a pop-up menu at the given point using this fixture's <code>{@link JScrollBar}</code> as the invoker of the
+   * pop-up menu.
+   * @param p the given point where to show the pop-up menu.
+   * @return a fixture that manages the displayed pop-up menu.
+   * @throws IllegalStateException if this fixture's <code>JScrollBar</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JScrollBar</code> is not showing on the screen.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   */
+  public JPopupMenuFixture showPopupMenuAt(Point p) {
+    return new JPopupMenuFixture(robot, driver.invokePopupMenu(target, p));
+  }
+  
   /**
    * Asserts that the toolTip in this fixture's <code>{@link JScrollBar}</code> matches the given value.
    * @param expected the given value. It can be a regular expression.
@@ -423,7 +447,7 @@ public class JScrollBarFixture extends ComponentFixture<JScrollBar> implements C
     driver.requireToolTip(target, expected);
     return this;
   }
-
+  
   /**
    * Asserts that the toolTip in this fixture's <code>{@link JScrollBar}</code> matches the given regular expression
    * pattern.
@@ -438,28 +462,17 @@ public class JScrollBarFixture extends ComponentFixture<JScrollBar> implements C
     driver.requireToolTip(target, pattern);
     return this;
   }
-  
-  /**
-   * Shows a pop-up menu using this fixture's <code>{@link JScrollBar}</code> as the invoker of the pop-up menu.
-   * @return a fixture that manages the displayed pop-up menu.
-   * @throws IllegalStateException if this fixture's <code>JScrollBar</code> is disabled.
-   * @throws IllegalStateException if this fixture's <code>JScrollBar</code> is not showing on the screen.
-   * @throws ComponentLookupException if a pop-up menu cannot be found.
-   */
-  public JPopupMenuFixture showPopupMenu() {
-    return new JPopupMenuFixture(robot, driver.invokePopupMenu(target));
-  }
+
 
   /**
-   * Shows a pop-up menu at the given point using this fixture's <code>{@link JScrollBar}</code> as the invoker of the
-   * pop-up menu.
-   * @param p the given point where to show the pop-up menu.
-   * @return a fixture that manages the displayed pop-up menu.
-   * @throws IllegalStateException if this fixture's <code>JScrollBar</code> is disabled.
-   * @throws IllegalStateException if this fixture's <code>JScrollBar</code> is not showing on the screen.
-   * @throws ComponentLookupException if a pop-up menu cannot be found.
-   */
-  public JPopupMenuFixture showPopupMenuAt(Point p) {
-    return new JPopupMenuFixture(robot, driver.invokePopupMenu(target, p));
+   * Returns the client property stored in this fixture's <code>{@link JScrollBar}</code>, under the given key.
+   * @param key the key to use to retrieve the client property.
+   * @return the value of the client property stored under the given key, or <code>null</code> if the property was
+   * not found.
+   * @throws NullPointerException if the given key is <code>null</code>.
+   * @since 1.2
+   */  
+  public Object clientProperty(Object key) {
+    return driver.clientProperty(target, key);
   }
 }
