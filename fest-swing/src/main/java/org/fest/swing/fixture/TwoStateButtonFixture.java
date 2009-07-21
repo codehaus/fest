@@ -28,8 +28,8 @@ import org.fest.swing.exception.ComponentLookupException;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public abstract class TwoStateButtonFixture<T extends AbstractButton> extends JPopupMenuInvokerFixture<T>
-    implements CommonComponentFixture, TextDisplayFixture {
+public abstract class TwoStateButtonFixture<T extends AbstractButton> extends ComponentFixture<T>
+    implements CommonComponentFixture, JPopupMenuInvokerFixture, TextDisplayFixture, ToolTipDisplayFixture {
 
   /**
    * Creates a new <code>{@link TwoStateButtonFixture}</code>.

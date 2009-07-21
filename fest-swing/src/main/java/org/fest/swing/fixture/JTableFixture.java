@@ -57,8 +57,8 @@ import org.fest.swing.timing.Timeout;
  * @author Fabien Barbero
  * @author Andriy Tsykholyas
  */
-public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements CommonComponentFixture,
-    JComponentFixture {
+public class JTableFixture extends ComponentFixture<JTable> implements CommonComponentFixture,
+    JPopupMenuInvokerFixture, ToolTipDisplayFixture {
 
   private JTableDriver driver;
 
@@ -721,11 +721,13 @@ public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements C
    * <code>{@link JTable}</code> is equal to the given <code>String</code> array. This method uses this fixture's
    * <code>{@link JTableCellReader}</code> to read the values of the table cells as <code>String</code>s.
    * @param contents the expected <code>String</code> representation of the cell values in this fixture's
-   *          <code>JTable</code>.
+   * <code>JTable</code>.
+   * @return this fixture.
    * @see #cellReader(JTableCellReader)
    */
-  public void requireContents(String[][] contents) {
+  public JTableFixture requireContents(String[][] contents) {
     driver.requireContents(target, contents);
+    return this;
   }
 
   /**
@@ -760,5 +762,30 @@ public class JTableFixture extends JPopupMenuInvokerFixture<JTable> implements C
    */
   public int selectedRow() {
     return driver.selectedRow(target);
+  }
+
+
+  /**
+   * Shows a pop-up menu using this fixture's <code>{@link JTable}</code> as the invoker of the pop-up menu.
+   * @return a fixture that manages the displayed pop-up menu.
+   * @throws IllegalStateException if this fixture's <code>JTable</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JTable</code> is not showing on the screen.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   */
+  public JPopupMenuFixture showPopupMenu() {
+    return new JPopupMenuFixture(robot, driver.invokePopupMenu(target));
+  }
+
+  /**
+   * Shows a pop-up menu at the given point using this fixture's <code>{@link JTable}</code> as the invoker of the
+   * pop-up menu.
+   * @param p the given point where to show the pop-up menu.
+   * @return a fixture that manages the displayed pop-up menu.
+   * @throws IllegalStateException if this fixture's <code>JTable</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JTable</code> is not showing on the screen.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   */
+  public JPopupMenuFixture showPopupMenuAt(Point p) {
+    return new JPopupMenuFixture(robot, driver.invokePopupMenu(target, p));
   }
 }

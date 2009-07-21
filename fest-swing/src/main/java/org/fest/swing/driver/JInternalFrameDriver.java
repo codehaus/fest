@@ -14,6 +14,22 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.driver.ComponentStateValidator.validateIsShowing;
+import static org.fest.swing.driver.JInternalFrameAction.DEICONIFY;
+import static org.fest.swing.driver.JInternalFrameAction.ICONIFY;
+import static org.fest.swing.driver.JInternalFrameAction.MAXIMIZE;
+import static org.fest.swing.driver.JInternalFrameAction.NORMALIZE;
+import static org.fest.swing.driver.JInternalFrameIconQuery.isIconified;
+import static org.fest.swing.driver.JInternalFrameSetIconTask.setIcon;
+import static org.fest.swing.driver.JInternalFrameSetMaximumTask.setMaximum;
+import static org.fest.swing.driver.WindowLikeContainerLocations.closeLocationOf;
+import static org.fest.swing.driver.WindowLikeContainerLocations.iconifyLocationOf;
+import static org.fest.swing.driver.WindowLikeContainerLocations.maximizeLocationOf;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.exception.ActionFailedException.actionFailure;
+import static org.fest.swing.format.Formatting.format;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -32,17 +48,6 @@ import org.fest.swing.exception.UnexpectedException;
 import org.fest.swing.util.Pair;
 import org.fest.swing.util.Triple;
 
-import static org.fest.swing.driver.ComponentStateValidator.validateIsShowing;
-import static org.fest.swing.driver.JInternalFrameAction.*;
-import static org.fest.swing.driver.JInternalFrameIconQuery.isIconified;
-import static org.fest.swing.driver.JInternalFrameSetIconTask.setIcon;
-import static org.fest.swing.driver.JInternalFrameSetMaximumTask.setMaximum;
-import static org.fest.swing.driver.WindowLikeContainerLocations.*;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.exception.ActionFailedException.actionFailure;
-import static org.fest.swing.format.Formatting.format;
-import static org.fest.util.Strings.concat;
-
 /**
  * Understands simulation of user input on a <code>{@link JInternalFrame}</code>. Unlike
  * <code>JInternalFrameFixture</code>, this driver only focuses on behavior present only in
@@ -51,7 +56,7 @@ import static org.fest.util.Strings.concat;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JInternalFrameDriver extends ContainerDriver {
+public class JInternalFrameDriver extends JComponentDriver {
 
   /**
    * Creates a new </code>{@link JInternalFrameDriver}</code>.

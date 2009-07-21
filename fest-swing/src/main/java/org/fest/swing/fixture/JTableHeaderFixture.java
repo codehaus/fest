@@ -32,7 +32,7 @@ import org.fest.swing.exception.LocationUnavailableException;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JTableHeaderFixture extends ComponentFixture<JTableHeader> implements JComponentFixture {
+public class JTableHeaderFixture extends ComponentFixture<JTableHeader> implements ToolTipDisplayFixture {
 
   private JTableHeaderDriver driver;
 

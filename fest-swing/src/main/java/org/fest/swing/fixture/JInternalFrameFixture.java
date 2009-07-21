@@ -17,6 +17,7 @@ package org.fest.swing.fixture;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.regex.Pattern;
 
 import javax.swing.JInternalFrame;
 
@@ -37,7 +38,8 @@ import org.fest.swing.timing.Timeout;
  * @author Alex Ruiz
  */
 public class JInternalFrameFixture extends ContainerFixture<JInternalFrame> implements CommonComponentFixture,
-    FrameLikeFixture {
+    FrameLikeFixture, ToolTipDisplayFixture {
+  
   private JInternalFrameDriver driver;
 
   /**
@@ -367,5 +369,57 @@ public class JInternalFrameFixture extends ContainerFixture<JInternalFrame> impl
   public JInternalFrameFixture requireNotVisible() {
     driver.requireNotVisible(target);
     return this;
+  }
+
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JInternalFrame}</code> matches the given value.
+   * @param expected the given value. It can be a regular expression.
+   * @return this fixture.
+   * @throws AssertionError if the toolTip in this fixture's <code>JInternalFrame</code> does not match the given value.
+   * @since 1.2
+   */
+  public JInternalFrameFixture requireToolTip(String expected) {
+    driver.requireToolTip(target, expected);
+    return this;
+  }
+
+  /**
+   * Asserts that the toolTip in this fixture's <code>{@link JInternalFrame}</code> matches the given regular expression
+   * pattern.
+   * @param pattern the regular expression pattern to match.
+   * @return this fixture.
+   * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
+   * @throws AssertionError if the toolTip in this fixture's <code>JInternalFrame</code> does not match the given 
+   * regular expression.
+   * @since 1.2
+   */
+  public JInternalFrameFixture requireToolTip(Pattern pattern) {
+    driver.requireToolTip(target, pattern);
+    return this;
+  }
+
+  /**
+   * Shows a pop-up menu using this fixture's <code>{@link JInternalFrame}</code> as the invoker of the pop-up menu.
+   * @return a fixture that manages the displayed pop-up menu.
+   * @throws IllegalStateException if this fixture's <code>JInternalFrame</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JInternalFrame</code> is not showing on the screen.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   */
+  public JPopupMenuFixture showPopupMenu() {
+    return new JPopupMenuFixture(robot, driver.invokePopupMenu(target));
+  }
+
+  /**
+   * Shows a pop-up menu at the given point using this fixture's <code>{@link JInternalFrame}</code> as the invoker of 
+   * the pop-up menu.
+   * @param p the given point where to show the pop-up menu.
+   * @return a fixture that manages the displayed pop-up menu.
+   * @throws IllegalStateException if this fixture's <code>JInternalFrame</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JInternalFrame</code> is not showing on the screen.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   */
+  public JPopupMenuFixture showPopupMenuAt(Point p) {
+    return new JPopupMenuFixture(robot, driver.invokePopupMenu(target, p));
   }
 }

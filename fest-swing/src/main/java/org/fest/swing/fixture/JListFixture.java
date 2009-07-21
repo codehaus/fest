@@ -17,6 +17,7 @@ package org.fest.swing.fixture;
 
 import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
 
+import java.awt.Point;
 import java.util.regex.Pattern;
 
 import javax.swing.JList;
@@ -48,8 +49,8 @@ import org.fest.swing.util.Range;
  * @author Yvonne Wang
  * @author Fabien Barbero
  */
-public class JListFixture extends JPopupMenuInvokerFixture<JList> implements CommonComponentFixture, JComponentFixture,
-    ItemGroupFixture {
+public class JListFixture extends ComponentFixture<JList> implements CommonComponentFixture, 
+  ItemGroupFixture, JPopupMenuInvokerFixture, ToolTipDisplayFixture {
 
   private JListDriver driver;
 
@@ -777,6 +778,30 @@ public class JListFixture extends JPopupMenuInvokerFixture<JList> implements Com
     return this;
   }
 
+  /**
+   * Shows a pop-up menu using this fixture's <code>{@link JList}</code> as the invoker of the pop-up menu.
+   * @return a fixture that manages the displayed pop-up menu.
+   * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   */
+  public JPopupMenuFixture showPopupMenu() {
+    return new JPopupMenuFixture(robot, driver.invokePopupMenu(target));
+  }
+
+  /**
+   * Shows a pop-up menu at the given point using this fixture's <code>{@link JList}</code> as the invoker of the pop-up 
+   * menu.
+   * @param p the given point where to show the pop-up menu.
+   * @return a fixture that manages the displayed pop-up menu.
+   * @throws IllegalStateException if this fixture's <code>JList</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JList</code> is not showing on the screen.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   */
+  public JPopupMenuFixture showPopupMenuAt(Point p) {
+    return new JPopupMenuFixture(robot, driver.invokePopupMenu(target, p));
+  }
+  
   /**
    * Updates the implementation of <code>{@link JListCellReader}</code> to use when comparing internal values of
    * this fixture's <code>{@link JList}</code> and the values expected in a test. The default implementation to use

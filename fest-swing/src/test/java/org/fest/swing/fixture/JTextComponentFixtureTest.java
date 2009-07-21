@@ -15,14 +15,17 @@
  */
 package org.fest.swing.fixture;
 
+import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JTextFields.textField;
 import static org.fest.swing.test.core.Regex.regex;
 
+import java.awt.Point;
 import java.util.regex.Pattern;
 
+import javax.swing.JPopupMenu;
 import javax.swing.text.JTextComponent;
 
 import org.fest.mocks.EasyMockTemplate;
@@ -37,7 +40,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  */
 @Test
-public class JTextComponentFixtureTest extends JComponentFixtureTestCase<JTextComponent> {
+public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JTextComponent> {
 
   private JTextComponentDriver driver;
   private JTextComponent target;
@@ -209,6 +212,64 @@ public class JTextComponentFixtureTest extends JComponentFixtureTestCase<JTextCo
 
       protected void codeToTest() {
         assertThatReturnsThis(fixture.requireNotEditable());
+      }
+    }.run();
+  }
+
+  public void shouldRequireToolTip() {
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        driver.requireToolTip(target(), "A ToolTip");
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
+      }
+    }.run();
+  }
+
+  public void shouldRequireToolTipToMatchPattern() {
+    final Pattern pattern = regex(".");
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        driver.requireToolTip(target(), pattern);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireToolTip(pattern));
+      }
+    }.run();
+  }
+
+  public void shouldShowPopupMenu() {
+    final JPopupMenu popupMenu = createMock(JPopupMenu.class);
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        expect(driver.invokePopupMenu(target())).andReturn(popupMenu);
+      }
+
+      protected void codeToTest() {
+        JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
+        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
+      }
+    }.run();
+  }
+
+  public void shouldShowPopupMenuAtPoint() {
+    final JPopupMenu popupMenu = createMock(JPopupMenu.class);
+    final Point p = new Point();
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        expect(driver.invokePopupMenu(target(), p)).andReturn(popupMenu);
+      }
+
+      protected void codeToTest() {
+        JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
+        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }

@@ -15,6 +15,7 @@
  */
 package org.fest.swing.fixture;
 
+import java.awt.Point;
 import java.util.regex.Pattern;
 
 import javax.swing.JButton;
@@ -35,8 +36,8 @@ import org.fest.swing.timing.Timeout;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JButtonFixture extends JPopupMenuInvokerFixture<JButton> implements CommonComponentFixture,
-    JComponentFixture, TextDisplayFixture {
+public class JButtonFixture extends ComponentFixture<JButton> implements CommonComponentFixture,
+    JPopupMenuInvokerFixture, TextDisplayFixture, ToolTipDisplayFixture {
 
   private AbstractButtonDriver driver;
 
@@ -327,6 +328,30 @@ public class JButtonFixture extends JPopupMenuInvokerFixture<JButton> implements
   public JButtonFixture requireToolTip(Pattern pattern) {
     driver.requireToolTip(target, pattern);
     return this;
+  }
+
+  /**
+   * Shows a pop-up menu using this fixture's <code>{@link JButton}</code> as the invoker of the pop-up menu.
+   * @return a fixture that manages the displayed pop-up menu.
+   * @throws IllegalStateException if this fixture's <code>JButton</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JButton</code> is not showing on the screen.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   */
+  public JPopupMenuFixture showPopupMenu() {
+    return new JPopupMenuFixture(robot, driver.invokePopupMenu(target));
+  }
+
+  /**
+   * Shows a pop-up menu at the given point using this fixture's <code>{@link JButton}</code> as the invoker of the
+   * pop-up menu.
+   * @param p the given point where to show the pop-up menu.
+   * @return a fixture that manages the displayed pop-up menu.
+   * @throws IllegalStateException if this fixture's <code>JButton</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JButton</code> is not showing on the screen.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   */
+  public JPopupMenuFixture showPopupMenuAt(Point p) {
+    return new JPopupMenuFixture(robot, driver.invokePopupMenu(target, p));
   }
 }
 

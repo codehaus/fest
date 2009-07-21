@@ -15,6 +15,7 @@
  */
 package org.fest.swing.fixture;
 
+import java.awt.Point;
 import java.util.regex.Pattern;
 
 import javax.swing.JPopupMenu;
@@ -69,8 +70,8 @@ import org.fest.swing.timing.Timeout;
  * @author Yvonne Wang
  * @author Fabien Barbero
  */
-public class JTreeFixture extends JPopupMenuInvokerFixture<JTree> implements CommonComponentFixture, 
-    JComponentFixture {
+public class JTreeFixture extends ComponentFixture<JTree> implements CommonComponentFixture, 
+    JPopupMenuInvokerFixture, ToolTipDisplayFixture {
 
   private JTreeDriver driver;
 
@@ -614,6 +615,31 @@ public class JTreeFixture extends JPopupMenuInvokerFixture<JTree> implements Com
   public JTreeFixture requireToolTip(Pattern pattern) {
     driver.requireToolTip(target, pattern);
     return this;
+  }
+  
+
+  /**
+   * Shows a pop-up menu using this fixture's <code>{@link JTree}</code> as the invoker of the pop-up menu.
+   * @return a fixture that manages the displayed pop-up menu.
+   * @throws IllegalStateException if this fixture's <code>JTree</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JTree</code> is not showing on the screen.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   */
+  public JPopupMenuFixture showPopupMenu() {
+    return new JPopupMenuFixture(robot, driver.invokePopupMenu(target));
+  }
+
+  /**
+   * Shows a pop-up menu at the given point using this fixture's <code>{@link JTree}</code> as the invoker of the
+   * pop-up menu.
+   * @param p the given point where to show the pop-up menu.
+   * @return a fixture that manages the displayed pop-up menu.
+   * @throws IllegalStateException if this fixture's <code>JTree</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JTree</code> is not showing on the screen.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   */
+  public JPopupMenuFixture showPopupMenuAt(Point p) {
+    return new JPopupMenuFixture(robot, driver.invokePopupMenu(target, p));
   }
   
   /**

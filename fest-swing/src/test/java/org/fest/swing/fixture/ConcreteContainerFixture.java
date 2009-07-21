@@ -15,6 +15,8 @@
  */
 package org.fest.swing.fixture;
 
+import java.awt.Point;
+
 import javax.swing.JFrame;
 
 import org.fest.swing.core.Robot;
@@ -26,15 +28,8 @@ import org.fest.swing.core.Robot;
  */
 public class ConcreteContainerFixture extends ContainerFixture<JFrame> {
 
-  public ConcreteContainerFixture(Robot robot, Class<? extends JFrame> type) {
-    super(robot, type);
-  }
+  public ConcreteContainerFixture(Robot robot, JFrame target) { super(robot, target); }
+  public JPopupMenuFixture showPopupMenu() { return null; }
+  public JPopupMenuFixture showPopupMenuAt(Point p) { return null; }
 
-  public ConcreteContainerFixture(Robot robot, String name, Class<? extends JFrame> type) {
-    super(robot, name, type);
-  }
-
-  public ConcreteContainerFixture(Robot robot, JFrame target) {
-    super(robot, target);
-  }
 }

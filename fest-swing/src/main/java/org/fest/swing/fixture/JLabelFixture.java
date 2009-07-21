@@ -15,6 +15,7 @@
  */
 package org.fest.swing.fixture;
 
+import java.awt.Point;
 import java.util.regex.Pattern;
 
 import javax.swing.JLabel;
@@ -33,8 +34,8 @@ import org.fest.swing.timing.Timeout;
  *
  * @author Alex Ruiz
  */
-public class JLabelFixture extends JPopupMenuInvokerFixture<JLabel> implements CommonComponentFixture,
-    JComponentFixture, TextDisplayFixture {
+public class JLabelFixture extends ComponentFixture<JLabel> implements CommonComponentFixture,
+    JPopupMenuInvokerFixture, TextDisplayFixture, ToolTipDisplayFixture {
 
   private JLabelDriver driver;
 
@@ -324,5 +325,29 @@ public class JLabelFixture extends JPopupMenuInvokerFixture<JLabel> implements C
   public JLabelFixture requireNotVisible() {
     driver.requireNotVisible(target);
     return this;
+  }
+
+  /**
+   * Shows a pop-up menu using this fixture's <code>{@link JLabel}</code> as the invoker of the pop-up menu.
+   * @return a fixture that manages the displayed pop-up menu.
+   * @throws IllegalStateException if this fixture's <code>JLabel</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JLabel</code> is not showing on the screen.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   */
+  public JPopupMenuFixture showPopupMenu() {
+    return new JPopupMenuFixture(robot, driver.invokePopupMenu(target));
+  }
+
+  /**
+   * Shows a pop-up menu at the given point using this fixture's <code>{@link JLabel}</code> as the invoker of the
+   * pop-up menu.
+   * @param p the given point where to show the pop-up menu.
+   * @return a fixture that manages the displayed pop-up menu.
+   * @throws IllegalStateException if this fixture's <code>JLabel</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JLabel</code> is not showing on the screen.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   */
+  public JPopupMenuFixture showPopupMenuAt(Point p) {
+    return new JPopupMenuFixture(robot, driver.invokePopupMenu(target, p));
   }
 }

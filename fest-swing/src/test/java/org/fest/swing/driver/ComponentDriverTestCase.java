@@ -35,7 +35,9 @@ import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.test.swing.TestWindow;
 import org.fest.swing.test.util.StopWatch;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 
 /**
  * Base class for test cases for <code>{@link ComponentDriver}</code>.
@@ -58,8 +60,12 @@ public abstract class ComponentDriverTestCase {
     robot = robotWithNewAwtHierarchy();
     window = MyWindow.createNew(getClass());
     driver = new ComponentDriver(robot);
+    beforeShowingWindow();
     robot.showWindow(window);
   }
+  
+  void beforeShowingWindow() {}
+
 
   @AfterMethod public final void tearDown() {
     robot.cleanUp();

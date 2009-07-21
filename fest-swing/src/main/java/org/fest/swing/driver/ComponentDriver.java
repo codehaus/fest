@@ -15,29 +15,9 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Point;
-
-import javax.accessibility.AccessibleAction;
-import javax.swing.JMenu;
-import javax.swing.JPopupMenu;
-
-import org.fest.assertions.Description;
-import org.fest.swing.annotation.RunsInCurrentThread;
-import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.*;
-import org.fest.swing.edt.GuiLazyLoadingDescription;
-import org.fest.swing.edt.GuiTask;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.exception.WaitTimedOutError;
-import org.fest.swing.format.ComponentFormatter;
-import org.fest.swing.format.Formatting;
-import org.fest.swing.timing.Timeout;
-import org.fest.swing.util.TimeoutWatch;
-
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.MouseButton.*;
+import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
+import static org.fest.swing.core.MouseButton.RIGHT_BUTTON;
 import static org.fest.swing.driver.ComponentEnabledCondition.untilIsEnabled;
 import static org.fest.swing.driver.ComponentPerformDefaultAccessibleActionTask.performDefaultAccessibleAction;
 import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
@@ -49,7 +29,35 @@ import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
 import static org.fest.swing.query.ComponentVisibleQuery.isVisible;
 import static org.fest.swing.timing.Pause.pause;
 import static org.fest.swing.util.TimeoutWatch.startWatchWithTimeoutOf;
-import static org.fest.util.Strings.*;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Point;
+
+import javax.accessibility.AccessibleAction;
+import javax.swing.JMenu;
+import javax.swing.JPopupMenu;
+
+import org.fest.assertions.Description;
+import org.fest.swing.annotation.RunsInCurrentThread;
+import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.core.ComponentDragAndDrop;
+import org.fest.swing.core.KeyPressInfo;
+import org.fest.swing.core.MouseButton;
+import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.core.Robot;
+import org.fest.swing.core.Settings;
+import org.fest.swing.edt.GuiLazyLoadingDescription;
+import org.fest.swing.edt.GuiTask;
+import org.fest.swing.exception.ActionFailedException;
+import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.exception.WaitTimedOutError;
+import org.fest.swing.format.ComponentFormatter;
+import org.fest.swing.format.Formatting;
+import org.fest.swing.timing.Timeout;
+import org.fest.swing.util.TimeoutWatch;
 
 /**
  * Understands simulation of user input on a <code>{@link Component}</code>. This class is intended for internal use
@@ -447,6 +455,36 @@ public class ComponentDriver {
     return true;
   }
 
+  /**
+   * Shows a pop-up menu using the given <code>{@link Component}</code> as the invoker of the pop-up menu.
+   * @param c the invoker of the <code>JPopupMenu</code>.
+   * @return the displayed pop-up menu.
+   * @throws IllegalStateException if the given <code>Component</code> is disabled.
+   * @throws IllegalStateException if the given <code>Component</code> is not showing on the screen.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   */
+  @RunsInEDT
+  public JPopupMenu invokePopupMenu(Component c) {
+    assertIsEnabledAndShowing(c);
+    return robot.showPopupMenu(c);
+  }
+
+  /**
+   * Shows a pop-up menu at the given point using the given <code>{@link Component}</code> as the invoker of the pop-up 
+   * menu.
+   * @param c the invoker of the <code>JPopupMenu</code>.
+   * @param p the given point where to show the pop-up menu.
+   * @return the displayed pop-up menu.
+   * @throws IllegalStateException if the given <code>Component</code> is disabled.
+   * @throws IllegalStateException if the given <code>Component</code> is not showing on the screen.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   */
+  @RunsInEDT
+  public JPopupMenu invokePopupMenu(Component c, Point p) {
+    assertIsEnabledAndShowing(c);
+    return robot.showPopupMenu(c, p);
+  }
+  
   /**
    * Validates that the given <code>{@link Component}</code> is enabled and showing on the screen. This method is
    * executed in the event dispatch thread.

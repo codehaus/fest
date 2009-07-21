@@ -25,13 +25,19 @@ import java.awt.Point;
 import javax.swing.JFrame;
 
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.*;
+import org.fest.swing.core.BasicRobot;
+import org.fest.swing.core.KeyPressInfo;
+import org.fest.swing.core.MouseButton;
+import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.core.Robot;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.hierarchy.ExistingHierarchy;
 import org.fest.swing.test.swing.TestWindow;
 import org.fest.swing.timing.Timeout;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link WindowFixture}</code>.
@@ -184,6 +190,8 @@ public class WindowFixtureTest {
     public ConcreteWindowFixture resizeTo(Dimension size) { return this; }
     public ConcreteWindowFixture resizeHeightTo(int height) { return this; }
     public ConcreteWindowFixture resizeWidthTo(int width) { return this; }
+    public JPopupMenuFixture showPopupMenu() { return null; }
+    public JPopupMenuFixture showPopupMenuAt(Point p) { return null; }
   }
 
   private static class MyWindow extends TestWindow {

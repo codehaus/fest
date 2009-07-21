@@ -41,7 +41,7 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test public class JTabbedPaneFixtureTest extends JComponentFixtureTestCase<JTabbedPane> {
+@Test public class JTabbedPaneFixtureTest extends CommonComponentFixtureTestCase<JTabbedPane> {
 
   private JTabbedPaneDriver driver;
   private JTabbedPane target;
@@ -170,6 +170,33 @@ import org.testng.annotations.Test;
       protected void codeToTest() {
         String[] result = fixture.tabTitles();
         assertThat(result).isSameAs(titles);
+      }
+    }.run();
+  }
+
+  public void shouldRequireToolTip() {
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        driver.requireToolTip(target(), "A ToolTip");
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
+      }
+    }.run();
+  }
+
+  public void shouldRequireToolTipToMatchPattern() {
+    final Pattern pattern = regex(".");
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        driver.requireToolTip(target(), pattern);
+        expectLastCall().once();
+      }
+
+      protected void codeToTest() {
+        assertThatReturnsThis(fixture.requireToolTip(pattern));
       }
     }.run();
   }
