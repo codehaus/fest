@@ -36,8 +36,8 @@ import org.fest.swing.timing.Timeout;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JButtonFixture extends ComponentFixture<JButton> implements CommonComponentFixture,
-    JPopupMenuInvokerFixture, TextDisplayFixture, ToolTipDisplayFixture {
+public class JButtonFixture extends ComponentFixture<JButton> implements CommonComponentFixture, 
+  JComponentFixture, JPopupMenuInvokerFixture, TextDisplayFixture {
 
   private AbstractButtonDriver driver;
 
@@ -352,6 +352,18 @@ public class JButtonFixture extends ComponentFixture<JButton> implements CommonC
    */
   public JPopupMenuFixture showPopupMenuAt(Point p) {
     return new JPopupMenuFixture(robot, driver.invokePopupMenu(target, p));
+  }
+
+  /**
+   * Returns the client property stored in this fixture's <code>{@link JButton}</code>, under the given key.
+   * @param key the key to use to retrieve the client property.
+   * @return the value of the client property stored under the given key, or <code>null</code> if the property was
+   * not found.
+   * @throws NullPointerException if the given key is <code>null</code>.
+   * @since 1.2
+   */  
+  public Object clientProperty(Object key) {
+    return driver.clientProperty(target, key);
   }
 }
 
