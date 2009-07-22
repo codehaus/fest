@@ -274,6 +274,18 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
     }.run();
   }
 
+  public void shouldReturnClientProperty() {
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        expect(driver.clientProperty(target, "name")).andReturn("Luke");
+      }
+
+      protected void codeToTest() {
+        assertThat(fixture.clientProperty("name")).isEqualTo("Luke");
+      }
+    }.run();
+  }
+  
   JComponentDriver driver() { return driver; }
   JTextComponent target() { return target; }
   JTextComponentFixture fixture() { return fixture; }

@@ -630,6 +630,18 @@ public class JTableFixtureTest extends CommonComponentFixtureTestCase<JTable> {
     }.run();
   }
 
+  public void shouldReturnClientProperty() {
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        expect(driver.clientProperty(target, "name")).andReturn("Luke");
+      }
+
+      protected void codeToTest() {
+        assertThat(fixture.clientProperty("name")).isEqualTo("Luke");
+      }
+    }.run();
+  }
+  
   JComponentDriver driver() { return driver; }
   JTable target() { return target; }
   JTableFixture fixture() { return fixture; }

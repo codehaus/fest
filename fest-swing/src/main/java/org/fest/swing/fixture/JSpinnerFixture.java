@@ -39,7 +39,7 @@ import org.fest.swing.timing.Timeout;
  * @author Alex Ruiz
  */
 public class JSpinnerFixture extends ComponentFixture<JSpinner> implements CommonComponentFixture, 
-    JPopupMenuInvokerFixture, ToolTipDisplayFixture {
+    JComponentFixture, JPopupMenuInvokerFixture {
 
   private JSpinnerDriver driver;
 
@@ -416,6 +416,18 @@ public class JSpinnerFixture extends ComponentFixture<JSpinner> implements Commo
     driver.requireToolTip(target, pattern);
     return this;
   }  
+
+  /**
+   * Returns the client property stored in this fixture's <code>{@link JSpinner}</code>, under the given key.
+   * @param key the key to use to retrieve the client property.
+   * @return the value of the client property stored under the given key, or <code>null</code> if the property was
+   * not found.
+   * @throws NullPointerException if the given key is <code>null</code>.
+   * @since 1.2
+   */  
+  public Object clientProperty(Object key) {
+    return driver.clientProperty(target, key);
+  }
 
   /**
    * Shows a pop-up menu using this fixture's <code>{@link JSpinner}</code> as the invoker of the pop-up menu.

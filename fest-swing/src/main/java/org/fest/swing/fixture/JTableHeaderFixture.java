@@ -32,7 +32,7 @@ import org.fest.swing.exception.LocationUnavailableException;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JTableHeaderFixture extends ComponentFixture<JTableHeader> implements ToolTipDisplayFixture {
+public class JTableHeaderFixture extends ComponentFixture<JTableHeader> implements JComponentFixture {
 
   private JTableHeaderDriver driver;
 
@@ -227,4 +227,17 @@ public class JTableHeaderFixture extends ComponentFixture<JTableHeader> implemen
   public JTableHeaderFixture requireToolTip(Pattern pattern) {
     driver.requireToolTip(target, pattern);
     return this;
-  }}
+  }
+
+  /**
+   * Returns the client property stored in this fixture's <code>{@link JTableHeader}</code>, under the given key.
+   * @param key the key to use to retrieve the client property.
+   * @return the value of the client property stored under the given key, or <code>null</code> if the property was
+   * not found.
+   * @throws NullPointerException if the given key is <code>null</code>.
+   * @since 1.2
+   */  
+  public Object clientProperty(Object key) {
+    return driver.clientProperty(target, key);
+  }
+}

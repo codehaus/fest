@@ -18,6 +18,7 @@ package org.fest.swing.fixture;
 import java.awt.Point;
 import java.util.regex.Pattern;
 
+import javax.swing.JButton;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.tree.TreePath;
@@ -71,7 +72,7 @@ import org.fest.swing.timing.Timeout;
  * @author Fabien Barbero
  */
 public class JTreeFixture extends ComponentFixture<JTree> implements CommonComponentFixture, 
-    JPopupMenuInvokerFixture, ToolTipDisplayFixture {
+    JComponentFixture, JPopupMenuInvokerFixture {
 
   private JTreeDriver driver;
 
@@ -619,6 +620,18 @@ public class JTreeFixture extends ComponentFixture<JTree> implements CommonCompo
   
 
   /**
+   * Returns the client property stored in this fixture's <code>{@link JButton}</code>, under the given key.
+   * @param key the key to use to retrieve the client property.
+   * @return the value of the client property stored under the given key, or <code>null</code> if the property was
+   * not found.
+   * @throws NullPointerException if the given key is <code>null</code>.
+   * @since 1.2
+   */  
+  public Object clientProperty(Object key) {
+    return driver.clientProperty(target, key);
+  }
+
+  /**
    * Shows a pop-up menu using this fixture's <code>{@link JTree}</code> as the invoker of the pop-up menu.
    * @return a fixture that manages the displayed pop-up menu.
    * @throws IllegalStateException if this fixture's <code>JTree</code> is disabled.
@@ -641,7 +654,7 @@ public class JTreeFixture extends ComponentFixture<JTree> implements CommonCompo
   public JPopupMenuFixture showPopupMenuAt(Point p) {
     return new JPopupMenuFixture(robot, driver.invokePopupMenu(target, p));
   }
-  
+
   /**
    * Returns the separator to use when converting <code>{@link TreePath}</code>s to <code>String</code>s.
    * @return the separator to use when converting <code>{@link TreePath}</code>s to <code>String</code>s.

@@ -328,6 +328,18 @@ public class JLabelFixture extends ComponentFixture<JLabel> implements CommonCom
   }
 
   /**
+   * Returns the client property stored in this fixture's <code>{@link JLabel}</code>, under the given key.
+   * @param key the key to use to retrieve the client property.
+   * @return the value of the client property stored under the given key, or <code>null</code> if the property was
+   * not found.
+   * @throws NullPointerException if the given key is <code>null</code>.
+   * @since 1.2
+   */  
+  public Object clientProperty(Object key) {
+    return driver.clientProperty(target, key);
+  }
+
+  /**
    * Shows a pop-up menu using this fixture's <code>{@link JLabel}</code> as the invoker of the pop-up menu.
    * @return a fixture that manages the displayed pop-up menu.
    * @throws IllegalStateException if this fixture's <code>JLabel</code> is disabled.
@@ -349,17 +361,5 @@ public class JLabelFixture extends ComponentFixture<JLabel> implements CommonCom
    */
   public JPopupMenuFixture showPopupMenuAt(Point p) {
     return new JPopupMenuFixture(robot, driver.invokePopupMenu(target, p));
-  }
-
-  /**
-   * Returns the client property stored in this fixture's <code>{@link JLabel}</code>, under the given key.
-   * @param key the key to use to retrieve the client property.
-   * @return the value of the client property stored under the given key, or <code>null</code> if the property was
-   * not found.
-   * @throws NullPointerException if the given key is <code>null</code>.
-   * @since 1.2
-   */  
-  public Object clientProperty(Object key) {
-    return driver.clientProperty(target, key);
   }
 }

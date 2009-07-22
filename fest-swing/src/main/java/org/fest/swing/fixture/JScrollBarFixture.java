@@ -437,6 +437,18 @@ public class JScrollBarFixture extends ComponentFixture<JScrollBar> implements C
   }
   
   /**
+   * Returns the client property stored in this fixture's <code>{@link JScrollBar}</code>, under the given key.
+   * @param key the key to use to retrieve the client property.
+   * @return the value of the client property stored under the given key, or <code>null</code> if the property was
+   * not found.
+   * @throws NullPointerException if the given key is <code>null</code>.
+   * @since 1.2
+   */  
+  public Object clientProperty(Object key) {
+    return driver.clientProperty(target, key);
+  }
+
+  /**
    * Asserts that the toolTip in this fixture's <code>{@link JScrollBar}</code> matches the given value.
    * @param expected the given value. It can be a regular expression.
    * @return this fixture.
@@ -461,18 +473,5 @@ public class JScrollBarFixture extends ComponentFixture<JScrollBar> implements C
   public JScrollBarFixture requireToolTip(Pattern pattern) {
     driver.requireToolTip(target, pattern);
     return this;
-  }
-
-
-  /**
-   * Returns the client property stored in this fixture's <code>{@link JScrollBar}</code>, under the given key.
-   * @param key the key to use to retrieve the client property.
-   * @return the value of the client property stored under the given key, or <code>null</code> if the property was
-   * not found.
-   * @throws NullPointerException if the given key is <code>null</code>.
-   * @since 1.2
-   */  
-  public Object clientProperty(Object key) {
-    return driver.clientProperty(target, key);
   }
 }

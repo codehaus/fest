@@ -38,7 +38,7 @@ import org.fest.swing.timing.Timeout;
  * @author Alex Ruiz
  */
 public class JToolBarFixture extends ContainerFixture<JToolBar> implements CommonComponentFixture, 
-  ToolTipDisplayFixture {
+  JComponentFixture {
 
   /**
    * Understands constraints used to unfloat a floating <code>{@link JToolBar}</code>.
@@ -325,6 +325,18 @@ public class JToolBarFixture extends ContainerFixture<JToolBar> implements Commo
   public JToolBarFixture requireToolTip(Pattern pattern) {
     driver.requireToolTip(target, pattern);
     return this;
+  }
+
+  /**
+   * Returns the client property stored in this fixture's <code>{@link JToolBarFixture}</code>, under the given key.
+   * @param key the key to use to retrieve the client property.
+   * @return the value of the client property stored under the given key, or <code>null</code> if the property was
+   * not found.
+   * @throws NullPointerException if the given key is <code>null</code>.
+   * @since 1.2
+   */  
+  public Object clientProperty(Object key) {
+    return driver.clientProperty(target, key);
   }
 
   /**

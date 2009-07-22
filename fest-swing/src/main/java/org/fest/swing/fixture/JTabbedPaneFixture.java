@@ -39,7 +39,7 @@ import org.fest.swing.timing.Timeout;
  * @author Yvonne Wang
  */
 public class JTabbedPaneFixture extends ComponentFixture<JTabbedPane> implements CommonComponentFixture,
-    JPopupMenuInvokerFixture, ToolTipDisplayFixture {
+    JComponentFixture, JPopupMenuInvokerFixture {
 
   private JTabbedPaneDriver driver;
 
@@ -397,6 +397,18 @@ public class JTabbedPaneFixture extends ComponentFixture<JTabbedPane> implements
     return this;
   }
 
+
+  /**
+   * Returns the client property stored in this fixture's <code>{@link JTabbedPane}</code>, under the given key.
+   * @param key the key to use to retrieve the client property.
+   * @return the value of the client property stored under the given key, or <code>null</code> if the property was
+   * not found.
+   * @throws NullPointerException if the given key is <code>null</code>.
+   * @since 1.2
+   */  
+  public Object clientProperty(Object key) {
+    return driver.clientProperty(target, key);
+  }
 
   /**
    * Shows a pop-up menu using this fixture's <code>{@link JTabbedPane}</code> as the invoker of the pop-up menu.

@@ -177,6 +177,18 @@ public class JToolBarFixtureTest extends CommonComponentFixtureTestCase<JToolBar
     }.run();
   }
 
+  public void shouldReturnClientProperty() {
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        expect(driver.clientProperty(target, "name")).andReturn("Luke");
+      }
+
+      protected void codeToTest() {
+        assertThat(fixture.clientProperty("name")).isEqualTo("Luke");
+      }
+    }.run();
+  }
+  
   JComponentDriver driver() { return driver; }
   JToolBar target() { return target; }
   JToolBarFixture fixture() { return fixture; }

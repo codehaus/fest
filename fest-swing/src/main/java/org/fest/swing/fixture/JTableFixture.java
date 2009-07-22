@@ -58,7 +58,7 @@ import org.fest.swing.timing.Timeout;
  * @author Andriy Tsykholyas
  */
 public class JTableFixture extends ComponentFixture<JTable> implements CommonComponentFixture,
-    JPopupMenuInvokerFixture, ToolTipDisplayFixture {
+    JComponentFixture, JPopupMenuInvokerFixture {
 
   private JTableDriver driver;
 
@@ -493,19 +493,6 @@ public class JTableFixture extends ComponentFixture<JTable> implements CommonCom
   }
 
   /**
-   * Shows a pop-up menu at the given cell.
-   * @param cell the table cell where to show the pop-up menu.
-   * @return a fixture that manages the displayed pop-up menu.
-   * @throws NullPointerException if the cell is <code>null</code>.
-   * @throws IllegalStateException if this fixture's <code>JTable</code> is disabled.
-   * @throws IllegalStateException if this fixture's <code>JTable</code> is not showing on the screen.
-   * @throws ComponentLookupException if a pop-up menu cannot be found.
-   */
-  public JPopupMenuFixture showPopupMenuAt(TableCell cell) {
-    return new JPopupMenuFixture(robot, driver.showPopupMenuAt(target, cell));
-  }
-
-  /**
    * Enters the given value in the given cell of this fixture's <code>{@link JTable}</code>, using this fixture's
    * <code>{@link JTableCellWriter}</code>. If you need more flexibility for editing cell, please see
    * <code>{@link JTableCellFixture#editor()}</code>.
@@ -764,6 +751,17 @@ public class JTableFixture extends ComponentFixture<JTable> implements CommonCom
     return driver.selectedRow(target);
   }
 
+  /**
+   * Returns the client property stored in this fixture's <code>{@link JTable}</code>, under the given key.
+   * @param key the key to use to retrieve the client property.
+   * @return the value of the client property stored under the given key, or <code>null</code> if the property was
+   * not found.
+   * @throws NullPointerException if the given key is <code>null</code>.
+   * @since 1.2
+   */  
+  public Object clientProperty(Object key) {
+    return driver.clientProperty(target, key);
+  }
 
   /**
    * Shows a pop-up menu using this fixture's <code>{@link JTable}</code> as the invoker of the pop-up menu.
@@ -787,5 +785,18 @@ public class JTableFixture extends ComponentFixture<JTable> implements CommonCom
    */
   public JPopupMenuFixture showPopupMenuAt(Point p) {
     return new JPopupMenuFixture(robot, driver.invokePopupMenu(target, p));
+  }
+
+  /**
+   * Shows a pop-up menu at the given cell.
+   * @param cell the table cell where to show the pop-up menu.
+   * @return a fixture that manages the displayed pop-up menu.
+   * @throws NullPointerException if the cell is <code>null</code>.
+   * @throws IllegalStateException if this fixture's <code>JTable</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JTable</code> is not showing on the screen.
+   * @throws ComponentLookupException if a pop-up menu cannot be found.
+   */
+  public JPopupMenuFixture showPopupMenuAt(TableCell cell) {
+    return new JPopupMenuFixture(robot, driver.showPopupMenuAt(target, cell));
   }
 }
