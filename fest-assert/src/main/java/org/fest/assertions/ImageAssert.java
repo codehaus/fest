@@ -46,7 +46,7 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * @param imageFilePath the path of the image to read.
    * @return the read image.
    * @throws IllegalArgumentException if the given path does not belong to a file.
-   * @throws IOException wrapping any I/O errors thrown when reading the image.
+   * @throws IOException if any I/O error occurred while reading the image.
    */
   public static BufferedImage read(String imageFilePath) throws IOException {
     File imageFile = new File(imageFilePath);

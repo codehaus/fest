@@ -53,7 +53,7 @@ import org.testng.annotations.Test;
     assertSame(image, read);
   }
 
-  public void shouldReturnNullImageFileIfIOExceptionThrown() {
+  public void shouldPassThroughIOExceptionThrownByImageReader() {
     ImageReaderStub imageReader = new ImageReaderStub();
     IOException toThrow = new IOException();
     imageReader.toThrow(toThrow);
@@ -63,7 +63,7 @@ import org.testng.annotations.Test;
       ImageAssert.read(filePath);
       fail();
     } catch (IOException e) {
-      assertSame(e.getCause(), toThrow);
+      assertSame(e, toThrow);
     }
   }
 
