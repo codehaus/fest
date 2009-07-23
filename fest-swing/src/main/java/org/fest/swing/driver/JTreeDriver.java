@@ -51,7 +51,10 @@ import org.fest.swing.cell.JTreeCellReader;
 import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
-import org.fest.swing.exception.*;
+import org.fest.swing.exception.ActionFailedException;
+import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.exception.LocationUnavailableException;
+import org.fest.swing.exception.WaitTimedOutError;
 import org.fest.swing.util.Pair;
 import org.fest.swing.util.Triple;
 
@@ -78,6 +81,22 @@ public class JTreeDriver extends JComponentDriver {
     super(robot);
     location = new JTreeLocation();
     pathFinder = new JTreePathFinder();
+  }
+  
+  /**
+   * Double clicks the given row.
+   * @param tree the target <code>JTree</code>.
+   * @param row the given row.
+   * @throws IllegalStateException if the <code>JTree</code> is disabled.
+   * @throws IllegalStateException if the <code>JTree</code> is not showing on the screen.
+   * @throws IndexOutOfBoundsException if the given row is less than zero or equal than or greater than the number of
+   * visible rows in the <code>JTree</code>.
+   * @throws LocationUnavailableException if a tree path for the given row cannot be found.
+   * @since 1.2
+   */
+  public void doubleClickRow(JTree tree, int row) {
+    Point p = scrollToRowToSelect(tree, row, location);
+    robot.click(tree, p, LEFT_BUTTON, 2);
   }
 
   /**

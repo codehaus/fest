@@ -15,7 +15,9 @@
  */
 package org.fest.swing.driver;
 
-import static org.fest.swing.test.core.CommonAssertions.*;
+import static org.fest.swing.test.core.CommonAssertions.assertActionFailureDueToDisabledComponent;
+import static org.fest.swing.test.core.CommonAssertions.assertActionFailureDueToNotShowingComponent;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
 import static org.fest.swing.test.core.TestGroups.GUI;
 
 import org.testng.annotations.Test;
@@ -47,7 +49,7 @@ public class JTreeDriverCollapseRowTest extends JTreeDriverToggleCellTestCase {
     driver().collapseRow(tree(), invalidRow);
   }
 
-  public void shouldThrowErrorWhenCollapseingRowInDisabledJTree() {
+  public void shouldThrowErrorWhenCollapsingRowInDisabledJTree() {
     disableTree();
     try {
       driver().collapseRow(tree(), 0);
@@ -57,7 +59,7 @@ public class JTreeDriverCollapseRowTest extends JTreeDriverToggleCellTestCase {
     }
   }
 
-  public void shouldThrowErrorWhenCollapseingRowInNotShowingJTree() {
+  public void shouldThrowErrorWhenCollapsingRowInNotShowingJTree() {
     hideWindow();
     try {
       driver().collapseRow(tree(), 0);
