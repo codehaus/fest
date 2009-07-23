@@ -156,6 +156,10 @@
         Added support for regular expression matching to method 'buttonWithText(String)' in JOptionPaneFixture, 
         where the given String can be a regular expression.
       </action>
+      <action dev="alruiz" type="add" issue="FEST-152" due-to="Morten Breum Mikkelsen">
+        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to all the fixtures that handle 
+        JComponents.
+      </action>
       <action dev="alruiz" type="add" issue="FEST-151" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'buttonWithText(Pattern)' to JOptionPaneFixture.
       </action>
@@ -311,9 +315,8 @@
       <action dev="alruiz" type="add" issue="FEST-174" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'andText(Pattern)' to JTextComponentMatcher.
       </action>
-      <action dev="alruiz" type="add" issue="FEST-152" due-to="Morten Breum Mikkelsen">
-        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to all the fixtures that handle 
-        JComponents.
+      <action dev="alruiz" type="fix" issue="FEST-194" due-to="Andriy Tsykholyas">
+        Method 'clickColumn(int)' in JTableHeaderDriver now scrolls to the column to click.
       </action>
     </release>
     <release version="1.2a2" date="2009-05-26" description="Subsequent release">

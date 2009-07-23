@@ -172,7 +172,9 @@ public class JTableHeaderDriver extends JComponentDriver {
     return execute(new GuiQuery<Point>() {
       protected Point executeInEDT() {
         validateIsEnabledAndShowing(tableHeader);
-        return location.pointAt(tableHeader, columnIndex);
+        Point p = location.pointAt(tableHeader, columnIndex);
+        tableHeader.getTable().scrollRectToVisible(tableHeader.getHeaderRect(columnIndex));
+        return p;
       }
     });
   }
