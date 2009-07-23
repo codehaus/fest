@@ -23,14 +23,12 @@ import static org.fest.assertions.PrimitiveFail.*;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public final class ByteAssert extends PrimitiveAssert {
-
-  private final byte actual;
+public final class ByteAssert extends PrimitiveAssert<Byte> {
 
   private static final byte ZERO = (byte)0;
 
-  ByteAssert(byte actual) {
-    this.actual = actual;
+  ByteAssert(Byte actual) {
+    super(actual);
   }
 
   /**

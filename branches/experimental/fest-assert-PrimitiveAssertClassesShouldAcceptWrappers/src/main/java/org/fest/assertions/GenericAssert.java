@@ -27,7 +27,7 @@ import static org.fest.util.Strings.concat;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public abstract class GenericAssert<T> extends Assert {
+public abstract class GenericAssert<T> extends Assert implements NullableAssert<GenericAssert<T>> {
 
   protected final T actual;
 
@@ -39,13 +39,10 @@ public abstract class GenericAssert<T> extends Assert {
     this.actual = actual;
   }
 
-  /**
-   * Asserts that the actual value (specified in the constructor of this class) is <code>null</code>.
-   * @throws AssertionError if the actual value is not <code>null</code>.
-   */
-  public final void isNull() {
-    failIfNotNull(description(), actual);
-  }
+  public abstract void isNull();
+  
+  public abstract GenericAssert<T> isNotNull();
+  
 
   /**
    * Verifies that the actual value satisfies the given condition.
@@ -139,12 +136,7 @@ public abstract class GenericAssert<T> extends Assert {
    */
   protected abstract GenericAssert<T> isNotEqualTo(T other);
 
-  /**
-   * Verifies that the actual value is not <code>null</code>.
-   * @return this assertion object.
-   * @throws AssertionError if the actual value is <code>null</code>.
-   */
-  protected abstract GenericAssert<T> isNotNull();
+
 
   /**
    * Verifies that the actual value is the same as the given one.
@@ -223,6 +215,14 @@ public abstract class GenericAssert<T> extends Assert {
   protected final void assertNotNull() {
     failIfNull(description(), actual);
   }
+  
+  /**
+   * Verifies that the actual value is <code>null</code>.
+   * @throws AssertionError if the actual value is not <code>null</code>.
+   */
+  protected final void assertNull() {
+    failIfNotNull(description(), actual);
+  }  
 
   /**
    * Verifies that the actual value is the same as the given one.

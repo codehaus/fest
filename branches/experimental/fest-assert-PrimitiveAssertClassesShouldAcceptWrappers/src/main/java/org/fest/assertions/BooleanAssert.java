@@ -25,12 +25,10 @@ import static org.fest.assertions.Fail.*;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public final class BooleanAssert extends PrimitiveAssert {
+public final class BooleanAssert extends PrimitiveAssert<Boolean> {
 
-  private final boolean actual;
-
-  BooleanAssert(boolean actual) {
-    this.actual = actual;
+  BooleanAssert(Boolean actual) {
+    super(actual);
   }
 
   /**
@@ -140,4 +138,54 @@ public final class BooleanAssert extends PrimitiveAssert {
     failIfEqual(description(), actual, other);
     return this;
   }
+
+  /** {@inheritDoc} */
+  @Override
+  protected GenericAssert<Boolean> doesNotSatisfy(Condition<Boolean> condition) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  protected GenericAssert<Boolean> isEqualTo(Boolean expected) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  protected GenericAssert<Boolean> isNotEqualTo(Boolean other) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  protected GenericAssert<Boolean> isNotSameAs(Boolean other) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    // TODO Auto-generated method stub
+    
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  protected GenericAssert<Boolean> isSameAs(Boolean expected) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  protected GenericAssert<Boolean> satisfies(Condition<Boolean> condition) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+  
 }
