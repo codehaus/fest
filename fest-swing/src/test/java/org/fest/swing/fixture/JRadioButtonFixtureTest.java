@@ -214,6 +214,18 @@ public class JRadioButtonFixtureTest extends CommonComponentFixtureTestCase<JRad
     }.run();
   }
 
+  public void shouldReturnClientProperty() {
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        expect(driver.clientProperty(target, "name")).andReturn("Luke");
+      }
+
+      protected void codeToTest() {
+        assertThat(fixture.clientProperty("name")).isEqualTo("Luke");
+      }
+    }.run();
+  }
+
   JComponentDriver driver() { return driver; }
   JRadioButton target() { return target; }
   JRadioButtonFixture fixture() { return fixture; }

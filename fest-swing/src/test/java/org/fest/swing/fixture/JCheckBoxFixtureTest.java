@@ -212,6 +212,18 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  public void shouldReturnClientProperty() {
+    new EasyMockTemplate(driver()) {
+      protected void expectations() {
+        expect(driver.clientProperty(target, "name")).andReturn("Luke");
+      }
+
+      protected void codeToTest() {
+        assertThat(fixture.clientProperty("name")).isEqualTo("Luke");
+      }
+    }.run();
+  }
+
   JComponentDriver driver() { return driver; }
   JCheckBox target() { return target; }
   JCheckBoxFixture fixture() { return fixture; }

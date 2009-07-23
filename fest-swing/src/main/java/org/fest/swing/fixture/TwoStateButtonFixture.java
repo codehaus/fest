@@ -15,71 +15,27 @@
  */
 package org.fest.swing.fixture;
 
-import javax.swing.AbstractButton;
 import javax.swing.JToggleButton;
-
-import org.fest.swing.core.Robot;
-import org.fest.swing.exception.ComponentLookupException;
 
 /**
  * Understands simulation of user events on a two-state button and verification of the state of such button.
- * @param <T> the specific type of two-state button this fixture can handle.
  *
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public abstract class TwoStateButtonFixture<T extends AbstractButton> extends ComponentFixture<T>
-    implements CommonComponentFixture, JPopupMenuInvokerFixture, TextDisplayFixture, ToolTipDisplayFixture {
-
-  /**
-   * Creates a new <code>{@link TwoStateButtonFixture}</code>.
-   * @param robot performs simulation of user events on a <code>JToggleButton</code>.
-   * @param type the type of the <code>JToggleButton</code> to find using the given <code>Robot</code>.
-   * @throws NullPointerException if <code>robot</code> is <code>null</code>.
-   * @throws NullPointerException if <code>type</code> is <code>null</code>.
-   * @throws ComponentLookupException if a matching component could not be found.
-   * @throws ComponentLookupException if more than one matching component is found.
-   */
-  public TwoStateButtonFixture(Robot robot, Class<? extends T> type) {
-    super(robot, type);
-  }
-
-  /**
-   * Creates a new <code>{@link TwoStateButtonFixture}</code>.
-   * @param robot performs simulation of user events on a <code>JToggleButton</code>.
-   * @param name the name of the <code>JToggleButton</code> to find using the given <code>Robot</code>.
-   * @param type the type of the <code>JToggleButton</code> to find using the given <code>Robot</code>.
-   * @throws NullPointerException if <code>robot</code> is <code>null</code>.
-   * @throws NullPointerException if <code>type</code> is <code>null</code>.
-   * @throws ComponentLookupException if a matching component could not be found.
-   * @throws ComponentLookupException if more than one matching component is found.
-   */
-  public TwoStateButtonFixture(Robot robot, String name, Class<? extends T> type) {
-    super(robot, name, type);
-  }
-
-  /**
-   * Creates a new <code>{@link TwoStateButtonFixture}</code>.
-   * @param robot performs simulation of user events on the given <code>JToggleButton</code>.
-   * @param target the <code>JToggleButton</code> to be managed by this fixture.
-   * @throws NullPointerException if <code>robot</code> is <code>null</code>.
-   * @throws NullPointerException if <code>target</code> is <code>null</code>.
-   */
-  public TwoStateButtonFixture(Robot robot, T target) {
-    super(robot, target);
-  }
+public interface TwoStateButtonFixture {
 
   /**
    * Verifies that this fixture's <code>{@link JToggleButton}</code> is selected.
    * @return this fixture.
    * @throws AssertionError if this fixture's <code>JToggleButton</code> is not selected.
    */
-  protected abstract TwoStateButtonFixture<T> requireSelected();
+  TwoStateButtonFixture requireSelected();
 
   /**
    * Verifies that this fixture's <code>{@link JToggleButton}</code> is not selected.
    * @return this fixture.
    * @throws AssertionError if this fixture's <code>JToggleButton</code> is selected.
    */
-  protected abstract TwoStateButtonFixture<T> requireNotSelected();
+  TwoStateButtonFixture requireNotSelected();
 }

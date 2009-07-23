@@ -7,19 +7,22 @@
   <body>
     <release version="1.2a3" date="2009-05-26" description="Subsequent release">
       <action dev="alruiz" type="add" issue="FEST-7" due-to="Cephei">
-        Added the method 'expandRow(int)' to JTreeFixture.
+        Added method 'expandRow(int)' to JTreeFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-7" due-to="Cephei">
-        Added the method 'collapseRow(int)' to JTreeFixture.
+        Added method 'collapseRow(int)' to JTreeFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-7" due-to="Cephei">
-        Added the method 'expandPath(String)' to JTreeFixture.
+        Added method 'expandPath(String)' to JTreeFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-7" due-to="Cephei">
-        Added the method 'collapsePath(String)' to JTreeFixture.
+        Added method 'collapsePath(String)' to JTreeFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-43" due-to="Ken Geis">
-        Added the method 'selectedRow' to JTableFixture.
+        Added method 'selectedRow' to JTableFixture.
+      </action>
+      <action dev="alruiz" type="add" issue="FEST-47" due-to="Andres Almiray">
+        Added method 'clientProperty(Object)' to all the fixtures that handle JComponents.
       </action>
       <action dev="alruiz" type="fix" issue="FEST-122" due-to="Dario Consoli">
         Added support for editable JComboBoxes as JTable editors.
@@ -39,70 +42,70 @@
         attached to.
       </action>
       <action dev="alruiz" type="add" issue="FEST-142" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'requireText(String)' in JButtonFixture, where the 
+        Added support for regular expression matching to method 'requireText(String)' in JButtonFixture, where the 
         given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-142" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'requireText(Pattern)' to JButtonFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-143" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'requireText(String)' in JCheckBoxFixture, where the 
+        Added support for regular expression matching to method 'requireText(String)' in JCheckBoxFixture, where the 
         given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-143" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'requireText(Pattern)' to JCheckBoxFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-144" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'selectItem(String)' in JComboBoxFixture, where the 
+        Added support for regular expression matching to method 'selectItem(String)' in JComboBoxFixture, where the 
         given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-144" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'selectItem(Pattern)' to JComboBoxFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-144" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'requireSelection(String)' in JComboBoxFixture, 
+        Added support for regular expression matching to method 'requireSelection(String)' in JComboBoxFixture, 
         where the given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-144" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'requireSelection(Pattern)' to JComboBoxFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-145" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'requireText(String)' in JLabelFixture, where the 
+        Added support for regular expression matching to method 'requireText(String)' in JLabelFixture, where the 
         given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-145" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'requireText(Pattern)' to JLabelFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-146" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'item(String)' in JListFixture, where the given 
+        Added support for regular expression matching to method 'item(String)' in JListFixture, where the given 
         String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-146" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'item(Pattern)' to JListFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-146" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'selectItem(String)' in JListFixture, where the 
+        Added support for regular expression matching to method 'selectItem(String)' in JListFixture, where the 
         given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-146" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'selectItem(Pattern)'.
       </action>
       <action dev="alruiz" type="add" issue="FEST-146" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'selectItems(String[])' in JListFixture, where each 
+        Added support for regular expression matching to method 'selectItems(String[])' in JListFixture, where each 
         String in the given array can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-146" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'selectItems(Pattern[])' to JListFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-146" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'requireSelection(String)' in JListFixture, where 
+        Added support for regular expression matching to method 'requireSelection(String)' in JListFixture, where 
         the given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-146" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'requireSelection(Pattern)' to JListFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-146" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'requireSelectedItems(String[])' in JListFixture, 
+        Added support for regular expression matching to method 'requireSelectedItems(String[])' in JListFixture, 
         where each String in the given array can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-146" due-to="Juhos Csaba-Zsolt">
@@ -112,21 +115,21 @@
         Added overloaded method 'requireSelectedItems(int[])' to JListFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-146" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'drag(String)' in JListFixture, where the given 
+        Added support for regular expression matching to method 'drag(String)' in JListFixture, where the given 
         String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-146" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'drag(Pattern)' to JListFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-146" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'drop(String)' in JListFixture, where the given 
+        Added support for regular expression matching to method 'drop(String)' in JListFixture, where the given 
         String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-146" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'drop(Pattern)' to JListFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-146" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'showPopupMenuAt(String)' in JListFixture, where the 
+        Added support for regular expression matching to method 'showPopupMenuAt(String)' in JListFixture, where the 
         given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-146" due-to="Juhos Csaba-Zsolt">
@@ -136,42 +139,42 @@
         Updated EDT-related threading rules in ComponentFixture's Javadocs.
       </action>
       <action dev="alruiz" type="add" issue="FEST-151" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'requireTitle(String)' in JOptionPaneFixture, where 
+        Added support for regular expression matching to method 'requireTitle(String)' in JOptionPaneFixture, where 
         the given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-151" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'requireTitle(Pattern)' to JOptionPaneFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-151" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'requireMessage(Object)' in JOptionPaneFixture, 
+        Added support for regular expression matching to method 'requireMessage(Object)' in JOptionPaneFixture, 
         where the given Object can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-151" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'requireMessage(Pattern)' to JOptionPaneFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-151" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'buttonWithText(String)' in JOptionPaneFixture, 
+        Added support for regular expression matching to method 'buttonWithText(String)' in JOptionPaneFixture, 
         where the given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-151" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'buttonWithText(Pattern)' to JOptionPaneFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-153" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'withText(String)' in JButtonMatcher, where the 
+        Added support for regular expression matching to method 'withText(String)' in JButtonMatcher, where the 
         given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-153" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'withText(Pattern)' to JButtonMatcher.
       </action>
       <action dev="alruiz" type="add" issue="FEST-153" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'andText(String)' in JButtonMatcher, where the given
+        Added support for regular expression matching to method 'andText(String)' in JButtonMatcher, where the given
         String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-153" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'andText(Pattern)' to JButtonMatcher.
       </action>
       <action dev="alruiz" type="add" issue="FEST-154" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'requireText(String)' in JRadioButtonFixture, where 
+        Added support for regular expression matching to method 'requireText(String)' in JRadioButtonFixture, where 
         the given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-154" due-to="Juhos Csaba-Zsolt">
@@ -181,63 +184,63 @@
         Added overloaded method 'selectTab(Pattern)' to JTabbedPaneFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-155" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'requireTitle(String, Index)' in JTabbedPaneFixture 
+        Added support for regular expression matching to method 'requireTitle(String, Index)' in JTabbedPaneFixture 
         where the given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-155" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'requireTitle(Pattern, Index)' to JTabbedPaneFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-156" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'cell(String)' in JTableFixture, where the given 
+        Added support for regular expression matching to method 'cell(String)' in JTableFixture, where the given 
         String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-156" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'cell(Pattern)' to JTableFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-156" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'requireCellValue(TableCell, String)' in 
+        Added support for regular expression matching to method 'requireCellValue(TableCell, String)' in 
         JTableFixture, where the given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-156" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'requireCellValue(TableCell, Pattern)' to JTableFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-158" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'requireValue(String)' in JTableCellFixture, where 
+        Added support for regular expression matching to method 'requireValue(String)' in JTableCellFixture, where 
         the given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-158" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'requireValue(Pattern)' to JTableCellFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-159" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'showPopupMenuAt(String)' in JTableHeaderFixture, 
+        Added support for regular expression matching to method 'showPopupMenuAt(String)' in JTableHeaderFixture, 
         where the given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-159" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'showPopupMenuAt(Pattern)' to JTableHeaderFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-159" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'clickColumn(String)' in JTableHeaderFixture, where 
+        Added support for regular expression matching to method 'clickColumn(String)' in JTableHeaderFixture, where 
         the given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-159" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'clickColumn(Pattern)' to JTableHeaderFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-159" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'clickColumn(String, MouseClickInfo)' in 
+        Added support for regular expression matching to method 'clickColumn(String, MouseClickInfo)' in 
         JTableHeaderFixture, where the given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-159" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'clickColumn(Pattern, MouseClickInfo)' to JTableHeaderFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-160" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'requireText(String)' in JTextComponentFixture, 
+        Added support for regular expression matching to method 'requireText(String)' in JTextComponentFixture, 
         where the given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-160" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'requireText(Pattern)' to JTextComponentFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-161" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'requireText(String)' in JToggleButtonFixture, where 
+        Added support for regular expression matching to method 'requireText(String)' in JToggleButtonFixture, where 
         the given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-161" due-to="Juhos Csaba-Zsolt">
@@ -253,105 +256,64 @@
         Added overloaded method 'requireSelection(Pattern)' to the interface ItemGroupFixture.
       </action>
       <action dev="alruiz" type="add" issue="FEST-164" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'withTitle(String)' in DialogMatcher, where the 
+        Added support for regular expression matching to method 'withTitle(String)' in DialogMatcher, where the 
         given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-164" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'withTitle(Pattern)' to DialogMatcher.
       </action>
       <action dev="alruiz" type="add" issue="FEST-164" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'andTitle(String)' in DialogMatcher, where the given
+        Added support for regular expression matching to method 'andTitle(String)' in DialogMatcher, where the given
         String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-164" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'andTitle(Pattern)' to DialogMatcher.
       </action>
       <action dev="alruiz" type="add" issue="FEST-172" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'withTitle(String)' in FrameMatcher, where the 
+        Added support for regular expression matching to method 'withTitle(String)' in FrameMatcher, where the 
         given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-172" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'withTitle(Pattern)' to FrameMatcher.
       </action>
       <action dev="alruiz" type="add" issue="FEST-172" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'andTitle(String)' in FrameMatcher, where the given
+        Added support for regular expression matching to method 'andTitle(String)' in FrameMatcher, where the given
         String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-172" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'andTitle(Pattern)' to FrameMatcher.
       </action>
       <action dev="alruiz" type="add" issue="FEST-173" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'withText(String)' in JLabelMatcher, where the 
+        Added support for regular expression matching to method 'withText(String)' in JLabelMatcher, where the 
         given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-173" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'withText(Pattern)' to JLabelMatcher.
       </action>
       <action dev="alruiz" type="add" issue="FEST-173" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'andText(String)' in JLabelMatcher, where the given
+        Added support for regular expression matching to method 'andText(String)' in JLabelMatcher, where the given
         String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-173" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'andText(Pattern)' to JLabelMatcher.
       </action>
       <action dev="alruiz" type="add" issue="FEST-174" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'withText(String)' in JTextComponentMatcher, where 
+        Added support for regular expression matching to method 'withText(String)' in JTextComponentMatcher, where 
         the given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-174" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'withText(Pattern)' to JTextComponentMatcher.
       </action>
       <action dev="alruiz" type="add" issue="FEST-174" due-to="Juhos Csaba-Zsolt">
-        Added support for regular expression matching to the method 'andText(String)' in JTextComponentMatcher, where 
+        Added support for regular expression matching to method 'andText(String)' in JTextComponentMatcher, where 
         the given String can be a regular expression.
       </action>
       <action dev="alruiz" type="add" issue="FEST-174" due-to="Juhos Csaba-Zsolt">
         Added overloaded method 'andText(Pattern)' to JTextComponentMatcher.
       </action>
-      <action dev="alruiz" type="add" issue="FEST-179" due-to="Morten Breum Mikkelsen">
-        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JButtonFixture.
-      </action>
-      <action dev="alruiz" type="add" issue="FEST-180" due-to="Morten Breum Mikkelsen">
-        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JComboBoxFixture.
-      </action>
-      <action dev="alruiz" type="add" issue="FEST-181" due-to="Morten Breum Mikkelsen">
-        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JLabelFixture.
-      </action>
-      <action dev="alruiz" type="add" issue="FEST-182" due-to="Morten Breum Mikkelsen">
-        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JListFixture.
-      </action>
-      <action dev="alruiz" type="add" issue="FEST-183" due-to="Morten Breum Mikkelsen">
-        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JSliderFixture.
-      </action>
-      <action dev="alruiz" type="add" issue="FEST-184" due-to="Morten Breum Mikkelsen">
-        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JTabbedPaneFixture.
-      </action>
-      <action dev="alruiz" type="add" issue="FEST-185" due-to="Morten Breum Mikkelsen">
-        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JTableFixture.
-      </action>
-      <action dev="alruiz" type="add" issue="FEST-186" due-to="Morten Breum Mikkelsen">
-        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JTextComponentFixture.
-      </action>
-      <action dev="alruiz" type="add" issue="FEST-187" due-to="Morten Breum Mikkelsen">
-        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JTreeFixture.
-      </action>
-      <action dev="alruiz" type="add" issue="FEST-188" due-to="Morten Breum Mikkelsen">
-        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JCheckBoxFixture.
-      </action>
-      <action dev="alruiz" type="add" issue="FEST-189" due-to="Morten Breum Mikkelsen">
-        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JRadioButtonFixture.
-      </action>
-      <action dev="alruiz" type="add" issue="FEST-190" due-to="Morten Breum Mikkelsen">
-        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JToggleButtonFixture.
-      </action>
-      <action dev="alruiz" type="add" issue="FEST-191" due-to="Morten Breum Mikkelsen">
-        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JSpinnerFixture.
-      </action>
-      <action dev="alruiz" type="add" issue="FEST-192" due-to="Morten Breum Mikkelsen">
-        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JTableHeaderFixture.
-      </action>
-      <action dev="alruiz" type="add" issue="FEST-193" due-to="Morten Breum Mikkelsen">
-        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to JToolBarFixture.
+      <action dev="alruiz" type="add" issue="FEST-152" due-to="Morten Breum Mikkelsen">
+        Added methods 'requireToolTip(String)' and 'requireToolTip(Pattern)' to all the fixtures that handle 
+        JComponents.
       </action>
     </release>
     <release version="1.2a2" date="2009-05-26" description="Subsequent release">
@@ -709,7 +671,7 @@
         Method 'enterText(String)' in JSpinnerFixture no longer commits the value to the underlying JSpinner.
       </action>
       <action dev="wanghy" type="fix" issue="161" due-to="filimono">
-        Added the method 'enterTextAndCommit(String)' in JSpinnerFixture to enter and commit a value in a JSpinner. 
+        Added method 'enterTextAndCommit(String)' in JSpinnerFixture to enter and commit a value in a JSpinner. 
       </action>
       <action dev="alruiz" type="add" issue="170" due-to="Juhos Csaba-Zsolt">
         Added method 'columnIndexFor(Object)' in org.fest.swing.fixture.JTableFixture.
@@ -927,7 +889,7 @@
       </action>
       <action dev="wanghy" type="remove">
         Removed methods 'increment' and 'decrement' in JSliderFixture. These methods were not communicating their
-        intention properly and are not needed since JSliderFixture has the methods 'slideToMaximum' and 
+        intention properly and are not needed since JSliderFixture has methods 'slideToMaximum' and 
         'slideToMinimum'.
       </action>
       <action dev="alruiz" type="add">
@@ -968,7 +930,7 @@
       <action dev="alruiz" type="fix" issue="124" due-to="Woody Folsom">
         Introduced 'JListCellReader' to read values from JLists. Users can implement their own JListCellReaders when
         using custom cell renderers in JLists. After creating a JListCellRendering, users only need to pass an instance
-        to the method 'cellReader(JListCellReader)' in JListFixture.
+        to method 'cellReader(JListCellReader)' in JListFixture.
       </action>
       <action dev="alruiz" type="fix" issue="125" due-to="Woody Folsom">
         Fixed regression. JToolBarFixture extends ComponentFixture.
@@ -1048,7 +1010,7 @@
         Fixed regression. JInternalFrameFixture extends ComponentFixture.
       </action>
       <action dev="wanghy" type="add">
-        Renamed method names that start with 'mouse' in org.fest.swing.core.Robot. For example, the method
+        Renamed method names that start with 'mouse' in org.fest.swing.core.Robot. For example, method
         'mouseMove' is now 'moveMouse'. This change was done to keep method naming consistency.
       </action>
       <action dev="wanghy, alruiz" type="add">
@@ -1416,7 +1378,7 @@
         Replaced class JTableFixture.Cell with TableCell.
       </action>
       <action dev="alruiz" type="add">
-        In JTableFixture, the methods that used to take two int values as the row and column indices as arguments, now
+        In JTableFixture, methods that used to take two int values as the row and column indices as arguments, now
         take a TableCell as argument.
       </action>
       <action dev="alruiz" type="add">
@@ -1479,14 +1441,14 @@
         Added support for testing JTrees.        
       </action>
       <action dev="alruiz" type="add" due-to="Jeff Bay">
-        Replaced prefix 'should' with 'require' in fixture assertions to make API more concise (e.g. the method
+        Replaced prefix 'should' with 'require' in fixture assertions to make API more concise (e.g. method
         'shouldBeVisible' is now 'requireVisible.')        
       </action>
       <action dev="alruiz" type="fix" due-to="Jeff Bay">
         Renamed method 'shouldHaveThisText' to 'requireText' in interface TextDisplayFixture.
       </action>
       <action dev="alruiz" type="fix" due-to="Jeff Bay">
-        Removed prefix 'find' from methods in ContainerFixture (e.g. the method 'findLabel' is now 'label.')
+        Removed prefix 'find' from methods in ContainerFixture (e.g. method 'findLabel' is now 'label.')
       </action>
       <action dev="alruiz, wanghy" type="add">
         Added Maven 2 tasks for Ant for dependency management.
