@@ -67,7 +67,7 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * For example:
    * 
    * <pre>
-   * assertThat(picture).&lt;strong&gt;as&lt;/strong&gt;(&quot;Vacation Picture&quot;).hasSize(new Dimension(800, 600));
+   * assertThat(picture).<strong>as</strong>(&quot;Vacation Picture&quot;).hasSize(new Dimension(800, 600));
    * </pre>
    * 
    * </p>
@@ -87,7 +87,7 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * For example:
    * 
    * <pre>
-   * assertThat(picture).&lt;strong&gt;describedAs&lt;/strong&gt;(&quot;Vacation Picture&quot;).hasSize(new Dimension(800, 600));
+   * assertThat(picture).<strong>describedAs</strong>(&quot;Vacation Picture&quot;).hasSize(new Dimension(800, 600));
    * </pre>
    * 
    * </p>
@@ -106,7 +106,7 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * For example:
    * 
    * <pre>
-   * assertThat(picture).&lt;strong&gt;as&lt;/strong&gt;(new BasicDescription(&quot;Vacation Picture&quot;)).hasSize(new Dimension(800, 600));
+   * assertThat(picture).<strong>as</strong>(new BasicDescription(&quot;Vacation Picture&quot;)).hasSize(new Dimension(800, 600));
    * </pre>
    * 
    * </p>
@@ -126,7 +126,7 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * For example:
    * 
    * <pre>
-   * assertThat(picture).&lt;strong&gt;describedAs&lt;/strong&gt;(new BasicDescription(&quot;Vacation Picture&quot;)).hasSize(new Dimension(800, 600));
+   * assertThat(picture).<strong>describedAs</strong>(new BasicDescription(&quot;Vacation Picture&quot;)).hasSize(new Dimension(800, 600));
    * </pre>
    * 
    * </p>

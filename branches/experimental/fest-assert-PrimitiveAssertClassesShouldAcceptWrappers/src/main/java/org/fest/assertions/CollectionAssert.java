@@ -149,7 +149,7 @@ public final class CollectionAssert extends GroupAssert<Collection<?>> {
    * <p>
    * For example:
    * <pre>
-   * assertThat(employees).&lt;strong&gt;describedAs&lt;/strong&gt;(&quot;New Hires&quot;).hasSize(6);
+   * assertThat(employees).<strong>describedAs</strong>(&quot;New Hires&quot;).hasSize(6);
    * </pre>
    * </p>
    * @param description the description of the actual value.

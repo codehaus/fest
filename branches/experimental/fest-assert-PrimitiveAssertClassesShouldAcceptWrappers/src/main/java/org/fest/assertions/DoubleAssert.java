@@ -29,7 +29,7 @@ public final class DoubleAssert extends GenericAssert<Double> {
    * For example:
    * 
    * <pre>
-   * assertThat(value).&lt;strong&gt;as&lt;/strong&gt;(&quot;Some value&quot;).isEqualTo(otherValue);
+   * assertThat(value).<strong>as</strong>(&quot;Some value&quot;).isEqualTo(otherValue);
    * </pre>
    * 
    * </p>
@@ -49,7 +49,7 @@ public final class DoubleAssert extends GenericAssert<Double> {
    * For example:
    * 
    * <pre>
-   * assertThat(value).&lt;strong&gt;describedAs&lt;/strong&gt;(&quot;Some value&quot;).isEqualTo(otherValue);
+   * assertThat(value).<strong>describedAs</strong>(&quot;Some value&quot;).isEqualTo(otherValue);
    * </pre>
    * 
    * </p>
@@ -68,7 +68,7 @@ public final class DoubleAssert extends GenericAssert<Double> {
    * For example:
    * 
    * <pre>
-   * assertThat(value).&lt;strong&gt;as&lt;/strong&gt;(new BasicDescription(&quot;Some value&quot;)).isEqualTo(otherValue);
+   * assertThat(value).<strong>as</strong>(new BasicDescription(&quot;Some value&quot;)).isEqualTo(otherValue);
    * </pre>
    * 
    * </p>
@@ -88,7 +88,7 @@ public final class DoubleAssert extends GenericAssert<Double> {
    * For example:
    * 
    * <pre>
-   * assertThat(value).&lt;strong&gt;describedAs&lt;/strong&gt;(new BasicDescription(&quot;Some value&quot;)).isEqualTo(otherValue);
+   * assertThat(value).<strong>describedAs</strong>(new BasicDescription(&quot;Some value&quot;)).isEqualTo(otherValue);
    * </pre>
    * 
    * </p>
