@@ -35,8 +35,7 @@ import org.fest.swing.timing.Timeout;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JPanelFixture extends ContainerFixture<JPanel> implements CommonComponentFixture, JComponentFixture, 
-    JPopupMenuInvokerFixture {
+public class JPanelFixture extends ContainerFixture<JPanel> implements CommonComponentFixture, JComponentFixture {
 
   private JComponentDriver driver;
 
