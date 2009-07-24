@@ -600,4 +600,9 @@ public class StringAssertTest {
   @Test public void shouldPassIfStringsAreNotSame() {
     new StringAssert("Leia").isNotSameAs(EMPTY_STRING);
   }
+  
+  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
+    new StringAssert(null).isEqualTo(null);
+  }
+  
 }

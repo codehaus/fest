@@ -388,6 +388,11 @@ public class ObjectAssertTest {
       }
     });
   }
+  
+  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
+    new ObjectAssert(null).isEqualTo(null);
+  }
+
 
   private Person yoda() {
     return new Person("Yoda", 600);

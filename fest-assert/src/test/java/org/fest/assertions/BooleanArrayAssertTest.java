@@ -538,6 +538,11 @@ public class BooleanArrayAssertTest {
       }
     });
   }
+  
+  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
+    new BooleanArrayAssert(null).isEqualTo(null);
+  }
+  
 
   private boolean[] array(boolean... args) {
     return args;

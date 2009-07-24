@@ -266,4 +266,10 @@ public final class ShortArrayAssert extends ArrayAssert<short[]> {
     assertNotSameAs(expected);
     return this;
   }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
+  }
 }

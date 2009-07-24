@@ -17,20 +17,18 @@ package org.fest.assertions;
 import static org.fest.assertions.PrimitiveFail.*;
 
 /**
- * Understands assertion methods for <code>long</code>s. To create a new instance of this class use the
- * method <code>{@link Assertions#assertThat(long)}</code>.
+ * Understands assertion methods for <code>Long</code>s. To create a new instance of this class use the
+ * method <code>{@link Assertions#assertThat(Long)}</code>.
  *
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public final class LongAssert extends PrimitiveAssert {
+public final class LongAssert extends GenericAssert<Long> {
 
-  private static final long ZERO = 0L;
+  private static final Long ZERO = Long.valueOf(0L);
 
-  private final long actual;
-
-  LongAssert(long actual) {
-    this.actual = actual;
+  LongAssert(Long actual) {
+    super(actual);
   }
 
   /**
@@ -104,90 +102,131 @@ public final class LongAssert extends PrimitiveAssert {
   }
 
   /**
-   * Verifies that the actual <code>long</code> value is equal to the given one.
+   * Verifies that the actual <code>Long</code> value is equal to the given one.
    * @param expected the value to compare the actual one to.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>long</code> value is not equal to the given one.
+   * @throws AssertionError if the actual <code>Long</code> value is not equal to the given one.
    */
-  public LongAssert isEqualTo(long expected) {
-    failIfNotEqual(description(), actual, expected);
+  public LongAssert isEqualTo(Long expected) {
+    assertEqualTo(expected);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>long</code> value is not equal to the given one.
+   * Verifies that the actual <code>Long</code> value is not equal to the given one.
    * @param value the value to compare the actual one to.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>long</code> value is equal to the given one.
+   * @throws AssertionError if the actual <code>Long</code> value is equal to the given one.
    */
-  public LongAssert isNotEqualTo(long value) {
-    failIfEqual(description(), actual, value);
+  public LongAssert isNotEqualTo(Long value) {
+    assertNotEqualTo(value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>long</code> value is greater than the given one.
+   * Verifies that the actual <code>Long</code> value is greater than the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>long</code> value is not greater than the given one.
+   * @throws AssertionError if the actual <code>Long</code> value is not greater than the given one.
    */
-  public LongAssert isGreaterThan(long value) {
+  public LongAssert isGreaterThan(Long value) {
     failIfNotGreaterThan(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>long</code> value is less than the given one.
+   * Verifies that the actual <code>Long</code> value is less than the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>long</code> value is not less than the given one.
+   * @throws AssertionError if the actual <code>Long</code> value is not less than the given one.
    */
-  public LongAssert isLessThan(long value) {
+  public LongAssert isLessThan(Long value) {
     failIfNotLessThan(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>long</code> value is greater or equal to the given one.
+   * Verifies that the actual <code>Long</code> value is greater or equal to the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>long</code> value is not greater than or equal to the given one.
+   * @throws AssertionError if the actual <code>Long</code> value is not greater than or equal to the given one.
    */
-  public LongAssert isGreaterThanOrEqualTo(long value) {
+  public LongAssert isGreaterThanOrEqualTo(Long value) {
     failIfNotGreaterThanOrEqualTo(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>long</code> value is less or equal to the given one.
+   * Verifies that the actual <code>Long</code> value is less or equal to the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>long</code> value is not less than or equal to the given one.
+   * @throws AssertionError if the actual <code>Long</code> value is not less than or equal to the given one.
    */
-  public LongAssert isLessThanOrEqualTo(long value) {
+  public LongAssert isLessThanOrEqualTo(Long value) {
     failIfNotLessThanOrEqualTo(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>long</code> value is positive.
+   * Verifies that the actual <code>Long</code> value is positive.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>long</code> value is not positive.
+   * @throws AssertionError if the actual <code>Long</code> value is not positive.
    */
   public LongAssert isPositive() { return isGreaterThan(ZERO); }
 
   /**
-   * Verifies that the actual <code>long</code> value is negative.
+   * Verifies that the actual <code>Long</code> value is negative.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>long</code> value is not negative.
+   * @throws AssertionError if the actual <code>Long</code> value is not negative.
    */
   public LongAssert isNegative() { return isLessThan(ZERO); }
 
   /**
-   * Verifies that the actual <code>long</code> value is equal to zero.
+   * Verifies that the actual <code>Long</code> value is equal to zero.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>long</code> value is not equal to zero.
+   * @throws AssertionError if the actual <code>Long</code> value is not equal to zero.
    */
   public LongAssert isZero() { return isEqualTo(ZERO); }
+
+  /** {@inheritDoc} */
+  @Override
+  public LongAssert doesNotSatisfy(Condition<Long> condition) {
+    assertDoesNotSatisfy(condition);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public LongAssert isNotNull() {
+    assertNotNull();
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public LongAssert isNotSameAs(Long other) {
+    assertNotSameAs(other);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public LongAssert isSameAs(Long expected) {
+    assertSameAs(expected);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public LongAssert satisfies(Condition<Long> condition) {
+    assertSatisfies(condition);
+    return this;
+  }
 
 }

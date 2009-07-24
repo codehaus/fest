@@ -268,4 +268,10 @@ public final class IntArrayAssert extends ArrayAssert<int[]> {
     assertNotSameAs(expected);
     return this;
   }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
+  }
 }

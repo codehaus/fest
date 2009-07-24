@@ -43,7 +43,7 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * For example:
    *
    * <pre>
-   * assertThat(values).&lt;strong&gt;as&lt;/strong&gt;(&quot;Some values&quot;).isNotEmpty();
+   * assertThat(values).<strong>as</strong>(&quot;Some values&quot;).isNotEmpty();
    * </pre>
    *
    * </p>
@@ -63,7 +63,7 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * For example:
    *
    * <pre>
-   * assertThat(values).&lt;strong&gt;describedAs&lt;/strong&gt;(&quot;Some values&quot;).isNotEmpty();
+   * assertThat(values).<strong>describedAs</strong>(&quot;Some values&quot;).isNotEmpty();
    * </pre>
    *
    * </p>
@@ -82,7 +82,7 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * For example:
    *
    * <pre>
-   * assertThat(values).&lt;strong&gt;as&lt;/strong&gt;(new BasicDescription(&quot;Some values&quot;)).isNotEmpty();
+   * assertThat(values).<strong>as</strong>(new BasicDescription(&quot;Some values&quot;)).isNotEmpty();
    * </pre>
    *
    * </p>
@@ -102,7 +102,7 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * For example:
    *
    * <pre>
-   * assertThat(values).&lt;strong&gt;describedAs&lt;/strong&gt;(new BasicDescription(&quot;Some values&quot;)).isNotEmpty();
+   * assertThat(values).<strong>describedAs</strong>(new BasicDescription(&quot;Some values&quot;)).isNotEmpty();
    * </pre>
    *
    * </p>
@@ -301,5 +301,11 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
   public DoubleArrayAssert isNotSameAs(double[] expected) {
     assertNotSameAs(expected);
     return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
   }
 }

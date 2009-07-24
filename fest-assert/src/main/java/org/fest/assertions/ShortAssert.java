@@ -18,19 +18,17 @@ import static org.fest.assertions.PrimitiveFail.*;
 
 /**
  * Understands assertion methods for <code>short</code>s. To create a new instance of this class use the
- * method <code>{@link Assertions#assertThat(short)}</code>.
+ * method <code>{@link Assertions#assertThat(Short)}</code>.
  *
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public class ShortAssert extends PrimitiveAssert {
+public class ShortAssert extends GenericAssert<Short> {
 
-  private static final short ZERO = (short)0;
+  private static final Short ZERO = Short.valueOf((short) 0);
 
-  private final short actual;
-
-  ShortAssert(short actual) {
-    this.actual = actual;
+  ShortAssert(Short actual) {
+    super(actual);
   }
 
   /**
@@ -109,8 +107,8 @@ public class ShortAssert extends PrimitiveAssert {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>short</code> value is not equal to the given one.
    */
-  public ShortAssert isEqualTo(short expected) {
-    failIfNotEqual(description(), actual, expected);
+  public ShortAssert isEqualTo(Short expected) {
+    assertEqualTo(expected);
     return this;
   }
 
@@ -120,8 +118,8 @@ public class ShortAssert extends PrimitiveAssert {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>short</code> value is equal to the given one.
    */
-  public ShortAssert isNotEqualTo(short value) {
-    failIfEqual(description(), actual, value);
+  public ShortAssert isNotEqualTo(Short value) {
+    assertNotEqualTo(value);
     return this;
   }
 
@@ -131,7 +129,7 @@ public class ShortAssert extends PrimitiveAssert {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>short</code> value is not greater than the given one.
    */
-  public ShortAssert isGreaterThan(short value) {
+  public ShortAssert isGreaterThan(Short value) {
     failIfNotGreaterThan(description(), actual, value);
     return this;
   }
@@ -142,7 +140,7 @@ public class ShortAssert extends PrimitiveAssert {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>short</code> value is not less than the given one.
    */
-  public ShortAssert isLessThan(short value) {
+  public ShortAssert isLessThan(Short value) {
     failIfNotLessThan(description(), actual, value);
     return this;
   }
@@ -153,7 +151,7 @@ public class ShortAssert extends PrimitiveAssert {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>short</code> value is not greater than or equal to the given one.
    */
-  public ShortAssert isGreaterThanOrEqualTo(short value) {
+  public ShortAssert isGreaterThanOrEqualTo(Short value) {
     failIfNotGreaterThanOrEqualTo(description(), actual, value);
     return this;
   }
@@ -164,7 +162,7 @@ public class ShortAssert extends PrimitiveAssert {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>short</code> value is not less than or equal to the given one.
    */
-  public ShortAssert isLessThanOrEqualTo(short value) {
+  public ShortAssert isLessThanOrEqualTo(Short value) {
     failIfNotLessThanOrEqualTo(description(), actual, value);
     return this;
   }
@@ -189,4 +187,45 @@ public class ShortAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>short</code> value is not equal to zero.
    */
   public ShortAssert isZero() { return isEqualTo(ZERO); }
+
+  /** {@inheritDoc} */
+  @Override
+  public ShortAssert doesNotSatisfy(Condition<Short> condition) {
+    assertDoesNotSatisfy(condition);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public ShortAssert isNotNull() {
+    assertNotNull();
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public ShortAssert isNotSameAs(Short other) {
+    assertNotSameAs(other);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public ShortAssert isSameAs(Short expected) {
+    assertSameAs(expected);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public ShortAssert satisfies(Condition<Short> condition) {
+    assertSatisfies(condition);
+    return this;
+  }
 }

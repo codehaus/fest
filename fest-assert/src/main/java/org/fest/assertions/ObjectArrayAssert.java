@@ -321,4 +321,10 @@ public final class ObjectArrayAssert extends ArrayAssert<Object[]> {
     assertNotSameAs(expected);
     return this;
   }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
+  }
 }

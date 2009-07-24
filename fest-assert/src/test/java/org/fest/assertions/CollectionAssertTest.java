@@ -662,4 +662,9 @@ import org.testng.annotations.Test;
       }
     });
   }
+  
+  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
+    new CollectionAssert(null).isEqualTo(null);
+  }
+  
 }

@@ -251,4 +251,9 @@ public class CharAssertTest {
       }
     });
   }
+  
+  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
+    new CharAssert(null).isEqualTo(null);
+  }
+
 }

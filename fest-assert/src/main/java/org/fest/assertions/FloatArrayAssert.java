@@ -267,4 +267,10 @@ public final class FloatArrayAssert extends ArrayAssert<float[]> {
     assertNotSameAs(expected);
     return this;
   }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
+  }
 }

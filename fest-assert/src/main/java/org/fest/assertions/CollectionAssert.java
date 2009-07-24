@@ -149,7 +149,7 @@ public final class CollectionAssert extends GroupAssert<Collection<?>> {
    * <p>
    * For example:
    * <pre>
-   * assertThat(employees).&lt;strong&gt;describedAs&lt;/strong&gt;(&quot;New Hires&quot;).hasSize(6);
+   * assertThat(employees).<strong>describedAs</strong>(&quot;New Hires&quot;).hasSize(6);
    * </pre>
    * </p>
    * @param description the description of the actual value.
@@ -325,5 +325,11 @@ public final class CollectionAssert extends GroupAssert<Collection<?>> {
   public CollectionAssert isNotSameAs(Collection<?> other) {
     assertNotSameAs(other);
     return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
   }
 }
