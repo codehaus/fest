@@ -481,6 +481,11 @@ import org.testng.annotations.Test;
       }
     });
   }
+  
+  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
+    new ImageAssert(null).isEqualTo(null);
+  }
+  
 
   private BufferedImage fivePixelBlueImage() {
     return image(5, 5, BLUE);

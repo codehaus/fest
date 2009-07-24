@@ -301,6 +301,11 @@ public class ByteAssertTest {
       }
     });
   }
+  
+  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
+    new ByteAssert(null).isEqualTo(null);
+  }
+  
 
   private static byte asByte(int i) {
     return (byte)i;

@@ -106,7 +106,7 @@ public final class DoubleAssert extends GenericAssert<Double> {
    * @throws AssertionError if the actual <code>Double</code> value is not equal to the given one.
    */
   public DoubleAssert isEqualTo(Double expected) {
-    failIfNotEqual(description(), actual, expected);
+    assertEqualTo(expected);
     return this;
   }
 
@@ -117,7 +117,7 @@ public final class DoubleAssert extends GenericAssert<Double> {
    * @throws AssertionError if the actual <code>Double</code> value is equal to the given one.
    */
   public DoubleAssert isNotEqualTo(Double value) {
-    failIfEqual(description(), actual, value);
+    assertNotEqualTo(value);
     return this;
   }
 

@@ -108,7 +108,7 @@ public final class ByteAssert extends GenericAssert<Byte> {
    * @throws AssertionError if the actual <code>Byte</code> value is not equal to the given one.
    */
   public ByteAssert isEqualTo(Byte expected) {
-    failIfNotEqual(description(), actual, expected);
+    assertEqualTo(expected);
     return this;
   }
 
@@ -119,7 +119,7 @@ public final class ByteAssert extends GenericAssert<Byte> {
    * @throws AssertionError if the actual <code>Byte</code> value is equal to the given one.
    */
   public ByteAssert isNotEqualTo(Byte value) {
-    failIfEqual(description(), actual, value);
+    assertNotEqualTo(value);
     return this;
   }
 

@@ -301,4 +301,9 @@ public class LongAssertTest {
       }
     });
   }
+  
+  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
+    new LongAssert(null).isEqualTo(null);
+  }
+  
 }

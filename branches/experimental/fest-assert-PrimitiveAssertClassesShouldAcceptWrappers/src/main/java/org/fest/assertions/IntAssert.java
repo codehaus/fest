@@ -110,7 +110,7 @@ public final class IntAssert extends GenericAssert<Integer> {
    * @throws AssertionError if the actual <code>Integer</code> value is not equal to the given one.
    */
   public IntAssert isEqualTo(Integer expected) {
-    failIfNotEqual(description(), actual, expected);
+    assertEqualTo(expected);
     return this;
   }
 
@@ -121,7 +121,7 @@ public final class IntAssert extends GenericAssert<Integer> {
    * @throws AssertionError if the actual <code>Integer</code> value is equal to the given one.
    */
   public IntAssert isNotEqualTo(Integer value) {
-    failIfEqual(description(), actual, value);
+    assertNotEqualTo(value);
     return this;
   }
 

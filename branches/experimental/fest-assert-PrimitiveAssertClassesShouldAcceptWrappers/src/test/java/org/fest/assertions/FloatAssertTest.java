@@ -310,4 +310,9 @@ public class FloatAssertTest {
       }
     });
   }
+  
+  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
+    new FloatAssert(null).isEqualTo(null);
+  }
+  
 }

@@ -640,4 +640,9 @@ public class FileAssertTest {
       }
     });
   }
+  
+  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
+    new FileAssert(null).isEqualTo(null);
+  }
+
 }

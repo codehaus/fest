@@ -112,7 +112,7 @@ public final class FloatAssert extends GenericAssert<Float> {
    * @throws AssertionError if the actual <code>Float</code> value is not equal to the given one.
    */
   public FloatAssert isEqualTo(Float expected) {
-    failIfNotEqual(description(), actual, expected);
+    assertEqualTo(expected);
     return this;
   }
 
@@ -137,7 +137,7 @@ public final class FloatAssert extends GenericAssert<Float> {
    * @throws AssertionError if the actual <code>Float</code> value is equal to the given one.
    */
   public FloatAssert isNotEqualTo(Float value) {
-    failIfEqual(description(), actual, value);
+    assertNotEqualTo(value);
     return this;
   }
 

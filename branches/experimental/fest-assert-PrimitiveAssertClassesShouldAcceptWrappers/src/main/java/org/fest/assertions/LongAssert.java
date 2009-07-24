@@ -108,7 +108,7 @@ public final class LongAssert extends GenericAssert<Long> {
    * @throws AssertionError if the actual <code>Long</code> value is not equal to the given one.
    */
   public LongAssert isEqualTo(Long expected) {
-    failIfNotEqual(description(), actual, expected);
+    assertEqualTo(expected);
     return this;
   }
 
@@ -119,7 +119,7 @@ public final class LongAssert extends GenericAssert<Long> {
    * @throws AssertionError if the actual <code>Long</code> value is equal to the given one.
    */
   public LongAssert isNotEqualTo(Long value) {
-    failIfEqual(description(), actual, value);
+    assertNotEqualTo(value);
     return this;
   }
 

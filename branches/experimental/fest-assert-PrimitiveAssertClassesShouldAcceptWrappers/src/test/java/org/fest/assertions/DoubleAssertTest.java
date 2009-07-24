@@ -332,4 +332,8 @@ public class DoubleAssertTest {
       }
     });
   }
+  
+  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
+    new DoubleAssert(null).isEqualTo(null);
+  }
 }

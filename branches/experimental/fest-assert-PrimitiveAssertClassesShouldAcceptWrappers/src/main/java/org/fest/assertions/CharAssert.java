@@ -109,7 +109,7 @@ public final class CharAssert extends GenericAssert<Character> {
    * @throws AssertionError if the actual <code>Character</code> value is not equal to the given one.
    */
   public CharAssert isEqualTo(Character expected) {
-    failIfNotEqual(description(), actual, expected);
+    assertEqualTo(expected);
     return this;
   }
 
@@ -120,7 +120,7 @@ public final class CharAssert extends GenericAssert<Character> {
    * @throws AssertionError if the actual <code>Character</code> value is equal to the given one.
    */
   public CharAssert isNotEqualTo(Character value) {
-    failIfEqual(description(), actual, value);
+    assertNotEqualTo(value);
     return this;
   }
 

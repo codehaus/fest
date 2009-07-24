@@ -538,6 +538,11 @@ public class CharArrayAssertTest {
       }
     });
   }
+  
+  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
+    new CharArrayAssert(null).isEqualTo(null);
+  }
+  
 
   private char[] array(char... args) {
     return args;
