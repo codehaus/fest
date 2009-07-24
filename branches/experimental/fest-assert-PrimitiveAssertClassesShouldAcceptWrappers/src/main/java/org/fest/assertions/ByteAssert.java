@@ -17,13 +17,13 @@ package org.fest.assertions;
 import static org.fest.assertions.PrimitiveFail.*;
 
 /**
- * Understands assertion methods for <code>byte</code>s. To create a new instance of this class use the
+ * Understands assertion methods for <code>Byte</code>s. To create a new instance of this class use the
  * method <code>{@link Assertions#assertThat(byte)}</code>.
  *
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public final class ByteAssert extends PrimitiveAssert<Byte> {
+public final class ByteAssert extends GenericAssert<Byte> {
 
   private static final byte ZERO = (byte)0;
 
@@ -102,89 +102,131 @@ public final class ByteAssert extends PrimitiveAssert<Byte> {
   }
 
   /**
-   * Verifies that the actual <code>byte</code> value is equal to the given one.
+   * Verifies that the actual <code>Byte</code> value is equal to the given one.
    * @param expected the value to compare the actual one to.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>byte</code> value is not equal to the given one.
+   * @throws AssertionError if the actual <code>Byte</code> value is not equal to the given one.
    */
-  public ByteAssert isEqualTo(byte expected) {
+  public ByteAssert isEqualTo(Byte expected) {
     failIfNotEqual(description(), actual, expected);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>byte</code> value is not equal to the given one.
+   * Verifies that the actual <code>Byte</code> value is not equal to the given one.
    * @param value the value to compare the actual one to.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>byte</code> value is equal to the given one.
+   * @throws AssertionError if the actual <code>Byte</code> value is equal to the given one.
    */
-  public ByteAssert isNotEqualTo(byte value) {
+  public ByteAssert isNotEqualTo(Byte value) {
     failIfEqual(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>byte</code> value is greater than the given one.
+   * Verifies that the actual <code>Byte</code> value is greater than the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>byte</code> value is not greater than the given one.
+   * @throws AssertionError if the actual <code>Byte</code> value is not greater than the given one.
    */
-  public ByteAssert isGreaterThan(byte value) {
+  public ByteAssert isGreaterThan(Byte value) {
     failIfNotGreaterThan(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>byte</code> value is less than the given one.
+   * Verifies that the actual <code>Byte</code> value is less than the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>byte</code> value is not less than the given one.
+   * @throws AssertionError if the actual <code>Byte</code> value is not less than the given one.
    */
-  public ByteAssert isLessThan(byte value) {
+  public ByteAssert isLessThan(Byte value) {
     failIfNotLessThan(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>byte</code> value is greater or equal to the given one.
+   * Verifies that the actual <code>Byte</code> value is greater or equal to the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>byte</code> value is not greater than or equal to the given one.
+   * @throws AssertionError if the actual <code>Byte</code> value is not greater than or equal to the given one.
    */
-  public ByteAssert isGreaterThanOrEqualTo(byte value) {
+  public ByteAssert isGreaterThanOrEqualTo(Byte value) {
     failIfNotGreaterThanOrEqualTo(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>byte</code> value is less or equal to the given one.
+   * Verifies that the actual <code>Byte</code> value is less or equal to the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>byte</code> value is not less than or equal to the given one.
+   * @throws AssertionError if the actual <code>Byte</code> value is not less than or equal to the given one.
    */
-  public ByteAssert isLessThanOrEqualTo(byte value) {
+  public ByteAssert isLessThanOrEqualTo(Byte value) {
     failIfNotLessThanOrEqualTo(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>byte</code> value is positive.
+   * Verifies that the actual <code>Byte</code> value is positive.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>byte</code> value is not positive.
+   * @throws AssertionError if the actual <code>Byte</code> value is not positive.
    */
   public ByteAssert isPositive() { return isGreaterThan(ZERO); }
 
   /**
-   * Verifies that the actual <code>byte</code> value is negative.
+   * Verifies that the actual <code>Byte</code> value is negative.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>byte</code> value is not negative.
+   * @throws AssertionError if the actual <code>Byte</code> value is not negative.
    */
   public ByteAssert isNegative() { return isLessThan(ZERO); }
 
   /**
-   * Verifies that the actual <code>byte</code> value is equal to zero.
+   * Verifies that the actual <code>Byte</code> value is equal to zero.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>byte</code> value is not equal to zero.
+   * @throws AssertionError if the actual <code>Byte</code> value is not equal to zero.
    */
   public ByteAssert isZero() { return isEqualTo(ZERO); }
+
+  /** {@inheritDoc} */
+  @Override
+  public ByteAssert doesNotSatisfy(Condition<Byte> condition) {
+    assertDoesNotSatisfy(condition);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public ByteAssert isNotNull() {
+    assertNotNull();
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  protected ByteAssert isNotSameAs(Byte other) {
+    assertNotSameAs(other);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
+    
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public ByteAssert isSameAs(Byte expected) {
+    assertSameAs(expected);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public ByteAssert satisfies(Condition<Byte> condition) {
+    assertSatisfies(condition);
+    return this;
+  }
 }

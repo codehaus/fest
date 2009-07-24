@@ -116,6 +116,8 @@ public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
     assertContains(list(values));
     return this;
   }
+  
+
 
   /**
    * Verifies that the actual <code>boolean</code> array contains the given values <strong>only</strong>.
@@ -186,6 +188,14 @@ public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
   public BooleanArrayAssert isNotNull() {
     assertArrayNotNull();
     return this;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void isNull() {
+    assertNull();    
   }
 
   /**

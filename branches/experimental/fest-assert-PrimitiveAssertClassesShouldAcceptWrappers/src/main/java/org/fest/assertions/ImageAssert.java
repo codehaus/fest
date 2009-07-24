@@ -293,4 +293,10 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
   static void imageReader(ImageReader newImageReader) {
     imageReader = newImageReader;
   }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
+  }
 }

@@ -302,4 +302,10 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
     assertNotSameAs(expected);
     return this;
   }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
+  }
 }

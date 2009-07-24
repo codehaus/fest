@@ -247,4 +247,10 @@ public final class ThrowableAssert extends GenericAssert<Throwable> {
     assertDoesNotSatisfy(condition);
     return this;
   }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
+  }
 }

@@ -19,18 +19,17 @@ import static org.fest.assertions.PrimitiveFail.*;
 import static org.fest.util.Strings.concat;
 
 /**
- * Understands assertion methods for <code>char</code>s. To create a new instance of this class use the
+ * Understands assertion methods for <code>Character</code>s. To create a new instance of this class use the
  * method <code>{@link Assertions#assertThat(char)}</code>.
  *
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public final class CharAssert extends PrimitiveAssert {
 
-  private final char actual;
+public final class CharAssert extends GenericAssert<Character> {
 
-  CharAssert(char actual) {
-    this.actual = actual;
+  CharAssert(Character actual) {
+    super(actual);
   }
 
   /**
@@ -104,75 +103,75 @@ public final class CharAssert extends PrimitiveAssert {
   }
 
   /**
-   * Verifies that the actual <code>char</code> value is equal to the given one.
+   * Verifies that the actual <code>Character</code> value is equal to the given one.
    * @param expected the value to compare the actual one to.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>char</code> value is not equal to the given one.
+   * @throws AssertionError if the actual <code>Character</code> value is not equal to the given one.
    */
-  public CharAssert isEqualTo(char expected) {
+  public CharAssert isEqualTo(Character expected) {
     failIfNotEqual(description(), actual, expected);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>char</code> value is not equal to the given one.
+   * Verifies that the actual <code>Character</code> value is not equal to the given one.
    * @param value the value to compare the actual one to.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>char</code> value is equal to the given one.
+   * @throws AssertionError if the actual <code>Character</code> value is equal to the given one.
    */
-  public CharAssert isNotEqualTo(char value) {
+  public CharAssert isNotEqualTo(Character value) {
     failIfEqual(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>char</code> value is greater than the given one.
+   * Verifies that the actual <code>Character</code> value is greater than the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>char</code> value is not greater than the given one.
+   * @throws AssertionError if the actual <code>Character</code> value is not greater than the given one.
    */
-  public CharAssert isGreaterThan(char value) {
+  public CharAssert isGreaterThan(Character value) {
     failIfNotGreaterThan(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>char</code> value is less than the given one.
+   * Verifies that the actual <code>Character</code> value is less than the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>char</code> value is not less than the given one.
+   * @throws AssertionError if the actual <code>Character</code> value is not less than the given one.
    */
-  public CharAssert isLessThan(char value) {
+  public CharAssert isLessThan(Character value) {
     failIfNotLessThan(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>char</code> value is greater or equal to the given one.
+   * Verifies that the actual <code>Character</code> value is greater or equal to the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>char</code> value is not greater than or equal to the given one.
+   * @throws AssertionError if the actual <code>Character</code> value is not greater than or equal to the given one.
    */
-  public CharAssert isGreaterThanOrEqualTo(char value) {
+  public CharAssert isGreaterThanOrEqualTo(Character value) {
     failIfNotGreaterThanOrEqualTo(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>char</code> value is less or equal to the given one.
+   * Verifies that the actual <code>Character</code> value is less or equal to the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>char</code> value is not less than or equal to the given one.
+   * @throws AssertionError if the actual <code>Character</code> value is not less than or equal to the given one.
    */
-  public CharAssert isLessThanOrEqualTo(char value) {
+  public CharAssert isLessThanOrEqualTo(Character value) {
     failIfNotLessThanOrEqualTo(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>char</code> value is an uppercase value.
+   * Verifies that the actual <code>Character</code> value is an uppercase value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>char</code> value is not an uppercase value.
+   * @throws AssertionError if the actual <code>Character</code> value is not an uppercase value.
    */
   public CharAssert isUpperCase() {
     if (!Character.isUpperCase(actual)) fail(concat(inBrackets(actual), " should be an uppercase character"));
@@ -180,12 +179,54 @@ public final class CharAssert extends PrimitiveAssert {
   }
 
   /**
-   * Verifies that the actual <code>char</code> value is an lowercase value.
+   * Verifies that the actual <code>Character</code> value is an lowercase value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>char</code> value is not an lowercase value.
+   * @throws AssertionError if the actual <code>Character</code> value is not an lowercase value.
    */
   public CharAssert isLowerCase() {
     if (!Character.isLowerCase(actual)) fail(concat(inBrackets(actual), " should be a lowercase character"));
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public CharAssert doesNotSatisfy(Condition<Character> condition) {
+    assertDoesNotSatisfy(condition);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public CharAssert isNotNull() {
+    assertNotNull();
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public CharAssert isNotSameAs(Character other) {
+    assertNotSameAs(other);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
+    
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public CharAssert isSameAs(Character expected) {
+    assertSameAs(expected);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public CharAssert satisfies(Condition<Character> condition) {
+    assertSatisfies(condition);
     return this;
   }
 }

@@ -266,4 +266,10 @@ public final class LongArrayAssert extends ArrayAssert<long[]> {
     assertNotSameAs(expected);
     return this;
   }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
+  }
 }

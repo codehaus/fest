@@ -326,4 +326,10 @@ public final class CollectionAssert extends GroupAssert<Collection<?>> {
     assertNotSameAs(other);
     return this;
   }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
+  }
 }

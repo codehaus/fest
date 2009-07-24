@@ -233,4 +233,10 @@ public final class ObjectAssert extends GenericAssert<Object> {
     assertNotEqualTo(other);
     return this;
   }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
+  }
 }

@@ -139,18 +139,18 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
 
 
   /**
-   * Verifies that the actual value is the same as the given one.
-   * @param expected the given value to compare the actual value to.
+   * Verifies that the actual value object instance is the same object instance as the given one.
+   * @param expected the given object instance to compare the actual value instance to.
    * @return this assertion object.
-   * @throws AssertionError if the actual value is not the same as the given one.
+   * @throws AssertionError if the actual value instance is not the same as the given one.
    */
   protected abstract GenericAssert<T> isSameAs(T expected);
 
   /**
-   * Verifies that the actual value is not the same as the given one.
-   * @param other the given value to compare the actual value to.
+   * Verifies that the actual value object instance is not the same object instance as the given one.
+   * @param other the given object instance to compare the actual value instance to.
    * @return this assertion object.
-   * @throws AssertionError if the actual value is the same as the given one.
+   * @throws AssertionError if the actual value instance is the same as the given one.
    */
   protected abstract GenericAssert<T> isNotSameAs(T other);
 
@@ -225,18 +225,18 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
   }  
 
   /**
-   * Verifies that the actual value is the same as the given one.
-   * @param expected the value to compare the actual value to.
-   * @throws AssertionError if the actual value is not the same as the given one.
+   * Verifies that the actual value object is the same object instance as the given one.
+   * @param expected the value object to compare the actual value object to.
+   * @throws AssertionError if the actual value object is not the same instance as the given one.
    */
   protected final void assertSameAs(T expected) {
     failIfNotSame(description(), actual, expected);
   }
 
   /**
-   * Verifies that the actual value is not the same as the given one.
-   * @param expected the value to compare the actual value to.
-   * @throws AssertionError if the actual value is the same as the given one.
+   * Verifies that the actual value object is not the same object instance as the given one.
+   * @param expected the value object to compare the actual value object to.
+   * @throws AssertionError if the actual value object is the same instance as the given one.
    */
   protected final void assertNotSameAs(T expected) {
     failIfSame(description(), actual, expected);

@@ -320,4 +320,10 @@ public final class StringAssert extends GroupAssert<String> {
   private String actual() {
     return inBrackets(actual);
   }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
+  }
 }

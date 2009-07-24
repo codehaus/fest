@@ -459,4 +459,10 @@ public class ListAssert extends GroupAssert<List<?>> {
     assertNotSameAs(other);
     return this;
   }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
+  }
 }

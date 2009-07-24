@@ -18,20 +18,18 @@ package org.fest.assertions;
 import static org.fest.assertions.PrimitiveFail.*;
 
 /**
- * Understands assert method for <code>int</code>s. To create a new instance of this class use the
- * method <code>{@link Assertions#assertThat(int)}</code>.
+ * Understands assert method for <code>Integer</code>s. To create a new instance of this class use the
+ * method <code>{@link Assertions#assertThat(Integer)}</code>.
  *
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public final class IntAssert extends PrimitiveAssert {
+public final class IntAssert extends GenericAssert<Integer> {
 
-  private static final int ZERO = 0;
+  private static final Integer ZERO = Integer.valueOf(0);
 
-  private final int actual;
-
-  IntAssert(int actual) {
-    this.actual = actual;
+  IntAssert(Integer actual) {
+    super(actual);
   }
 
   /**
@@ -106,89 +104,130 @@ public final class IntAssert extends PrimitiveAssert {
 
 
   /**
-   * Verifies that the actual <code>int</code> value is equal to the given one.
+   * Verifies that the actual <code>Integer</code> value is equal to the given one.
    * @param expected the value to compare the actual one to.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>int</code> value is not equal to the given one.
+   * @throws AssertionError if the actual <code>Integer</code> value is not equal to the given one.
    */
-  public IntAssert isEqualTo(int expected) {
+  public IntAssert isEqualTo(Integer expected) {
     failIfNotEqual(description(), actual, expected);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>int</code> value is not equal to the given one.
+   * Verifies that the actual <code>Integer</code> value is not equal to the given one.
    * @param value the value to compare the actual one to.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>int</code> value is equal to the given one.
+   * @throws AssertionError if the actual <code>Integer</code> value is equal to the given one.
    */
-  public IntAssert isNotEqualTo(int value) {
+  public IntAssert isNotEqualTo(Integer value) {
     failIfEqual(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>int</code> value is greater than the given one.
+   * Verifies that the actual <code>Integer</code> value is greater than the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>int</code> value is not greater than the given one.
+   * @throws AssertionError if the actual <code>Integer</code> value is not greater than the given one.
    */
-  public IntAssert isGreaterThan(int value) {
+  public IntAssert isGreaterThan(Integer value) {
     failIfNotGreaterThan(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>int</code> value is less than the given one.
+   * Verifies that the actual <code>Integer</code> value is less than the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>int</code> value is not less than the given one.
+   * @throws AssertionError if the actual <code>Integer</code> value is not less than the given one.
    */
-  public IntAssert isLessThan(int value) {
+  public IntAssert isLessThan(Integer value) {
     failIfNotLessThan(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>int</code> value is greater or equal to the given one.
+   * Verifies that the actual <code>Integer</code> value is greater or equal to the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>int</code> value is not greater than or equal to the given one.
+   * @throws AssertionError if the actual <code>Integer</code> value is not greater than or equal to the given one.
    */
-  public IntAssert isGreaterThanOrEqualTo(int value) {
+  public IntAssert isGreaterThanOrEqualTo(Integer value) {
     failIfNotGreaterThanOrEqualTo(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>int</code> value is less or equal to the given one.
+   * Verifies that the actual <code>Integer</code> value is less or equal to the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>int</code> value is not less than or equal to the given one.
+   * @throws AssertionError if the actual <code>Integer</code> value is not less than or equal to the given one.
    */
-  public IntAssert isLessThanOrEqualTo(int value) {
+  public IntAssert isLessThanOrEqualTo(Integer value) {
     failIfNotLessThanOrEqualTo(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>int</code> value is positive.
+   * Verifies that the actual <code>Integer</code> value is positive.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>int</code> value is not positive.
+   * @throws AssertionError if the actual <code>Integer</code> value is not positive.
    */
   public IntAssert isPositive() { return isGreaterThan(ZERO); }
 
   /**
-   * Verifies that the actual <code>int</code> value is negative.
+   * Verifies that the actual <code>Integer</code> value is negative.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>int</code> value is not negative.
+   * @throws AssertionError if the actual <code>Integer</code> value is not negative.
    */
   public IntAssert isNegative() { return isLessThan(ZERO); }
 
   /**
-   * Verifies that the actual <code>int</code> value is equal to zero.
+   * Verifies that the actual <code>Integer</code> value is equal to zero.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>int</code> value is not equal to zero.
+   * @throws AssertionError if the actual <code>Integer</code> value is not equal to zero.
    */
   public IntAssert isZero() { return isEqualTo(ZERO); }
+
+  /** {@inheritDoc} */
+  @Override
+  public IntAssert doesNotSatisfy(Condition<Integer> condition) {
+    assertDoesNotSatisfy(condition);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public IntAssert isNotNull() {
+    assertNotNull();
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public IntAssert isNotSameAs(Integer other) {
+    assertNotSameAs(other);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void isNull() {
+    assertNull();
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public IntAssert isSameAs(Integer expected) {
+    assertSameAs(expected);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public IntAssert satisfies(Condition<Integer> condition) {
+    assertSatisfies(condition);
+    return this;
+  }
 }

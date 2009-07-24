@@ -274,13 +274,13 @@ public class DoubleAssertTest {
   }
 
   @Test public void shouldPassIfActualIsZero() {
-    new DoubleAssert(0).isZero();
+    new DoubleAssert(0d).isZero();
   }
 
   @Test public void shouldFailIfActualIsNotZeroAndExpectingZero() {
     expectAssertionError("expected:<0.0> but was:<9.0>").on(new CodeToTest() {
       public void run() {
-        new DoubleAssert(9).isZero();
+        new DoubleAssert(9d).isZero();
       }
     });
   }
@@ -288,7 +288,7 @@ public class DoubleAssertTest {
   @Test public void shouldFailShowingDescriptionIfActualIsNotZeroAndExpectingZero() {
     expectAssertionError("[A Test] expected:<0.0> but was:<9.0>").on(new CodeToTest() {
       public void run() {
-        new DoubleAssert(9).as("A Test").isZero();
+        new DoubleAssert(9d).as("A Test").isZero();
       }
     });
   }
