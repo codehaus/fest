@@ -28,9 +28,9 @@ import static org.fest.assertions.Fail.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
+public class BooleanArrayAssert extends ArrayAssert<boolean[]> {
 
-  BooleanArrayAssert(boolean... actual) {
+  protected BooleanArrayAssert(boolean... actual) {
     super(actual);
   }
 

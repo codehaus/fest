@@ -26,9 +26,9 @@ import static org.fest.util.Strings.concat;
  * @author David DIDIER
  */
 
-public final class CharAssert extends GenericAssert<Character> {
+public class CharAssert extends GenericAssert<Character> {
 
-  CharAssert(Character actual) {
+  protected CharAssert(Character actual) {
     super(actual);
   }
 

@@ -23,11 +23,11 @@ import static org.fest.assertions.PrimitiveFail.*;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public final class ByteAssert extends GenericAssert<Byte> {
+public class ByteAssert extends GenericAssert<Byte> {
 
   private static final byte ZERO = (byte)0;
 
-  ByteAssert(Byte actual) {
+  protected ByteAssert(Byte actual) {
     super(actual);
   }
 

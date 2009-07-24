@@ -28,9 +28,9 @@ import static org.fest.util.Strings.concat;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public final class ObjectAssert extends GenericAssert<Object> {
+public class ObjectAssert extends GenericAssert<Object> {
 
-  ObjectAssert(Object actual) {
+  protected ObjectAssert(Object actual) {
     super(actual);
   }
 

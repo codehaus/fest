@@ -28,9 +28,9 @@ import static org.fest.assertions.Fail.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public final class IntArrayAssert extends ArrayAssert<int[]> {
+public class IntArrayAssert extends ArrayAssert<int[]> {
 
-  IntArrayAssert(int... actual) {
+  protected IntArrayAssert(int... actual) {
     super(actual);
   }
 

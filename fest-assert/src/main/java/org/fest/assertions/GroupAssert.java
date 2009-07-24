@@ -28,7 +28,7 @@ public abstract class GroupAssert<T> extends GenericAssert<T> {
    * Creates a new <code>{@link GroupAssert}</code>.
    * @param actual the object to verify.
    */
-  GroupAssert(T actual) {
+  protected GroupAssert(T actual) {
     super(actual);
   }
 

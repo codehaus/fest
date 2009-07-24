@@ -28,9 +28,9 @@ import static org.fest.assertions.Fail.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public final class CharArrayAssert extends ArrayAssert<char[]> {
+public class CharArrayAssert extends ArrayAssert<char[]> {
 
-  CharArrayAssert(char... actual) {
+  protected CharArrayAssert(char... actual) {
     super(actual);
   }
 

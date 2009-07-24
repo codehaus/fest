@@ -32,12 +32,12 @@ import static org.fest.util.Strings.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public final class MapAssert extends GroupAssert<Map<?, ?>> {
+public class MapAssert extends GroupAssert<Map<?, ?>> {
 
   private static final String ENTRY = "entry";
   private static final String ENTRIES= "entries";
 
-  MapAssert(Map<?, ?> actual) {
+  protected MapAssert(Map<?, ?> actual) {
     super(actual);
   }
 

@@ -36,7 +36,7 @@ import org.fest.util.Collections;
  */
 public class ListAssert extends GroupAssert<List<?>> {
 
-  ListAssert(List<?> actual) {
+  protected ListAssert(List<?> actual) {
     super(actual);
   }
 
