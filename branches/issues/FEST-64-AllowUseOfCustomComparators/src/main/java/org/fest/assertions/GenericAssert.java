@@ -20,6 +20,8 @@ import static org.fest.assertions.Formatting.format;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Strings.concat;
 
+import java.util.Comparator;
+
 /**
  * Understands a template for assertion methods.
  * @param <T> the type of object implementations of this template can verify.
@@ -27,9 +29,11 @@ import static org.fest.util.Strings.concat;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public abstract class GenericAssert<T> extends Assert implements NullableAssert<GenericAssert<T>> {
+public abstract class GenericAssert<T> extends Assert<T> implements NullableAssert<GenericAssert<T>> {
 
   protected final T actual;
+  
+  protected Comparator<T> comparator = null;
 
   /**
    * Creates a new <code>{@link GenericAssert}</code>.
@@ -37,6 +41,16 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    */
   protected GenericAssert(T actual) {
     this.actual = actual;
+  }
+  
+  public GenericAssert<T> compareBy(Comparator<T> comparator) {
+    this.comparator = comparator;
+    return this;
+  }
+  
+  public GenericAssert<T> compareByNaturalOrder() {
+    this.comparator = null;
+    return this;
   }
 
   public abstract void isNull();

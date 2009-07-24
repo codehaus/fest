@@ -21,7 +21,7 @@ package org.fest.assertions;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public abstract class Assert {
+public abstract class Assert<VALUE_TYPE> {
 
   private Description description;
 
