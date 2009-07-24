@@ -14,6 +14,10 @@
  */
 package org.fest.swing.driver;
 
+import static java.lang.String.valueOf;
+import static org.fest.util.Arrays.format;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -22,11 +26,6 @@ import javax.swing.tree.TreePath;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.exception.LocationUnavailableException;
-
-import static java.lang.String.valueOf;
-
-import static org.fest.util.Arrays.format;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands a visible location on a <code>{@link JTree}</code>. A row index or a <code>{@link String}</code>ified
@@ -54,7 +53,9 @@ public final class JTreeLocation {
    */
   @RunsInCurrentThread
   public Point pointAt(JTree tree, int row) {
-    return pointAt(tree, pathFor(tree, row));
+    Rectangle rowBounds = tree.getRowBounds(row);
+    if (rowBounds != null) return pointAt(rowBounds);
+    throw new LocationUnavailableException(concat("The tree row ", row, " is not visible"));
   }
 
   /**
@@ -107,8 +108,11 @@ public final class JTreeLocation {
   @RunsInCurrentThread
   public Point pointAt(JTree tree, TreePath path) {
     Rectangle pathBounds = tree.getPathBounds(path);
-    if (pathBounds != null)
-        return new Point(pathBounds.x + pathBounds.width / 2, pathBounds.y + pathBounds.height / 2);
+    if (pathBounds != null) return pointAt(pathBounds);
     throw new LocationUnavailableException(concat("The tree path ", format(path.getPath()), " is not visible"));
+  }
+
+  private Point pointAt(Rectangle cellBounds) {
+    return new Point(cellBounds.x + cellBounds.width / 2, cellBounds.y + cellBounds.height / 2);
   }
 }

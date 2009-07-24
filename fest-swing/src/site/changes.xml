@@ -318,6 +318,9 @@
       <action dev="alruiz" type="fix" issue="FEST-194" due-to="Andriy Tsykholyas">
         Method 'clickColumn(int)' in JTableHeaderDriver now scrolls to the column to click.
       </action>
+      <action dev="alruiz" type="fix" issue="FEST-195" due-to="Lalitha Chandra">
+        Added methods 'doubleClickRow(int)' and 'doubleClickPath(String)' to JTreeFixture.
+      </action>
       <action dev="alruiz" type="fix" issue="FEST-196" due-to="Kirill Grouchnikov">
         Method 'click(Component, Point, MouseButton, int)' in BasicRobot no longer gives focus to target component 
         before pressing the given mouse button.

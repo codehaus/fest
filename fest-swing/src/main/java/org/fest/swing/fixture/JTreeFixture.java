@@ -116,6 +116,36 @@ public class JTreeFixture extends ComponentFixture<JTree> implements CommonCompo
   }
 
   /**
+   * Double-clicks the given row.
+   * @param row the given row.
+   * @return this fixture.
+   * @throws IllegalStateException if the <code>JTree</code> is disabled.
+   * @throws IllegalStateException if the <code>JTree</code> is not showing on the screen.
+   * @throws IndexOutOfBoundsException if the given row is less than zero or equal than or greater than the number of
+   * visible rows in the <code>JTree</code>.
+   * @throws LocationUnavailableException if a tree path for the given row cannot be found.
+   * @since 1.2
+   */
+  public JTreeFixture doubleClickRow(int row) {
+    driver.doubleClickRow(target, row);
+    return this;
+  }
+  
+  /**
+   * Double-clicks the given path.
+   * @param path the path to double-click.
+   * @return this fixture.
+   * @throws IllegalStateException if the <code>JTree</code> is disabled.
+   * @throws IllegalStateException if the <code>JTree</code> is not showing on the screen.
+   * @throws LocationUnavailableException if the given path cannot be found.
+   * @since 1.2
+   */
+  public JTreeFixture doubleClickPath(String path) {
+    driver.doubleClickPath(target, path);
+    return this;
+  }
+
+  /**
    * Simulates a user clicking this fixture's <code>{@link JTree}</code>.
    * @return this fixture.
    * @throws IllegalStateException if this fixture's <code>JTree</code> is disabled.

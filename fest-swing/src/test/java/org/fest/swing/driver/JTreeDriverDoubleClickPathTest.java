@@ -28,36 +28,35 @@ import org.fest.swing.test.recorder.ClickRecorder;
 import org.testng.annotations.Test;
 
 /**
- * Tests for <code>{@link JTreeDriver#doubleClickRow(JTree, int)}</code>
+ * Tests for <code>{@link JTreeDriver#doubleClickPath(JTree, String)}</code>
  *
  * @author Alex Ruiz
  */
 @Test(groups = GUI)
-public class JTreeDriverDoubleClickRowTest extends JTreeDriverDoubleClickCellTestCase {
+public class JTreeDriverDoubleClickPathTest extends JTreeDriverDoubleClickCellTestCase {
 
-  public void shouldDoubleClickRow() {
+  public void shouldDoubleClickPath() {
     ClickRecorder recorder = ClickRecorder.attachTo(tree());
-    int row = 5;
-    driver().doubleClickRow(tree(), row);
+    driver().doubleClickPath(tree(), "root");
     assertThat(recorder).clicked(MouseButton.LEFT_BUTTON)
                         .timesClicked(2);
-    assertThat(rowAt(recorder.pointClicked())).isEqualTo(row);
+    assertThat(rowAt(recorder.pointClicked())).isEqualTo(0);
   }
 
-  public void shouldThrowErrorWhenDoubleClickingRowInDisabledJTree() {
+  public void shouldThrowErrorWhenDoubleClickingPathInDisabledJTree() {
     disableTree();
     try {
-      driver().doubleClickRow(tree(), 0);
+      driver().doubleClickPath(tree(), "root");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertActionFailureDueToDisabledComponent(e);
     }
   }
 
-  public void shouldThrowErrorWhenDoubleClickingRowInNotShowingJTree() {
+  public void shouldThrowErrorWhenDoubleClickingPathInNotShowingJTree() {
     hideWindow();
     try {
-      driver().doubleClickRow(tree(), 0);
+      driver().doubleClickPath(tree(), "root");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertActionFailureDueToNotShowingComponent(e);

@@ -84,7 +84,7 @@ public class JTreeDriver extends JComponentDriver {
   }
   
   /**
-   * Double clicks the given row.
+   * Double-clicks the given row.
    * @param tree the target <code>JTree</code>.
    * @param row the given row.
    * @throws IllegalStateException if the <code>JTree</code> is disabled.
@@ -95,10 +95,28 @@ public class JTreeDriver extends JComponentDriver {
    * @since 1.2
    */
   public void doubleClickRow(JTree tree, int row) {
-    Point p = scrollToRowToSelect(tree, row, location);
-    robot.click(tree, p, LEFT_BUTTON, 2);
+    Point p = scrollToRow(tree, row, location);
+    doubleClick(tree, p);
   }
 
+  /**
+   * Double-clicks the given path.
+   * @param tree the target <code>JTree</code>.
+   * @param path the path to double-click.
+   * @throws IllegalStateException if the <code>JTree</code> is disabled.
+   * @throws IllegalStateException if the <code>JTree</code> is not showing on the screen.
+   * @throws LocationUnavailableException if the given path cannot be found.
+   * @since 1.2
+   */
+  public void doubleClickPath(JTree tree, String path) {
+    Pair<TreePath, Point> info = scrollToMatchingPath(tree, path);
+    doubleClick(tree, info.ii);
+  }
+
+  private void doubleClick(JTree tree, Point p) {
+    robot.click(tree, p, LEFT_BUTTON, 2);
+  }
+  
   /**
    * Expands the given row, is possible. If the row is already expanded, this method will not do anything.
    * <p>
@@ -418,20 +436,9 @@ public class JTreeDriver extends JComponentDriver {
 
   @RunsInEDT
   private Point scrollAndSelectRow(JTree tree, int row) {
-    Point p = scrollToRowToSelect(tree, row, location);
+    Point p = scrollToRow(tree, row, location);
     robot.click(tree, p);
     return p;
-  }
-
-  @RunsInEDT
-  private static Point scrollToRowToSelect(final JTree tree, final int row, final JTreeLocation location) {
-    return execute(new GuiQuery<Point>() {
-      protected Point executeInEDT() {
-        validateIsEnabledAndShowing(tree);
-        Rectangle rowBounds = scrollToVisible(tree, row, location);
-        return new Point(rowBounds.x + 1, rowBounds.y + rowBounds.height / 2);
-      }
-    });
   }
 
   @RunsInCurrentThread
