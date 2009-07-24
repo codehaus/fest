@@ -25,15 +25,15 @@ package org.fest.assertions;
 public interface NullableAssert<LEAFCLASS_TYPE> {
 
   /**
-   * Asserts that the actual value is <code>null</code>.
-   * @throws AssertionError if the actual value is not <code>null</code>.
+   * Asserts that the actual value is a <code>null</code> pointer.
+   * @throws AssertionError if the actual value is not a <code>null</code> pointer.
    */
   public void isNull();
 
   /**
-   * Verifies that the actual value is not <code>null</code>.
+   * Verifies that the actual value is not a <code>null</code> pointer.
    * @return this assertion object.
-   * @throws AssertionError if the actual value is <code>null</code>.
+   * @throws AssertionError if the actual value is a <code>null</code> pointer.
    */
   public LEAFCLASS_TYPE isNotNull();
 
