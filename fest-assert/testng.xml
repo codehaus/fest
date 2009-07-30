@@ -4,6 +4,7 @@
   <test name="All packages" >
     <packages>
       <package name="org.fest.assertions"/>
+      <package name="org.fest.assertions.extensionapi"/>
     </packages>
   </test>
 </suite>

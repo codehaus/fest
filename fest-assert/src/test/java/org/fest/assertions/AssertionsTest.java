@@ -24,6 +24,7 @@ import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
 import java.util.*;
 
+import org.fest.assertions.extensionapi.*;
 import org.fest.util.Files;
 import org.testng.annotations.Test;
 
@@ -96,7 +97,7 @@ import org.testng.annotations.Test;
     List<String> list = new ArrayList<String>();
     list.add("Frodo");
     CollectionAssert assertion = assertThat(list.iterator());
-    assertEquals(list, assertion.actual);
+    assertEquals(list, assertion.getActualValue());
   }
 
   public void shouldReturnDoubleArrayAssertIfArgumentIsDoubleArray() {

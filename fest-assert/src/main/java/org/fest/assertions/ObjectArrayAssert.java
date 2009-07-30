@@ -15,9 +15,8 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.Fail.errorMessageIfEqual;
-import static org.fest.assertions.Fail.errorMessageIfNotEqual;
-import static org.fest.assertions.Formatting.inBrackets;
+import static org.fest.assertions.extensionapi.FailConditional.*;
+import static org.fest.assertions.extensionapi.Formatting.*;
 import static org.fest.util.Collections.duplicatesFrom;
 import static org.fest.util.Collections.list;
 import static org.fest.util.Strings.concat;

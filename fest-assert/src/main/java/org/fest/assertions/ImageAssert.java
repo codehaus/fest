@@ -15,10 +15,9 @@
 package org.fest.assertions;
 
 import static java.lang.String.valueOf;
-import static org.fest.assertions.Fail.errorMessageIfEqual;
-import static org.fest.assertions.Fail.errorMessageIfNotEqual;
-import static org.fest.assertions.Formatting.inBrackets;
+import static org.fest.assertions.extensionapi.FailConditional.*;
 import static org.fest.assertions.Threshold.threshold;
+import static org.fest.assertions.extensionapi.Formatting.*;
 import static org.fest.util.Objects.areEqual;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
@@ -27,6 +26,8 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
+import org.fest.assertions.extensionapi.*;
 
 /**
  * Understands assertion methods for images. To create a new instance of this class use the method
@@ -286,7 +287,7 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
     isNotNull();
     if (expected == null) throw new IllegalArgumentException("The size to compare to should not be null");
     Dimension actualDimension = new Dimension(actual.getWidth(), actual.getHeight());
-    Fail.failIfNotEqual(description(), actualDimension, expected);
+    FailConditional.failIfNotEqual(description(), actualDimension, expected);
     return this;
   }
 

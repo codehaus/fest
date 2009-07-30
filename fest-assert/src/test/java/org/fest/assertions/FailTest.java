@@ -15,13 +15,14 @@
  */
 package org.fest.assertions;
 
-import static org.fest.test.ExpectedFailure.expectAssertionError;
-import static org.fest.util.Strings.*;
-import static org.testng.Assert.*;
+import org.testng.annotations.*;
 
-import org.fest.test.CodeToTest;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.fest.test.*;
+
+import static org.fest.test.ExpectedFailure.*;
+import static org.fest.util.Strings.*;
+
+import static org.testng.Assert.*;
 
 /**
  * Tests for <code>{@link Fail}</code>.
@@ -47,94 +48,9 @@ public class FailTest {
       assertEquals(e.getMessage(), message);
     }
   }
-
-  @Test(dataProvider = "messageProvider")
-  public void shouldThrowErrorWithMessageIfValuesAreEqual(final String message) {
-    String expectedMessage = concat(format(message), "actual value:<'Yoda'> should not be equal to:<'Yoda'>");
-    expectAssertionError(expectedMessage).on(new CodeToTest() {
-      public void run() {
-        Fail.failIfEqual(message, "Yoda", "Yoda");
-      }
-    });
-  }
-
-  @Test public void shouldNotThrowErrorIfValuesAreNotEqualAndExpectingEqual() {
-    Fail.failIfEqual("", "Yoda", "Ben");
-  }
-
-  @Test(dataProvider = "messageProvider")
-  public void shouldFailIfValuesAreNotEqual(final String message) {
-    String expectedMessage = concat(format(message), "expected:<'Luke'> but was:<'Yoda'>");
-    expectAssertionError(expectedMessage).on(new CodeToTest() {
-      public void run() {
-        Fail.failIfNotEqual(message, "Yoda", "Luke");
-      }
-    });
-  }
-
-  @Test void shouldPassIfValuesAreEqualAndExpectingNotEqual() {
-    Fail.failIfNotEqual("", "Yoda", "Yoda");
-  }
-
-  @Test(dataProvider = "messageProvider")
-  public void failIfNullShouldFailIfNull(final String message) {
-    String expectedMessage = concat(format(message), "expecting a non-null object, but it was null");
-    expectAssertionError(expectedMessage).on(new CodeToTest() {
-      public void run() {
-        Fail.failIfNull(message, null);
-      }
-    });
-  }
-
-  @Test void shouldPassIfValueIsNotNullAndExpectingNull() {
-    Fail.failIfNull("", "Luke");
-  }
-
-  @Test(dataProvider = "messageProvider")
-  public void shouldFailIfValueIsNotNull(final String message) {
-    String expectedMessage = concat(format(message), "<'Leia'> should be null");
-    expectAssertionError(expectedMessage).on(new CodeToTest() {
-      public void run() {
-        Fail.failIfNotNull(message, "Leia");
-      }
-    });
-  }
-
-  @Test void shouldPassIfValueIsNullAndExpectingNotNull() {
-    Fail.failIfNotNull("", null);
-  }
-
-  @Test(dataProvider = "messageProvider")
-  public void shouldFailIfValuesAreSame(final String message) {
-    final Object o = new Object();
-    String expectedMessage = concat(format(message), "given objects are same:<", o, ">");
-    expectAssertionError(expectedMessage).on(new CodeToTest() {
-      public void run() {
-        Fail.failIfSame(message, o, o);
-      }
-    });
-  }
-
-  @Test void shouldPassIfValuesAreNotSameAndExpectingSame() {
-    Fail.failIfSame("", "Luke", "Anakin");
-  }
-
-  @Test(dataProvider = "messageProvider")
-  public void failIfNotSameShouldFailIfNotSame(final String message) {
-    String expectedMessage = concat(format(message), "expected same instance but found:<'Ben'> and:<'Han'>");
-    expectAssertionError(expectedMessage).on(new CodeToTest() {
-      public void run() {
-        Fail.failIfNotSame(message, "Ben", "Han");
-      }
-    });
-  }
-
-  @Test void shouldPassIfValuesAreSameAndExpectingNotSame() {
-    Object o = new Object();
-    Fail.failIfNotSame("", o, o);
-  }
-
-  @Test public void shouldIncludeMessageWhenFailing() {
+  
+  @Test
+  public void shouldIncludeMessageWhenFailing() {
     final String message = "Failed :(";
     expectAssertionError(message).on(new CodeToTest() {
       public void run() {
@@ -143,17 +59,5 @@ public class FailTest {
     });
   }
 
-  @DataProvider(name = "messageProvider")
-  public Object[][] messageProvider() {
-    return new Object[][] {
-        { "a message" },
-        { "" },
-        { null }
-    };
-  }
 
-  private String format(String s) {
-    if (isEmpty(s)) return "";
-    return concat("[", s, "] ");
-  }
 }

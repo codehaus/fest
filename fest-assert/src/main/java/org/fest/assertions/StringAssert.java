@@ -15,9 +15,10 @@
  */
 package org.fest.assertions;
 
+import org.fest.assertions.extensionapi.*;
 import org.fest.util.Strings;
 
-import static org.fest.assertions.Formatting.inBrackets;
+import static org.fest.assertions.extensionapi.Formatting.*;
 import static org.fest.util.Strings.concat;
 
 /**

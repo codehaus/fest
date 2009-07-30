@@ -17,7 +17,9 @@ package org.fest.assertions;
 
 import java.util.Arrays;
 
-import static org.fest.assertions.Formatting.inBrackets;
+import org.fest.assertions.extensionapi.*;
+
+import static org.fest.assertions.extensionapi.Formatting.*;
 import static org.fest.util.Objects.namesOf;
 import static org.fest.util.Strings.concat;
 

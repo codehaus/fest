@@ -1,19 +1,18 @@
 /*
  * Created on Sep 14, 2007
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * 
  * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- *
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ * 
  * Copyright 2007-2009 the original author or authors.
  */
-package org.fest.assertions;
+package org.fest.assertions.extensionapi;
 
 import org.fest.util.Arrays;
 import org.fest.util.Collections;
@@ -27,7 +26,7 @@ import java.util.Map;
 
 /**
  * Provides utility methods related to formatting.
- *
+ * 
  * @author Yvonne Wang
  */
 public final class Formatting {
@@ -40,12 +39,13 @@ public final class Formatting {
   }
 
   public static String inBrackets(Object o) {
-    if (isOneDimensionalArray(o)) return doBracketAround(Arrays.format(o)); // TODO just check for array, since format supports multi-dimensional arrays now
-    if (o instanceof Class<?>) return doBracketAround((Class<?>)o);
-    if (o instanceof Collection<?>) return doBracketAround((Collection<?>)o);
-    if (o instanceof Map<?, ?>) return doBracketAround((Map<?, ?>)o);
-    if (o instanceof File) return doBracketAround((File)o);
-    if (o instanceof Dimension) return doBracketAround((Dimension)o);
+    if (isOneDimensionalArray(o)) return doBracketAround(Arrays.format(o)); // TODO just check for array, since format
+                                                                            // supports multi-dimensional arrays now
+    if (o instanceof Class<?>) return doBracketAround((Class<?>) o);
+    if (o instanceof Collection<?>) return doBracketAround((Collection<?>) o);
+    if (o instanceof Map<?, ?>) return doBracketAround((Map<?, ?>) o);
+    if (o instanceof File) return doBracketAround((File) o);
+    if (o instanceof Dimension) return doBracketAround((Dimension) o);
     return doBracketAround(quote(o));
   }
 

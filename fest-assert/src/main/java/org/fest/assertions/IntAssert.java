@@ -15,7 +15,9 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.PrimitiveFail.*;
+import static org.fest.assertions.extensionapi.PrimitiveFail.*;
+
+import org.fest.assertions.extensionapi.*;
 
 /**
  * Understands assert method for <code>Integer</code>s. To create a new instance of this class use the

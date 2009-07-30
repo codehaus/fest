@@ -19,9 +19,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.fest.assertions.extensionapi.*;
 import org.fest.util.Maps;
 
-import static org.fest.assertions.Formatting.inBrackets;
+import static org.fest.assertions.extensionapi.Formatting.*;
 import static org.fest.util.Strings.*;
 
 /**

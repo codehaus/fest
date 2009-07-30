@@ -13,11 +13,11 @@
  * 
  * Copyright @2007-2009 the original author or authors.
  */
-package org.fest.assertions;
+package org.fest.assertions.extensionapi;
 
-import static org.testng.Assert.assertEquals;
+import org.testng.annotations.*;
 
-import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
 /**
  * Tests for <code>{@link Formatting}</code>.

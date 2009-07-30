@@ -52,7 +52,7 @@ public abstract class Condition<T> {
     return this;
   }
 
-  final String addDescriptionTo(String s) {
+  public final String addDescriptionTo(String s) {
     String descriptionToAdd = description();
     if (isEmpty(descriptionToAdd)) descriptionToAdd = getClass().getSimpleName();
     return concat(s, ":<", descriptionToAdd, ">");
