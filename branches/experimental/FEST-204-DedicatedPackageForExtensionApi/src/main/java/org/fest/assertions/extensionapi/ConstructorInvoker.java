@@ -12,7 +12,7 @@
  *
  * Copyright @2008-2009 the original author or authors.
  */
-package org.fest.assertions;
+package org.fest.assertions.extensionapi;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;

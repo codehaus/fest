@@ -16,7 +16,7 @@ package org.fest.assertions.extensionapi;
 
 import org.fest.assertions.*;
 
-import static org.fest.assertions.ComparisonFailureFactory.*;
+import static org.fest.assertions.extensionapi.ComparisonFailureFactory.*;
 import static org.fest.assertions.extensionapi.Formatting.*;
 import static org.fest.util.Objects.*;
 import static org.fest.util.Strings.*;

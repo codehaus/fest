@@ -13,12 +13,11 @@
  *
  * Copyright @2008-2009 the original author or authors.
  */
-package org.fest.assertions;
+package org.fest.assertions.extensionapi;
+
+import org.testng.annotations.*;
 
 import static org.testng.Assert.*;
-
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link ConstructorInvoker}</code>.

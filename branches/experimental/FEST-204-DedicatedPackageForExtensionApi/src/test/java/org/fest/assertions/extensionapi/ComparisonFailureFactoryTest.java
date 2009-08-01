@@ -13,16 +13,18 @@
  *
  * Copyright @2008-2009 the original author or authors.
  */
-package org.fest.assertions;
+package org.fest.assertions.extensionapi;
+
+import org.testng.annotations.*;
+
+import org.fest.mocks.*;
 
 import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.fest.util.Arrays.array;
-import static org.testng.Assert.*;
+import static org.easymock.classextension.EasyMock.*;
 
-import org.fest.mocks.EasyMockTemplate;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.Test;
+import static org.fest.util.Arrays.*;
+
+import static org.testng.Assert.*;
 
 /**
  * Tests for <code>{@link ComparisonFailureFactory}</code>.

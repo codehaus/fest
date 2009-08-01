@@ -52,7 +52,7 @@ public class ListAssert extends GroupAssert<List<?>> {
    * @throws AssertionError if the given <code>List</code> does not contain the given object at the given index.
    */
   public ListAssert contains(Object o, Index index) {
-    if (index == null) throw fail("The given index should not be null");
+    if (index == null) fail("The given index should not be null");
     isNotNull().isNotEmpty();
     int indexValue = index.value();
     int listSize = actualGroupSize();

@@ -253,8 +253,8 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    * @return the thrown <code>AssertionError</code>.
    * @throws AssertionError using the given reason as the message.
    */
-  protected final AssertionError fail(String reason) {
-    throw Fail.fail(formatted(reason));
+  protected final void fail(String reason) {
+    Fail.fail(formatted(reason));
   }
 
   /**

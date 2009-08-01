@@ -13,7 +13,8 @@
  *
  * Copyright @2007-2009 the original author or authors.
  */
-package org.fest.assertions;
+package org.fest.assertions.extensionapi;
+
 
 /**
  * Understands creation of JUnit's <code>ComparisonFailure</code>.

@@ -28,7 +28,7 @@ public class Fail {
    * @throws AssertionError without any message.
    */
   public static void fail() {
-    fail(null);
+    throw new AssertionError();
   }
 
   /**
@@ -49,7 +49,7 @@ public class Fail {
    * @return the thrown <code>AssertionError</code>.
    * @throws AssertionError with the given message.
    */
-  public static AssertionError fail(String message) {
+  public static void fail(String message) {
     throw new AssertionError(message);
   }
 
