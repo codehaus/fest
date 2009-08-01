@@ -15,12 +15,9 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.extensionapi.FailConditional.*;
+import static org.fest.assertions.Fail.*;
 
 import java.math.BigDecimal;
-
-import org.fest.assertions.extensionapi.*;
-
 import static java.math.BigDecimal.ZERO;
 
 /**

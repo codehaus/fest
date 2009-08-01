@@ -1,12 +1,10 @@
 package org.fest.assertions;
 
 import static java.lang.Math.abs;
-import static org.fest.assertions.extensionapi.FailConditional.*;
-import static org.fest.assertions.extensionapi.PrimitiveFail.*;
-import static org.fest.assertions.extensionapi.Formatting.*;
+import static org.fest.assertions.Fail.errorMessageIfNotEqual;
+import static org.fest.assertions.Formatting.inBrackets;
+import static org.fest.assertions.PrimitiveFail.*;
 import static org.fest.util.Strings.concat;
-
-import org.fest.assertions.extensionapi.*;
 
 /**
  * Understands Assertion methods for <code>Double</code>. To create a new instance of this class use the method

@@ -1,24 +1,24 @@
 /*
  * Created on Jan 25, 2008
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
- * 
+ *
  * Copyright @2008-2009 the original author or authors.
  */
-package org.fest.assertions.extensionapi;
+package org.fest.assertions;
 
-import static org.fest.assertions.extensionapi.FailConditional.*;
+import static org.fest.assertions.Fail.*;
 
 /**
  * Understands failure methods for primitive types.
- * 
+ *
  * @author Yvonne Wang
  * @author Alex Ruiz
  * @author David DIDIER
@@ -32,7 +32,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the given <code>char</code>s are equal.
    */
-  public static void failIfEqual(String message, char actual, char value) {
+  static void failIfEqual(String message, char actual, char value) {
     if (actual == value) fail(errorMessageIfEqual(message, actual, value));
   }
 
@@ -43,7 +43,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the given <code>byte</code>s are equal.
    */
-  public static void failIfEqual(String message, byte actual, byte value) {
+  static void failIfEqual(String message, byte actual, byte value) {
     if (actual == value) fail(errorMessageIfEqual(message, actual, value));
   }
 
@@ -54,7 +54,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the given <code>short</code>s are equal.
    */
-  public static void failIfEqual(String message, short actual, short value) {
+  static void failIfEqual(String message, short actual, short value) {
     if (actual == value) fail(errorMessageIfEqual(message, actual, value));
   }
 
@@ -65,7 +65,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the given <code>int</code>s are equal.
    */
-  public static void failIfEqual(String message, int actual, int value) {
+  static void failIfEqual(String message, int actual, int value) {
     if (actual == value) fail(errorMessageIfEqual(message, actual, value));
   }
 
@@ -76,7 +76,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the given <code>long</code>s are equal.
    */
-  public static void failIfEqual(String message, long actual, long value) {
+  static void failIfEqual(String message, long actual, long value) {
     if (actual == value) fail(errorMessageIfEqual(message, actual, value));
   }
 
@@ -87,7 +87,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the given <code>float</code>s are equal.
    */
-  public static void failIfEqual(String message, float actual, float value) {
+  static void failIfEqual(String message, float actual, float value) {
     if (Float.compare(actual, value) == 0) fail(errorMessageIfEqual(message, actual, value));
   }
 
@@ -98,7 +98,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the given <code>double</code>s are equal.
    */
-  public static void failIfEqual(String message, double actual, double value) {
+  static void failIfEqual(String message, double actual, double value) {
     if (Double.compare(actual, value) == 0) fail(errorMessageIfEqual(message, actual, value));
   }
 
@@ -109,7 +109,7 @@ public final class PrimitiveFail {
    * @param expected expected value.
    * @throws AssertionError if the given <code>char</code>s are not equal.
    */
-  public static void failIfNotEqual(String message, char actual, char expected) {
+  static void failIfNotEqual(String message, char actual, char expected) {
     if (actual != expected) fail(errorMessageIfNotEqual(message, actual, expected));
   }
 
@@ -120,7 +120,7 @@ public final class PrimitiveFail {
    * @param expected expected value.
    * @throws AssertionError if the given <code>byte</code>s are not equal.
    */
-  public static void failIfNotEqual(String message, byte actual, byte expected) {
+  static void failIfNotEqual(String message, byte actual, byte expected) {
     if (actual != expected) fail(errorMessageIfNotEqual(message, actual, expected));
   }
 
@@ -131,7 +131,7 @@ public final class PrimitiveFail {
    * @param expected expected value.
    * @throws AssertionError if the given <code>short</code>s are not equal.
    */
-  public static void failIfNotEqual(String message, short actual, short expected) {
+  static void failIfNotEqual(String message, short actual, short expected) {
     if (actual != expected) fail(errorMessageIfNotEqual(message, actual, expected));
   }
 
@@ -142,7 +142,7 @@ public final class PrimitiveFail {
    * @param expected expected value.
    * @throws AssertionError if the given <code>int</code>s are not equal.
    */
-  public static void failIfNotEqual(String message, int actual, int expected) {
+  static void failIfNotEqual(String message, int actual, int expected) {
     if (actual != expected) fail(errorMessageIfNotEqual(message, actual, expected));
   }
 
@@ -153,7 +153,7 @@ public final class PrimitiveFail {
    * @param expected expected value.
    * @throws AssertionError if the given <code>long</code>s are not equal.
    */
-  public static void failIfNotEqual(String message, long actual, long expected) {
+  static void failIfNotEqual(String message, long actual, long expected) {
     if (actual != expected) fail(errorMessageIfNotEqual(message, actual, expected));
   }
 
@@ -164,7 +164,7 @@ public final class PrimitiveFail {
    * @param expected expected value.
    * @throws AssertionError if the given <code>float</code>s are not equal.
    */
-  public static void failIfNotEqual(String message, float actual, float expected) {
+  static void failIfNotEqual(String message, float actual, float expected) {
     if (Float.compare(actual, expected) != 0) fail(errorMessageIfNotEqual(message, actual, expected));
   }
 
@@ -175,7 +175,7 @@ public final class PrimitiveFail {
    * @param expected expected value.
    * @throws AssertionError if the given <code>double</code>s are not equal.
    */
-  public static void failIfNotEqual(String message, double actual, double expected) {
+  static void failIfNotEqual(String message, double actual, double expected) {
     if (Double.compare(actual, expected) != 0) fail(errorMessageIfNotEqual(message, actual, expected));
   }
 
@@ -186,7 +186,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not less than the value value.
    */
-  public static void failIfNotLessThan(String message, char actual, char value) {
+  static void failIfNotLessThan(String message, char actual, char value) {
     if (actual >= value) fail(errorMessageIfNotLessThan(message, actual, value));
   }
 
@@ -197,7 +197,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not less than the value value.
    */
-  public static void failIfNotLessThan(String message, byte actual, byte value) {
+  static void failIfNotLessThan(String message, byte actual, byte value) {
     if (actual >= value) fail(errorMessageIfNotLessThan(message, actual, value));
   }
 
@@ -208,7 +208,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not less than the value value.
    */
-  public static void failIfNotLessThan(String message, short actual, short value) {
+  static void failIfNotLessThan(String message, short actual, short value) {
     if (actual >= value) fail(errorMessageIfNotLessThan(message, actual, value));
   }
 
@@ -219,7 +219,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not less than the value value.
    */
-  public static void failIfNotLessThan(String message, int actual, int value) {
+  static void failIfNotLessThan(String message, int actual, int value) {
     if (actual >= value) fail(errorMessageIfNotLessThan(message, actual, value));
   }
 
@@ -230,7 +230,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not less than the value value.
    */
-  public static void failIfNotLessThan(String message, long actual, long value) {
+  static void failIfNotLessThan(String message, long actual, long value) {
     if (actual >= value) fail(errorMessageIfNotLessThan(message, actual, value));
   }
 
@@ -241,7 +241,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not less than the value value.
    */
-  public static void failIfNotLessThan(String message, float actual, float value) {
+  static void failIfNotLessThan(String message, float actual, float value) {
     if (Float.compare(actual, value) >= 0) fail(errorMessageIfNotLessThan(message, actual, value));
   }
 
@@ -252,7 +252,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not less than the value value.
    */
-  public static void failIfNotLessThan(String message, double actual, double value) {
+  static void failIfNotLessThan(String message, double actual, double value) {
     if (Double.compare(actual, value) >= 0) fail(errorMessageIfNotLessThan(message, actual, value));
   }
 
@@ -263,7 +263,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not greater than the value value.
    */
-  public static void failIfNotGreaterThan(String message, char actual, char value) {
+  static void failIfNotGreaterThan(String message, char actual, char value) {
     if (actual <= value) fail(errorMessageIfNotGreaterThan(message, actual, value));
   }
 
@@ -274,7 +274,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not greater than the value value.
    */
-  public static void failIfNotGreaterThan(String message, byte actual, byte value) {
+  static void failIfNotGreaterThan(String message, byte actual, byte value) {
     if (actual <= value) fail(errorMessageIfNotGreaterThan(message, actual, value));
   }
 
@@ -285,7 +285,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not greater than the value value.
    */
-  public static void failIfNotGreaterThan(String message, short actual, short value) {
+  static void failIfNotGreaterThan(String message, short actual, short value) {
     if (actual <= value) fail(errorMessageIfNotGreaterThan(message, actual, value));
   }
 
@@ -296,7 +296,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not greater than the value value.
    */
-  public static void failIfNotGreaterThan(String message, int actual, int value) {
+  static void failIfNotGreaterThan(String message, int actual, int value) {
     if (actual <= value) fail(errorMessageIfNotGreaterThan(message, actual, value));
   }
 
@@ -307,7 +307,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not greater than the value value.
    */
-  public static void failIfNotGreaterThan(String message, long actual, long value) {
+  static void failIfNotGreaterThan(String message, long actual, long value) {
     if (actual <= value) fail(errorMessageIfNotGreaterThan(message, actual, value));
   }
 
@@ -318,7 +318,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not greater than the value value.
    */
-  public static void failIfNotGreaterThan(String message, float actual, float value) {
+  static void failIfNotGreaterThan(String message, float actual, float value) {
     if (Float.compare(actual, value) <= 0) fail(errorMessageIfNotGreaterThan(message, actual, value));
   }
 
@@ -329,7 +329,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not greater than the value value.
    */
-  public static void failIfNotGreaterThan(String message, double actual, double value) {
+  static void failIfNotGreaterThan(String message, double actual, double value) {
     if (Double.compare(actual, value) <= 0) fail(errorMessageIfNotGreaterThan(message, actual, value));
   }
 
@@ -340,7 +340,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not less than or equal to the value value.
    */
-  public static void failIfNotLessThanOrEqualTo(String message, char actual, char value) {
+  static void failIfNotLessThanOrEqualTo(String message, char actual, char value) {
     if (actual > value) fail(errorMessageIfNotLessThanOrEqualTo(message, actual, value));
   }
 
@@ -351,7 +351,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not less than or equal to the value value.
    */
-  public static void failIfNotLessThanOrEqualTo(String message, byte actual, byte value) {
+  static void failIfNotLessThanOrEqualTo(String message, byte actual, byte value) {
     if (actual > value) fail(errorMessageIfNotLessThanOrEqualTo(message, actual, value));
   }
 
@@ -362,7 +362,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not less than or equal to the value value.
    */
-  public static void failIfNotLessThanOrEqualTo(String message, short actual, short value) {
+  static void failIfNotLessThanOrEqualTo(String message, short actual, short value) {
     if (actual > value) fail(errorMessageIfNotLessThanOrEqualTo(message, actual, value));
   }
 
@@ -373,7 +373,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not less than or equal to the value value.
    */
-  public static void failIfNotLessThanOrEqualTo(String message, int actual, int value) {
+  static void failIfNotLessThanOrEqualTo(String message, int actual, int value) {
     if (actual > value) fail(errorMessageIfNotLessThanOrEqualTo(message, actual, value));
   }
 
@@ -384,7 +384,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not less than or equal to the value value.
    */
-  public static void failIfNotLessThanOrEqualTo(String message, long actual, long value) {
+  static void failIfNotLessThanOrEqualTo(String message, long actual, long value) {
     if (actual > value) fail(errorMessageIfNotLessThanOrEqualTo(message, actual, value));
   }
 
@@ -395,7 +395,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not less than or equal to the value value.
    */
-  public static void failIfNotLessThanOrEqualTo(String message, float actual, float value) {
+  static void failIfNotLessThanOrEqualTo(String message, float actual, float value) {
     if (Float.compare(actual, value) > 0) fail(errorMessageIfNotLessThanOrEqualTo(message, actual, value));
   }
 
@@ -406,7 +406,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not less than or equal to the value value.
    */
-  public static void failIfNotLessThanOrEqualTo(String message, double actual, double value) {
+  static void failIfNotLessThanOrEqualTo(String message, double actual, double value) {
     if (Double.compare(actual, value) > 0) fail(errorMessageIfNotLessThanOrEqualTo(message, actual, value));
   }
 
@@ -417,7 +417,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not greater than or equal to the value value.
    */
-  public static void failIfNotGreaterThanOrEqualTo(String message, char actual, char value) {
+  static void failIfNotGreaterThanOrEqualTo(String message, char actual, char value) {
     if (actual < value) fail(errorMessageIfNotGreaterThanOrEqualTo(message, actual, value));
   }
 
@@ -428,7 +428,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not greater than or equal to the value value.
    */
-  public static void failIfNotGreaterThanOrEqualTo(String message, byte actual, byte value) {
+  static void failIfNotGreaterThanOrEqualTo(String message, byte actual, byte value) {
     if (actual < value) fail(errorMessageIfNotGreaterThanOrEqualTo(message, actual, value));
   }
 
@@ -439,7 +439,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not greater than or equal to the value value.
    */
-  public static void failIfNotGreaterThanOrEqualTo(String message, short actual, short value) {
+  static void failIfNotGreaterThanOrEqualTo(String message, short actual, short value) {
     if (actual < value) fail(errorMessageIfNotGreaterThanOrEqualTo(message, actual, value));
   }
 
@@ -450,7 +450,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not greater than or equal to the value value.
    */
-  public static void failIfNotGreaterThanOrEqualTo(String message, int actual, int value) {
+  static void failIfNotGreaterThanOrEqualTo(String message, int actual, int value) {
     if (actual < value) fail(errorMessageIfNotGreaterThanOrEqualTo(message, actual, value));
   }
 
@@ -461,7 +461,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not greater than or equal to the value value.
    */
-  public static void failIfNotGreaterThanOrEqualTo(String message, long actual, long value) {
+  static void failIfNotGreaterThanOrEqualTo(String message, long actual, long value) {
     if (actual < value) fail(errorMessageIfNotGreaterThanOrEqualTo(message, actual, value));
   }
 
@@ -472,7 +472,7 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not greater than or equal to the value value.
    */
-  public static void failIfNotGreaterThanOrEqualTo(String message, float actual, float value) {
+  static void failIfNotGreaterThanOrEqualTo(String message, float actual, float value) {
     if (Float.compare(actual, value) < 0) fail(errorMessageIfNotGreaterThanOrEqualTo(message, actual, value));
   }
 
@@ -483,9 +483,9 @@ public final class PrimitiveFail {
    * @param value the value checked against <code>actual</code>.
    * @throws AssertionError if the first value is not greater than or equal to the value value.
    */
-  public static void failIfNotGreaterThanOrEqualTo(String message, double actual, double value) {
+  static void failIfNotGreaterThanOrEqualTo(String message, double actual, double value) {
     if (Double.compare(actual, value) < 0) fail(errorMessageIfNotGreaterThanOrEqualTo(message, actual, value));
   }
 
-  protected PrimitiveFail() {}
+  private PrimitiveFail() {}
 }

@@ -17,13 +17,12 @@ package org.fest.assertions;
 
 import static org.fest.assertions.Collections.found;
 import static org.fest.assertions.Collections.notFound;
-import static org.fest.assertions.extensionapi.Formatting.*;
+import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Collections.duplicatesFrom;
 import static org.fest.util.Strings.concat;
 
 import java.util.*;
 
-import org.fest.assertions.extensionapi.*;
 import org.fest.util.Collections;
 
 /**

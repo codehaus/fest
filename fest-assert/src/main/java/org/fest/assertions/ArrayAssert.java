@@ -15,13 +15,11 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.extensionapi.Formatting.*;
+import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Strings.concat;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.fest.assertions.extensionapi.*;
 
 /**
  * Understands assertions for arrays.

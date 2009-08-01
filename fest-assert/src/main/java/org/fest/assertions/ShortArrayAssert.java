@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.fest.assertions.extensionapi.FailConditional.*;
+import static org.fest.assertions.Fail.*;
 
 /**
  * Understands assertion methods for <code>short</code> arrays. To create a new instance of this class use the

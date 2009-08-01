@@ -14,9 +14,7 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.extensionapi.FailConditional.*;
-
-import org.fest.assertions.extensionapi.*;
+import static org.fest.assertions.Fail.*;
 
 /**
  * Understands assertion methods for <code>Boolean</code> values. To create a new instance of this class use the method

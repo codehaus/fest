@@ -18,9 +18,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.fest.assertions.FileContentComparator.LineDiff;
-import org.fest.assertions.extensionapi.*;
 
-import static org.fest.assertions.extensionapi.Formatting.*;
+import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Arrays.isEmpty;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Systems.LINE_SEPARATOR;

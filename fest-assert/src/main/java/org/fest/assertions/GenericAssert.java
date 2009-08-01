@@ -1,29 +1,29 @@
 /*
  * Created on May 21, 2007
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- * 
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
- * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License.
- * 
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ *
  * Copyright @2007-2009 the original author or authors.
  */
-package org.fest.assertions.extensionapi;
+package org.fest.assertions;
 
-import static org.fest.assertions.extensionapi.FailConditional.*;
-import static org.fest.assertions.extensionapi.Formatting.*;
+import static org.fest.assertions.Fail.*;
+import static org.fest.assertions.Formatting.format;
+import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Strings.concat;
-
-import org.fest.assertions.*;
 
 /**
  * Understands a template for assertion methods.
  * @param <T> the type of object implementations of this template can verify.
- * 
+ *
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
@@ -39,13 +39,10 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
     this.actual = actual;
   }
 
-  public T getActualValue() {
-    return actual;
-  }
-
   public abstract void isNull();
-
+  
   public abstract GenericAssert<T> isNotNull();
+  
 
   /**
    * Verifies that the actual value satisfies the given condition.
@@ -69,7 +66,6 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    * failure will not show the provided description.
    * <p>
    * For example:
-   * 
    * <pre>
    * assertThat(val).<strong>as</strong>(&quot;name&quot;).isEqualTo(&quot;Frodo&quot;);
    * </pre>
@@ -80,12 +76,11 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
   protected abstract GenericAssert<T> as(String description);
 
   /**
-   * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in <a href="http://groovy.codehaus.org/"
-   * target="_blank">Groovy</a>. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
+   * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in
+   * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
+   * method, otherwise any assertion failure will not show the provided description.
    * <p>
    * For example:
-   * 
    * <pre>
    * assertThat(val).<strong>describedAs</strong>(&quot;name&quot;).isEqualTo(&quot;Frodo&quot;);
    * </pre>
@@ -101,7 +96,6 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    * failure will not show the provided description.
    * <p>
    * For example:
-   * 
    * <pre>
    * assertThat(val).<strong>as</strong>(new BasicDescription(&quot;name&quot;)).isEqualTo(&quot;Frodo&quot;);
    * </pre>
@@ -112,12 +106,11 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
   protected abstract GenericAssert<T> as(Description description);
 
   /**
-   * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in <a
-   * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
+   * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in
+   * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
    * For example:
-   * 
    * <pre>
    * assertThat(val).<strong>describedAs</strong>(new BasicDescription(&quot;name&quot;)).isEqualTo(&quot;Frodo&quot;);
    * </pre>
@@ -142,6 +135,8 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    * @throws AssertionError if the actual value is equal to the given one.
    */
   protected abstract GenericAssert<T> isNotEqualTo(T other);
+
+
 
   /**
    * Verifies that the actual value object instance is the same object instance as the given one.
@@ -220,14 +215,14 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
   protected final void assertNotNull() {
     failIfNull(description(), actual);
   }
-
+  
   /**
    * Verifies that the actual value is <code>null</code>.
    * @throws AssertionError if the actual value is not <code>null</code>.
    */
   protected final void assertNull() {
     failIfNotNull(description(), actual);
-  }
+  }  
 
   /**
    * Verifies that the actual value object is the same object instance as the given one.
