@@ -14,12 +14,8 @@
  */
 package org.fest.swing.core;
 
-import static java.awt.event.InputEvent.BUTTON1_MASK;
-import static java.awt.event.InputEvent.BUTTON2_MASK;
-import static java.awt.event.InputEvent.BUTTON3_MASK;
-import static java.awt.event.KeyEvent.CHAR_UNDEFINED;
-import static java.awt.event.KeyEvent.KEY_TYPED;
-import static java.awt.event.KeyEvent.VK_UNDEFINED;
+import static java.awt.event.InputEvent.*;
+import static java.awt.event.KeyEvent.*;
 import static java.awt.event.WindowEvent.WINDOW_CLOSING;
 import static java.lang.System.currentTimeMillis;
 import static javax.swing.SwingUtilities.getWindowAncestor;
@@ -49,13 +45,7 @@ import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.isEmpty;
 
 import java.applet.Applet;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Point;
-import java.awt.Toolkit;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.event.InvocationEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
@@ -697,6 +687,7 @@ public class BasicRobot implements Robot {
   /** {@inheritDoc} */
   @RunsInEDT
   public JPopupMenu showPopupMenu(Component invoker, Point location) {
+    focusAndWaitForFocusGain(invoker);
     click(invoker, location, RIGHT_BUTTON, 1);
     JPopupMenu popup = findActivePopupMenu();
     if (popup == null)
