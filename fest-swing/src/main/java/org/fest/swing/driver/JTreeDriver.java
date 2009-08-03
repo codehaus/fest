@@ -24,14 +24,14 @@ import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAnd
 import static org.fest.swing.driver.JTreeChildrenShowUpCondition.untilChildrenShowUp;
 import static org.fest.swing.driver.JTreeEditableQuery.isEditable;
 import static org.fest.swing.driver.JTreeExpandPathTask.expandTreePath;
-import static org.fest.swing.driver.JTreeMatchingPathQuery.matchingPathFor;
-import static org.fest.swing.driver.JTreeMatchingPathQuery.verifyJTreeIsReadyAndFindMatchingPath;
+import static org.fest.swing.driver.JTreeMatchingPathQuery.*;
 import static org.fest.swing.driver.JTreeToggleExpandStateTask.toggleExpandState;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.exception.ActionFailedException.actionFailure;
 import static org.fest.swing.timing.Pause.pause;
 import static org.fest.util.Arrays.format;
 import static org.fest.util.Arrays.isEmpty;
+import static org.fest.util.Objects.areEqual;
 import static org.fest.util.Strings.concat;
 
 import java.awt.Point;
@@ -653,9 +653,18 @@ public class JTreeDriver extends JComponentDriver {
       final Description errorMessage) {
     TreePath[] selectionPaths = tree.getSelectionPaths();
     if (isEmpty(selectionPaths)) failNoSelection(errorMessage);
-    if (Arrays.equals(selectionPaths, paths)) return;
-    fail(concat(
-        "[", errorMessage.value(), "] expecting selection:<", format(paths), "> but was:<", format(selectionPaths), ">"));
+    int selectionCount = paths.length;
+    if (selectionCount != selectionPaths.length) throw failNotEqualSelection(errorMessage, paths, selectionPaths);
+    for (int i = 0; i < selectionCount; i++) {
+      TreePath expected = matchingPathWithRootIfInvisible(tree, paths[i], pathFinder);
+      TreePath actual = selectionPaths[i];
+      if (!areEqual(expected, actual)) throw failNotEqualSelection(errorMessage, paths, selectionPaths);
+    }
+  }
+
+  private static AssertionError failNotEqualSelection(Description msg, String[] expected, TreePath[] actual) {
+    throw fail(concat(
+        "[", msg.value(), "] expecting selection:<", format(expected), "> but was:<", format(actual), ">"));
   }
 
   private static void failNoSelection(final Description errorMessage) {

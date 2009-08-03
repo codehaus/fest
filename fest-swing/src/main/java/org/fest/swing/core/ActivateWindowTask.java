@@ -19,6 +19,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 
 import java.awt.Window;
 
+import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
 
 
@@ -30,6 +31,7 @@ import org.fest.swing.edt.GuiTask;
  */
 class ActivateWindowTask {
 
+  @RunsInEDT
   static void activateWindow(final Window w) {
     execute(new GuiTask() {
       protected void executeInEDT() {
@@ -39,4 +41,5 @@ class ActivateWindowTask {
     });
   }
 
+  private ActivateWindowTask() {}
 }

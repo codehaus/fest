@@ -15,8 +15,8 @@
  */
 package org.fest.swing.core;
 
-import static java.lang.Math.*;
-
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 import static org.fest.swing.core.ComponentLookupScope.DEFAULT;
 import static org.fest.swing.util.Platform.*;
 
@@ -60,7 +60,7 @@ public class Settings {
   java.awt.Robot robot() { return robot; }
   
   /**
-   * Returns a value representing the millisecond count in between generated events. The default is 30 milliseconds.
+   * Returns a value representing the millisecond count in between generated events. The default is 60 milliseconds.
    * @return a value representing the millisecond count in between generated events. 
    */
   public int delayBetweenEvents() { 

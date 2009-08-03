@@ -44,7 +44,7 @@ final class JTreeMatchingPathQuery {
   }
 
   @RunsInCurrentThread
-  private static TreePath matchingPathWithRootIfInvisible(final JTree tree, final String path,
+  static TreePath matchingPathWithRootIfInvisible(final JTree tree, final String path,
       final JTreePathFinder pathFinder) {
     TreePath matchingPath = pathFinder.findMatchingPath(tree, path);
     return addRootIfInvisible(tree, matchingPath);

@@ -15,6 +15,12 @@
  */
 package org.fest.swing.applet;
 
+import static java.awt.BorderLayout.CENTER;
+import static java.awt.BorderLayout.SOUTH;
+import static javax.swing.BorderFactory.*;
+import static javax.swing.border.BevelBorder.LOWERED;
+import static org.fest.util.Strings.concat;
+
 import java.applet.Applet;
 import java.applet.AppletStub;
 import java.awt.BorderLayout;
@@ -25,12 +31,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static java.awt.BorderLayout.*;
-import static javax.swing.BorderFactory.*;
-import static javax.swing.border.BevelBorder.LOWERED;
-
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands a window that displays an <code>{@link Applet}</code>.
@@ -112,7 +112,7 @@ public class AppletViewer extends JFrame implements StatusDisplay {
     load(applet, stub);
   }
 
-  private void load(Applet newApplet, AppletStub newStub) {
+  final void load(Applet newApplet, AppletStub newStub) {
     applet = validated(newApplet);
     stub = validated(newStub);
     setUpFrame();
