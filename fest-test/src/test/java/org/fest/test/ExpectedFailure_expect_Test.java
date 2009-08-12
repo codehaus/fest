@@ -15,19 +15,20 @@
 package org.fest.test;
 
 import static org.fest.test.ExpectedFailure.expect;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link ExpectedFailure}</code>.
  *
  * @author Alex Ruiz
  */
-@Test public class ExpectedFailureTest {
+public class ExpectedFailure_expect_Test {
 
-  public void shouldPassIfErrorTypeAndMessageMatchExpected() {
+  @Test
+  public void should_pass_if_error_and_message_match_expectations() {
     expect(IllegalArgumentException.class).withMessage("A Test").on(new CodeToTest() {
       public void run() throws Exception {
         throw new IllegalArgumentException("A Test");
@@ -35,7 +36,8 @@ import org.testng.annotations.Test;
     });
   }
 
-  public void shouldFailIfErrorTypeIsNotEqualToExpected() {
+  @Test
+  public void should_fail_if_error_is_not_equal_to_expected() {
     try {
       expect(IndexOutOfBoundsException.class).withMessage("A Test").on(new CodeToTest() {
         public void run() throws Exception {
@@ -44,12 +46,13 @@ import org.testng.annotations.Test;
       });
       fail();
     } catch (AssertionError e) {
-      assertEquals(e.getMessage(),
-          "Expecting exception of type:<java.lang.IndexOutOfBoundsException> but was:<java.lang.IllegalArgumentException>");
+      String expected = "Expecting exception of type:<java.lang.IndexOutOfBoundsException> but was:<java.lang.IllegalArgumentException>";
+      assertEquals(expected, e.getMessage());
     }
   }
 
-  public void shouldFailIfMessageIsNotEqualToExpected() {
+  @Test
+  public void should_fail_if_message_is_not_equal_to_expected() {
     try {
       expect(IllegalArgumentException.class).withMessage("Some Test").on(new CodeToTest() {
         public void run() throws Exception {
@@ -58,7 +61,8 @@ import org.testng.annotations.Test;
       });
       fail();
     } catch (AssertionError e) {
-      assertEquals(e.getMessage(),"Expecting message:<'Some Test'> but was:<'A Test'>");
+      String expected = "Expecting message:<'Some Test'> but was:<'A Test'>";
+      assertEquals(expected, e.getMessage());
     }
   }
 }

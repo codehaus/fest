@@ -16,7 +16,8 @@
 package org.fest.test;
 
 import static org.fest.util.Objects.areEqual;
-import static org.fest.util.Strings.*;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
 
 /**
  * Understands executing test code that is expected to fail.

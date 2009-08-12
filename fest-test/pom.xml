@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.easytesting</groupId>
   <artifactId>fest-test</artifactId>
-  <version>1.1</version>
+  <version>1.2</version>
   <name>FEST Testing</name>
   <description>Utility methods for testing FEST modules</description>
   <inceptionYear>2008</inceptionYear>
@@ -40,11 +40,9 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>5.7</version>
-      <classifier>jdk15</classifier>
-      <scope>compile</scope>
+    	<groupId>junit</groupId>
+    	<artifactId>junit</artifactId>
+    	<version>4.5</version>
     </dependency>
   </dependencies>
 </project>

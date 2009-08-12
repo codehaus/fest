@@ -21,18 +21,18 @@ package org.fest.test;
  */
 public interface EqualsHashCodeContractTestCase {
 
-  void shouldNotBeEqualToObjectNotBeingOfSameClass();
+  void should_not_be_equal_to_Object_not_being_of_same_type();
 
   /**
    * If two objects are equal, they must remain equal as long as they are not modified.
    */
-  void shouldHaveConsistentEquals();
+  void should_have_consistent_equals();
 
   /**
    * The object must be equal to itself, which it would be at any given instance; unless you intentionally override the
    * equals method to behave otherwise.
    */
-  void shouldHaveReflexiveEquals();
+  void should_have_reflexive_equals();
 
   /**
    * If object of one class is equal to another class object, the other class object must be equal to this class object.
@@ -40,7 +40,7 @@ public interface EqualsHashCodeContractTestCase {
    * consequently the classes to which they belong, must bilaterally decide if they are equal or not. They BOTH must
    * agree.
    */
-  void shouldHaveSymmetricEquals();
+  void should_have_symmetric_equals();
 
   /**
    * If the first object is equal to the second object and the second object is equal to the third object; then the
@@ -48,16 +48,16 @@ public interface EqualsHashCodeContractTestCase {
    * symmetry principle, one of them can not decide to have a similar contract with another object of different class.
    * All three must agree and follow symmetry principle for various permutations of these three classes.
    */
-  void shouldHaveTransitiveEquals();
+  void should_have_transitive_equals();
 
   /**
    * If two objects are equal, then they must have the same hash code, however the opposite is NOT true.
    */
-  void shouldMaintainEqualsAndHashCodeContract();
+  void should_maintain_equals_and_hashCode_contract();
 
   /**
    * Verifies that the implementation of the method <code>equals</code> returns <code>false</code> if a
    * <code>null</code> is passed as argument.
    */
-  void shouldNotBeEqualToNull();
+  void should_not_be_equal_to_null();
 }

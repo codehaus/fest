@@ -15,8 +15,8 @@
  */
 package org.fest.test;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Understands assert methods for <code>{@link EqualsHashCodeContractTestCase}</code>.
@@ -31,7 +31,7 @@ public final class EqualsHashCodeContractAssert {
    * @param obj the object to verify.
    * @throws AssertionError if the "equals" implementation of the given objects returns <code>true</code> when the
    * object compared to <code>null</code>.
-   * @see EqualsHashCodeContractTestCase#shouldNotBeEqualToNull()
+   * @see EqualsHashCodeContractTestCase#should_not_be_equal_to_null()
    */
   public static void assertIsNotEqualToNull(Object obj) {
     assertFalse(obj.equals(null));
@@ -41,7 +41,7 @@ public final class EqualsHashCodeContractAssert {
    * Verifies that the "equals" implementation of the given object is reflexive.
    * @param obj the object to verify.
    * @throws AssertionError if the "equals" implementation of the given object is reflexive.
-   * @see EqualsHashCodeContractTestCase#shouldHaveReflexiveEquals()
+   * @see EqualsHashCodeContractTestCase#should_have_reflexive_equals()
    */
   public static void assertEqualsIsReflexive(Object obj) {
     assertEquals(obj, obj);
@@ -52,7 +52,7 @@ public final class EqualsHashCodeContractAssert {
    * @param obj1 the object to verify.
    * @param obj2 the object to compare to.
    * @throws AssertionError if the "equals" implementation of the given object is not symmetric.
-   * @see EqualsHashCodeContractTestCase#shouldHaveSymmetricEquals()
+   * @see EqualsHashCodeContractTestCase#should_have_symmetric_equals()
    */
   public static void assertEqualsIsSymmetric(Object obj1, Object obj2) {
     assertEquals(obj1, obj2);
@@ -65,7 +65,7 @@ public final class EqualsHashCodeContractAssert {
    * @param obj2 an object to compare to.
    * @param obj3 an object to compare to.
    * @throws AssertionError if the "equals" implementation of the given objects is not transitive.
-   * @see EqualsHashCodeContractTestCase#shouldHaveTransitiveEquals()
+   * @see EqualsHashCodeContractTestCase#should_have_transitive_equals()
    */
   public static void assertEqualsIsTransitive(Object obj1, Object obj2, Object obj3) {
     assertEquals(obj1, obj2);
@@ -78,7 +78,7 @@ public final class EqualsHashCodeContractAssert {
    * @param obj1 the object to verify.
    * @param obj2 the object to compare to.
    * @throws AssertionError if the "equals/hashCode" contract of the given objects is not implemented correctly.
-   * @see EqualsHashCodeContractTestCase#shouldMaintainEqualsAndHashCodeContract()
+   * @see EqualsHashCodeContractTestCase#should_maintain_equals_and_hashCode_contract()
    */
   public static void assertMaintainsEqualsAndHashCodeContract(Object obj1, Object obj2) {
     assertEquals(obj1, obj2);
