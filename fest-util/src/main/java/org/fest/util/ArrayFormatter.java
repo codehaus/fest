@@ -30,7 +30,7 @@ final class ArrayFormatter {
 
   private static final String NULL = "null";
 
-  public String format(Object o) {
+  String format(Object o) {
     if (!isArray(o)) return null;
     if (isObjectArray(o)) return formatObjectArray(o);
     return formatPrimitiveArray(o);
