@@ -29,21 +29,23 @@ import java.util.Collection;
 import javax.swing.KeyStroke;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.testng.annotations.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link KeyStrokeMap}</code>.
  *
  * @author Alex Ruiz
  */
-@Test public class KeyStrokeMapTest {
+public class KeyStrokeMapTest {
 
   private KeyStrokeMappingProvider provider;
   private KeyStroke keyStroke;
   private KeyStrokeMapping mapping;
   private Collection<KeyStrokeMapping> mappings;
 
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     provider = createMock(KeyStrokeMappingProvider.class);
     keyStroke = KeyStroke.getKeyStroke(VK_A, CTRL_MASK);
     mapping = new KeyStrokeMapping('A', keyStroke);
@@ -53,11 +55,12 @@ import org.testng.annotations.*;
     assertThat(KeyStrokeMap.hasKeyStrokes()).isFalse();
   }
 
-  @AfterMethod public void tearDown() {
+  @After public void tearDown() {
     KeyStrokeMap.updateKeyStrokeMapCollection(new KeyStrokeMapCollection());
     KeyStrokeMap.reloadFromLocale();
   }
 
+  @Test
   public void shouldReturnKeyStrokeFromChar() {
     new EasyMockTemplate(provider) {
       protected void expectations() {
@@ -71,6 +74,7 @@ import org.testng.annotations.*;
     }.run();
   }
 
+  @Test
   public void shouldReturnCharForKeyStroke() {
     new EasyMockTemplate(provider) {
       protected void expectations() {
@@ -84,6 +88,7 @@ import org.testng.annotations.*;
     }.run();
   }
 
+  @Test
   public void shouldStripModifiersButShiftIfCharForKeyStrokeNotFoundInMap() {
     final Character character = 'a';
     final KeyStrokeMapCollection maps = createMock(KeyStrokeMapCollection.class);
@@ -100,6 +105,7 @@ import org.testng.annotations.*;
     }.run();
   }
 
+  @Test
   public void shouldReturnUndefinedCharacterIfCharacterForKeyStrokeNotFound() {
     final KeyStrokeMapCollection maps = createMock(KeyStrokeMapCollection.class);
     KeyStrokeMap.updateKeyStrokeMapCollection(maps);

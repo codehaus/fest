@@ -15,8 +15,6 @@
  */
 package org.fest.swing.test.data;
 
-import org.testng.annotations.DataProvider;
-
 /**
  * Understands a TestNG provider of zeros and negative numbers.
  *
@@ -24,7 +22,6 @@ import org.testng.annotations.DataProvider;
  */
 public class ZeroAndNegativeProvider {
 
-  @DataProvider(name = "zeroAndNegative")
   public static Object[][] provideData() {
     return new Object[][] { { 0 }, { -1 } };
   }

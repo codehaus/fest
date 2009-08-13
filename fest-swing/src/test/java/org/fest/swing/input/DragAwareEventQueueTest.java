@@ -25,9 +25,8 @@ import java.awt.event.AWTEventListener;
 import java.util.EmptyStackException;
 
 import org.fest.swing.test.awt.ToolkitStub;
-
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link DragAwareEventQueue}</code>.
@@ -41,14 +40,14 @@ public class DragAwareEventQueueTest {
   private AWTEventListener listener;
   private DragAwareEventQueue queue;
 
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     toolkit = ToolkitStub.createNew();
     listener = createMock(AWTEventListener.class);
     queue = new DragAwareEventQueue(toolkit, mask, listener);
     toolkit.eventQueue(queue);
   }
 
-  @Test(expectedExceptions = EmptyStackException.class)
+  @Test(expected = EmptyStackException.class)
   public void shouldPopIfToolkitSystemEventQueueIsSameAsQueueUnderTest() {
     queue.pop();
   }

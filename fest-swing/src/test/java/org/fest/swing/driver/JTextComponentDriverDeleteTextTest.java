@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  */
 @Test(groups = GUI)
-public class JTextComponentDriverDeleteTextTest extends JTextComponentDriverTestCase {
+public class JTextComponentDriverDeleteTextTest extends JTextComponentDriver_TestCase {
 
   public void shouldDeleteText() {
     driver().deleteText(textField());
@@ -40,7 +40,7 @@ public class JTextComponentDriverDeleteTextTest extends JTextComponentDriverTest
       driver().deleteText(textField());
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -50,7 +50,7 @@ public class JTextComponentDriverDeleteTextTest extends JTextComponentDriverTest
       driver().deleteText(textField());
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 

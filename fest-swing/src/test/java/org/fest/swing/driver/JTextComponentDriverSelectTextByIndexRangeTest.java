@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  */
 @Test(groups = GUI)
-public class JTextComponentDriverSelectTextByIndexRangeTest extends JTextComponentDriverTestCase {
+public class JTextComponentDriverSelectTextByIndexRangeTest extends JTextComponentDriver_TestCase {
 
   public void shouldSelectTextRange() {
     driver().selectText(textField(), 8, 14);
@@ -42,7 +42,7 @@ public class JTextComponentDriverSelectTextByIndexRangeTest extends JTextCompone
       driver().selectText(textField(), 8, 14);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -52,7 +52,7 @@ public class JTextComponentDriverSelectTextByIndexRangeTest extends JTextCompone
       driver().selectText(textField(), 8, 14);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 

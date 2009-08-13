@@ -16,52 +16,42 @@
 package org.fest.swing.fixture;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import javax.swing.JLabel;
 
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.*;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests lookup of <code>{@link JLabel}</code>s in <code>{@link ContainerFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class ContainerFixtureJLabelLookupTest {
+public class ContainerFixtureJLabelLookupTest extends RobotBasedTestCase {
 
   private ConcreteContainerFixture fixture;
-  private Robot robot;
   private MyWindow window;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected final void onSetUp() {
     window = MyWindow.createNew();
     fixture = new ConcreteContainerFixture(robot, window);
     robot.showWindow(window);
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
+  @Test
   public void shouldFindJLabelByType() {
     JLabelFixture label = fixture.label();
     assertThatFixtureHasCorrectJLabel(label);
   }
 
+  @Test
   public void shouldFailIfJLabelCannotBeFoundByType() {
     execute(new GuiTask() {
       protected void executeInEDT() {
@@ -78,11 +68,13 @@ public class ContainerFixtureJLabelLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJLabelByName() {
     JLabelFixture label = fixture.label("readMeLabel");
     assertThatFixtureHasCorrectJLabel(label);
   }
 
+  @Test
   public void shouldFailIfJLabelCannotBeFoundByName() {
     try {
       fixture.label("myLabel");
@@ -93,6 +85,7 @@ public class ContainerFixtureJLabelLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJLabelWithCustomMatcher() {
     JLabelFixture label = fixture.label(new GenericTypeMatcher<JLabel>(JLabel.class) {
       protected boolean isMatching(JLabel l) {
@@ -106,6 +99,7 @@ public class ContainerFixtureJLabelLookupTest {
     assertThat(labelFixture.component()).isSameAs(window.label);
   }
 
+  @Test
   public void shouldFailIfJLabelCannotBeFoundWithCustomMatcher() {
     try {
       fixture.label(new GenericTypeMatcher<JLabel>(JLabel.class) {

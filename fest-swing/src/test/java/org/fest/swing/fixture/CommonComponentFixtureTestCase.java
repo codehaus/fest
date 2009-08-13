@@ -16,9 +16,7 @@
 package org.fest.swing.fixture;
 
 import static java.awt.event.InputEvent.SHIFT_MASK;
-import static java.awt.event.KeyEvent.VK_A;
-import static java.awt.event.KeyEvent.VK_B;
-import static java.awt.event.KeyEvent.VK_C;
+import static java.awt.event.KeyEvent.*;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.core.KeyPressInfo.keyCode;
@@ -33,7 +31,6 @@ import org.fest.swing.core.KeyPressInfo;
 import org.fest.swing.core.MouseButton;
 import org.fest.swing.core.MouseClickInfo;
 import org.fest.swing.timing.Timeout;
-import org.testng.annotations.Test;
 
 
 /**
@@ -42,7 +39,6 @@ import org.testng.annotations.Test;
  *
  * @author Alex Ruiz
  */
-@Test
 public abstract class CommonComponentFixtureTestCase<T extends Component> extends ComponentFixtureTestCase<T> 
     implements KeyboardInputSimulationFixtureTestCase, StateVerificationFixtureTestCase {
 
@@ -126,7 +122,7 @@ public abstract class CommonComponentFixtureTestCase<T extends Component> extend
     }.run();
   }
 
-  public void shouldPressAndReleaseKey() {
+  public void should_press_and_release_key() {
     final KeyPressInfo keyPressInfo = keyCode(VK_A).modifiers(SHIFT_MASK);
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -140,7 +136,7 @@ public abstract class CommonComponentFixtureTestCase<T extends Component> extend
     }.run();
   }
 
-  public void shouldPressAndReleaseKeys() {
+  public void should_press_and_release_keys() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
         driver().pressAndReleaseKeys(target(), VK_A, VK_B, VK_C);
@@ -153,7 +149,7 @@ public abstract class CommonComponentFixtureTestCase<T extends Component> extend
     }.run();
   }
 
-  public void shouldPressKey() {
+  public void should_press_key() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
         driver().pressKey(target(), VK_A);
@@ -166,7 +162,7 @@ public abstract class CommonComponentFixtureTestCase<T extends Component> extend
     }.run();
   }
 
-  public void shouldReleaseKey() {
+  public void should_release_key() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
         driver().releaseKey(target(), VK_A);
@@ -179,7 +175,7 @@ public abstract class CommonComponentFixtureTestCase<T extends Component> extend
     }.run();
   }
 
-  public void shouldRequireDisabled() {
+  public void should_require_disabled() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
         driver().requireDisabled(target());
@@ -192,7 +188,7 @@ public abstract class CommonComponentFixtureTestCase<T extends Component> extend
     }.run();
   }
   
-  public void shouldRequireEnabled() {
+  public void should_require_enabled() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
         driver().requireEnabled(target());
@@ -205,7 +201,7 @@ public abstract class CommonComponentFixtureTestCase<T extends Component> extend
     }.run();
   }
 
-  public void shouldRequireEnabledUsingTimeout() {
+  public void should_require_enabled_using_timeout() {
     final Timeout timeout = timeout(2000);
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -219,7 +215,7 @@ public abstract class CommonComponentFixtureTestCase<T extends Component> extend
     }.run();
   }
 
-  public void shouldRequireNotVisible() {
+  public void should_require_not_visible() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
         driver().requireNotVisible(target());
@@ -232,7 +228,7 @@ public abstract class CommonComponentFixtureTestCase<T extends Component> extend
     }.run();
   }
 
-  public void shouldRequireVisible() {
+  public void should_require_visible() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
         driver().requireVisible(target());
@@ -245,7 +241,7 @@ public abstract class CommonComponentFixtureTestCase<T extends Component> extend
     }.run();
   }
   
-  public void shouldRequireFocused() {
+  public void should_require_focused() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
         driver().requireFocused(target());

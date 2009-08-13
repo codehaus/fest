@@ -15,29 +15,32 @@
  */
 package org.fest.swing.format;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
 import static org.fest.assertions.Assertions.assertThat;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link IntEnum}</code>.
  *
  * @author Alex Ruiz
  */
-@Test public class IntEnumTest {
+public class IntEnumTest {
 
   private IntEnum intEnum;
   
-  @BeforeClass public void setUp() {
+  @Before 
+  public void setUp() {
     intEnum = new IntEnum();
     intEnum.put(0, "Zero");
   }
   
+  @Test
   public void shouldReturnValueForExistingKey() {
     assertThat(intEnum.get(0)).isEqualTo("Zero");
   }
 
+  @Test
   public void shouldReturnKeyForNotExistingKey() {
     assertThat(intEnum.get(1)).isEqualTo("1");
   }

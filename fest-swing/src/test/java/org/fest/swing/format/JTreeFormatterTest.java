@@ -15,21 +15,20 @@
  */
 package org.fest.swing.format;
 
-import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeSelectionModel;
-import javax.swing.tree.TreeSelectionModel;
-
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import org.fest.swing.test.builder.JTrees;
-
 import static javax.swing.tree.TreeSelectionModel.CONTIGUOUS_TREE_SELECTION;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JTextFields.textField;
 import static org.fest.swing.test.task.JTreeSelectRowTask.selectRow;
 import static org.fest.swing.test.task.JTreeSetSelectionModelTask.setSelectionModel;
+
+import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeSelectionModel;
+import javax.swing.tree.TreeSelectionModel;
+
+import org.fest.swing.test.builder.JTrees;
+import org.fest.swing.test.core.EDTSafeTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JTreeFormatter}</code>.
@@ -37,23 +36,24 @@ import static org.fest.swing.test.task.JTreeSetSelectionModelTask.setSelectionMo
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test public class JTreeFormatterTest {
+public class JTreeFormatterTest extends EDTSafeTestCase {
 
   private JTree tree;
   private JTreeFormatter formatter;
   
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     tree = JTrees.tree().withName("tree")
                         .withValues("One", "Two", "Three")
                         .createNew();
     formatter = new JTreeFormatter();
   }
   
-  @Test(expectedExceptions = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void shouldThrowErrorIfComponentIsNotJTree() {
     formatter.format(textField().createNew());
   }
   
+  @Test
   public void shouldFormatJTree() {
     setContiguousSelectionModeTo(tree);
     selectSecondRowIn(tree);
@@ -78,6 +78,7 @@ import static org.fest.swing.test.task.JTreeSetSelectionModelTask.setSelectionMo
     selectRow(tree, 1);
   }
   
+  @Test
   public void shouldFormatJTreeWithoutSelectionModel() {
     setDiscontiguousSelectionModeTo(tree);
     String formatted = formatter.format(tree);

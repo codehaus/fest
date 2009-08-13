@@ -31,14 +31,13 @@ import javax.swing.JScrollBar;
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JScrollBarDriver;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JScrollBarFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test
 public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrollBar> {
 
   private JScrollBarDriver driver;
@@ -48,21 +47,23 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
   void onSetUp() {
     driver = createMock(JScrollBarDriver.class);
     target = scrollBar().createNew();
-    fixture = new JScrollBarFixture(robot(), target);
+    fixture = new JScrollBarFixture(robot, target);
     fixture.driver(driver);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "scrollBar";
     expectLookupByName(name, JScrollBar.class);
-    verifyLookup(new JScrollBarFixture(robot(), name));
+    verifyLookup(new JScrollBarFixture(robot, name));
   }
 
+  @Test
   public void shouldRequireValue() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -76,6 +77,7 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
     }.run();
   }
 
+  @Test
   public void shouldScrollBlockDown() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -89,6 +91,7 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
     }.run();
   }
 
+  @Test
   public void shouldScrollBlockDownTheGivenTimes() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -102,6 +105,7 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
     }.run();
   }
 
+  @Test
   public void shouldScrollBlockUp() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -115,6 +119,7 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
     }.run();
   }
 
+  @Test
   public void shouldScrollBlockUpTheGivenTimes() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -128,6 +133,7 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
     }.run();
   }
 
+  @Test
   public void shouldScrollToMaximum() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -141,6 +147,7 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
     }.run();
   }
 
+  @Test
   public void shouldScrollToMinimum() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -154,6 +161,7 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
     }.run();
   }
 
+  @Test
   public void shouldScrollToPosition() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -167,6 +175,7 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
     }.run();
   }
 
+  @Test
   public void shouldScrollUnitDown() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -180,6 +189,7 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
     }.run();
   }
 
+  @Test
   public void shouldScrollUnitDownTheGivenTimes() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -193,6 +203,7 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
     }.run();
   }
 
+  @Test
   public void shouldScrollUnitUp() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -206,6 +217,7 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
     }.run();
   }
 
+  @Test
   public void shouldScrollUnitUpTheGivenTimes() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -219,6 +231,7 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenu() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     new EasyMockTemplate(driver()) {
@@ -228,12 +241,13 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtPoint() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     final Point p = new Point();
@@ -244,12 +258,13 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTip() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -263,6 +278,7 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTipToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver()) {
@@ -277,6 +293,7 @@ public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrol
     }.run();
   }
 
+  @Test
   public void shouldReturnClientProperty() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {

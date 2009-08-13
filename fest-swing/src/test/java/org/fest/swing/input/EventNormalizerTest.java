@@ -15,17 +15,17 @@
  */
 package org.fest.swing.input;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.classextension.EasyMock.createMock;
+
 import java.awt.AWTEvent;
 import java.awt.event.AWTEventListener;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.test.awt.ToolkitStub;
-
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.createMock;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link EventNormalizer}</code>.
@@ -34,15 +34,13 @@ import static org.easymock.classextension.EasyMock.createMock;
  */
 public class EventNormalizerTest extends EventNormalizerTestCase {
 
-  private static final String START_LISTENING = "START_LISTENING";
-  
   private EventNormalizer eventNormalizer;
   
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     eventNormalizer = new EventNormalizer();
   }
   
-  @Test(groups = START_LISTENING)
+  @Test
   public void shouldAttachToToolkitWhenStartListening() {
     ToolkitStub toolkit = ToolkitStub.createNew();
     int mask = 8;
@@ -50,7 +48,7 @@ public class EventNormalizerTest extends EventNormalizerTestCase {
     assertEventNormalizerIsInToolkit(toolkit, eventNormalizer, mask);
   }
 
-  @Test(dependsOnGroups = START_LISTENING)
+  @Test
   public void shouldDetachFromToolkitWhenStopListening() {
     ToolkitStub toolkit = ToolkitStub.createNew();
     int mask = 8;
@@ -59,7 +57,7 @@ public class EventNormalizerTest extends EventNormalizerTestCase {
     assertEventNormalizerIsNotInToolkit(toolkit, mask);
   }  
   
-  @Test(dependsOnGroups = START_LISTENING)
+  @Test
   public void shouldDelegateEventIfIsNotDuplicateDispose() {
     final DisposedWindowMonitor disposedWindowMonitor = createMock(DisposedWindowMonitor.class);
     eventNormalizer = new EventNormalizer(disposedWindowMonitor);
@@ -79,7 +77,7 @@ public class EventNormalizerTest extends EventNormalizerTestCase {
     }.run();
   }
 
-  @Test(dependsOnGroups = START_LISTENING)
+  @Test
   public void shouldNotDelegateEventIfIsDuplicateDispose() {
     final DisposedWindowMonitor disposedWindowMonitor = createMock(DisposedWindowMonitor.class);
     eventNormalizer = new EventNormalizer(disposedWindowMonitor);

@@ -14,6 +14,7 @@
 	<classpathentry kind="var" path="M2_REPO/org/easytesting/fest-util/1.1/fest-util-1.1.jar" sourcepath="/M2_REPO/org/easytesting/fest-util/1.1/fest-util-1.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar" sourcepath="M2_REPO/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/mrj/MRJToolkitStubs/1.0/MRJToolkitStubs-1.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/junit/junit/4.5/junit-4.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/testng/testng/5.7/testng-5.7-jdk15.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

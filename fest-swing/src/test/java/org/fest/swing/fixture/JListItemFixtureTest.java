@@ -25,12 +25,11 @@ import static org.fest.swing.core.MouseClickInfo.leftButton;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.core.MouseButton;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JListItemFixture}</code>.
- *
  * @author Alex Ruiz
  */
 public class JListItemFixtureTest {
@@ -39,18 +38,20 @@ public class JListItemFixtureTest {
   private int index;
   private JListItemFixture fixture;
 
-  @BeforeMethod public void setUp() {
+  @Before
+  public void setUp() {
     list = createMock(JListFixture.class);
     index = 8;
     fixture = new JListItemFixture(list, index);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfJListFixtureIsNull() {
     new JListItemFixture(null, 0);
   }
 
-  @Test public void shouldSelect() {
+  @Test
+  public void shouldSelect() {
     new EasyMockTemplate(list) {
       protected void expectations() {
         expect(list.selectItem(index)).andReturn(list);
@@ -62,7 +63,8 @@ public class JListItemFixtureTest {
     }.run();
   }
 
-  @Test public void shouldClick() {
+  @Test
+  public void shouldClick() {
     new EasyMockTemplate(list) {
       protected void expectations() {
         expect(list.selectItem(index)).andReturn(list);
@@ -74,7 +76,8 @@ public class JListItemFixtureTest {
     }.run();
   }
 
-  @Test public void shouldClickUsingMouseClickInfo() {
+  @Test
+  public void shouldClickUsingMouseClickInfo() {
     new EasyMockTemplate(list) {
       protected void expectations() {
         list.clickItem(index, LEFT_BUTTON, 2);
@@ -87,7 +90,8 @@ public class JListItemFixtureTest {
     }.run();
   }
 
-  @Test public void shouldDoubleClick() {
+  @Test
+  public void shouldDoubleClick() {
     new EasyMockTemplate(list) {
       protected void expectations() {
         list.clickItem(index, LEFT_BUTTON, 2);
@@ -100,7 +104,8 @@ public class JListItemFixtureTest {
     }.run();
   }
 
-  @Test public void shouldRightClick() {
+  @Test
+  public void shouldRightClick() {
     new EasyMockTemplate(list) {
       protected void expectations() {
         list.clickItem(index, RIGHT_BUTTON, 1);
@@ -113,7 +118,8 @@ public class JListItemFixtureTest {
     }.run();
   }
 
-  @Test public void shouldClickGivenButton() {
+  @Test
+  public void shouldClickGivenButton() {
     final MouseButton button = MouseButton.LEFT_BUTTON;
     new EasyMockTemplate(list) {
       protected void expectations() {
@@ -127,7 +133,8 @@ public class JListItemFixtureTest {
     }.run();
   }
 
-  @Test public void shouldShowPopupMenu() {
+  @Test
+  public void shouldShowPopupMenu() {
     final JPopupMenuFixture popup = createMock(JPopupMenuFixture.class);
     new EasyMockTemplate(list) {
       protected void expectations() {
@@ -141,7 +148,8 @@ public class JListItemFixtureTest {
     }.run();
   }
 
-  @Test public void shouldReturnContents() {
+  @Test
+  public void shouldReturnContents() {
     final String content = "Hello";
     new EasyMockTemplate(list) {
       protected void expectations() {
@@ -155,7 +163,8 @@ public class JListItemFixtureTest {
     }.run();
   }
 
-  @Test public void shouldDrag() {
+  @Test
+  public void shouldDrag() {
     new EasyMockTemplate(list) {
       protected void expectations() {
         expect(list.drag(index)).andReturn(list);
@@ -167,7 +176,8 @@ public class JListItemFixtureTest {
     }.run();
   }
 
-  @Test public void shouldDrop() {
+  @Test
+  public void shouldDrop() {
     new EasyMockTemplate(list) {
       protected void expectations() {
         expect(list.drop(index)).andReturn(list);
@@ -179,7 +189,8 @@ public class JListItemFixtureTest {
     }.run();
   }
 
-  @Test public void shouldReturnIndex() {
+  @Test
+  public void shouldReturnIndex() {
     assertThat(fixture.index()).isEqualTo(index);
   }
 

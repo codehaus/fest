@@ -15,6 +15,10 @@
  */
 package org.fest.swing.hierarchy;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.hierarchy.JFrameContentPaneQuery.contentPaneOf;
+
 import java.awt.Component;
 import java.awt.Container;
 
@@ -22,23 +26,12 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.lock.ScreenLock;
+import org.fest.swing.test.core.SequentialTestCase;
 import org.fest.swing.test.swing.TestMdiWindow;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.hierarchy.JFrameContentPaneQuery.contentPaneOf;
-import static org.fest.swing.test.core.TestGroups.GUI;
-import static org.fest.swing.test.swing.TestMdiWindow.createAndShowNewWindow;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link ParentFinder}</code>.
@@ -46,26 +39,17 @@ import static org.fest.swing.test.swing.TestMdiWindow.createAndShowNewWindow;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = GUI)
-public class ParentFinderTest {
+public class ParentFinderTest extends SequentialTestCase {
 
   private ParentFinder finder;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    ScreenLock.instance().acquire(this);
+  @Override protected final void onSetUp() {
     finder = new ParentFinder();
   }
 
-  @AfterMethod public void tearDown() {
-    ScreenLock.instance().release(this);
-  }
-
+  @Test
   public void shouldReturnParentOfComponent() {
-    final MyWindow window = MyWindow.createAndShow();
+    final MyWindow window = MyWindow.createNew();
     try {
       Container parent = findParent(finder, window.textField);
       assertThat(parent).isSameAs(contentPaneOf(window));
@@ -78,10 +62,10 @@ public class ParentFinderTest {
     private static final long serialVersionUID = 1L;
 
     @RunsInEDT
-    static MyWindow createAndShow() {
+    static MyWindow createNew() {
       return execute(new GuiQuery<MyWindow>() {
         protected MyWindow executeInEDT() {
-          return display(new MyWindow());
+          return new MyWindow();
         }
       });
     }
@@ -94,8 +78,9 @@ public class ParentFinderTest {
     }
   }
 
+  @Test
   public void shouldReturnParentOfInternalFrame() {
-    TestMdiWindow window = createAndShowNewWindow(getClass());
+    TestMdiWindow window = TestMdiWindow.createNewWindow(getClass());
     JInternalFrame internalFrame = window.internalFrame();
     try {
       assertThat(findParent(finder, internalFrame)).isNotNull()

@@ -15,11 +15,12 @@
  */
 package org.fest.swing.test.task;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import javax.swing.JComboBox;
 
+import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands a task that selects an element in a <code>{@link JComboBox}</code>. This task is executed in the event
@@ -30,6 +31,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
  */
 public final class JComboBoxSetSelectedItemTask {
 
+  @RunsInEDT
   public static void setSelectedItem(final JComboBox comboBox, final Object item) {
     execute(new GuiTask() {
       protected void executeInEDT() {

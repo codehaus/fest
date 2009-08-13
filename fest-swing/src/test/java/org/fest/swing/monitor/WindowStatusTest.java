@@ -19,27 +19,28 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
-import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.timing.Pause.pause;
 import static org.fest.util.Strings.concat;
 
-import java.awt.*;
+import java.awt.AWTException;
+import java.awt.Dimension;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.util.logging.Logger;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.lock.ScreenLock;
+import org.fest.swing.test.core.SequentialTestCase;
 import org.fest.swing.test.swing.TestWindow;
 import org.fest.swing.util.RobotFactory;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link WindowStatus}</code>.
+ * TODO: Split
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class WindowStatusTest {
+public class WindowStatusTest extends SequentialTestCase {
 
   private static Logger logger = Logger.getAnonymousLogger();
 
@@ -47,25 +48,17 @@ public class WindowStatusTest {
   private TestWindow window;
   private Windows windows;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() throws Exception {
+  @Override protected final void onSetUp() {
     window = TestWindow.createNewWindow(getClass());
     windows = createMock(Windows.class);
     status = new WindowStatus(windows);
   }
 
-  @AfterMethod public void tearDown() {
-    try {
-      window.destroy();
-    } finally {
-      ScreenLock lock = ScreenLock.instance();
-      if (lock.acquiredBy(this)) lock.release(this);
-    }
+  @Override protected final void onTearDown() {
+    window.destroy();
   }
 
+  @Test
   public void shouldHaveRobotEqualToNullIfRobotCannotBeCreated() {
     final RobotFactory factory = createMock(RobotFactory.class);
     new EasyMockTemplate(factory) {
@@ -80,8 +73,8 @@ public class WindowStatusTest {
     }.run();
   }
 
+  @Test
   public void shouldMoveMouseToCenterWithFrameWidthGreaterThanHeight() {
-    ScreenLock.instance().acquire(this);
     window.display();
     Point center = new WindowMetrics(window).center();
     center.x += WindowStatus.sign();
@@ -97,8 +90,8 @@ public class WindowStatusTest {
     assertThat(mousePointerLocation()).isEqualTo(center);
   }
 
+  @Test
   public void shouldMoveMouseToCenterWithFrameHeightGreaterThanWidth() {
-    ScreenLock.instance().acquire(this);
     window.display(new Dimension(200, 400));
     Point center = new WindowMetrics(window).center();
     center.y += WindowStatus.sign();
@@ -114,8 +107,8 @@ public class WindowStatusTest {
     assertThat(mousePointerLocation()).isEqualTo(center);
   }
 
+  @Test
   public void shouldResizeWindowToReceiveEvents() {
-    ScreenLock.instance().acquire(this);
     window.display(new Dimension(0 ,0));
     Dimension original = sizeOf(window);
     new EasyMockTemplate(windows) {
@@ -134,6 +127,7 @@ public class WindowStatusTest {
     assertThat(sizeOf(window).height).isGreaterThan(original.height);
   }
 
+  @Test
   public void shouldNotCheckIfRobotIsNull() {
     final RobotFactory factory = createMock(RobotFactory.class);
     Point before = mousePointerLocation();

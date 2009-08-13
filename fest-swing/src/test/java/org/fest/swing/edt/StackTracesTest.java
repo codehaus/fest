@@ -15,37 +15,37 @@
  */
 package org.fest.swing.edt;
 
+import static java.lang.Thread.currentThread;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.util.Strings.concat;
+
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import static java.lang.Thread.currentThread;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.util.Strings.concat;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link StackTraces}</code>.
  *
  * @author Alex Ruiz
  */
-@Test public class StackTracesTest {
+public class StackTracesTest {
 
   private static final String TEST_NAME = StackTracesTest.class.getName();
   
   private AtomicReference<RuntimeException> exceptionReference;
 
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     exceptionReference = new AtomicReference<RuntimeException>();
   }
 
-  @AfterMethod public void tearDown() {
+  @After public void tearDown() {
     exceptionReference.set(null);
   }
   
+  @Test
   public void shouldAddStackTraceOfCurrentThread() {
     final CountDownLatch latch = new CountDownLatch(1);
     new Thread() {

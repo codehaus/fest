@@ -43,12 +43,7 @@ import javax.swing.JPopupMenu;
 import org.fest.assertions.Description;
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.ComponentDragAndDrop;
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
-import org.fest.swing.core.Robot;
-import org.fest.swing.core.Settings;
+import org.fest.swing.core.*;
 import org.fest.swing.edt.GuiLazyLoadingDescription;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ActionFailedException;
@@ -475,12 +470,14 @@ public class ComponentDriver {
    * @param c the invoker of the <code>JPopupMenu</code>.
    * @param p the given point where to show the pop-up menu.
    * @return the displayed pop-up menu.
+   * @throws NullPointerException if the given point is <code>null</code>.
    * @throws IllegalStateException if the given <code>Component</code> is disabled.
    * @throws IllegalStateException if the given <code>Component</code> is not showing on the screen.
    * @throws ComponentLookupException if a pop-up menu cannot be found.
    */
   @RunsInEDT
   public JPopupMenu invokePopupMenu(Component c, Point p) {
+    if (p == null) throw new NullPointerException("The given point should not be null");
     assertIsEnabledAndShowing(c);
     return robot.showPopupMenu(c, p);
   }

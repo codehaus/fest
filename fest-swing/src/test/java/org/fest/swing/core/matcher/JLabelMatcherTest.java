@@ -20,39 +20,36 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.builder.JLabels.label;
 import static org.fest.swing.test.builder.JTextFields.textField;
 import static org.fest.swing.test.core.Regex.regex;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import javax.swing.JLabel;
 
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.lock.ScreenLock;
+import org.fest.swing.test.core.EDTSafeTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JLabelMatcher}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class JLabelMatcherTest {
+public class JLabelMatcherTest extends EDTSafeTestCase {
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
+  @Test
   public void shouldReturnTrueIfMatchingAnyJLabel() {
     JLabelMatcher matcher = JLabelMatcher.any();
     assertThat(matcher.matches(label().createNew())).isTrue();
   }
 
+  @Test
   public void shouldReturnFalseIfComponentIsNotJLabel() {
     JLabelMatcher matcher = JLabelMatcher.any();
     assertThat(matcher.matches(textField().createNew())).isFalse();
   }
 
+  @Test
   public void shouldReturnTrueIfNameIsEqualToExpected() {
     String name = "label";
     JLabelMatcher matcher = JLabelMatcher.withName(name);
@@ -60,38 +57,42 @@ public class JLabelMatcherTest {
     assertThat(matcher.matches(label)).isTrue();
   }
 
+  @Test
   public void shouldReturnFalseIfNameIsNotEqualToExpected() {
     JLabelMatcher matcher = JLabelMatcher.withName("label");
     JLabel label = label().withName("button").createNew();
     assertThat(matcher.matches(label)).isFalse();
   }
 
+  @Test
   public void shouldReturnTrueIfNameAndTextAreEqualToExpected() {
     JLabelMatcher matcher = JLabelMatcher.withName("label").andText("Hello");
     JLabel label = label().withName("label").withText("Hello").createNew();
     assertThat(matcher.matches(label)).isTrue();
   }
 
+  @Test
   public void shouldReturnTrueIfNameMatchesAndTextMatchesPatternAsString() {
     JLabelMatcher matcher = JLabelMatcher.withName("label").andText("Hel.*");
     JLabel label = label().withName("label").withText("Hello").createNew();
     assertThat(matcher.matches(label)).isTrue();
   }
 
+  @Test
   public void shouldReturnTrueIfNameMatchesAndTextMatchesPattern() {
     JLabelMatcher matcher = JLabelMatcher.withName("label").andText(regex("Hel.*"));
     JLabel label = label().withName("label").withText("Hello").createNew();
     assertThat(matcher.matches(label)).isTrue();
   }
 
-  @Test(groups = GUI, dataProvider = "notMatchingNameAndText")
-  public void shouldReturnFalseIfNameAndTextAreNotEqualToExpected(String name, String text) {
+  @Test
+  public void shouldReturnFalseIfNameAndTextAreNotEqualToExpected() {
     JLabelMatcher matcher = JLabelMatcher.withName("someName").andText("someText");
-    JLabel label = label().withName(name).withText(text).createNew();
+    JLabel label = label().withName("name").withText("text").createNew();
     assertThat(matcher.matches(label)).isFalse();
   }
 
-  @DataProvider(name = "notMatchingNameAndText")
+  // TODO parameterize
   public Object[][] notMatchingNameAndText() {
     return new Object[][] {
         { "someName", "text" },
@@ -100,31 +101,35 @@ public class JLabelMatcherTest {
     };
   }
 
+  @Test
   public void shouldReturnTrueIfTextIsEqualToExpected() {
     JLabelMatcher matcher = JLabelMatcher.withText("Hello");
     JLabel label = label().withText("Hello").createNew();
     assertThat(matcher.matches(label)).isTrue();
   }
 
+  @Test
   public void shouldReturnTrueIfTextMatchesPatternAsString() {
     JLabelMatcher matcher = JLabelMatcher.withText("He.*");
     JLabel label = label().withText("Hello").createNew();
     assertThat(matcher.matches(label)).isTrue();
   }
 
+  @Test
   public void shouldReturnTrueIfTextMatchesPattern() {
     JLabelMatcher matcher = JLabelMatcher.withText(regex("He.*"));
     JLabel label = label().withText("Hello").createNew();
     assertThat(matcher.matches(label)).isTrue();
   }
 
+  @Test
   public void shouldReturnFalseIfTextIsNotEqualToExpected() {
     JLabelMatcher matcher = JLabelMatcher.withText("Hello");
     JLabel label = label().withText("Bye").createNew();
     assertThat(matcher.matches(label)).isFalse();
   }
 
-  @Test(groups = GUI)
+  @Test
   public void shouldReturnTrueIfLabelIsShowingAndTextIsEqualToExpected() {
     ScreenLock.instance().acquire(this);
     MyWindow window = MyWindow.createAndShow();
@@ -137,6 +142,7 @@ public class JLabelMatcherTest {
     }
   }
 
+  @Test
   public void shouldReturnFalseIfLabelIsNotShowingAndTextIsEqualToExpected() {
     String text = "Hello";
     JLabelMatcher matcher = JLabelMatcher.withText(text).andShowing();
@@ -144,6 +150,7 @@ public class JLabelMatcherTest {
     assertThat(matcher.matches(label)).isFalse();
   }
 
+  @Test
   public void shouldReturnFalseIfLabelIsShowingAndTextIsNotEqualToExpected() {
     ScreenLock.instance().acquire(this);
     MyWindow window = MyWindow.createAndShow();
@@ -156,12 +163,14 @@ public class JLabelMatcherTest {
     }
   }
 
+  @Test
   public void shouldReturnFalseIfLabelIsNotShowingAndTextIsNotEqualToExpected() {
     JLabelMatcher matcher = JLabelMatcher.withText("Hello").andShowing();
     JLabel label = label().withText("Bye").createNew();
     assertThat(matcher.matches(label)).isFalse();
   }
 
+  @Test
   public void shouldImplementToString() {
     JLabelMatcher matcher = JLabelMatcher.withName("label").andText("Hello").andShowing();
     assertThat(matcher.toString()).isEqualTo(

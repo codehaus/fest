@@ -15,12 +15,13 @@
  */
 package org.fest.swing.test.task;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 
+import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands a task that sets the <code>{@link JPopupMenu}</code> for a <code>{@link JComponent}</code>. This task is
@@ -30,6 +31,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
  */
 public final class ComponentSetPopupMenuTask {
 
+  @RunsInEDT
   public static void setPopupMenu(final JComponent component, final JPopupMenu popupMenu) {
     execute(new GuiTask() {
       protected void executeInEDT() {

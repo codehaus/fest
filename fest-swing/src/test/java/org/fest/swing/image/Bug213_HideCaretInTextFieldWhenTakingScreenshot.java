@@ -15,55 +15,40 @@
  */
 package org.fest.swing.image;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.image.BufferedImage;
 
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.lock.ScreenLock;
+import org.fest.swing.test.core.SequentialTestCase;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.TestGroups.*;
+import org.junit.Test;
 
 /**
  * Test case for <a href="http://code.google.com/p/fest/issues/detail?id=213">Bug 213</a>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = { GUI, BUG })
-public class Bug213_HideCaretInTextFieldWhenTakingScreenshot {
+public class Bug213_HideCaretInTextFieldWhenTakingScreenshot extends SequentialTestCase {
 
   private ScreenshotTaker screenshotTaker;
   private MyWindow window;
   
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    ScreenLock.instance().acquire(this);
+  @Override protected void onSetUp() {
     screenshotTaker = new ScreenshotTaker();
     window = MyWindow.createAndShow();
   }
 
-  @AfterMethod public void tearDown() {
-    try {
-      window.destroy();
-    } finally {
-      ScreenLock.instance().release(this);
-    }
+  @Override protected void onTearDown() {
+    window.destroy();
   }
-  
+
+  @Test
   public void shouldHideCaretInTextFieldWhenTakingScreenshot() {
     BufferedImage currentImage = screenshotTaker.takeScreenshotOf(window);
     for (int i = 0; i < 100; i++) {

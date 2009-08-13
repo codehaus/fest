@@ -31,7 +31,7 @@ import javax.swing.JPopupMenu;
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JLabelDriver;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JLabelFixture}</code>.
@@ -39,7 +39,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-@Test public class JLabelFixtureTest extends CommonComponentFixtureTestCase<JLabel> {
+public class JLabelFixtureTest extends CommonComponentFixtureTestCase<JLabel> {
 
   private JLabelDriver driver;
   private JLabel target;
@@ -48,21 +48,23 @@ import org.testng.annotations.Test;
   void onSetUp() {
     driver = createMock(JLabelDriver.class);
     target = label().createNew();
-    fixture = new JLabelFixture(robot(), target);
+    fixture = new JLabelFixture(robot, target);
     fixture.driver(driver);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "label";
     expectLookupByName(name, JLabel.class);
-    verifyLookup(new JLabelFixture(robot(), name));
+    verifyLookup(new JLabelFixture(robot, name));
   }
 
+  @Test
   public void shouldReturnText() {
     final String text = "A Label";
     new EasyMockTemplate(driver) {
@@ -76,6 +78,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireText() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -89,6 +92,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireTextToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver) {
@@ -103,6 +107,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTip() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -116,6 +121,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTipToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver()) {
@@ -130,6 +136,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenu() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     new EasyMockTemplate(driver()) {
@@ -139,12 +146,13 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtPoint() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     final Point p = new Point();
@@ -155,12 +163,13 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldReturnClientProperty() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {

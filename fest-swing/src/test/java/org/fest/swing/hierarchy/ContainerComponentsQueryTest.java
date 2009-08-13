@@ -15,25 +15,19 @@
  */
 package org.fest.swing.hierarchy;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.Component;
 import java.util.List;
 
 import javax.swing.JButton;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.lock.ScreenLock;
+import org.fest.swing.test.core.SequentialTestCase;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.TestGroups.*;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link ContainerComponentsQuery}</code>.
@@ -41,28 +35,19 @@ import static org.fest.swing.test.core.TestGroups.*;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = { GUI, ACTION })
-public class ContainerComponentsQueryTest {
+public class ContainerComponentsQueryTest extends SequentialTestCase {
 
   private MyWindow window;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
+  @Override protected final void onSetUp() {
+    window = MyWindow.createNew();
   }
 
-  @BeforeMethod public void setUp() {
-    ScreenLock.instance().acquire(this);
-    window = MyWindow.createAndShow();
+  @Override protected final void onTearDown() {
+    window.destroy();
   }
 
-  @AfterMethod public void tearDown() {
-    try {
-      window.destroy();
-    } finally {
-      ScreenLock.instance().release(this);
-    }
-  }
-
+  @Test
   public void shouldReturnComponentsOfContainer() {
     assertThat(componentsOf(window)).containsOnly(window.button);
   }
@@ -82,10 +67,10 @@ public class ContainerComponentsQueryTest {
     final JButton button = new JButton("A button");
 
     @RunsInEDT
-    static MyWindow createAndShow() {
+    static MyWindow createNew() {
       return execute(new GuiQuery<MyWindow>() {
         protected MyWindow executeInEDT() {
-          return display(new MyWindow());
+          return new MyWindow();
         }
       });
     }

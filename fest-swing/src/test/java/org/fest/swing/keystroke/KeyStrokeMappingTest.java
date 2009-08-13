@@ -20,21 +20,23 @@ import static java.awt.event.KeyEvent.VK_A;
 import static javax.swing.KeyStroke.getKeyStroke;
 import static org.fest.assertions.Assertions.assertThat;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link KeyStrokeMapping}</code>.
  *
  * @author Alex Ruiz
  */
-@Test public class KeyStrokeMappingTest {
+public class KeyStrokeMappingTest {
 
+  @Test
   public void shouldCreateMappingFromCharAndKeyCodeAndModifiers() {
     KeyStrokeMapping mapping = KeyStrokeMapping.mapping('A', VK_A, SHIFT_MASK);
     assertThat(mapping.character()).isEqualTo('A');
     assertThat(mapping.keyStroke()).isEqualTo(getKeyStroke(VK_A, SHIFT_MASK));
   }
 
+  @Test
   public void shouldImplementToString() {
     KeyStrokeMapping mapping = KeyStrokeMapping.mapping('A', VK_A, SHIFT_MASK);
     assertThat(mapping.toString()).isEqualTo("KeyStrokeMapping[character='A',keyStroke=shift pressed A]");

@@ -19,17 +19,14 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JDialogs.dialog;
 import static org.fest.swing.test.builder.JTextFields.textField;
 import static org.fest.swing.test.core.Regex.regex;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import javax.swing.JDialog;
 
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.lock.ScreenLock;
+import org.fest.swing.test.core.EDTSafeTestCase;
 import org.fest.swing.test.swing.TestDialog;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link DialogMatcher}</code>.
@@ -37,23 +34,21 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = GUI)
-public class DialogMatcherTest {
+public class DialogMatcherTest extends EDTSafeTestCase {
 
-  @BeforeMethod public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
+  @Test
   public void shouldReturnTrueIfMatchingAnyDialog() {
     DialogMatcher matcher = DialogMatcher.any();
     assertThat(matcher.matches(dialog().createNew())).isTrue();
   }
 
+  @Test
   public void shouldReturnFalseIfComponentIsNotDialog() {
     DialogMatcher matcher = DialogMatcher.any();
     assertThat(matcher.matches(textField().createNew())).isFalse();
   }
 
+  @Test
   public void shouldReturnTrueIfNameIsEqualToExpected() {
     String name = "dialog";
     DialogMatcher matcher = DialogMatcher.withName(name);
@@ -61,38 +56,42 @@ public class DialogMatcherTest {
     assertThat(matcher.matches(dialog)).isTrue();
   }
 
+  @Test
   public void shouldReturnFalseIfNameIsNotEqualToExpected() {
     DialogMatcher matcher = DialogMatcher.withName("dialog");
     JDialog dialog = dialog().withName("label").createNew();
     assertThat(matcher.matches(dialog)).isFalse();
   }
 
+  @Test
   public void shouldReturnTrueIfNameAndTitleAreEqualToExpected() {
     DialogMatcher matcher = DialogMatcher.withName("dialog").andTitle("Hello");
     JDialog dialog = dialog().withName("dialog").withTitle("Hello").createNew();
     assertThat(matcher.matches(dialog)).isTrue();
   }
   
+  @Test
   public void shouldReturnTrueIfNameMatchesAndTitleMatchesPatternAsString() {
     DialogMatcher matcher = DialogMatcher.withName("dialog").andTitle("Hel.*");
     JDialog dialog = dialog().withName("dialog").withTitle("Hello").createNew();
     assertThat(matcher.matches(dialog)).isTrue();
   }
 
+  @Test
   public void shouldReturnTrueIfNameMatchesAndTitleMatchesPattern() {
     DialogMatcher matcher = DialogMatcher.withName("dialog").andTitle(regex("Hel.*"));
     JDialog dialog = dialog().withName("dialog").withTitle("Hello").createNew();
     assertThat(matcher.matches(dialog)).isTrue();
   }
 
-  @Test(groups = GUI, dataProvider = "notMatchingNameAndTitle")
-  public void shouldReturnFalseIfNameAndTitleAreNotEqualToExpected(String name, String title) {
+  @Test
+  public void shouldReturnFalseIfNameAndTitleAreNotEqualToExpected() {
     DialogMatcher matcher = DialogMatcher.withName("someName").andTitle("someTitle");
-    JDialog dialog = dialog().withName(name).withTitle(title).createNew();
+    JDialog dialog = dialog().withName("someName").withTitle("title").createNew();
     assertThat(matcher.matches(dialog)).isFalse();
   }
 
-  @DataProvider(name = "notMatchingNameAndTitle")
+  // TODO parameterize
   public Object[][] notMatchingNameAndTitle() {
     return new Object[][] {
         { "someName", "title" },
@@ -101,30 +100,35 @@ public class DialogMatcherTest {
     };
   }
 
+  @Test
   public void shouldReturnTrueIfTitleIsEqualToExpected() {
     DialogMatcher matcher = DialogMatcher.withTitle("Hello");
     JDialog dialog = dialog().withTitle("Hello").createNew();
     assertThat(matcher.matches(dialog)).isTrue();
   }
 
+  @Test
   public void shouldReturnTrueIfTitleMatchesPatternAsString() {
     DialogMatcher matcher = DialogMatcher.withTitle("He.*");
     JDialog dialog = dialog().withTitle("Hello").createNew();
     assertThat(matcher.matches(dialog)).isTrue();
   }
 
+  @Test
   public void shouldReturnTrueIfTitleMatchesPattern() {
     DialogMatcher matcher = DialogMatcher.withTitle(regex("He.*"));
     JDialog dialog = dialog().withTitle("Hello").createNew();
     assertThat(matcher.matches(dialog)).isTrue();
   }
 
+  @Test
   public void shouldReturnFalseIfTitleIsNotEqualToExpected() {
     DialogMatcher matcher = DialogMatcher.withTitle("Hello");
     JDialog dialog = dialog().withTitle("Bye").createNew();
     assertThat(matcher.matches(dialog)).isFalse();
   }
 
+  @Test
   public void shouldReturnTrueIfDialogIsShowingAndTitleIsEqualToExpected() {
     ScreenLock.instance().acquire(this);
     String title = "Hello";
@@ -137,6 +141,7 @@ public class DialogMatcherTest {
     }
   }
 
+  @Test
   public void shouldReturnFalseIfDialogIsNotShowingAndTitleIsEqualToExpected() {
     String title = "Hello";
     DialogMatcher matcher = DialogMatcher.withTitle(title).andShowing();
@@ -144,6 +149,7 @@ public class DialogMatcherTest {
     assertThat(matcher.matches(dialog)).isFalse();
   }
 
+  @Test
   public void shouldReturnFalseIfDialogIsShowingAndTitleIsNotEqualToExpected() {
     ScreenLock.instance().acquire(this);
     TestWindow window = TestWindow.createAndShowNewWindow(DialogMatcher.class);
@@ -158,12 +164,14 @@ public class DialogMatcherTest {
     }
   }
 
+  @Test
   public void shouldReturnFalseIfDialogIsNotShowingAndTitleIsNotEqualToExpected() {
     DialogMatcher matcher = DialogMatcher.withTitle("Hello").andShowing();
     JDialog dialog = dialog().withTitle("Bye").createNew();
     assertThat(matcher.matches(dialog)).isFalse();
   }
 
+  @Test
   public void shouldImplementToString() {
     DialogMatcher matcher = DialogMatcher.withName("dialog").andTitle("Hello").andShowing();
     assertThat(matcher.toString()).isEqualTo(

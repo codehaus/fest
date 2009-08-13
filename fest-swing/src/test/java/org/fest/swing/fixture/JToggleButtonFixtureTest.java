@@ -31,14 +31,13 @@ import javax.swing.JToggleButton;
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.AbstractButtonDriver;
 import org.fest.swing.driver.JComponentDriver;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JToggleButtonFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test
 public class JToggleButtonFixtureTest extends CommonComponentFixtureTestCase<JToggleButton> {
 
   private AbstractButtonDriver driver;
@@ -48,21 +47,23 @@ public class JToggleButtonFixtureTest extends CommonComponentFixtureTestCase<JTo
   void onSetUp() {
     driver = createMock(AbstractButtonDriver.class);
     target = toggleButton().createNew();
-    fixture = new JToggleButtonFixture(robot(), target);
+    fixture = new JToggleButtonFixture(robot, target);
     fixture.driver(driver);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "toggleButton";
     expectLookupByName(name, JToggleButton.class);
-    verifyLookup(new JToggleButtonFixture(robot(), name));
+    verifyLookup(new JToggleButtonFixture(robot, name));
   }
 
+  @Test
   public void shouldSelectCheckBox() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -76,6 +77,7 @@ public class JToggleButtonFixtureTest extends CommonComponentFixtureTestCase<JTo
     }.run();
   }
 
+  @Test
   public void shoulUnselectCheckBox() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -89,6 +91,7 @@ public class JToggleButtonFixtureTest extends CommonComponentFixtureTestCase<JTo
     }.run();
   }
 
+  @Test
   public void shouldReturnText() {
     final String text = "A Toggle Button";
     new EasyMockTemplate(driver) {
@@ -102,6 +105,7 @@ public class JToggleButtonFixtureTest extends CommonComponentFixtureTestCase<JTo
     }.run();
   }
 
+  @Test
   public void shouldRequireText() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -115,6 +119,7 @@ public class JToggleButtonFixtureTest extends CommonComponentFixtureTestCase<JTo
     }.run();
   }
 
+  @Test
   public void shouldRequireTextToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver) {
@@ -129,6 +134,7 @@ public class JToggleButtonFixtureTest extends CommonComponentFixtureTestCase<JTo
     }.run();
   }
 
+  @Test
   public void shouldRequireNotSelected() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -142,6 +148,7 @@ public class JToggleButtonFixtureTest extends CommonComponentFixtureTestCase<JTo
     }.run();
   }
 
+  @Test
   public void shouldRequireSelected() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -155,6 +162,7 @@ public class JToggleButtonFixtureTest extends CommonComponentFixtureTestCase<JTo
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTip() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -168,6 +176,7 @@ public class JToggleButtonFixtureTest extends CommonComponentFixtureTestCase<JTo
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTipToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver()) {
@@ -182,6 +191,7 @@ public class JToggleButtonFixtureTest extends CommonComponentFixtureTestCase<JTo
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenu() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     new EasyMockTemplate(driver()) {
@@ -191,12 +201,13 @@ public class JToggleButtonFixtureTest extends CommonComponentFixtureTestCase<JTo
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtPoint() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     final Point p = new Point();
@@ -207,12 +218,13 @@ public class JToggleButtonFixtureTest extends CommonComponentFixtureTestCase<JTo
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldReturnClientProperty() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {

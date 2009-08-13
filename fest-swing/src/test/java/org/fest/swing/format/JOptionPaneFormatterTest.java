@@ -15,16 +15,17 @@
  */
 package org.fest.swing.format;
 
-import javax.swing.JOptionPane;
-
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
-import static javax.swing.JOptionPane.*;
-
+import static javax.swing.JOptionPane.DEFAULT_OPTION;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JOptionPanes.optionPane;
 import static org.fest.swing.test.builder.JTextFields.textField;
+
+import javax.swing.JOptionPane;
+
+import org.fest.swing.test.core.EDTSafeTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JOptionPaneFormatter}</code>.
@@ -32,12 +33,12 @@ import static org.fest.swing.test.builder.JTextFields.textField;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-@Test public class JOptionPaneFormatterTest {
+public class JOptionPaneFormatterTest extends EDTSafeTestCase {
 
   private JOptionPane optionPane;
   private JOptionPaneFormatter formatter;
   
-  @BeforeClass public void setUp() {
+  @Before public void setUp() {
     optionPane = optionPane().withMessage("A message")
                              .withMessageType(ERROR_MESSAGE)
                              .withOptionType(DEFAULT_OPTION)
@@ -45,11 +46,12 @@ import static org.fest.swing.test.builder.JTextFields.textField;
     formatter = new JOptionPaneFormatter();
   }
   
-  @Test(expectedExceptions = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void shouldThrowErrorIfComponentIsNotJOptionPane() {
     formatter.format(textField().createNew());
   }
 
+  @Test
   public void shouldFormatJOptionPane() {
     String formatted = formatter.format(optionPane);
     assertThat(formatted).contains(optionPane.getClass().getName())

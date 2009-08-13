@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  */
 @Test(groups = GUI)
-public class JTextComponentDriverRequireNotEditableTest extends JTextComponentDriverTestCase {
+public class JTextComponentDriverRequireNotEditableTest extends JTextComponentDriver_TestCase {
 
   public void shouldPassIfTextComponentIsNotEditable() {
     makeTextFieldNotEditable();

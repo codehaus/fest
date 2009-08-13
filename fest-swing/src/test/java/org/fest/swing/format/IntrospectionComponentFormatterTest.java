@@ -15,49 +15,45 @@
  */
 package org.fest.swing.format;
 
-import javax.swing.JButton;
-
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiQuery;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JButtons.button;
 import static org.fest.swing.test.builder.JComboBoxes.comboBox;
 import static org.fest.util.Arrays.array;
 import static org.fest.util.Strings.concat;
 
+import javax.swing.JButton;
+
+import org.fest.swing.edt.GuiActionRunner;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.test.core.EDTSafeTestCase;
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * Tests for <code>{@link IntrospectionComponentFormatter}</code>.
  *
  * @author Alex Ruiz
  */
-@Test public class IntrospectionComponentFormatterTest {
+public class IntrospectionComponentFormatterTest extends EDTSafeTestCase {
 
   private JButton button;
   private IntrospectionComponentFormatter formatter;
   
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     button = button().withName("button")
                      .withText("Click Me")
                      .createNew();
     formatter = new IntrospectionComponentFormatter(JButton.class, "name", "text");
   }
   
+  @Test
   public void shouldFormatComponent() {
     String expected = concat(button.getClass().getName(), "[name='button', text='Click Me']");
     String formatted = formatter.format(button);
     assertThat(formatted).isEqualTo(expected);
   }
   
+  @Test
   public void shouldFormatEvenWithInvalidPropertyNames() {
     formatter = new IntrospectionComponentFormatter(JButton.class, "lastName", "text");
     String formatted = formatter.format(button);
@@ -65,6 +61,7 @@ import static org.fest.util.Strings.concat;
                          .contains("text='Click Me'");
   }
 
+  @Test
   public void shouldFormatOneDimensionalArrayProperties() {
     MyButton myButton = MyButton.newButton(array("Luke", "Leia"));
     formatter = new IntrospectionComponentFormatter(MyButton.class, "names", "text");
@@ -72,7 +69,7 @@ import static org.fest.util.Strings.concat;
     assertThat(formatted).contains("names=['Luke', 'Leia']");
   }
   
-  private static class MyButton extends JButton {
+  static class MyButton extends JButton {
     private static final long serialVersionUID = 1L;
 
     static MyButton newButton(final String[] names) {
@@ -95,26 +92,28 @@ import static org.fest.util.Strings.concat;
     }
   };
 
+  @Test
   public void shouldShowPropertyNamesInToString() {
     String s = formatter.toString();
     assertThat(s).contains("name").contains("text");
   }
   
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfTargetTypeIsNull() {
     formatter = new IntrospectionComponentFormatter(null, "name", "text");
   }
 
-  @Test(expectedExceptions = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void shouldThrowErrorIfComponentHasUnsupportedType() {
     formatter.format(comboBox().createNew());
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfComponentIsNull() {
     formatter.format(null);
   }
   
+  @Test
   public void shouldFormatPropertyWithNameShowing() {
     formatter = new IntrospectionComponentFormatter(JButton.class, "showing");
     String formatted = formatter.format(button);

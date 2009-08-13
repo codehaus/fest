@@ -38,12 +38,11 @@ import org.fest.swing.core.MouseClickInfo;
 import org.fest.swing.core.Robot;
 import org.fest.swing.data.TableCell;
 import org.fest.swing.driver.JTableDriver;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JTableCellFixture}</code>.
- *
  * @author Alex Ruiz
  */
 public class JTableCellFixtureTest {
@@ -52,23 +51,25 @@ public class JTableCellFixtureTest {
   private TableCell cell;
   private JTableCellFixture fixture;
 
-  @BeforeMethod public void setUp() {
+  @Before
+  public void setUp() {
     table = createMock(JTableFixture.class);
     cell = row(8).column(6);
     fixture = new JTableCellFixture(table, cell);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfJTableFixtureIsNull() {
     new JTableCellFixture(null, cell);
   }
-  
-  @Test(expectedExceptions = NullPointerException.class)
+
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfCellIsNull() {
     new JTableCellFixture(table, null);
   }
 
-  @Test public void shouldSelect() {
+  @Test
+  public void shouldSelect() {
     new EasyMockTemplate(table) {
       protected void expectations() {
         expect(table.selectCell(cell)).andReturn(table);
@@ -80,7 +81,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldClick() {
+  @Test
+  public void shouldClick() {
     new EasyMockTemplate(table) {
       protected void expectations() {
         expect(table.click(cell, LEFT_BUTTON)).andReturn(table);
@@ -92,7 +94,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldClickUsingMouseClickInfo() {
+  @Test
+  public void shouldClickUsingMouseClickInfo() {
     final MouseClickInfo mouseClickInfo = leftButton().times(2);
     new EasyMockTemplate(table) {
       protected void expectations() {
@@ -105,7 +108,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldDoubleClick() {
+  @Test
+  public void shouldDoubleClick() {
     new EasyMockTemplate(table) {
       protected void expectations() {
         table.click(cell, LEFT_BUTTON, 2);
@@ -118,7 +122,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldRightClick() {
+  @Test
+  public void shouldRightClick() {
     new EasyMockTemplate(table) {
       protected void expectations() {
         expect(table.click(cell, RIGHT_BUTTON)).andReturn(table);
@@ -130,7 +135,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldShowPopupMenu() {
+  @Test
+  public void shouldShowPopupMenu() {
     final JPopupMenuFixture popup = createMock(JPopupMenuFixture.class);
     new EasyMockTemplate(table) {
       protected void expectations() {
@@ -144,7 +150,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldReturnContents() {
+  @Test
+  public void shouldReturnContents() {
     final String content = "Hello";
     new EasyMockTemplate(table) {
       protected void expectations() {
@@ -158,7 +165,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldPassIfContentIsEqualToExpected() {
+  @Test
+  public void shouldPassIfContentIsEqualToExpected() {
     final String content = "Hello";
     new EasyMockTemplate(table) {
       protected void expectations() {
@@ -171,7 +179,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldPassIfContentMatchesPattern() {
+  @Test
+  public void shouldPassIfContentMatchesPattern() {
     final Pattern pattern = regex("Hello");
     new EasyMockTemplate(table) {
       protected void expectations() {
@@ -184,7 +193,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldReturnFontForCell() {
+  @Test
+  public void shouldReturnFontForCell() {
     final FontFixture fontFixture = new FontFixture(new Font("SansSerif", PLAIN, 8));
     new EasyMockTemplate(table) {
       protected void expectations() {
@@ -198,7 +208,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldReturnBackgroundColorForCell() {
+  @Test
+  public void shouldReturnBackgroundColorForCell() {
     final ColorFixture colorFixture = new ColorFixture(BLUE);
     new EasyMockTemplate(table) {
       protected void expectations() {
@@ -212,7 +223,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldReturnForegroundColorForCell() {
+  @Test
+  public void shouldReturnForegroundColorForCell() {
     final ColorFixture colorFixture = new ColorFixture(BLUE);
     new EasyMockTemplate(table) {
       protected void expectations() {
@@ -226,7 +238,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldDrag() {
+  @Test
+  public void shouldDrag() {
     new EasyMockTemplate(table) {
       protected void expectations() {
         expect(table.drag(cell)).andReturn(table);
@@ -238,7 +251,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldDrop() {
+  @Test
+  public void shouldDrop() {
     new EasyMockTemplate(table) {
       protected void expectations() {
         expect(table.drop(cell)).andReturn(table);
@@ -250,7 +264,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldRequireEditableCell() {
+  @Test
+  public void shouldRequireEditableCell() {
     new EasyMockTemplate(table) {
       protected void expectations() {
         expect(table.requireEditable(cell)).andReturn(table);
@@ -261,8 +276,9 @@ public class JTableCellFixtureTest {
       }
     }.run();
   }
-  
-  @Test public void shouldRequireNotEditableCell() {
+
+  @Test
+  public void shouldRequireNotEditableCell() {
     new EasyMockTemplate(table) {
       protected void expectations() {
         expect(table.requireNotEditable(cell)).andReturn(table);
@@ -274,11 +290,13 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldReturnRow() {
+  @Test
+  public void shouldReturnRow() {
     assertThat(fixture.row()).isEqualTo(cell.row);
   }
 
-  @Test public void shouldReturnColumn() {
+  @Test
+  public void shouldReturnColumn() {
     assertThat(fixture.column()).isEqualTo(cell.column);
   }
 
@@ -286,7 +304,8 @@ public class JTableCellFixtureTest {
     assertThat(result).isSameAs(fixture);
   }
 
-  @Test public void shouldRequireValue() {
+  @Test
+  public void shouldRequireValue() {
     final String value = "Hello";
     new EasyMockTemplate(table) {
       protected void expectations() {
@@ -299,7 +318,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldStartCellEditing() {
+  @Test
+  public void shouldStartCellEditing() {
     table = tableFixtureStub();
     fixture = new JTableCellFixture(table, cell);
     final JTableDriver driver = table.driver();
@@ -315,7 +335,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldStopCellEditing() {
+  @Test
+  public void shouldStopCellEditing() {
     table = tableFixtureStub();
     fixture = new JTableCellFixture(table, cell);
     final JTableDriver driver = table.driver();
@@ -331,7 +352,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldCancelCellEditing() {
+  @Test
+  public void shouldCancelCellEditing() {
     table = tableFixtureStub();
     fixture = new JTableCellFixture(table, cell);
     final JTableDriver driver = table.driver();
@@ -347,7 +369,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldReturnCellEditor() {
+  @Test
+  public void shouldReturnCellEditor() {
     table = tableFixtureStub();
     fixture = new JTableCellFixture(table, cell);
     final JTableDriver driver = table.driver();
@@ -364,7 +387,8 @@ public class JTableCellFixtureTest {
     }.run();
   }
 
-  @Test public void shouldEnterValue() {
+  @Test
+  public void shouldEnterValue() {
     table = tableFixtureStub();
     fixture = new JTableCellFixture(table, cell);
     final JTableDriver driver = table.driver();

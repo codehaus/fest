@@ -17,53 +17,41 @@ package org.fest.swing.finder;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import javax.swing.JFileChooser;
 
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.exception.WaitTimedOutError;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.JFileChooserFixture;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.JFileChooserLauncherWindow;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JFileChooserFinder}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class JFileChooserFinderTest {
+public class JFileChooserFinderTest extends RobotBasedTestCase {
 
-  private Robot robot;
   private FrameFixture frameFixture;
   private JFileChooserLauncherWindow window;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected void onSetUp() {
     window = JFileChooserLauncherWindow.createNew(JFileChooserFinderTest.class);
     frameFixture = new FrameFixture(robot, window);
     frameFixture.show();
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
+  @Test
   public void shouldFindFileChooser() {
     clickBrowseButton();
     JFileChooserFixture found = JFileChooserFinder.findFileChooser().using(robot);
     assertThat(found.target).isSameAs(window.fileChooser());
   }
 
+  @Test
   public void shouldFindFileChooserBeforeGivenTimeoutExpires() {
     window.launchDelay(2000);
     clickBrowseButton();
@@ -71,17 +59,19 @@ public class JFileChooserFinderTest {
     assertThat(found.target).isSameAs(window.fileChooser());
   }
 
-  @Test(groups = GUI, expectedExceptions = WaitTimedOutError.class)
+  @Test(expected = WaitTimedOutError.class)
   public void shouldFailIfFileChooserNotFound() {
     JFileChooserFinder.findFileChooser().using(robot);
   }
 
+  @Test
   public void shouldFindFileChooserByName() {
     clickBrowseButton();
     JFileChooserFixture found = JFileChooserFinder.findFileChooser("fileChooser").using(robot);
     assertThat(found.target).isSameAs(window.fileChooser());
   }
 
+  @Test
   public void shouldFindFileChooserUsingMatcher() {
     clickBrowseButton();
     GenericTypeMatcher<JFileChooser> matcher = new GenericTypeMatcher<JFileChooser>(JFileChooser.class) {

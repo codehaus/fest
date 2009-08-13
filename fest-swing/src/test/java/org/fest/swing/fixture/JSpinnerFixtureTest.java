@@ -31,7 +31,7 @@ import javax.swing.JSpinner;
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JSpinnerDriver;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JSpinnerFixture}</code>.
@@ -39,7 +39,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-@Test public class JSpinnerFixtureTest extends CommonComponentFixtureTestCase<JSpinner> {
+public class JSpinnerFixtureTest extends CommonComponentFixtureTestCase<JSpinner> {
 
   private JSpinnerDriver driver;
   private JSpinner target;
@@ -48,21 +48,23 @@ import org.testng.annotations.Test;
   void onSetUp() {
     driver = createMock(JSpinnerDriver.class);
     target = spinner().createNew();
-    fixture = new JSpinnerFixture(robot(), target);
+    fixture = new JSpinnerFixture(robot, target);
     fixture.driver(driver);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "spinner";
     expectLookupByName(name, JSpinner.class);
-    verifyLookup(new JSpinnerFixture(robot(), name));
+    verifyLookup(new JSpinnerFixture(robot, name));
   }
 
+  @Test
   public void shouldRequireValue() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -76,6 +78,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldIncrementTheGivenTimes() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -89,6 +92,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldIncrement() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -102,6 +106,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldDecrementTheGivenTimes() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -115,6 +120,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldDecrement() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -128,6 +134,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldReturnText() {
     final String text = "Some Text";
     new EasyMockTemplate(driver) {
@@ -141,6 +148,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldEnterText() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -154,6 +162,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSelectValue() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -167,6 +176,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldEnterTextAndCommit() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -180,6 +190,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTip() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -193,6 +204,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTipToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver()) {
@@ -207,6 +219,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenu() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     new EasyMockTemplate(driver()) {
@@ -216,12 +229,13 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtPoint() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     final Point p = new Point();
@@ -232,12 +246,13 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldReturnClientProperty() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {

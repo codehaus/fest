@@ -15,16 +15,16 @@
  */
 package org.fest.swing.format;
 
-import javax.swing.JList;
-
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
 import static javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JLists.list;
 import static org.fest.swing.test.builder.JTextFields.textField;
+
+import javax.swing.JList;
+
+import org.fest.swing.test.core.EDTSafeTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JListFormatter}</code>.
@@ -32,12 +32,12 @@ import static org.fest.swing.test.builder.JTextFields.textField;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-@Test public class JListFormatterTest {
+public class JListFormatterTest extends EDTSafeTestCase {
 
   private JList list;
   private JListFormatter formatter;
   
-  @BeforeClass public void setUp() {
+  @Before public void setUp() {
     list = list().withItems("One", 2, "Three", 4)
                  .withName("list")
                  .withSelectedIndices(0, 1)
@@ -46,11 +46,12 @@ import static org.fest.swing.test.builder.JTextFields.textField;
     formatter = new JListFormatter();
   }
   
-  @Test(expectedExceptions = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void shouldThrowErrorIfComponentIsNotJList() {
     formatter.format(textField().createNew());
   }
 
+  @Test
   public void shouldFormatJList() {
     String formatted = formatter.format(list);
     assertThat(formatted).contains(list.getClass().getName())

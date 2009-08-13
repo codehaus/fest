@@ -15,11 +15,12 @@
  */
 package org.fest.swing.test.task;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import javax.swing.JTree;
 
+import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands a task that selects a single row in a <code>{@link JTree}</code>. This task is executed in the event
@@ -29,6 +30,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
  */
 public final class JTreeSelectRowTask {
 
+  @RunsInEDT
   public static void selectRow(final JTree tree, final int row) {
     execute(new GuiTask() {
       protected void executeInEDT() {

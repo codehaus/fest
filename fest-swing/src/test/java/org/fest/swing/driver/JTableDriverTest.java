@@ -47,7 +47,10 @@ import static org.fest.swing.util.Range.to;
 
 import java.awt.*;
 
-import javax.swing.*;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 
 import org.fest.mocks.EasyMockTemplate;
@@ -57,7 +60,9 @@ import org.fest.swing.cell.JTableCellWriter;
 import org.fest.swing.core.Robot;
 import org.fest.swing.data.TableCell;
 import org.fest.swing.data.TableCellByColumnId;
-import org.fest.swing.edt.*;
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ActionFailedException;
 import org.fest.swing.test.core.MethodInvocations;
 import org.fest.swing.test.data.ZeroAndNegativeProvider;
@@ -132,7 +137,7 @@ public class JTableDriverTest {
       driver.selectCell(dragTable, row(0).column(0));
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -142,7 +147,7 @@ public class JTableDriverTest {
       driver.selectCell(dragTable, row(0).column(0));
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -179,7 +184,7 @@ public class JTableDriverTest {
       driver.selectCells(dragTable, new TableCell[] { row(0).column(0), row(2).column(0) });
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -489,7 +494,7 @@ public class JTableDriverTest {
       driver.enterValueInCell(dragTable, row(0).column(0), "Hello");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -499,7 +504,7 @@ public class JTableDriverTest {
       driver.enterValueInCell(dragTable, row(0).column(0), "Hello");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 

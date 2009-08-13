@@ -15,6 +15,14 @@
  */
 package org.fest.swing.monitor;
 
+import static java.awt.AWTEvent.COMPONENT_EVENT_MASK;
+import static java.awt.AWTEvent.WINDOW_EVENT_MASK;
+import static java.awt.event.WindowEvent.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.test.builder.JTextFields.textField;
+
 import java.applet.Applet;
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -22,31 +30,29 @@ import java.awt.FileDialog;
 import java.awt.Window;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.List;
 
-import org.testng.annotations.*;
-
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.listener.WeakEventListener;
 import org.fest.swing.test.awt.ToolkitStub;
+import org.fest.swing.test.core.EDTSafeTestCase;
 import org.fest.swing.test.swing.TestWindow;
-
-import static java.awt.AWTEvent.*;
-import static java.awt.event.WindowEvent.*;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.test.builder.JTextFields.textField;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 /**
  * Tests for <code>{@link ContextMonitor}</code>.
+ * TODO Split
  *
  * @author Alex Ruiz
  */
-public class ContextMonitorTest {
+@RunWith(Parameterized.class)
+public class ContextMonitorTest extends EDTSafeTestCase {
 
   private static final long EVENT_MASK = WINDOW_EVENT_MASK | COMPONENT_EVENT_MASK;
 
@@ -55,19 +61,31 @@ public class ContextMonitorTest {
   private Windows windows;
   private Context context;
   private TestWindow window;
+  
+  private final int eventId;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
+  @Parameters
+  public static Collection<Object[]> eventsBetweenWindowFirstAndWindowLast() {
+    List<Object[]> ids = new ArrayList<Object[]>();
+    for (int id = WINDOW_FIRST; id <= WINDOW_LAST; id++) {
+      if (id == WINDOW_OPENED || id == WINDOW_CLOSED || id == WINDOW_CLOSING) continue;
+      ids.add(new Object[] { id });
+    }
+    return ids;
   }
 
-  @BeforeMethod public void setUp() throws Exception {
+  public ContextMonitorTest(int eventId) {
+    this.eventId = eventId;
+  }
+
+  @Before public void setUp() {
     window = TestWindow.createNewWindow(getClass());
     windows = createMock(Windows.class);
     context = createMock(Context.class);
     monitor = new ContextMonitor(context, windows);
   }
 
-  @AfterMethod public void tearDown() {
+  @After public void tearDown() {
     window.destroy();
   }
 
@@ -175,8 +193,8 @@ public class ContextMonitorTest {
     }.run();
   }
 
-  @Test(dataProvider = "eventsBetweenWindowFirstAndWindowLast")
-  public void shouldProcessEventWithIdBetweenWindowFirstAndWindowLastAndWindowNotInContext(final int eventId) {
+  @Test
+  public void shouldProcessEventWithIdBetweenWindowFirstAndWindowLastAndWindowNotInContext() {
     new EasyMockTemplate(windows, context) {
       @Override protected void expectations() {
         expect(context.rootWindows()).andReturn(new ArrayList<Window>());
@@ -192,8 +210,8 @@ public class ContextMonitorTest {
     }.run();
   }
 
-  @Test(dataProvider = "eventsBetweenWindowFirstAndWindowLast")
-  public void shouldProcessEventWithIdBetweenWindowFirstAndWindowLastAndWindowInContextAndClosed(final int eventId) {
+  @Test
+  public void shouldProcessEventWithIdBetweenWindowFirstAndWindowLastAndWindowInContextAndClosed() {
     new EasyMockTemplate(windows, context) {
       @Override protected void expectations() {
         expect(context.rootWindows()).andReturn(frameInList());
@@ -210,8 +228,8 @@ public class ContextMonitorTest {
     }.run();
   }
 
-  @Test(dataProvider = "eventsBetweenWindowFirstAndWindowLast")
-  public void shouldProcessEventWithIdBetweenWindowFirstAndWindowLastAndWindowInContextAndNotClosed(final int eventId) {
+  @Test
+  public void shouldProcessEventWithIdBetweenWindowFirstAndWindowLastAndWindowInContextAndNotClosed() {
     new EasyMockTemplate(windows, context) {
       @Override protected void expectations() {
         expect(context.rootWindows()).andReturn(frameInList());
@@ -223,16 +241,6 @@ public class ContextMonitorTest {
         dispatchEventToMonitor(window, eventId);
       }
     }.run();
-  }
-
-  @DataProvider(name = "eventsBetweenWindowFirstAndWindowLast")
-  public Iterator<Object[]> eventsBetweenWindowFirstAndWindowLast() {
-    List<Object[]> ids = new ArrayList<Object[]>();
-    for (int id = WINDOW_FIRST; id <= WINDOW_LAST; id++) {
-      if (id == WINDOW_OPENED || id == WINDOW_CLOSED || id == WINDOW_CLOSING) continue;
-      ids.add(new Object[] { id });
-    }
-    return ids.iterator();
   }
 
   private void expectEventQueueLookupFor(Component c) {
@@ -251,8 +259,8 @@ public class ContextMonitorTest {
     dispatchEventToMonitor(c, WINDOW_CLOSING);
   }
 
-  private void dispatchEventToMonitor(Component c, int eventId) {
-    monitor.eventDispatched(new ComponentEvent(c, eventId));
+  private void dispatchEventToMonitor(Component c, int id) {
+    monitor.eventDispatched(new ComponentEvent(c, id));
   }
 
   private List<Window> frameInList() {

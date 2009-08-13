@@ -15,27 +15,27 @@
  */
 package org.fest.swing.edt;
 
-import org.testng.annotations.Test;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
 
 import org.fest.swing.exception.ActionFailedException;
 import org.fest.swing.timing.Condition;
 import org.fest.swing.timing.Pause;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link GuiTask}</code>.
  *
  * @author Alex Ruiz
  */
-@Test public class GuiTaskTest {
+public class GuiTaskTest {
 
-  @Test(expectedExceptions = ActionFailedException.class)
+  @Test(expected = ActionFailedException.class)
   public void shouldExecuteInEDTWhenNotCalledInEDT() {
     new GuiTaskInEDT().run();
   }
 
+  @Test
   public void shouldExecuteInEDTWhenCalledInEDT() {
     final GuiTaskInEDT task = new GuiTaskInEDT();
     execute(task);

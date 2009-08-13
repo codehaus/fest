@@ -17,36 +17,35 @@ package org.fest.swing.keystroke;
 
 import static java.lang.String.valueOf;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.timing.Pause.pause;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.text.JTextComponent;
 
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
 import org.fest.swing.driver.JTextComponentDriver;
-import org.fest.swing.edt.*;
+import org.fest.swing.edt.GuiActionRunner;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.recorder.KeyRecorder;
 import org.fest.swing.test.swing.TestWindow;
 import org.fest.swing.timing.Condition;
-import org.testng.annotations.*;
 
 /**
  * Test case for implementations of <code>{@link KeyStrokeMappingProvider}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public abstract class KeyStrokeMappingProviderTestCase {
+public abstract class KeyStrokeMappingProviderTestCase extends RobotBasedTestCase {
 
   static final char BACKSPACE = 8;
   static final char CR = 10;
@@ -54,58 +53,22 @@ public abstract class KeyStrokeMappingProviderTestCase {
   static final char ESCAPE = 27;
   static final char LF = 13;
 
-  private Robot robot;
   private JTextComponent textArea;
   private JTextComponentDriver driver;
+  
+  final char character;
+  final KeyStroke keyStroke;
 
-  private Collection<KeyStrokeMapping> keyStrokeMappings;
-
-  @BeforeClass public final void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-    keyStrokeMappings = keyStrokeMappingsToTest();
+  public KeyStrokeMappingProviderTestCase(char character, KeyStroke keyStroke) {
+    this.character = character;
+    this.keyStroke = keyStroke;
   }
-
-  abstract Collection<KeyStrokeMapping> keyStrokeMappingsToTest();
-
-  @BeforeMethod public final void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  
+  @Override protected final void onSetUp() {
     MyWindow window = MyWindow.createNew(getClass());
     textArea = window.textArea;
     robot.showWindow(window);
     driver = new JTextComponentDriver(robot);
-  }
-
-  @AfterMethod public final void tearDown() {
-    robot.cleanUp();
-  }
-
-  @DataProvider(name = "keyStrokeMappings") public final Iterator<Object[]> keyStrokeMappings() {
-    return new KeyStrokeMappingIterator(keyStrokeMappings);
-  }
-
-  final void pressKeyStrokeAndVerify(KeyStroke keyStroke, char expectedChar) {
-    pressInTextArea(keyStroke);
-    final String expectedText = valueOf(expectedChar);
-    pause(new Condition(concat("text in JTextArea is ", quote(expectedText))) {
-      public boolean test() {
-        return expectedText.equals(textArea.getText());
-      }
-    }, 500);
-  }
-
-  final void pressKeyStrokeAndVerify(KeyStroke keyStroke, final int expectedKey) {
-    assertThat(keyStroke.getModifiers()).as("no modifiers should be specified").isEqualTo(0);
-    final KeyRecorder recorder = KeyRecorder.attachTo(textArea);
-    pressInTextArea(keyStroke);
-    pause(new Condition(concat("key with code ", expectedKey, " is pressed")) {
-      public boolean test() {
-        return recorder.keysWerePressed(expectedKey);
-      }
-    }, 500);
-  }
-
-  private void pressInTextArea(KeyStroke keyStroke) {
-    driver.pressAndReleaseKey(textArea, keyStroke.getKeyCode(), new int[] { keyStroke.getModifiers() });
   }
 
   static class KeyStrokeMappingIterator implements Iterator<Object[]> {
@@ -125,6 +88,38 @@ public abstract class KeyStrokeMappingProviderTestCase {
     }
 
     public void remove() {}
+  }
+
+  final void pressKeyStrokeAndVerify(char expectedChar) {
+    pressInTextArea();
+    final String expectedText = valueOf(expectedChar);
+    pause(new Condition(concat("text in JTextArea is ", quote(expectedText))) {
+      public boolean test() {
+        return expectedText.equals(textArea.getText());
+      }
+    }, 500);
+  }
+
+  final void pressKeyStrokeAndVerify(final int expectedKey) {
+    assertThat(keyStroke.getModifiers()).as("no modifiers should be specified").isEqualTo(0);
+    final KeyRecorder recorder = KeyRecorder.attachTo(textArea);
+    pressInTextArea();
+    pause(new Condition(concat("key with code ", expectedKey, " is pressed")) {
+      public boolean test() {
+        return recorder.keysWerePressed(expectedKey);
+      }
+    }, 500);
+  }
+
+  static Collection<Object[]> keyStrokesFrom(Collection<KeyStrokeMapping> mappings) {
+    List<Object[]> keyStrokes = new ArrayList<Object[]>();
+    for (KeyStrokeMapping mapping : mappings)
+      keyStrokes.add(new Object[] { mapping.character(), mapping.keyStroke() });
+    return keyStrokes;
+  }
+  
+  private void pressInTextArea() {
+    driver.pressAndReleaseKey(textArea, keyStroke.getKeyCode(), new int[] { keyStroke.getModifiers() });
   }
 
   static class MyWindow extends TestWindow {

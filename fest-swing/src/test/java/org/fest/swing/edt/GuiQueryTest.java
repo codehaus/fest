@@ -15,15 +15,12 @@
  */
 package org.fest.swing.edt;
 
-import org.testng.annotations.Test;
-
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.exception.ActionFailedException;
-
 import static javax.swing.SwingUtilities.isEventDispatchThread;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
+
+import org.fest.swing.exception.ActionFailedException;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link GuiQuery}</code>.
@@ -31,15 +28,16 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-@Test public class GuiQueryTest {
+public class GuiQueryTest {
 
-  @Test(expectedExceptions = ActionFailedException.class)
+  @Test(expected = ActionFailedException.class)
   public void shouldExecuteInEDTWhenNotCalledInEDT() {
     GuiQueryInEDT task = new GuiQueryInEDT();
     assertThat(isEventDispatchThread()).isFalse();
     task.run();
   }
 
+  @Test
   public void shouldExecuteInEDTWhenCalledInEDT() {
     final GuiQueryInEDT task = new GuiQueryInEDT();
     boolean executedFromEDT = execute(task);

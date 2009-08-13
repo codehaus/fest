@@ -31,15 +31,14 @@ import javax.swing.JPopupMenu;
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.AbstractButtonDriver;
 import org.fest.swing.driver.JComponentDriver;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JButtonFixture}</code>.
- *
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-@Test public class JButtonFixtureTest extends CommonComponentFixtureTestCase<JButton> {
+public class JButtonFixtureTest extends CommonComponentFixtureTestCase<JButton> {
 
   private AbstractButtonDriver driver;
   private JButton target;
@@ -48,21 +47,23 @@ import org.testng.annotations.Test;
   void onSetUp() {
     driver = createMock(AbstractButtonDriver.class);
     target = button().createNew();
-    fixture = new JButtonFixture(robot(), target);
+    fixture = new JButtonFixture(robot, target);
     fixture.driver(driver);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "button";
     expectLookupByName(name, JButton.class);
-    verifyLookup(new JButtonFixture(robot(), name));
+    verifyLookup(new JButtonFixture(robot, name));
   }
 
+  @Test
   public void shouldReturnText() {
     final String text = "A Button";
     new EasyMockTemplate(driver) {
@@ -76,6 +77,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireText() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -89,6 +91,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireTextToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver) {
@@ -103,6 +106,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTip() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -116,6 +120,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTipToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver()) {
@@ -129,7 +134,8 @@ import org.testng.annotations.Test;
       }
     }.run();
   }
-  
+
+  @Test
   public void shouldShowPopupMenu() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     new EasyMockTemplate(driver()) {
@@ -139,12 +145,13 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtPoint() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     final Point p = new Point();
@@ -155,12 +162,13 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldReturnClientProperty() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -173,7 +181,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  JComponentDriver driver() { return driver; }
+  JComponentDriver driver() {  return driver; }
   JButton target() { return target; }
   JButtonFixture fixture() { return fixture; }
 }

@@ -16,10 +16,8 @@
 package org.fest.swing.fixture;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.util.Arrays.array;
 
 import java.awt.Dimension;
@@ -28,44 +26,36 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.*;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests lookup of <code>{@link JScrollPane}</code>s in <code>{@link ContainerFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class ContainerFixtureJScrollPaneLookupTest {
+public class ContainerFixtureJScrollPaneLookupTest extends RobotBasedTestCase {
 
   private ConcreteContainerFixture fixture;
-  private Robot robot;
   private MyWindow window;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected final void onSetUp() {
     window = MyWindow.createNew();
     fixture = new ConcreteContainerFixture(robot, window);
     robot.showWindow(window);
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
+  @Test
   public void shouldFindJScrollPaneByType() {
     JScrollPaneFixture scrollPane = fixture.scrollPane();
     assertThatFixtureHasCorrectJScrollPane(scrollPane);
   }
 
+  @Test
   public void shouldFailIfJScrollPaneCannotBeFoundByType() {
     execute(new GuiTask() {
       protected void executeInEDT() {
@@ -82,11 +72,13 @@ public class ContainerFixtureJScrollPaneLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJScrollPaneByName() {
     JScrollPaneFixture scrollPane = fixture.scrollPane("scrollMeScrollBar");
     assertThatFixtureHasCorrectJScrollPane(scrollPane);
   }
 
+  @Test
   public void shouldFailIfJScrollPaneCannotBeFoundByName() {
     try {
       fixture.scrollPane("myScrollPane");
@@ -97,6 +89,7 @@ public class ContainerFixtureJScrollPaneLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJScrollPaneWithCustomMatcher() {
     JScrollPaneFixture scrollPane = fixture.scrollPane(new GenericTypeMatcher<JScrollPane>(JScrollPane.class) {
       protected boolean isMatching(JScrollPane s) {
@@ -110,6 +103,7 @@ public class ContainerFixtureJScrollPaneLookupTest {
     assertThat(scrollPaneFixture.component()).isSameAs(window.scrollPane);
   }
 
+  @Test
   public void shouldFailIfJScrollPaneCannotBeFoundWithCustomMatcher() {
     try {
       fixture.scrollPane(new GenericTypeMatcher<JScrollPane>(JScrollPane.class) {

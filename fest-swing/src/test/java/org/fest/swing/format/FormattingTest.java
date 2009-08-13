@@ -15,20 +15,7 @@
  */
 package org.fest.swing.format;
 
-import java.awt.Component;
-import java.util.logging.Logger;
-
-import javax.swing.*;
-
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
-import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-
 import static java.awt.Adjustable.VERTICAL;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.builder.JButtons.button;
@@ -47,20 +34,27 @@ import static org.fest.swing.test.builder.JTextFields.textField;
 import static org.fest.swing.test.builder.JToggleButtons.toggleButton;
 import static org.fest.util.Strings.concat;
 
+import java.awt.Component;
+import java.util.logging.Logger;
+
+import javax.swing.*;
+
+import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.test.core.EDTSafeTestCase;
+import org.junit.Test;
+
 /**
  * Tests for <code>{@link Formatting}</code>.
  *
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test public class FormattingTest {
+public class FormattingTest extends EDTSafeTestCase {
 
   private static Logger logger = Logger.getAnonymousLogger();
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
+  @Test
   public void shouldReplaceExistingFormatter() {
     final Class<JComboBox> type = JComboBox.class;
     ComponentFormatter oldFormatter = Formatting.formatter(type);
@@ -79,6 +73,7 @@ import static org.fest.util.Strings.concat;
     }
   }
   
+  @Test
   public void shouldFormatDialog() {
     JDialog dialog = dialog().withName("dialog")
                              .withTitle("A dialog")
@@ -92,6 +87,7 @@ import static org.fest.util.Strings.concat;
                                  .contains("showing=false");
   }
 
+  @Test
   public void shouldFormatFrame() {
     JFrame frame = frame().withName("frame")
                           .withTitle("A frame")
@@ -104,10 +100,12 @@ import static org.fest.util.Strings.concat;
                                 .contains("showing=false");
   }
   
+  @Test
   public void shouldFormatJComboBox() {
     assertThat(Formatting.formatter(JComboBox.class)).isInstanceOf(JComboBoxFormatter.class);
   }
 
+  @Test
   public void shouldFormatJButton() {
     JButton button = button().enabled(false)
                              .withName("button")
@@ -121,10 +119,12 @@ import static org.fest.util.Strings.concat;
                                  .contains("showing=false");
   }
 
+  @Test
   public void shouldFormatJFileChooser() {
     assertThat(Formatting.formatter(JFileChooser.class)).isInstanceOf(JFileChooserFormatter.class);
   }
 
+  @Test
   public void shouldFormatJLabel() {
     JLabel label = label().withName("label")
                           .withText("A label")
@@ -137,6 +137,7 @@ import static org.fest.util.Strings.concat;
                                 .contains("showing=false");
   }
 
+  @Test
   public void shouldFormatJLayeredPane() {
     JLayeredPane pane = newJLayeredPane();
     assertThat(formatted(pane)).isEqualTo(concat(classNameOf(pane), "[]"));
@@ -146,15 +147,18 @@ import static org.fest.util.Strings.concat;
     return new JLayeredPane();
   }
 
+  @Test
   public void shouldFormatJList() {
     assertThat(Formatting.formatter(JList.class)).isInstanceOf(JListFormatter.class);
   }
 
+  @Test
   public void shouldFormatJMenuBar() {
     JMenuBar menuBar = menuBar().createNew();
     assertThat(formatted(menuBar)).isEqualTo(concat(classNameOf(menuBar), "[]"));
   }
 
+  @Test
   public void shouldFormatJMenuItem() {
     JMenuItem menuItem = menuItem().withName("menuItem")
                                    .selected(true)
@@ -169,16 +173,19 @@ import static org.fest.util.Strings.concat;
                                    .contains("showing=false");
   }
 
+  @Test
   public void shouldFormatJOptionPane() {
     assertThat(Formatting.formatter(JOptionPane.class)).isInstanceOf(JOptionPaneFormatter.class);
   }
 
+  @Test
   public void shouldFormatJPanel() {
     JPanel panel = panel().withName("panel").createNew();
     assertThat(formatted(panel)).contains(classNameOf(panel))
                                 .contains("name='panel'");
   }
 
+  @Test
   public void shouldFormatJPopupMenu() {
     JPopupMenu popupMenu = popupMenu().withLabel("Menu")
                                       .withName("popupMenu")
@@ -191,6 +198,7 @@ import static org.fest.util.Strings.concat;
                                     .contains("showing=false");
   }
 
+  @Test
   public void shouldFormatJRootPane() {
     JRootPane pane = newJRootPane();
     assertThat(formatted(pane)).isEqualTo(concat(classNameOf(pane), "[]"));
@@ -205,6 +213,7 @@ import static org.fest.util.Strings.concat;
     });
   }
 
+  @Test
   public void shouldFormatJScrollBar() {
     JScrollBar scrollBar = scrollBar().withBlockIncrement(10)
                                       .withMinimum(0)
@@ -224,6 +233,7 @@ import static org.fest.util.Strings.concat;
                                     .contains("showing=false");
   }
 
+  @Test
   public void shouldFormatJScrollPane() {
     JScrollPane scrollPane = scrollPane().withName("scrollPane").createNew();
     assertThat(formatted(scrollPane)).contains(classNameOf(scrollPane))
@@ -233,6 +243,7 @@ import static org.fest.util.Strings.concat;
                                      .contains("showing=false");
   }
 
+  @Test
   public void shouldFormatJSlider() {
     JSlider slider = slider().withMaximum(8)
                              .withMinimum(2)
@@ -249,6 +260,7 @@ import static org.fest.util.Strings.concat;
                                  .contains("showing=false"); 
   }
 
+  @Test
   public void shouldFormatJSpinner() {
     JSpinner spinner = spinner().withName("spinner")
                                 .withValues(6, 2, 8, 1)
@@ -261,14 +273,17 @@ import static org.fest.util.Strings.concat;
                                   .contains("showing=false");
   }
 
+  @Test
   public void shouldFormatJTabbedPane() {
     assertThat(Formatting.formatter(JTabbedPane.class)).isInstanceOf(JTabbedPaneFormatter.class);
   }
 
+  @Test
   public void shouldFormatJTable() {
     assertThat(Formatting.formatter(JTable.class)).isInstanceOf(JTableFormatter.class);
   }
 
+  @Test
   public void shouldFormatJPasswordField() {
     JPasswordField passwordField = newJPasswordField();
     assertThat(formatted(passwordField)).contains(classNameOf(passwordField))
@@ -289,6 +304,7 @@ import static org.fest.util.Strings.concat;
     });
   }
 
+  @Test
   public void shouldFormatJTextComponent() {
     JTextField textField = textField().withName("textField")
                                       .withText("Hello")
@@ -301,6 +317,7 @@ import static org.fest.util.Strings.concat;
                                     .contains("showing=false");
   }
 
+  @Test
   public void shouldFormatJToggleButton() {
     JToggleButton toggleButton = toggleButton().withName("toggleButton")
                                                .selected(true)
@@ -315,6 +332,7 @@ import static org.fest.util.Strings.concat;
                                        .contains("showing=false");
   }
 
+  @Test
   public void shouldFormatJTree() {
     assertThat(Formatting.formatter(JTree.class)).isInstanceOf(JTreeFormatter.class);
   }
@@ -329,6 +347,7 @@ import static org.fest.util.Strings.concat;
     return o.getClass().getName();
   }
   
+  @Test
   public void shouldReturnComponentIsNullIfComponentIsNull() {
     assertThat(Formatting.format(null)).isEqualTo("Null Component");
   }

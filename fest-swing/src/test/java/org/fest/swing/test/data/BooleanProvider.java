@@ -15,16 +15,13 @@
  */
 package org.fest.swing.test.data;
 
-import org.testng.annotations.DataProvider;
-
 /**
- * Understands a TestNG provider of <code>boolean</code> values.
+ * Understands a provider of <code>boolean</code> values.
  *
  * @author Yvonne Wang
  */
 public class BooleanProvider {
 
-  @DataProvider(name = "booleans")
   public static Object[][] booleans() {
     return new Object[][] { { true }, { false } };
   }

@@ -15,28 +15,20 @@
  */
 package org.fest.swing.finder;
 
+import static javax.swing.SwingUtilities.invokeLater;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.finder.WindowFinder.findDialog;
+
 import java.awt.Frame;
 
 import javax.swing.JDialog;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
-import org.fest.swing.core.BasicRobot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.fixture.DialogFixture;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestDialog;
 import org.fest.swing.test.swing.TestWindow;
-
-import static javax.swing.SwingUtilities.invokeLater;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.finder.WindowFinder.findDialog;
-import static org.fest.swing.test.core.TestGroups.*;
+import org.junit.Test;
 
 /**
  * Test case for <a href="http://code.google.com/p/fest/issues/detail?id=228">Bug 228</a>.
@@ -44,23 +36,9 @@ import static org.fest.swing.test.core.TestGroups.*;
  * @author Ken Geis
  * @author Alex Ruiz
  */
-@Test(groups = { GUI, BUG })
-public class Bug228_ModalWindowBlocksTest {
+public class Bug228_ModalWindowBlocksTest extends RobotBasedTestCase {
 
-  private Robot robot;
-  
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-  
-  @BeforeMethod public void setUp() {
-    robot = BasicRobot.robotWithNewAwtHierarchy();
-  }
-
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-  
+  @Test
   public void testModalDialog()
   {
     TestWindow window = TestWindow.createNewWindow(getClass());

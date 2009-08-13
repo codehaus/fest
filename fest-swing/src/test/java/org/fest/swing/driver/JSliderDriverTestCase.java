@@ -15,18 +15,6 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.Dimension;
-
-import javax.swing.JSlider;
-
-import org.testng.annotations.*;
-
-import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.test.swing.TestWindow;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.driver.JSliderValueQuery.valueOf;
@@ -35,6 +23,17 @@ import static org.fest.swing.test.core.CommonAssertions.*;
 import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
 import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
+
+import java.awt.Dimension;
+
+import javax.swing.JSlider;
+
+import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.core.Robot;
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.test.swing.TestWindow;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JSliderDriver}</code>.
@@ -89,7 +88,7 @@ public abstract class JSliderDriverTestCase {
       driver.slide(slider, 6);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -99,7 +98,7 @@ public abstract class JSliderDriverTestCase {
       driver.slide(slider, 6);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -122,7 +121,7 @@ public abstract class JSliderDriverTestCase {
       driver.slideToMaximum(slider);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
   
@@ -132,7 +131,7 @@ public abstract class JSliderDriverTestCase {
       driver.slideToMaximum(slider);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -156,7 +155,7 @@ public abstract class JSliderDriverTestCase {
       driver.slideToMinimum(slider);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -166,7 +165,7 @@ public abstract class JSliderDriverTestCase {
       driver.slideToMinimum(slider);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 

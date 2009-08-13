@@ -19,6 +19,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 
 import javax.swing.JTable;
 
+import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 
 /**
@@ -31,6 +32,7 @@ import org.fest.swing.edt.GuiQuery;
  */
 final class JTableCellValueQuery {
 
+  @RunsInEDT
   static Object cellValueOf(final JTable table, final int row, final int column) {
     return execute(new GuiQuery<Object>() {
       protected Object executeInEDT() {

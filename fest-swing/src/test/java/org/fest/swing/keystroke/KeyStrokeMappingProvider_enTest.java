@@ -15,49 +15,60 @@
  */
 package org.fest.swing.keystroke;
 
+import static java.awt.event.KeyEvent.VK_BACK_SPACE;
+import static java.awt.event.KeyEvent.VK_DELETE;
+import static java.awt.event.KeyEvent.VK_ENTER;
+import static java.awt.event.KeyEvent.VK_ESCAPE;
+
 import java.util.Collection;
 
 import javax.swing.KeyStroke;
 
-import org.testng.annotations.Test;
-
-import static java.awt.event.KeyEvent.*;
-
-import static org.fest.swing.test.core.TestGroups.GUI;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 /**
  * Tests for <code>{@link KeyStrokeMappingProvider_en}</code>.
  *
  * @author Alex Ruiz
  */
+@RunWith(Parameterized.class)
 public class KeyStrokeMappingProvider_enTest extends KeyStrokeMappingProviderTestCase {
 
-  @Test(groups = GUI, dataProvider = "keyStrokeMappings")
-  public void shouldProvideKeyStrokesForEnglishKeyboard(char character, KeyStroke keyStroke) {
+  public KeyStrokeMappingProvider_enTest(char character, KeyStroke keyStroke) {
+    super(character, keyStroke);
+  }
+
+  @Parameters
+  public static Collection<Object[]> keyStrokes() {
+    Collection<KeyStrokeMapping> mappings = new KeyStrokeMappingProvider_en().keyStrokeMappings();
+    return keyStrokesFrom(mappings);
+  }
+
+  @Test
+  public void shouldProvideKeyStrokesForEnglishKeyboard() {
     if (character == BACKSPACE) {
-      pressKeyStrokeAndVerify(keyStroke, VK_BACK_SPACE);
+      pressKeyStrokeAndVerify(VK_BACK_SPACE);
       return;
     }
     if (character == CR) {
-      pressKeyStrokeAndVerify(keyStroke, VK_ENTER);
+      pressKeyStrokeAndVerify(VK_ENTER);
       return;
     }
     if (character == DELETE) {
-      pressKeyStrokeAndVerify(keyStroke, VK_DELETE);
+      pressKeyStrokeAndVerify(VK_DELETE);
       return;
     }
     if (character == ESCAPE) {
-      pressKeyStrokeAndVerify(keyStroke, VK_ESCAPE);
+      pressKeyStrokeAndVerify(VK_ESCAPE);
       return;
     }
     if (character == LF) {
-      pressKeyStrokeAndVerify(keyStroke, VK_ENTER);
+      pressKeyStrokeAndVerify(VK_ENTER);
       return;
     }
-    pressKeyStrokeAndVerify(keyStroke, character);
-  }
-  
-  Collection<KeyStrokeMapping> keyStrokeMappingsToTest() {
-    return new KeyStrokeMappingProvider_en().keyStrokeMappings();
+    pressKeyStrokeAndVerify(character);
   }
 }

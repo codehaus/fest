@@ -15,23 +15,17 @@
  */
 package org.fest.swing.hierarchy;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.lock.ScreenLock;
+import org.fest.swing.test.core.SequentialTestCase;
 import org.fest.swing.test.swing.TestMdiWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.TestGroups.*;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JInternalFrameDesktopPaneQuery}</code>.
@@ -39,30 +33,21 @@ import static org.fest.swing.test.core.TestGroups.*;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = { GUI, ACTION })
-public class JInternalFrameDesktopPaneQueryTest {
+public class JInternalFrameDesktopPaneQueryTest extends SequentialTestCase {
 
   private TestMdiWindow window;
   private JInternalFrame internalFrame;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    ScreenLock.instance().acquire(this);
+  @Override protected final void onSetUp() {
     window = TestMdiWindow.createAndShowNewWindow(getClass());
     internalFrame = window.internalFrame();
   }
 
-  @AfterMethod public void tearDown() {
-    try {
-      window.destroy();
-    } finally {
-      ScreenLock.instance().release(this);
-    }
+  @Override protected final void onTearDown() {
+    window.destroy();
   }
 
+  @Test
   public void shouldReturnNullIfJDesktopIconInJInternalFrameIsNull() {
     JDesktopPane desktopPane = setNullIconAndReturnDesktopPane(internalFrame);
     assertThat(desktopPane).isNull();
@@ -79,6 +64,7 @@ public class JInternalFrameDesktopPaneQueryTest {
     return desktopPane;
   }
 
+  @Test
   public void shouldReturnJDesktopPaneFromJDesktopIconInJInternalFrameIsNull() {
     JDesktopPane desktopPane = desktopFrameOf(internalFrame);
     assertThat(desktopPane).isSameAs(window.desktop());

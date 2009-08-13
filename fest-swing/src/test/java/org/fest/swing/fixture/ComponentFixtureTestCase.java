@@ -14,22 +14,18 @@
  */
 package org.fest.swing.fixture;
 
-import java.awt.Component;
+import static org.easymock.EasyMock.*;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.ComponentLookupScope.DEFAULT;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
+import java.awt.Component;
 
 import org.fest.swing.core.ComponentFinder;
 import org.fest.swing.core.Robot;
 import org.fest.swing.core.Settings;
 import org.fest.swing.driver.ComponentDriver;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.ComponentLookupScope.DEFAULT;
+import org.junit.Before;
 
 /**
  * Understands test methods for implementations of <code>{@link ComponentFixture}</code>.
@@ -39,15 +35,11 @@ import static org.fest.swing.core.ComponentLookupScope.DEFAULT;
  */
 public abstract class ComponentFixtureTestCase<T extends Component> {
 
-  private Robot robot;
-  private ComponentFinder finder;
-  private Settings settings;
+  ComponentFinder finder;
+  Settings settings;
+  Robot robot;
   
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-  
-  @BeforeMethod public final void setUp() {
+  @Before public final void setUp() {
     robot = createMock(Robot.class);
     finder = createMock(ComponentFinder.class);
     settings = new Settings();
@@ -57,10 +49,6 @@ public abstract class ComponentFixtureTestCase<T extends Component> {
 
   abstract void onSetUp();
 
-  Robot robot() { return robot; }
-
-  ComponentFinder finder() { return finder; }
-  
   abstract T target();
 
   abstract ComponentDriver driver();

@@ -25,21 +25,20 @@ import static org.fest.swing.test.core.Regex.regex;
 
 import java.util.regex.Pattern;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.core.ComponentFinder;
-import org.fest.swing.core.Robot;
 import org.fest.swing.driver.ComponentDriver;
 import org.fest.swing.driver.JOptionPaneDriver;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JOptionPaneFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test
 public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOptionPane> {
 
   private JOptionPaneDriver driver;
@@ -49,24 +48,24 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
   void onSetUp() {
     driver = createMock(JOptionPaneDriver.class);
     target = optionPane().createNew();
-    fixture = new JOptionPaneFixture(robot(), target);
+    fixture = new JOptionPaneFixture(robot, target);
     fixture.driver(driver);
   }
 
+  @Test
   public void shouldCreateFixtureByType() {
-    Robot robot = robot();
-    ComponentFinder finder = finder();
     expect(robot.finder()).andReturn(finder);
     expect(finder.findByType(JOptionPane.class, true)).andReturn(target());
     replay(robot, finder);
     verifyLookup(new JOptionPaneFixture(robot));
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldRequireTitle() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -80,6 +79,7 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  @Test
   public void shouldRequireTitleMatchingPattern() {
     final Pattern p = regex("Title");
     new EasyMockTemplate(driver) {
@@ -94,6 +94,7 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  @Test
   public void shouldRequireMessage() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -107,6 +108,7 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  @Test
   public void shouldRequireMessageMatchingPattern() {
     final Pattern p = regex("Message");
     new EasyMockTemplate(driver) {
@@ -121,6 +123,7 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  @Test
   public void shouldRequireOptions() {
     final Object[] options = new Object[0];
     new EasyMockTemplate(driver) {
@@ -135,6 +138,7 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  @Test
   public void shouldReturnOkButton() {
     final JButton button = button().createNew();
     new EasyMockTemplate(driver) {
@@ -149,6 +153,7 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  @Test
   public void shouldReturnCancelButton() {
     final JButton button = button().createNew();
     new EasyMockTemplate(driver) {
@@ -163,6 +168,7 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  @Test
   public void shouldReturnYesButton() {
     final JButton button = button().createNew();
     new EasyMockTemplate(driver) {
@@ -177,6 +183,7 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  @Test
   public void shouldReturnNoButton() {
     final JButton button = button().createNew();
     new EasyMockTemplate(driver) {
@@ -191,6 +198,7 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  @Test
   public void shouldReturnButtonWithText() {
     final JButton button = button().createNew();
     new EasyMockTemplate(driver) {
@@ -205,6 +213,7 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  @Test
   public void shouldReturnButtonWithTextMatchingPattern() {
     final Pattern p = regex("Butt.*");
     final JButton button = button().createNew();
@@ -220,6 +229,7 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  @Test
   public void shouldReturnButton() {
     final JButton button = button().createNew();
     new EasyMockTemplate(driver) {
@@ -234,6 +244,7 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  @Test
   public void shouldReturnTextBox() {
     final JTextField textBox = textField().createNew();
     new EasyMockTemplate(driver) {
@@ -248,6 +259,7 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  @Test
   public void shouldRequireErrorMessage() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -261,6 +273,7 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  @Test
   public void shouldRequireInformationMessage() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -274,6 +287,7 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  @Test
   public void shouldRequireWarningMessage() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -287,6 +301,7 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  @Test
   public void shouldRequireQuestionMessage() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -300,6 +315,7 @@ public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOpti
     }.run();
   }
 
+  @Test
   public void shouldRequirePlainMessage() {
     new EasyMockTemplate(driver) {
       protected void expectations() {

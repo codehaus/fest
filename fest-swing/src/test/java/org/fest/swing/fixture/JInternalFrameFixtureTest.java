@@ -32,14 +32,14 @@ import javax.swing.JPopupMenu;
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JInternalFrameDriver;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JInternalFrameFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test public class JInternalFrameFixtureTest extends CommonComponentFixtureTestCase<JInternalFrame> {
+public class JInternalFrameFixtureTest extends CommonComponentFixtureTestCase<JInternalFrame> {
 
   private JInternalFrameDriver driver;
   private JInternalFrame target;
@@ -48,21 +48,23 @@ import org.testng.annotations.Test;
   void onSetUp() {
     driver = createMock(JInternalFrameDriver.class);
     target = internalFrame().createNew();
-    fixture = new JInternalFrameFixture(robot(), target);
+    fixture = new JInternalFrameFixture(robot, target);
     fixture.driver(driver);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "internalFrame";
     expectLookupByName(name, JInternalFrame.class);
-    verifyLookup(new JInternalFrameFixture(robot(), name));
+    verifyLookup(new JInternalFrameFixture(robot, name));
   }
 
+  @Test
   public void shouldMoveToFront() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -76,6 +78,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldMoveToBack() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -89,6 +92,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldDeiconify() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -102,6 +106,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldIconify() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -115,6 +120,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldMaximize() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -128,6 +134,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldNormalize() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -141,6 +148,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldClose() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -154,6 +162,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireSize() {
     final Dimension size = new Dimension(800, 600);
     new EasyMockTemplate(driver) {
@@ -168,6 +177,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldMoveToPoint() {
     final Point p = new Point(6, 8);
     new EasyMockTemplate(driver) {
@@ -182,6 +192,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldResizeHeight() {
     final int height = 68;
     new EasyMockTemplate(driver) {
@@ -196,6 +207,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldResizeWidth() {
     final int width = 68;
     new EasyMockTemplate(driver) {
@@ -210,6 +222,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldResizeWidthAndHeight() {
     final Dimension size = new Dimension(800, 600);
     new EasyMockTemplate(driver) {
@@ -224,10 +237,12 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldBeContainerFixture() {
     assertThat(fixture).isInstanceOf(ContainerFixture.class);
   }
 
+  @Test
   public void shouldRequireToolTip() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -241,6 +256,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTipToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver()) {
@@ -255,6 +271,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenu() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     new EasyMockTemplate(driver()) {
@@ -264,12 +281,13 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtPoint() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     final Point p = new Point();
@@ -280,12 +298,13 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldReturnClientProperty() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {

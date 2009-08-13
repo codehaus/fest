@@ -14,6 +14,10 @@
  */
 package org.fest.swing.fixture;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.finder.WindowFinder.findFrame;
+
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,22 +26,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithCurrentAwtHierarchy;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.finder.WindowFinder.findFrame;
-import static org.fest.swing.test.core.TestGroups.GUI;
+import org.junit.Test;
 
 /**
  * Test for <a href="http://code.google.com/p/fest/issues/detail?id=157" target="_blank">issue 157</a>.
@@ -45,28 +38,19 @@ import static org.fest.swing.test.core.TestGroups.GUI;
  * @author Andriy Tsykholyas
  * @author Yvonne Wang
  */
-public class MacOsxMenuBarTest {
+public class MacOsxMenuBarTest extends RobotBasedTestCase {
   
-  private Robot robot;
   private JMenuItemFixture menuItemFixture;
   
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
+  @Override protected void onSetUp() {
     System.setProperty("apple.laf.useScreenMenuBar", "true");
-    robot = robotWithCurrentAwtHierarchy();
     robot.showWindow(MyWindow.createNew());
     FrameFixture frameFixture = findFrame("myWindow").withTimeout(2000).using(robot);
     menuItemFixture = frameFixture.menuItem("menuItem");
   }
   
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-  
-  @Test(groups = GUI) public void shouldSelectMenu() {
+  @Test 
+  public void shouldSelectMenu() {
     final boolean[] selected = new boolean[1];
     JMenuItem menu = menuItemFixture.target;
     menu.addActionListener(new ActionListener() {

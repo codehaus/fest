@@ -15,13 +15,12 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.driver.JTreeAddRootIfInvisibleTask.addRootIfInvisible;
 import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.util.Arrays.array;
 
 import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 
-import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
 
@@ -40,20 +39,10 @@ final class JTreeExpandPathTask {
   static void expandTreePath(final JTree tree, final TreePath path) {
     execute(new GuiTask() {
       protected void executeInEDT() {
-        TreePath realPath = addRootToPathIfNecessary(tree, path);
+        TreePath realPath = addRootIfInvisible(tree, path);
         if (!tree.isExpanded(path)) tree.expandPath(realPath);
       }
     });
-  }
-
-  @RunsInCurrentThread
-  private static TreePath addRootToPathIfNecessary(JTree tree, TreePath path) {
-    if (path.getPathCount() == 1 && !tree.isRootVisible()) {
-      Object root = tree.getModel().getRoot();
-      Object target = path.getLastPathComponent();
-      if (target != root) return new TreePath(array(root, target));
-    }
-    return path;
   }
 
   private JTreeExpandPathTask() {}

@@ -15,12 +15,19 @@
  */
 package org.fest.swing.driver;
 
+import static java.awt.BorderLayout.*;
+import static javax.swing.SwingUtilities.getWindowAncestor;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
+import static org.fest.swing.driver.ComponentLocationQuery.locationOf;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.TestGroups.GUI;
+
 import java.awt.*;
 
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
-
-import org.testng.annotations.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
@@ -28,16 +35,7 @@ import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.test.swing.TestWindow;
-
-import static java.awt.BorderLayout.*;
-import static javax.swing.SwingUtilities.getWindowAncestor;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.driver.ComponentLocationQuery.locationOf;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JToolBarDriver}</code>.

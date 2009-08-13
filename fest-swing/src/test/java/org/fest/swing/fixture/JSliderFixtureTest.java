@@ -31,7 +31,7 @@ import javax.swing.JSlider;
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JSliderDriver;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JSliderFixture}</code>.
@@ -39,7 +39,6 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-@Test
 public class JSliderFixtureTest extends CommonComponentFixtureTestCase<JSlider> {
 
   private JSliderDriver driver;
@@ -49,21 +48,23 @@ public class JSliderFixtureTest extends CommonComponentFixtureTestCase<JSlider> 
   void onSetUp() {
     driver = createMock(JSliderDriver.class);
     target = slider().createNew();
-    fixture = new JSliderFixture(robot(), target);
+    fixture = new JSliderFixture(robot, target);
     fixture.driver(driver);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "slider";
     expectLookupByName(name, JSlider.class);
-    verifyLookup(new JSliderFixture(robot(), name));
+    verifyLookup(new JSliderFixture(robot, name));
   }
 
+  @Test
   public void shouldSlideToValue() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -77,6 +78,7 @@ public class JSliderFixtureTest extends CommonComponentFixtureTestCase<JSlider> 
     }.run();
   }
 
+  @Test
   public void shouldSlideToMax() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -90,6 +92,7 @@ public class JSliderFixtureTest extends CommonComponentFixtureTestCase<JSlider> 
     }.run();
   }
 
+  @Test
   public void shouldSlideToMin() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -103,6 +106,7 @@ public class JSliderFixtureTest extends CommonComponentFixtureTestCase<JSlider> 
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTip() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -116,6 +120,7 @@ public class JSliderFixtureTest extends CommonComponentFixtureTestCase<JSlider> 
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTipToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver()) {
@@ -130,6 +135,7 @@ public class JSliderFixtureTest extends CommonComponentFixtureTestCase<JSlider> 
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenu() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     new EasyMockTemplate(driver()) {
@@ -139,12 +145,13 @@ public class JSliderFixtureTest extends CommonComponentFixtureTestCase<JSlider> 
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtPoint() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     final Point p = new Point();
@@ -155,12 +162,13 @@ public class JSliderFixtureTest extends CommonComponentFixtureTestCase<JSlider> 
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldReturnClientProperty() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {

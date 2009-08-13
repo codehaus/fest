@@ -15,18 +15,17 @@
  */
 package org.fest.swing.format;
 
-import javax.swing.JComboBox;
-
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JComboBoxes.comboBox;
 import static org.fest.swing.test.builder.JTextFields.textField;
 
+import javax.swing.JComboBox;
+
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * Tests for <code>{@link JComboBoxFormatter}</code>.
- *
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
@@ -34,34 +33,28 @@ public class JComboBoxFormatterTest {
 
   private JComboBox comboBox;
   private JComboBoxFormatter formatter;
-  
-  @BeforeClass public void setUp() {
+
+  @Before
+  public void setUp() {
     comboBox = newComboBox();
     formatter = new JComboBoxFormatter();
   }
-  
+
   private static JComboBox newComboBox() {
-    return comboBox().editable(true)
-                     .withItems("One", 2, "Three", 4)
-                     .withName("comboBox")
-                     .withSelectedIndex(1)
-                     .createNew();
+    return comboBox().editable(true).withItems("One", 2, "Three", 4).withName("comboBox").withSelectedIndex(1)
+        .createNew();
   }
-  
-  @Test(expectedExceptions = IllegalArgumentException.class)
+
+  @Test(expected = IllegalArgumentException.class)
   public void shouldThrowErrorIfComponentIsNotJComboBox() {
     formatter.format(textField().createNew());
   }
-  
-  @Test public void shouldFormatJComboBox() {
+
+  @Test
+  public void shouldFormatJComboBox() {
     String formatted = formatter.format(comboBox);
-    assertThat(formatted).contains(comboBox.getClass().getName())
-                         .contains("name='comboBox'")
-                         .contains("selectedItem=2")
-                         .contains("contents=['One', 2, 'Three', 4]")
-                         .contains("editable=true")
-                         .contains("enabled=true")
-                         .contains("visible=true")
-                         .contains("showing=false");
+    assertThat(formatted).contains(comboBox.getClass().getName()).contains("name='comboBox'")
+        .contains("selectedItem=2").contains("contents=['One', 2, 'Three', 4]").contains("editable=true").contains(
+            "enabled=true").contains("visible=true").contains("showing=false");
   }
 }

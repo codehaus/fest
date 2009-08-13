@@ -27,18 +27,18 @@ import static org.fest.swing.timing.Timeout.timeout;
 import javax.swing.JMenuItem;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.core.*;
+import org.fest.swing.core.KeyPressInfo;
 import org.fest.swing.driver.ComponentDriver;
 import org.fest.swing.driver.JMenuItemDriver;
 import org.fest.swing.timing.Timeout;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JMenuItemFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test public class JMenuItemFixtureTest extends ComponentFixtureTestCase<JMenuItem> implements
+public class JMenuItemFixtureTest extends ComponentFixtureTestCase<JMenuItem> implements
     KeyboardInputSimulationFixtureTestCase, StateVerificationFixtureTestCase {
 
   private JMenuItemDriver driver;
@@ -48,25 +48,25 @@ import org.testng.annotations.Test;
   void onSetUp() {
     driver = createMock(JMenuItemDriver.class);
     target = menuItem().withText("A MenuItem").createNew();
-    fixture = new JMenuItemFixture(robot(), target);
+    fixture = new JMenuItemFixture(robot, target);
     fixture.driver(driver);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "menuItem";
-    Robot robot = robot();
-    ComponentFinder finder = finder();
     expect(robot.finder()).andReturn(finder);
     expect(finder.findByName(name, JMenuItem.class, false)).andReturn(target());
     replay(robot, finder);
     verifyLookup(new JMenuItemFixture(robot, name));
   }
 
+  @Test
   public void shouldClickMenuItem() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -80,6 +80,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldGiveFocus() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -93,7 +94,8 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldPressAndReleaseKey() {
+  @Test
+  public void should_press_and_release_key() {
     final KeyPressInfo keyPressInfo = keyCode(VK_A).modifiers(SHIFT_MASK);
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -107,7 +109,8 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldPressAndReleaseKeys() {
+  @Test
+  public void should_press_and_release_keys() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.pressAndReleaseKeys(target, VK_A, VK_B, VK_C);
@@ -120,7 +123,8 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldPressKey() {
+  @Test
+  public void should_press_key() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.pressKey(target, VK_A);
@@ -133,7 +137,8 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldReleaseKey() {
+  @Test
+  public void should_release_key() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.releaseKey(target, VK_A);
@@ -146,7 +151,8 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldRequireDisabled() {
+  @Test
+  public void should_require_disabled() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.requireDisabled(target);
@@ -159,7 +165,8 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldRequireEnabled() {
+  @Test
+  public void should_require_enabled() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.requireEnabled(target);
@@ -172,7 +179,8 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldRequireEnabledUsingTimeout() {
+  @Test
+  public void should_require_enabled_using_timeout() {
     final Timeout timeout = timeout(2000);
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -186,7 +194,8 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldRequireNotVisible() {
+  @Test
+  public void should_require_not_visible() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.requireNotVisible(target);
@@ -199,7 +208,8 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  public void shouldRequireVisible() {
+  @Test
+  public void should_require_visible() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
         driver.requireVisible(target);
@@ -217,6 +227,5 @@ import org.testng.annotations.Test;
   }
 
   ComponentDriver driver() { return driver; }
-
   JMenuItem target() { return target; }
 }

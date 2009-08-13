@@ -15,12 +15,11 @@
  */
 package org.fest.swing.fixture;
 
-import org.testng.annotations.Test;
-
-import org.fest.swing.core.MouseClickInfo;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.core.MouseButton.*;
+
+import org.fest.swing.core.MouseClickInfo;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link MouseClickInfo}</code>.
@@ -30,7 +29,7 @@ import static org.fest.swing.core.MouseButton.*;
  */
 public class MouseClickInfoTest {
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfMouseButtonIsNull() {
     MouseClickInfo.button(null);
   }

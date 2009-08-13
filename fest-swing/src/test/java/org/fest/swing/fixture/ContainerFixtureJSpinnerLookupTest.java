@@ -16,53 +16,43 @@
 package org.fest.swing.fixture;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.*;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests lookup of <code>{@link JSpinner}</code>s in <code>{@link ContainerFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class ContainerFixtureJSpinnerLookupTest {
+public class ContainerFixtureJSpinnerLookupTest extends RobotBasedTestCase {
 
   private ConcreteContainerFixture fixture;
-  private Robot robot;
   private MyWindow window;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected final void onSetUp() {
     window = MyWindow.createNew();
     fixture = new ConcreteContainerFixture(robot, window);
     robot.showWindow(window);
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
+  @Test
   public void shouldFindJSpinnerByType() {
     JSpinnerFixture spinner = fixture.spinner();
     assertThatFixtureHasCorrectJSpinner(spinner);
   }
 
+  @Test
   public void shouldFailIfJSpinnerCannotBeFoundByType() {
     execute(new GuiTask() {
       protected void executeInEDT() {
@@ -79,11 +69,13 @@ public class ContainerFixtureJSpinnerLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJSpinnerByName() {
     JSpinnerFixture spinner = fixture.spinner("spinMeSpinner");
     assertThatFixtureHasCorrectJSpinner(spinner);
   }
 
+  @Test
   public void shouldFailIfJSpinnerCannotBeFoundByName() {
     try {
       fixture.spinner("mySpinner");
@@ -94,6 +86,7 @@ public class ContainerFixtureJSpinnerLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJSpinnerWithCustomMatcher() {
     JSpinnerFixture spinner = fixture.spinner(new GenericTypeMatcher<JSpinner>(JSpinner.class) {
       protected boolean isMatching(JSpinner s) {
@@ -107,6 +100,7 @@ public class ContainerFixtureJSpinnerLookupTest {
     assertThat(spinnerFixture.component()).isSameAs(window.spinner);
   }
 
+  @Test
   public void shouldFailIfJSpinnerCannotBeFoundWithCustomMatcher() {
     try {
       fixture.spinner(new GenericTypeMatcher<JSpinner>(JSpinner.class) {

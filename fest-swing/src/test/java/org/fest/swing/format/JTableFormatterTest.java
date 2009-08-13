@@ -15,16 +15,16 @@
  */
 package org.fest.swing.format;
 
-import javax.swing.JTable;
-
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
 import static javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JTables.table;
 import static org.fest.swing.test.builder.JTextFields.textField;
+
+import javax.swing.JTable;
+
+import org.fest.swing.test.core.EDTSafeTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JTableFormatter}</code>.
@@ -32,12 +32,12 @@ import static org.fest.swing.test.builder.JTextFields.textField;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test public class JTableFormatterTest {
+public class JTableFormatterTest extends EDTSafeTestCase {
 
   private JTable table;
   private JTableFormatter formatter;
 
-  @BeforeClass public void setUp() {
+  @Before public void setUp() {
     table = table().withRowCount(8)
                    .withColumnCount(6)
                    .withName("table")
@@ -46,11 +46,12 @@ import static org.fest.swing.test.builder.JTextFields.textField;
     formatter = new JTableFormatter();
   }
   
-  @Test(expectedExceptions = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void shouldThrowErrorIfComponentIsNotJTable() {
     formatter.format(textField().createNew());
   }
 
+  @Test
   public void shouldFormatJTable() {
     String formatted = formatter.format(table);
     assertThat(formatted).contains(table.getClass().getName())

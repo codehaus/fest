@@ -15,6 +15,9 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.driver.ModelValueToString.asText;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.Component;
 
 import javax.swing.JComboBox;
@@ -24,9 +27,6 @@ import javax.swing.ListCellRenderer;
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.cell.JComboBoxCellReader;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.swing.driver.ModelValueToString.asText;
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands the default implementation of <code>{@link JComboBoxCellReader}</code>.

@@ -23,15 +23,16 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Test for <code>{@link ComponentLookupException}</code>
  *
  * @author Alex Ruiz
  */
-@Test public class ComponentLookupExceptionTest {
+public class ComponentLookupExceptionTest {
 
+  @Test
   public void shouldReturnCopyOfFoundComponents() {
     List<Component> found = new ArrayList<Component>();
     found.add(label().createNew());

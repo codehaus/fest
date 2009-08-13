@@ -16,53 +16,43 @@
 package org.fest.swing.fixture;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.util.Arrays.array;
 
 import javax.swing.JComboBox;
 
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.*;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests lookup of <code>{@link JComboBox}</code>s in <code>{@link ContainerFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class ContainerFixtureJComboBoxLookupTest {
+public class ContainerFixtureJComboBoxLookupTest extends RobotBasedTestCase {
 
   private ConcreteContainerFixture fixture;
-  private Robot robot;
   private MyWindow window;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected void onSetUp() {
     window = MyWindow.createNew();
     fixture = new ConcreteContainerFixture(robot, window);
     robot.showWindow(window);
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
+  @Test
   public void shouldFindJComboBoxByType() {
     JComboBoxFixture comboBox = fixture.comboBox();
     assertThatFixtureHasCorrectJComboBox(comboBox);
   }
 
+  @Test
   public void shouldFailIfJComboBoxCannotBeFoundByType() {
     execute(new GuiTask() {
       protected void executeInEDT() {
@@ -79,11 +69,13 @@ public class ContainerFixtureJComboBoxLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJComboBoxByName() {
     JComboBoxFixture comboBox = fixture.comboBox("selectMeComboBox");
     assertThatFixtureHasCorrectJComboBox(comboBox);
   }
 
+  @Test
   public void shouldFailIfJComboBoxCannotBeFoundByName() {
     try {
       fixture.comboBox("myComboBox");
@@ -94,6 +86,7 @@ public class ContainerFixtureJComboBoxLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJComboBoxWithCustomMatcher() {
     JComboBoxFixture comboBox = fixture.comboBox(new GenericTypeMatcher<JComboBox>(JComboBox.class) {
       protected boolean isMatching(JComboBox c) {
@@ -107,6 +100,7 @@ public class ContainerFixtureJComboBoxLookupTest {
     assertThat(comboBoxFixture.component()).isSameAs(window.comboBox);
   }
 
+  @Test
   public void shouldFailIfJComboBoxCannotBeFoundWithCustomMatcher() {
     try {
       fixture.comboBox(new GenericTypeMatcher<JComboBox>(JComboBox.class) {

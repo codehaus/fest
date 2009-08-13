@@ -15,38 +15,34 @@
  */
 package org.fest.swing.fixture;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.builder.JTextFields.textField;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.JTextField;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.ComponentFinder;
 import org.fest.swing.core.Robot;
 import org.fest.swing.core.Settings;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.builder.JTextFields.textField;
+import org.fest.swing.test.core.EDTSafeTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link ComponentFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test
-public class ComponentFixtureTest {
+public class ComponentFixtureTest extends EDTSafeTestCase {
 
   private Robot robot;
   private Settings settings;
@@ -54,11 +50,7 @@ public class ComponentFixtureTest {
   private String name;
   private JTextField target;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-  
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     robot = createMock(Robot.class);
     settings = new Settings();
     type = JTextField.class;
@@ -66,16 +58,17 @@ public class ComponentFixtureTest {
     target = textField().createNew();
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfRobotIsNullWhenLookingUpComponentByType() {
     new ConcreteComponentFixture(null, type);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfTypeIsNullWhenLookingUpComponentByType() {
     new ConcreteComponentFixture(robot, (Class<? extends JTextField>)null);
   }
 
+  @Test
   public void shouldLookupComponentByType() {
     final ComponentFinder finder = finder();
     new EasyMockTemplate(robot, finder) {
@@ -91,16 +84,17 @@ public class ComponentFixtureTest {
     }.run();
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfRobotIsNullWhenLookingUpComponentByName() {
     new ConcreteComponentFixture(null, name, type);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfTypeIsNullWhenLookingUpComponentByName() {
     new ConcreteComponentFixture(robot, name, null);
   }
 
+  @Test
   public void shouldLookupComponentByName() {
     final ComponentFinder finder = finder();
     new EasyMockTemplate(robot, finder) {
@@ -128,16 +122,17 @@ public class ComponentFixtureTest {
     assertThat(fixture.target).isSameAs(target);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfRobotIsNullWhenPassingTarget() {
     new ConcreteComponentFixture(null, target);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfTargetIsNullWhenPassingTarget() {
     new ConcreteComponentFixture(robot, (JTextField)null);
   }
 
+  @Test
   public void shouldReturnFontFixtureWithFontFromTarget() {
     FontFixture fontFixture = fixture().font();
     assertThat(fontFixture.target()).isSameAs(fontOf(target));
@@ -154,6 +149,7 @@ public class ComponentFixtureTest {
     });
   }
 
+  @Test
   public void shouldReturnColorFixtureWithBackgroundFromTarget() {
     ColorFixture colorFixture = fixture().background();
     Component component = target;
@@ -171,6 +167,7 @@ public class ComponentFixtureTest {
     });
   }
 
+  @Test
   public void shouldReturnColorFixtureWithForegroundFromTarget() {
     ColorFixture colorFixture = fixture().foreground();
     assertThat(colorFixture.target()).isSameAs(foregroundOf(target));
@@ -187,6 +184,7 @@ public class ComponentFixtureTest {
     });
   }
 
+  @Test
   public void shouldCastTarget() {
     JTextField castedTarget = fixture().targetCastedTo(JTextField.class);
     assertThat(castedTarget).isSameAs(target);

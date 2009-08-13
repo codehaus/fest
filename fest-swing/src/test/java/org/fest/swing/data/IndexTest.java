@@ -16,70 +16,72 @@
 package org.fest.swing.data;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.test.EqualsHashCodeContractAssert.*;
+import static org.fest.swing.test.core.EqualsHashCodeContractAssert.*;
 
 import org.fest.test.EqualsHashCodeContractTestCase;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link Index}</code>.
  *
  * @author Alex Ruiz
  */
-@Test public class IndexTest implements EqualsHashCodeContractTestCase {
+public class IndexTest implements EqualsHashCodeContractTestCase {
 
   private Index index;
 
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     index = Index.atIndex(8);
   }
 
-  /** {@inheritDoc} */
+  @Test
   public void shouldHaveConsistentEquals() {
     Index other = Index.atIndex(8);
     assertThat(index.equals(other)).isTrue();
   }
 
-  /** {@inheritDoc} */
+  @Test
   public void shouldHaveReflexiveEquals() {
     assertEqualsIsReflexive(index);
   }
 
-  /** {@inheritDoc} */
+  @Test
   public void shouldHaveSymmetricEquals() {
     Index other = Index.atIndex(8);
     assertEqualsIsSymmetric(index, other);
   }
 
-  /** {@inheritDoc} */
+  @Test
   public void shouldHaveTransitiveEquals() {
     Index other1 = Index.atIndex(8);
     Index other2 = Index.atIndex(8);
     assertEqualsIsTransitive(index, other1, other2);
   }
 
-  /** {@inheritDoc} */
+  @Test
   public void shouldMaintainEqualsAndHashCodeContract() {
     Index other = Index.atIndex(8);
     assertMaintainsEqualsAndHashCodeContract(index, other);
   }
 
-  /** {@inheritDoc} */
+  @Test
   public void shouldNotBeEqualToNull() {
     assertThat(index.equals(null)).isFalse();
   }
 
-  /** {@inheritDoc} */
+  @Test
   public void shouldNotBeEqualToObjectNotBeingOfSameClass() {
     assertThat(index.equals("Hello")).isFalse();
   }
 
+  @Test
   public void shouldReturnNotEqualIfIndexValuesAreNotEqual() {
     Index other = Index.atIndex(6);
     assertThat(index.equals(other)).isFalse();
   }
 
+  @Test
   public void shouldImplementToString() {
     assertThat(index.toString()).isEqualTo("org.fest.swing.data.Index[value=8]");
   }

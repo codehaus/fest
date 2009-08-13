@@ -14,13 +14,13 @@
  */
 package org.fest.swing.test.task;
 
+import static org.fest.swing.timing.Pause.pause;
+
 import java.awt.Dialog;
 import java.awt.Dimension;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.timing.Condition;
-
-import static org.fest.swing.timing.Pause.pause;
 
 /**
  * Understands a task that makes a <code>{@link Dialog}</code> visible. This task is <code>not</code> executed in the

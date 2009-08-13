@@ -33,7 +33,7 @@ import javax.swing.JTextField;
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.ComponentDriver;
 import org.fest.swing.driver.JFileChooserDriver;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JFileChooserFixture}</code>.
@@ -41,7 +41,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-@Test public class JFileChooserFixtureTest extends CommonComponentFixtureTestCase<JFileChooser> {
+public class JFileChooserFixtureTest extends CommonComponentFixtureTestCase<JFileChooser> {
 
   private JFileChooserDriver driver;
   private JFileChooser target;
@@ -50,30 +50,33 @@ import org.testng.annotations.Test;
   void onSetUp() {
     driver = createMock(JFileChooserDriver.class);
     target = fileChooser().createNew();
-    fixture = new JFileChooserFixture(robot(), target);
+    fixture = new JFileChooserFixture(robot, target);
     fixture.driver(driver);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "fileChooser";
     expectLookupByName(name, targetType());
-    verifyLookup(new JFileChooserFixture(robot(), name));
+    verifyLookup(new JFileChooserFixture(robot, name));
   }
 
+  @Test
   public void shouldCreateFixtureByType() {
     expectLookupByType(targetType());
-    verifyLookup(new JFileChooserFixture(robot()));
+    verifyLookup(new JFileChooserFixture(robot));
   }
 
   private Class<JFileChooser> targetType() {
     return JFileChooser.class;
   }
 
+  @Test
   public void shouldReturnFileNameTextBox() {
     final JTextField fileNameTextBox = textField().createNew();
     new EasyMockTemplate(driver) {
@@ -88,6 +91,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldClickApproveButton() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -101,6 +105,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldReturnApproveButton() {
     final JButton approveButton = button().createNew();
     new EasyMockTemplate(driver) {
@@ -115,6 +120,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldClickCancelButton() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -128,6 +134,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldReturnCancelButton() {
     final JButton cancelButton = button().createNew();
     new EasyMockTemplate(driver) {
@@ -142,6 +149,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSelectFile() {
     final File file = new File("fake");
     new EasyMockTemplate(driver) {
@@ -156,6 +164,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSelectFiles() {
     final File[] files = array(new File("Fake1"), new File("Fake2"));
     new EasyMockTemplate(driver) {
@@ -170,6 +179,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSetCurrentDirectory() {
     final File file = new File("fake");
     new EasyMockTemplate(driver) {

@@ -15,12 +15,12 @@
  */
 package org.fest.swing.test.task;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import javax.swing.AbstractButton;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands a task that selects/deselects a <code>{@link AbstractButton}</code>. This task is executed in the event

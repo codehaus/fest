@@ -20,7 +20,6 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.test.task.DialogShowTask.packAndShow;
 
 import java.awt.Dialog;
@@ -36,7 +35,7 @@ import org.fest.swing.core.BasicRobot;
 import org.fest.swing.driver.ComponentDriver;
 import org.fest.swing.driver.DialogDriver;
 import org.fest.swing.edt.GuiQuery;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link DialogFixture}</code>.
@@ -44,7 +43,6 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test
 public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
 
   private DialogDriver driver;
@@ -54,7 +52,7 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
   void onSetUp() {
     driver = createMock(DialogDriver.class);
     target = createDialog();
-    fixture = new DialogFixture(robot(), target);
+    fixture = new DialogFixture(robot, target);
     fixture.driver(driver);
   }
 
@@ -70,13 +68,14 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
     });
   }
 
+  @Test
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "dialog";
     expectLookupByName(name, Dialog.class);
-    verifyLookup(new DialogFixture(robot(), name));
+    verifyLookup(new DialogFixture(robot, name));
   }
 
-  @Test(groups = GUI)
+  @Test
   public void shouldCreateFixtureWithNewRobotAndGivenTarget() {
     fixture = new DialogFixture(target);
     try {
@@ -86,7 +85,7 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
     }
   }
 
-  @Test(groups = GUI)
+  @Test
   public void shouldCreateFixtureWithNewRobotAndGivenTargetName() {
     packAndShow(target);
     fixture = new DialogFixture("dialog");
@@ -98,11 +97,12 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
     }
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldMoveToFront() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -116,6 +116,7 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
     }.run();
   }
 
+  @Test
   public void shouldMoveToBack() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -129,6 +130,7 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
     }.run();
   }
 
+  @Test
   public void shouldRequireModal() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -142,6 +144,7 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
     }.run();
   }
 
+  @Test
   public void shouldRequireSize() {
     final Dimension size = new Dimension(800, 600);
     new EasyMockTemplate(driver) {
@@ -156,6 +159,7 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
     }.run();
   }
 
+  @Test
   public void shouldMoveToPoint() {
     final Point p = new Point(6, 8);
     new EasyMockTemplate(driver) {
@@ -170,6 +174,7 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
     }.run();
   }
 
+  @Test
   public void shouldResizeHeight() {
     final int height = 68;
     new EasyMockTemplate(driver) {
@@ -184,6 +189,7 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
     }.run();
   }
 
+  @Test
   public void shouldResizeWidth() {
     final int width = 68;
     new EasyMockTemplate(driver) {
@@ -198,6 +204,7 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
     }.run();
   }
 
+  @Test
   public void shouldResizeWidthAndHeight() {
     final Dimension size = new Dimension(800, 600);
     new EasyMockTemplate(driver) {
@@ -212,6 +219,7 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
     }.run();
   }
 
+  @Test
   public void shouldShow() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -225,6 +233,7 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
     }.run();
   }
 
+  @Test
   public void shouldShowWithGivenSize() {
     final Dimension size = new Dimension(800, 600);
     new EasyMockTemplate(driver) {
@@ -239,6 +248,7 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenu() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     new EasyMockTemplate(driver()) {
@@ -248,12 +258,13 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtPoint() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     final Point p = new Point();
@@ -264,12 +275,13 @@ public class DialogFixtureTest extends CommonComponentFixtureTestCase<Dialog> {
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldClose() {
     new EasyMockTemplate(driver) {
       protected void expectations() {

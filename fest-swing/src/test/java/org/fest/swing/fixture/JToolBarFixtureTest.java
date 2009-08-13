@@ -19,10 +19,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.fixture.JToolBarFixture.UnfloatConstraint.EAST;
-import static org.fest.swing.fixture.JToolBarFixture.UnfloatConstraint.NORTH;
-import static org.fest.swing.fixture.JToolBarFixture.UnfloatConstraint.SOUTH;
-import static org.fest.swing.fixture.JToolBarFixture.UnfloatConstraint.WEST;
+import static org.fest.swing.fixture.JToolBarFixture.UnfloatConstraint.*;
 import static org.fest.swing.test.builder.JToolBars.toolBar;
 import static org.fest.swing.test.core.Regex.regex;
 
@@ -35,9 +32,7 @@ import javax.swing.JToolBar;
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JToolBarDriver;
-import org.fest.swing.fixture.JToolBarFixture.UnfloatConstraint;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JToolBarFixture}</code>.
@@ -45,7 +40,6 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test
 public class JToolBarFixtureTest extends CommonComponentFixtureTestCase<JToolBar> {
 
   private JToolBarDriver driver;
@@ -55,21 +49,23 @@ public class JToolBarFixtureTest extends CommonComponentFixtureTestCase<JToolBar
   void onSetUp() {
     driver = createMock(JToolBarDriver.class);
     target = toolBar().createNew();
-    fixture = new JToolBarFixture(robot(), target);
+    fixture = new JToolBarFixture(robot, target);
     fixture.driver(driver);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "toolBar";
     expectLookupByName(name, JToolBar.class);
-    verifyLookup(new JToolBarFixture(robot(), name));
+    verifyLookup(new JToolBarFixture(robot, name));
   }
 
+  @Test
   public void shouldFloatToPoint() {
     final Point p = new Point(8, 6);
     new EasyMockTemplate(driver) {
@@ -84,6 +80,7 @@ public class JToolBarFixtureTest extends CommonComponentFixtureTestCase<JToolBar
     }.run();
   }
 
+  @Test
   public void shouldUnfloat() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -97,28 +94,31 @@ public class JToolBarFixtureTest extends CommonComponentFixtureTestCase<JToolBar
     }.run();
   }
 
+  @Test
   public void shouldBeContainerFixture() {
     assertThat(fixture).isInstanceOf(ContainerFixture.class);
   }
 
-  @Test(dataProvider = "unfloatConstraints")
-  public void shouldUnfloatUsingGivingConstraint(final UnfloatConstraint constraint) {
+  @Test
+  public void shouldUnfloatUsingGivingConstraint() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
-        driver.unfloat(target, constraint.value);
+        driver.unfloat(target, NORTH.value);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.unfloat(constraint));
+        assertThatReturnsThis(fixture.unfloat(NORTH));
       }
     }.run();
   }
 
-  @DataProvider(name = "unfloatConstraints") public Object[][] unfloatConstraints() {
+  // TODO parameterize
+  public Object[][] unfloatConstraints() {
     return new Object[][] { { NORTH }, { EAST }, { SOUTH }, { WEST } };
   }
 
+  @Test
   public void shouldRequireToolTip() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -132,6 +132,7 @@ public class JToolBarFixtureTest extends CommonComponentFixtureTestCase<JToolBar
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTipToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver()) {
@@ -146,6 +147,7 @@ public class JToolBarFixtureTest extends CommonComponentFixtureTestCase<JToolBar
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenu() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     new EasyMockTemplate(driver()) {
@@ -155,12 +157,13 @@ public class JToolBarFixtureTest extends CommonComponentFixtureTestCase<JToolBar
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtPoint() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     final Point p = new Point();
@@ -171,12 +174,13 @@ public class JToolBarFixtureTest extends CommonComponentFixtureTestCase<JToolBar
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldReturnClientProperty() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {

@@ -14,42 +14,42 @@
  */
 package org.fest.swing.input;
 
+import static java.awt.event.MouseEvent.BUTTON1;
+import static java.awt.event.MouseEvent.MOUSE_CLICKED;
+import static java.awt.event.MouseEvent.MOUSE_DRAGGED;
+import static java.awt.event.MouseEvent.MOUSE_ENTERED;
+import static java.awt.event.MouseEvent.MOUSE_EXITED;
+import static java.awt.event.MouseEvent.MOUSE_MOVED;
+import static java.awt.event.MouseEvent.MOUSE_PRESSED;
+import static java.awt.event.MouseEvent.MOUSE_RELEASED;
+import static java.awt.event.MouseEvent.MOUSE_WHEEL;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.test.builder.JComboBoxes.comboBox;
+import static org.fest.swing.test.builder.JTextFields.textField;
+
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JComboBox;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-
-import static java.awt.event.MouseEvent.*;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.test.builder.JComboBoxes.comboBox;
-import static org.fest.swing.test.builder.JTextFields.textField;
+import org.fest.swing.test.core.EDTSafeTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link DragDropInfo}</code>.
  *
  * @author Yvonne Wang
  */
-public class DragDropInfoTest {
+public class DragDropInfoTest extends EDTSafeTestCase {
 
   private DragDropInfo info;
   private Component source;
   private Point origin;
   private long when;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-  
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     info = new DragDropInfo();
     source = textField().createNew();
     origin = new Point(6, 8);
@@ -63,34 +63,39 @@ public class DragDropInfoTest {
     assertThat(info.origin()).isEqualTo(origin);
   }
 
-  @Test(dataProvider = "notRecognizedEvents" )
-  public void shouldNotUpdateForUnrecognizedEvents(int eventId) {
+  @Test
+  public void shouldNotUpdateForUnrecognizedEvents() {
     info.source(source);
     info.origin(origin);
     JComboBox c = comboBox().createNew();
-    MouseEvent event = new MouseEvent(c, eventId, when, 0, 0, 0, 1, false, BUTTON1);
+    MouseEvent event = new MouseEvent(c, MOUSE_CLICKED, when, 0, 0, 0, 1, false, BUTTON1);
     info.update(event);
     assertThat(info.source()).isSameAs(source);
     assertThat(info.origin()).isEqualTo(origin);
   }
 
-  @DataProvider(name = "notRecognizedEvents")
+  // TODO send them as parameters
   public Object[][] notRecognizedEvents() {
     return new Object[][] { { MOUSE_CLICKED }, { MOUSE_DRAGGED }, { MOUSE_ENTERED }, { MOUSE_EXITED }, { MOUSE_WHEEL } };
   }
 
-  @Test(dataProvider = "mouseReleasedOrMovedEvents")
-  public void shouldClearOnMouseReleasedOrMoved(int eventId) {
+  @Test
+  public void shouldClearOnMouseReleased() {
     info.source(source);
     info.origin(origin);
     JComboBox c = comboBox().createNew();
-    MouseEvent event = new MouseEvent(c, eventId, when, 0, 7, 9, 1, false, BUTTON1);
+    MouseEvent event = new MouseEvent(c, MOUSE_RELEASED, when, 0, 7, 9, 1, false, BUTTON1);
     info.update(event);
     assertThat(info.source()).isNull();
   }
 
-  @DataProvider(name = "mouseReleasedOrMovedEvents")
-  public Object[][] mouseReleasedOrMovedEvents() {
-    return new Object[][] { { MOUSE_RELEASED }, { MOUSE_MOVED } };
+  @Test
+  public void shouldClearOnMouseMoved() {
+    info.source(source);
+    info.origin(origin);
+    JComboBox c = comboBox().createNew();
+    MouseEvent event = new MouseEvent(c, MOUSE_MOVED, when, 0, 7, 9, 1, false, BUTTON1);
+    info.update(event);
+    assertThat(info.source()).isNull();
   }
 }

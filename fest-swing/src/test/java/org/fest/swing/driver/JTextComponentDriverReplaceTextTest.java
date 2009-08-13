@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  */
 @Test(groups = GUI)
-public class JTextComponentDriverReplaceTextTest extends JTextComponentDriverTestCase {
+public class JTextComponentDriverReplaceTextTest extends JTextComponentDriver_TestCase {
 
   public void shouldReplaceText() {
     setTextFieldText("Hi");
@@ -41,7 +41,7 @@ public class JTextComponentDriverReplaceTextTest extends JTextComponentDriverTes
       driver().replaceText(textField(), "Hello");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -51,7 +51,7 @@ public class JTextComponentDriverReplaceTextTest extends JTextComponentDriverTes
       driver().replaceText(textField(), "Hello");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 

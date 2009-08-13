@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  */
 @Test(groups = GUI)
-public class JTextComponentDriverSelectAllTest extends JTextComponentDriverTestCase {
+public class JTextComponentDriverSelectAllTest extends JTextComponentDriver_TestCase {
 
   public void shouldSelectAllText() {
     setTextFieldText("Hello");
@@ -41,7 +41,7 @@ public class JTextComponentDriverSelectAllTest extends JTextComponentDriverTestC
       driver().selectAll(textField());
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -51,7 +51,7 @@ public class JTextComponentDriverSelectAllTest extends JTextComponentDriverTestC
       driver().selectAll(textField());
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 }

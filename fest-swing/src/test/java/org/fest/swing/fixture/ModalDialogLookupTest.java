@@ -15,29 +15,22 @@
  */
 package org.fest.swing.fixture;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.finder.WindowFinder.findDialog;
+
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestDialog;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.finder.WindowFinder.findDialog;
-import static org.fest.swing.test.core.TestGroups.GUI;
+import org.junit.Test;
 
 /**
  * Tests lookup of a modal dialog. This test tries to reproduce the problem reported at
@@ -45,31 +38,21 @@ import static org.fest.swing.test.core.TestGroups.GUI;
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class ModalDialogLookupTest {
+public class ModalDialogLookupTest extends RobotBasedTestCase {
 
-  private Robot robot;
   private MyWindow frame;
   
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected void onSetUp() {
     frame = MyWindow.createNew();
     robot.showWindow(frame);
   }
   
-  public void shouldShowModalDialogAndNotBlock() {
+  @Test
+  public void should_show_modal_Dialog_and_not_block() {
     FrameFixture frameFixture = new FrameFixture(robot, frame);
     frameFixture.button("launch").click();
     DialogFixture dialogFixture = findDialog(TestDialog.class).using(robot);
     assertThat(dialogFixture.target).isSameAs(frame.dialog);
-  }
-  
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
   }
   
   private static class MyWindow extends TestWindow {

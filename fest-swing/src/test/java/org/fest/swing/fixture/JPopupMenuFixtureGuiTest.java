@@ -15,6 +15,11 @@
  */
 package org.fest.swing.fixture;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.recorder.ClickRecorder.attachTo;
+
 import java.awt.Dimension;
 
 import javax.swing.JMenu;
@@ -22,24 +27,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.recorder.ClickRecorder;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.TestGroups.GUI;
-import static org.fest.swing.test.recorder.ClickRecorder.attachTo;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JPopupMenuFixture}</code>
@@ -47,28 +40,19 @@ import static org.fest.swing.test.recorder.ClickRecorder.attachTo;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = GUI) public class JPopupMenuFixtureGuiTest {
+public class JPopupMenuFixtureGuiTest extends RobotBasedTestCase {
 
-  private Robot robot;
   private MyWindow window;
   private JPopupMenuFixture fixture;
   
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected final void onSetUp() {
     window = MyWindow.createNew();
     robot.showWindow(window, new Dimension(200, 200));
     JTextComponentFixture textBox = new JTextComponentFixture(robot, "textField");
     fixture = textBox.showPopupMenu();
   }
   
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-  
+  @Test
   public void shouldFindFirstLevelMenuItemByPath() {
     ClickRecorder recorder = attachTo(window.fileMenu);
     JMenuItemFixture menuItem = fixture.menuItemWithPath("File");
@@ -76,6 +60,7 @@ import static org.fest.swing.test.recorder.ClickRecorder.attachTo;
     assertThat(recorder).clicked(LEFT_BUTTON).timesClicked(1);
   }
   
+  @Test
   public void shouldFindSecondLevelMenuItemByPath() {
     ClickRecorder recorder = attachTo(window.openMenu);
     JMenuItemFixture menuItem = fixture.menuItemWithPath("File", "Open");
@@ -101,7 +86,7 @@ import static org.fest.swing.test.recorder.ClickRecorder.attachTo;
     
     private MyWindow() {
       super(JPopupMenuFixtureGuiTest.class);
-      JTextField textField = new JTextField(20);
+      JTextField textField = new JTextField(5);
       textField.setName("textField");
       textField.setComponentPopupMenu(popupMenu);
       add(textField);

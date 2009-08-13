@@ -16,9 +16,7 @@
 package org.fest.swing.launcher;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.util.Collections.list;
 
 import java.awt.Frame;
@@ -26,36 +24,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.exception.UnexpectedException;
 import org.fest.swing.finder.WindowFinder;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.launcher.JavaApp.ArgumentObserver;
-import org.testng.annotations.*;
+import org.fest.swing.test.core.RobotBasedTestCase;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link ApplicationLauncher}</code>.
+ * TODO Split
  *
  * @author Yvonne Wang
  */
-@Test(groups = GUI)
-public class ApplicationLauncherTest {
+public class ApplicationLauncherTest extends RobotBasedTestCase {
 
-  private Robot robot;
-
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
-  }
-
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
+  @Test
   public void shouldThrowErrorIfApplicationClassNameIsInvalid() {
     try {
       ApplicationLauncher.application("Hello").start();
@@ -65,16 +49,19 @@ public class ApplicationLauncherTest {
     }
   }
 
+  @Test
   public void shouldLaunchApplicationWithoutArguments() {
     ApplicationLauncher.application(JavaApp.class).start();
     assertFrameIsShowing();
   }
 
+  @Test
   public void shouldLaunchApplicationWithoutArgumentsUsingFQCN() {
     ApplicationLauncher.application(JavaApp.class.getName()).start();
     assertFrameIsShowing();
   }
 
+  @Test
   public void shouldLaunchApplicationUsingArguments() {
     final List<String> arguments = new ArrayList<String>();
     ArgumentObserver observer = new ArgumentObserver() {
@@ -88,7 +75,7 @@ public class ApplicationLauncherTest {
     assertThat(arguments).containsOnly("arg1", "arg2");
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfArgumentArrayIsNull() {
     String[] args = null;
     ApplicationLauncher.application(JavaApp.class).withArgs(args).start();

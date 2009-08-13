@@ -16,57 +16,46 @@
 package org.fest.swing.fixture;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import java.awt.Dimension;
 
-import javax.swing.*;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests lookup of <code>{@link JMenuItem}</code>s in <code>{@link ContainerFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class ContainerFixtureJMenuItemLookupTest {
+public class ContainerFixtureJMenuItemLookupTest extends RobotBasedTestCase {
 
   private ConcreteContainerFixture fixture;
-  private Robot robot;
   private MyWindow window;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected final void onSetUp() {
     window = MyWindow.createNew();
     fixture = new ConcreteContainerFixture(robot, window);
     robot.showWindow(window);
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
-
+  @Test
   public void shouldFindJMenuItemByPath() {
     JMenuItemFixture menuItem = fixture.menuItemWithPath("File", "New");
     assertThat(menuItem.component()).isSameAs(window.menuNew);
   }
 
+  @Test
   public void shouldFailIfJMenuItemCannotBeFoundByPath() {
     try {
       fixture.menuItemWithPath("Edit");
@@ -77,11 +66,13 @@ public class ContainerFixtureJMenuItemLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJMenuItemByName() {
     JMenuItemFixture menuItem = fixture.menuItem("menuNew");
     assertThat(menuItem.component()).isSameAs(window.menuNew);
   }
 
+  @Test
   public void shouldFailIfJMenuItemCannotBeFoundByName() {
     try {
       fixture.menuItem("myMenuNew");
@@ -92,6 +83,7 @@ public class ContainerFixtureJMenuItemLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJMenuItemWithCustomMatcher() {
     JMenuItemFixture menuItem = fixture.menuItem(new GenericTypeMatcher<JMenuItem>(JMenuItem.class) {
       protected boolean isMatching(JMenuItem m) {
@@ -101,6 +93,7 @@ public class ContainerFixtureJMenuItemLookupTest {
     assertThat(menuItem.component()).isSameAs(window.menuNew);
   }
 
+  @Test
   public void shouldFailIfJMenuItemCannotBeFoundWithCustomMatcher() {
     try {
       fixture.menuItem(new GenericTypeMatcher<JMenuItem>(JMenuItem.class) {

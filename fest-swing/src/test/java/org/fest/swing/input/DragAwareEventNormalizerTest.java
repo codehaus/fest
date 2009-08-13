@@ -15,19 +15,17 @@
  */
 package org.fest.swing.input;
 
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.test.awt.ToolkitStub;
-
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.assertions.Assertions.assertThat;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link DragAwareEventNormalizer}</code>.
@@ -36,15 +34,13 @@ import static org.fest.assertions.Assertions.assertThat;
  */
 public class DragAwareEventNormalizerTest extends EventNormalizerTestCase {
 
-  private static final String START_LISTENING = "DragAwareEventNormalizer#startListening";
-  
   private DragAwareEventNormalizer eventNormalizer;
   
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     eventNormalizer = new DragAwareEventNormalizer();
   }
   
-  @Test(groups = START_LISTENING)
+  @Test
   public void shouldReplaceEventQueueWhenStartListening() {
     ToolkitStub toolkit = ToolkitStub.createNew();
     EventQueueStub eventQueue = new EventQueueStub();
@@ -55,7 +51,7 @@ public class DragAwareEventNormalizerTest extends EventNormalizerTestCase {
     assertThat(eventQueue.pushedEventQueue).isInstanceOf(DragAwareEventQueue.class);
   }
 
-  @Test(dependsOnGroups = START_LISTENING)
+  @Test
   public void shouldDisposeEventQueueWhenStopListening() {
     final DragAwareEventQueue dragAwareEventQueue = createMock(DragAwareEventQueue.class);
     eventNormalizer = new DragAwareEventNormalizer() {
@@ -81,7 +77,7 @@ public class DragAwareEventNormalizerTest extends EventNormalizerTestCase {
     assertEventNormalizerIsNotInToolkit(toolkit, mask);
   }  
   
-  @Test(dependsOnGroups = START_LISTENING)
+  @Test
   public void shouldGracefullyStopListeningIfDragAwareQueueIsNull() {
     eventNormalizer = new DragAwareEventNormalizer() {
       @Override DragAwareEventQueue newDragAwareEventQueue(Toolkit toolkit, long mask) {

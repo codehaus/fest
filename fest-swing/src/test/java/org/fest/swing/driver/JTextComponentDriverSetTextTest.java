@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  */
 @Test(groups = GUI)
-public class JTextComponentDriverSetTextTest extends JTextComponentDriverTestCase {
+public class JTextComponentDriverSetTextTest extends JTextComponentDriver_TestCase {
 
   public void shouldSetText() {
     setTextFieldText("");
@@ -41,7 +41,7 @@ public class JTextComponentDriverSetTextTest extends JTextComponentDriverTestCas
       driver().setText(textField(), "Entering text");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -51,7 +51,7 @@ public class JTextComponentDriverSetTextTest extends JTextComponentDriverTestCas
       driver().setText(textField(), "Entering text");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 }

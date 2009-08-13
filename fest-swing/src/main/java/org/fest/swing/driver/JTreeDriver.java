@@ -385,7 +385,7 @@ public class JTreeDriver extends JComponentDriver {
     return execute(new GuiQuery<Point>() {
       protected Point executeInEDT() {
         validateIsEnabledAndShowing(tree);
-        return location.pointAt(tree, row);
+        return location.pointAt(tree, location.validIndex(tree, row));
       }
     });
   }

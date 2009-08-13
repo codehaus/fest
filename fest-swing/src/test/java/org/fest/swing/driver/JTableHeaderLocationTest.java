@@ -40,11 +40,7 @@ import org.fest.swing.exception.LocationUnavailableException;
 import org.fest.swing.test.swing.TestTable;
 import org.fest.swing.test.swing.TestWindow;
 import org.fest.swing.util.PatternTextMatcher;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JTableHeaderLocation}</code>.

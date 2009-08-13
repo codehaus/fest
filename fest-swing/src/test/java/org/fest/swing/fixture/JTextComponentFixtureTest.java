@@ -31,7 +31,7 @@ import javax.swing.text.JTextComponent;
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JTextComponentDriver;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JTextComponentFixture}</code>.
@@ -39,7 +39,6 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test
 public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JTextComponent> {
 
   private JTextComponentDriver driver;
@@ -49,7 +48,7 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
   void onSetUp() {
     driver = createMock(JTextComponentDriver.class);
     target = textField().withText("a text field").createNew();
-    fixture = new JTextComponentFixture(robot(), target);
+    fixture = new JTextComponentFixture(robot, target);
     fixture.driver(driver);
   }
 
@@ -57,17 +56,19 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
     return JTextComponent.class;
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "textComponent";
     expectLookupByName(name, JTextComponent.class);
-    verifyLookup(new JTextComponentFixture(robot(), name));
+    verifyLookup(new JTextComponentFixture(robot, name));
   }
 
+  @Test
   public void shouldDeleteText() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -81,6 +82,7 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
     }.run();
   }
 
+  @Test
   public void shouldEnterText() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -94,6 +96,7 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
     }.run();
   }
 
+  @Test
   public void shouldSetText() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -107,6 +110,7 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
     }.run();
   }
 
+  @Test
   public void shouldSelectText() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -120,6 +124,7 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
     }.run();
   }
 
+  @Test
   public void shouldSelectTextInRange() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -133,6 +138,7 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
     }.run();
   }
 
+  @Test
   public void shouldSelectAll() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -146,10 +152,12 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
     }.run();
   }
 
+  @Test
   public void shouldReturnText() {
     assertThat(fixture.text()).isEqualTo(target.getText());
   }
 
+  @Test
   public void shouldRequireText() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -163,6 +171,7 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
     }.run();
   }
 
+  @Test
   public void shouldRequireTextToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver) {
@@ -177,6 +186,7 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
     }.run();
   }
 
+  @Test
   public void shouldRequireEmpty() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -190,6 +200,7 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
     }.run();
   }
 
+  @Test
   public void shouldRequireEditable() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -203,6 +214,7 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
     }.run();
   }
 
+  @Test
   public void shouldRequireNotEditable() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -216,6 +228,7 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTip() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -229,6 +242,7 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTipToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver()) {
@@ -243,6 +257,7 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenu() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     new EasyMockTemplate(driver()) {
@@ -252,12 +267,13 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtPoint() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     final Point p = new Point();
@@ -268,12 +284,13 @@ public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JT
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldReturnClientProperty() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {

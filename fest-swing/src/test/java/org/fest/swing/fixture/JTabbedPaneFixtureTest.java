@@ -33,7 +33,7 @@ import javax.swing.JTabbedPane;
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JTabbedPaneDriver;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JTabbedPaneFixture}</code>.
@@ -41,7 +41,7 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test public class JTabbedPaneFixtureTest extends CommonComponentFixtureTestCase<JTabbedPane> {
+public class JTabbedPaneFixtureTest extends CommonComponentFixtureTestCase<JTabbedPane> {
 
   private JTabbedPaneDriver driver;
   private JTabbedPane target;
@@ -50,21 +50,23 @@ import org.testng.annotations.Test;
   void onSetUp() {
     driver = createMock(JTabbedPaneDriver.class);
     target = tabbedPane().createNew();
-    fixture = new JTabbedPaneFixture(robot(), target);
+    fixture = new JTabbedPaneFixture(robot, target);
     fixture.driver(driver);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "tabbedPane";
     expectLookupByName(name, JTabbedPane.class);
-    verifyLookup(new JTabbedPaneFixture(robot(), name));
+    verifyLookup(new JTabbedPaneFixture(robot, name));
   }
 
+  @Test
   public void shouldSelectTabWithIndex() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -78,6 +80,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldReturnSelectedComponent() {
     final Component selected = button().createNew();
     new EasyMockTemplate(driver) {
@@ -91,6 +94,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireTitleAtTabIndex() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -104,6 +108,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireTitleMatchingPatternAtTabIndex() {
     final Pattern pattern = regex("hello");
     new EasyMockTemplate(driver) {
@@ -118,6 +123,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireTabTitles() {
     final String[] titles = array("One", "Two");
     new EasyMockTemplate(driver) {
@@ -133,6 +139,7 @@ import org.testng.annotations.Test;
 
   }
 
+  @Test
   public void shouldSelectTabWithText() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -146,6 +153,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSelectTabMatchingPattern() {
     final Pattern pattern = regex("hello");
     new EasyMockTemplate(driver) {
@@ -160,6 +168,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldReturnTabTitles() {
     final String[] titles = array("One", "Two");
     new EasyMockTemplate(driver) {
@@ -174,6 +183,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTip() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -187,6 +197,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTipToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver()) {
@@ -201,6 +212,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldReturnClientProperty() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {

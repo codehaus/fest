@@ -14,11 +14,12 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import javax.swing.JTree;
 
+import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands a task that makes a <code>{@link JTree}</code> editable. This task is executed in the event dispatch
@@ -28,6 +29,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
  */
 final class JTreeSetEditableTask {
 
+  @RunsInEDT
   static void setEditable(final JTree tree, final boolean editable) {
     execute(new GuiTask() {
       protected void executeInEDT() {

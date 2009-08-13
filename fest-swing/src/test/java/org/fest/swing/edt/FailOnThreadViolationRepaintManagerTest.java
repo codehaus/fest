@@ -15,13 +15,12 @@
  */
 package org.fest.swing.edt;
 
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+
 import javax.swing.JTextField;
 
-import org.testng.annotations.Test;
-
 import org.fest.swing.exception.EdtViolationException;
-
-import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link FailOnThreadViolationRepaintManager}</code>.

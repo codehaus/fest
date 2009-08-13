@@ -15,23 +15,23 @@
  */
 package org.fest.swing.edt;
 
-import org.testng.annotations.Test;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
 import static org.fest.util.Strings.concat;
+
+import org.junit.Test;
 
 /**
  * Tests for <a href="http://code.google.com/p/fest/issues/detail?id=247" target="_blank">Bug 247</a>.
  *
  * @author Alex Ruiz
  */
-@Test
 public class Bug247_NotEnoughInfoInFailureInEDTTest {
 
   private static String TEST_NAME = Bug247_NotEnoughInfoInFailureInEDTTest.class.getName();
   
+  @Test
   public void shouldShowMethodCallInCurrentThreadWhenFailingInEDT() {
     boolean testClassInStackTrace = false;
     try {

@@ -15,12 +15,11 @@
  */
 package org.fest.swing.driver;
 
-import org.testng.annotations.Test;
-
 import static javax.swing.SwingConstants.VERTICAL;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.core.TestGroups.GUI;
+
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JSliderDriver}</code>.

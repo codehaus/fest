@@ -20,7 +20,6 @@ import static org.easymock.EasyMock.expect;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.builder.JTextFields.textField;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import java.awt.Component;
 import java.awt.Window;
@@ -30,15 +29,14 @@ import javax.swing.JTextField;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.monitor.WindowMonitor;
+import org.fest.swing.test.core.EDTSafeTestCase;
 import org.fest.swing.test.core.MethodInvocations;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link ExistingHierarchy}</code>.
@@ -46,28 +44,27 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test public class ExistingHierarchyTest {
+public class ExistingHierarchyTest extends EDTSafeTestCase {
 
   private ExistingHierarchy hierarchy;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     hierarchy = new ExistingHierarchy();
   }
 
+  @Test
   public void shouldReturnAllRootWindows() {
     Collection<Window> rootWindows = WindowMonitor.instance().rootWindows();
     assertThat(hierarchy.roots()).isEqualTo(rootWindows);
   }
 
+  @Test
   public void shouldAlwaysContainGivenComponent() {
     Component component = textField().createNew();
     assertThat(hierarchy.contains(component)).isTrue();
   }
 
+  @Test
   public void shouldReturnParentOfComponent() {
     final TestWindow window = TestWindow.createNewWindow(getClass());
     final JTextField textField = textField().createNew();
@@ -85,6 +82,7 @@ import org.testng.annotations.Test;
     window.destroy();
   }
 
+  @Test
   public void shouldReturnSubcomponents() {
     final Component c = textField().createNew();
     final ChildrenFinder childrenFinder = MockChildrenFinder.mock();
@@ -101,7 +99,8 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  @Test(groups = GUI) public void shouldDisposeWindow() {
+  @Test
+  public void shouldDisposeWindow() {
     ScreenLock.instance().acquire(this);
     final MyWindow window = MyWindow.createAndShow();
     window.startRecording();

@@ -15,29 +15,21 @@
  */
 package org.fest.swing.format;
 
+import static javax.swing.JFileChooser.OPEN_DIALOG;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.util.Strings.concat;
+
 import java.io.File;
 
 import javax.swing.JFileChooser;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.test.core.SequentialTestCase;
 import org.fest.swing.test.swing.TestWindow;
-
-import static javax.swing.JFileChooser.OPEN_DIALOG;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.builder.JTextFields.textField;
-import static org.fest.swing.test.core.TestGroups.GUI;
-import static org.fest.util.Strings.concat;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JFileChooserFormatter}</code>.
@@ -45,34 +37,23 @@ import static org.fest.util.Strings.concat;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class JFileChooserFormatterTest {
+public class JFileChooserFormatterTest extends SequentialTestCase {
 
-  private Robot robot;
   private JFileChooser fileChooser;
   private JFileChooserFormatter formatter;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-  
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected final void onSetUp() {
     MyWindow window = MyWindow.createNew();
     fileChooser = window.fileChooser;
     formatter = new JFileChooserFormatter();
-    robot.showWindow(window);
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
-  @Test(groups = GUI, expectedExceptions = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void shouldThrowErrorIfComponentIsNotJFileChooser() {
     formatter.format(textField().createNew());
   }
 
+  @Test
   public void shouldFormatJFileChooser() {
     String formatted = formatter.format(fileChooser);
     assertThat(formatted).contains(fileChooser.getClass().getName())
@@ -82,7 +63,7 @@ public class JFileChooserFormatterTest {
                          .contains(concat("currentDirectory=", currentDirectoryOf(fileChooser)))
                          .contains("enabled=true")
                          .contains("visible=true")
-                         .contains("showing=true");
+                         .contains("showing=false");
   }
 
   @RunsInEDT

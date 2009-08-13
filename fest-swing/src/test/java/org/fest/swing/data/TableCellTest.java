@@ -16,75 +16,78 @@
 package org.fest.swing.data;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.test.EqualsHashCodeContractAssert.*;
+import static org.fest.swing.test.core.EqualsHashCodeContractAssert.*;
 
 import org.fest.test.EqualsHashCodeContractTestCase;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link TableCell}</code>
  *
  * @author Alex Ruiz
  */
-@Test public class TableCellTest implements EqualsHashCodeContractTestCase {
+public class TableCellTest implements EqualsHashCodeContractTestCase {
 
   private TableCell cell;
 
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     cell = TableCell.row(6).column(8);
   }
 
-  /** {@inheritDoc} */
+  @Test
   public void shouldHaveConsistentEquals() {
     TableCell other = TableCell.row(6).column(8);
     assertThat(cell.equals(other)).isTrue();
   }
 
-  /** {@inheritDoc} */
+  @Test
   public void shouldHaveReflexiveEquals() {
     assertEqualsIsReflexive(cell);
   }
 
-  /** {@inheritDoc} */
+  @Test
   public void shouldHaveSymmetricEquals() {
     TableCell other = TableCell.row(6).column(8);
     assertEqualsIsSymmetric(cell, other);
   }
 
-  /** {@inheritDoc} */
+  @Test
   public void shouldHaveTransitiveEquals() {
     TableCell other1 = TableCell.row(6).column(8);
     TableCell other2 = TableCell.row(6).column(8);
     assertEqualsIsTransitive(cell, other1, other2);
   }
 
-  /** {@inheritDoc} */
+  @Test
   public void shouldMaintainEqualsAndHashCodeContract() {
     TableCell other = TableCell.row(6).column(8);
     assertMaintainsEqualsAndHashCodeContract(cell, other);
   }
 
-  /** {@inheritDoc} */
+  @Test
   public void shouldNotBeEqualToNull() {
     assertThat(cell.equals(null)).isFalse();
   }
 
-  /** {@inheritDoc} */
+  @Test
   public void shouldNotBeEqualToObjectNotBeingOfSameClass() {
     assertThat(cell.equals("Hello")).isFalse();
   }
 
+  @Test
   public void shouldReturnNotEqualIfRowValuesAreNotEqual() {
     TableCell other = TableCell.row(8).column(8);
     assertThat(cell.equals(other)).isFalse();
   }
 
+  @Test
   public void shouldReturnNotEqualIfColumnValuesAreNotEqual() {
     TableCell other = TableCell.row(6).column(6);
     assertThat(cell.equals(other)).isFalse();
   }
 
+  @Test
   public void shouldImplementToString() {
     assertThat(cell.toString()).isEqualTo("[row=6, column=8]");
   }

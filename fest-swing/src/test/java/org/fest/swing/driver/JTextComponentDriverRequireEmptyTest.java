@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  */
 @Test(groups = GUI)
-public class JTextComponentDriverRequireEmptyTest extends JTextComponentDriverTestCase {
+public class JTextComponentDriverRequireEmptyTest extends JTextComponentDriver_TestCase {
 
   public void shouldPassIfEmpty() {
     clearTextField();

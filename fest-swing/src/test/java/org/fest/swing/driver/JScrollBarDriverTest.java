@@ -14,23 +14,6 @@
  * Copyright @2008-2009 the original author or authors.
  */
 package org.fest.swing.driver;
-
-import java.awt.Dimension;
-
-import javax.swing.JScrollBar;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.test.data.ZeroAndNegativeProvider;
-import org.fest.swing.test.swing.TestWindow;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.driver.JScrollBarSetValueTask.setValue;
@@ -41,6 +24,21 @@ import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
 import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
 import static org.fest.util.Strings.concat;
+
+import java.awt.Dimension;
+
+import javax.swing.JScrollBar;
+
+import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.core.Robot;
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.test.data.ZeroAndNegativeProvider;
+import org.fest.swing.test.swing.TestWindow;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JScrollBarDriver}</code>.
@@ -116,7 +114,7 @@ public class JScrollBarDriverTest {
       driver.scrollUnitUp(scrollBar, 6);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -126,7 +124,7 @@ public class JScrollBarDriverTest {
       driver.scrollUnitUp(scrollBar, 6);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -141,7 +139,7 @@ public class JScrollBarDriverTest {
       driver.scrollUnitUp(scrollBar);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -151,7 +149,7 @@ public class JScrollBarDriverTest {
       driver.scrollUnitUp(scrollBar);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -178,7 +176,7 @@ public class JScrollBarDriverTest {
       driver.scrollUnitDown(scrollBar, 8);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -188,7 +186,7 @@ public class JScrollBarDriverTest {
       driver.scrollUnitDown(scrollBar, 8);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -203,7 +201,7 @@ public class JScrollBarDriverTest {
       driver.scrollUnitDown(scrollBar);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -213,7 +211,7 @@ public class JScrollBarDriverTest {
       driver.scrollUnitDown(scrollBar);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -240,7 +238,7 @@ public class JScrollBarDriverTest {
       driver.scrollBlockUp(scrollBar, 2);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -250,7 +248,7 @@ public class JScrollBarDriverTest {
       driver.scrollBlockUp(scrollBar, 2);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -265,7 +263,7 @@ public class JScrollBarDriverTest {
       driver.scrollBlockUp(scrollBar);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -275,7 +273,7 @@ public class JScrollBarDriverTest {
       driver.scrollBlockUp(scrollBar);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -302,7 +300,7 @@ public class JScrollBarDriverTest {
       driver.scrollBlockDown(scrollBar, 2);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -312,7 +310,7 @@ public class JScrollBarDriverTest {
       driver.scrollBlockDown(scrollBar, 2);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -327,7 +325,7 @@ public class JScrollBarDriverTest {
       driver.scrollBlockDown(scrollBar);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -337,7 +335,7 @@ public class JScrollBarDriverTest {
       driver.scrollBlockDown(scrollBar);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -362,7 +360,7 @@ public class JScrollBarDriverTest {
       driver.scrollTo(scrollBar, 68);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -372,7 +370,7 @@ public class JScrollBarDriverTest {
       driver.scrollTo(scrollBar, 68);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 

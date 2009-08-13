@@ -36,17 +36,25 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.regex.Pattern;
 
-import javax.swing.*;
+import javax.swing.JList;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
-import org.fest.swing.edt.*;
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.LocationUnavailableException;
 import org.fest.swing.test.core.MethodInvocations;
 import org.fest.swing.test.recorder.ClickRecorder;
 import org.fest.swing.test.swing.TestList;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JListDriver}</code>.
@@ -215,7 +223,7 @@ public class JListDriverTest {
       driver.selectItem(dragList, 2);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
     assertDragListHasNoSelection();
   }
@@ -226,7 +234,7 @@ public class JListDriverTest {
       driver.selectItem(dragList, 2);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
     assertDragListHasNoSelection();
   }
@@ -259,7 +267,7 @@ public class JListDriverTest {
       driver.selectItem(dragList, "two");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
     assertDragListHasNoSelection();
   }
@@ -270,7 +278,7 @@ public class JListDriverTest {
       driver.selectItem(dragList, "two");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
     assertDragListHasNoSelection();
   }
@@ -295,7 +303,7 @@ public class JListDriverTest {
       driver.selectItem(dragList, regex("tw.*"));
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
     assertDragListHasNoSelection();
   }
@@ -306,7 +314,7 @@ public class JListDriverTest {
       driver.selectItem(dragList, regex("tw.*"));
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
     assertDragListHasNoSelection();
   }
@@ -357,7 +365,7 @@ public class JListDriverTest {
       driver.selectItems(dragList, array("two", "three"));
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
     assertDragListHasNoSelection();
   }
@@ -368,7 +376,7 @@ public class JListDriverTest {
       driver.selectItems(dragList, array("two", "three"));
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
     assertDragListHasNoSelection();
   }
@@ -413,7 +421,7 @@ public class JListDriverTest {
       driver.selectItems(dragList, array(regex("two"), regex("three")));
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
     assertDragListHasNoSelection();
   }
@@ -424,7 +432,7 @@ public class JListDriverTest {
       driver.selectItems(dragList, array(regex("two"), regex("three")));
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
     assertDragListHasNoSelection();
   }
@@ -467,7 +475,7 @@ public class JListDriverTest {
       driver.selectItems(dragList, new int[] { 1, 2 });
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
     assertDragListHasNoSelection();
   }
@@ -478,7 +486,7 @@ public class JListDriverTest {
       driver.selectItems(dragList, new int[] { 1, 2 });
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
     assertDragListHasNoSelection();
   }
@@ -494,7 +502,7 @@ public class JListDriverTest {
       driver.selectItems(dragList, from(0), to(1));
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
     assertDragListHasNoSelection();
   }
@@ -505,7 +513,7 @@ public class JListDriverTest {
       driver.selectItems(dragList, from(0), to(1));
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
     assertDragListHasNoSelection();
   }
@@ -530,7 +538,7 @@ public class JListDriverTest {
       driver.selectItems(dragList, 0, 1);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
     assertDragListHasNoSelection();
   }
@@ -541,7 +549,7 @@ public class JListDriverTest {
       driver.selectItems(dragList, 0, 1);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
     assertDragListHasNoSelection();
   }
@@ -845,7 +853,7 @@ public class JListDriverTest {
       driver.showPopupMenu(dragList, "one");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
     assertThat(recorder).wasNotClicked();
   }
@@ -857,7 +865,7 @@ public class JListDriverTest {
       driver.showPopupMenu(dragList, "one");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
     assertThat(recorder).wasNotClicked();
   }
@@ -897,7 +905,7 @@ public class JListDriverTest {
       driver.showPopupMenu(dragList, 0);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
     assertThat(recorder).wasNotClicked();
   }
@@ -909,7 +917,7 @@ public class JListDriverTest {
       driver.showPopupMenu(dragList, 0);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
     assertThat(recorder).wasNotClicked();
   }
@@ -944,7 +952,7 @@ public class JListDriverTest {
       driver.drag(dragList, "two");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -954,7 +962,7 @@ public class JListDriverTest {
       driver.drag(dragList, "two");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -964,7 +972,7 @@ public class JListDriverTest {
       driver.drop(dropList, "six");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -974,7 +982,7 @@ public class JListDriverTest {
       driver.drop(dropList, "six");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -991,7 +999,7 @@ public class JListDriverTest {
       driver.drop(dropList);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -1001,7 +1009,7 @@ public class JListDriverTest {
       driver.drop(dropList);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -1018,7 +1026,7 @@ public class JListDriverTest {
       driver.drag(dragList, 2);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -1028,7 +1036,7 @@ public class JListDriverTest {
       driver.drag(dragList, 2);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -1038,7 +1046,7 @@ public class JListDriverTest {
       driver.drop(dropList, 2);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -1048,7 +1056,7 @@ public class JListDriverTest {
       driver.drop(dropList, 2);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 

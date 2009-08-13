@@ -17,10 +17,8 @@ package org.fest.swing.fixture;
 
 import static javax.swing.JSplitPane.VERTICAL_SPLIT;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import java.awt.Dimension;
 
@@ -28,44 +26,36 @@ import javax.swing.JList;
 import javax.swing.JSplitPane;
 
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.*;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests lookup of <code>{@link JSplitPane}</code>s in <code>{@link ContainerFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class ContainerFixtureJSplitPaneLookupTest {
+public class ContainerFixtureJSplitPaneLookupTest extends RobotBasedTestCase {
 
   private ConcreteContainerFixture fixture;
-  private Robot robot;
   private MyWindow window;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected final void onSetUp() {
     window = MyWindow.createNew();
     fixture = new ConcreteContainerFixture(robot, window);
     robot.showWindow(window);
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
+  @Test
   public void shouldFindJSplitPaneByType() {
     JSplitPaneFixture splitPane = fixture.splitPane();
     assertThatFixtureHasCorrectJSplitPane(splitPane);
   }
 
+  @Test
   public void shouldFailIfJSplitPaneCannotBeFoundByType() {
     execute(new GuiTask() {
       protected void executeInEDT() {
@@ -82,11 +72,13 @@ public class ContainerFixtureJSplitPaneLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJSplitPaneByName() {
     JSplitPaneFixture splitPane = fixture.splitPane("slideMeSplitPane");
     assertThatFixtureHasCorrectJSplitPane(splitPane);
   }
 
+  @Test
   public void shouldFailIfJSplitPaneCannotBeFoundByName() {
     try {
       fixture.splitPane("mySplitPane");
@@ -97,6 +89,7 @@ public class ContainerFixtureJSplitPaneLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJSplitPaneWithCustomMatcher() {
     JSplitPaneFixture splitPane = fixture.splitPane(new GenericTypeMatcher<JSplitPane>(JSplitPane.class) {
       protected boolean isMatching(JSplitPane s) {
@@ -110,6 +103,7 @@ public class ContainerFixtureJSplitPaneLookupTest {
     assertThat(splitPaneFixture.component()).isSameAs(window.splitPane);
   }
 
+  @Test
   public void shouldFailIfJSplitPaneCannotBeFoundWithCustomMatcher() {
     try {
       fixture.splitPane(new GenericTypeMatcher<JSplitPane>(JSplitPane.class) {

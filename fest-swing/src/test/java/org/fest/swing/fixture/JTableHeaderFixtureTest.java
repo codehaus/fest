@@ -34,7 +34,7 @@ import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.core.MouseButton;
 import org.fest.swing.driver.ComponentDriver;
 import org.fest.swing.driver.JTableHeaderDriver;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JTableHeaderFixture}</code>.
@@ -42,7 +42,6 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-@Test
 public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHeader> {
 
   private JTableHeaderDriver driver;
@@ -51,26 +50,27 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
 
   void onSetUp() {
     target = tableHeader().createNew();
-    fixture = new JTableHeaderFixture(robot(), target);
+    fixture = new JTableHeaderFixture(robot, target);
     driver = createMock(JTableHeaderDriver.class);
     fixture.driver(driver);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfRobotIsNull() {
     new JTableHeaderFixture(null, target);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfTargetIsNull() {
-    new JTableHeaderFixture(robot(), null);
+    new JTableHeaderFixture(robot, null);
   }
 
+  @Test
   public void shouldClickColumnUnderIndex() {
     final int index = 0;
     new EasyMockTemplate(driver) {
@@ -85,6 +85,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
     }.run();
   }
 
+  @Test
   public void shouldClickColumnUnderIndexUsingGivingMouseButtonAndTimes() {
     final int index = 0;
     final MouseButton mouseButton = LEFT_BUTTON;
@@ -101,6 +102,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
     }.run();
   }
 
+  @Test
   public void shouldClickColumnWithMatchingName() {
     final String name = "first";
     new EasyMockTemplate(driver) {
@@ -115,6 +117,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
     }.run();
   }
 
+  @Test
   public void shouldClickColumnWithNameMatchingPattern() {
     final Pattern pattern = regex("first");
     new EasyMockTemplate(driver) {
@@ -129,6 +132,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
     }.run();
   }
 
+  @Test
   public void shouldClickColumnWithMatchingNameUsingGivingMouseButtonAndTimes() {
     final String name = "first";
     final MouseButton mouseButton = LEFT_BUTTON;
@@ -145,6 +149,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
     }.run();
   }
 
+  @Test
   public void shouldClickColumnWithNameMatchingPatternUsingGivingMouseButtonAndTimes() {
     final Pattern pattern = regex("first");
     final MouseButton mouseButton = LEFT_BUTTON;
@@ -161,12 +166,12 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
     }.run();
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorWhenClickingColumnByIndexIfMouseClickInfoIsNull() {
     fixture.clickColumn(0, null);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorWhenClickingColumnByNameIfMouseClickInfoIsNull() {
     fixture.clickColumn("first", null);
   }
@@ -175,6 +180,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
     assertThat(result).isSameAs(fixture);
   }
 
+  @Test
   public void shouldShowPopupMenuAtGivenColumnIndex() {
     final JPopupMenu popupMenu = popupMenu().createNew();
     new EasyMockTemplate(driver) {
@@ -189,6 +195,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtGivenColumnName() {
     final JPopupMenu popupMenu = popupMenu().createNew();
     final String name = "1";
@@ -204,6 +211,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtColumnWithNameMatchingPattern() {
     final JPopupMenu popupMenu = popupMenu().createNew();
     final Pattern pattern = regex("1");
@@ -219,6 +227,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTip() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -232,6 +241,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTipToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver()) {
@@ -246,6 +256,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
     }.run();
   }
   
+  @Test
   public void shouldReturnClientProperty() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {

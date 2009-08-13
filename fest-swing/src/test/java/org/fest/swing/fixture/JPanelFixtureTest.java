@@ -31,14 +31,13 @@ import javax.swing.JPopupMenu;
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.ComponentDriver;
 import org.fest.swing.driver.JComponentDriver;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JPanelFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test
 public class JPanelFixtureTest extends CommonComponentFixtureTestCase<JPanel> {
 
   private JComponentDriver driver;
@@ -48,25 +47,28 @@ public class JPanelFixtureTest extends CommonComponentFixtureTestCase<JPanel> {
   void onSetUp() {
     driver = createMock(JComponentDriver.class);
     target = panel().createNew();
-    fixture = new JPanelFixture(robot(), target);
+    fixture = new JPanelFixture(robot, target);
     fixture.driver(driver);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "panel";
     expectLookupByName(name, JPanel.class);
-    verifyLookup(new JPanelFixture(robot(), name));
+    verifyLookup(new JPanelFixture(robot, name));
   }
 
+  @Test
   public void shouldBeContainerFixture() {
     assertThat(fixture).isInstanceOf(ContainerFixture.class);
   }
 
+  @Test
   public void shouldRequireToolTip() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -80,6 +82,7 @@ public class JPanelFixtureTest extends CommonComponentFixtureTestCase<JPanel> {
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTipToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver()) {
@@ -94,6 +97,7 @@ public class JPanelFixtureTest extends CommonComponentFixtureTestCase<JPanel> {
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenu() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     new EasyMockTemplate(driver()) {
@@ -103,12 +107,13 @@ public class JPanelFixtureTest extends CommonComponentFixtureTestCase<JPanel> {
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtPoint() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     final Point p = new Point();
@@ -119,12 +124,13 @@ public class JPanelFixtureTest extends CommonComponentFixtureTestCase<JPanel> {
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
   
+  @Test
   public void shouldReturnClientProperty() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {

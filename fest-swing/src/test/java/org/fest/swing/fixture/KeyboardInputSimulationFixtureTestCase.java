@@ -14,21 +14,18 @@
  */
 package org.fest.swing.fixture;
 
-import org.testng.annotations.Test;
-
 /**
  * Tests case for implementations of <code>{@link KeyboardInputSimulationFixture}</code>
  * 
  * @author Alex Ruiz
  */
-@Test
 interface KeyboardInputSimulationFixtureTestCase {
 
-  void shouldPressAndReleaseKey();
+  void should_press_and_release_key();
 
-  void shouldPressAndReleaseKeys();
+  void should_press_and_release_keys();
 
-  void shouldPressKey();
+  void should_press_key();
 
-  void shouldReleaseKey();
+  void should_release_key();
 }

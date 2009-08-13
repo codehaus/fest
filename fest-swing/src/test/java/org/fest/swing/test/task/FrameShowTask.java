@@ -15,14 +15,14 @@
  */
 package org.fest.swing.test.task;
 
+import static org.fest.swing.query.ComponentShowingQuery.isShowing;
+import static org.fest.swing.timing.Pause.pause;
+
 import java.awt.Dimension;
 import java.awt.Frame;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.timing.Condition;
-
-import static org.fest.swing.query.ComponentShowingQuery.isShowing;
-import static org.fest.swing.timing.Pause.pause;
 
 /**
  * Understands a task that makes a <code>{@link Frame}</code> visible. This task is <b>not</b> executed in the event

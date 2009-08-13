@@ -1,5 +1,8 @@
 package org.fest.swing.hierarchy;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.timing.Pause.pause;
+
 import java.beans.PropertyVetoException;
 
 import javax.swing.JInternalFrame;
@@ -7,9 +10,6 @@ import javax.swing.JInternalFrame;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.timing.Condition;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.timing.Pause.pause;
 
 /**
  * Understands a task that iconifies a given <code>{@link JInternalFrame}</code>. This task is executed in the event

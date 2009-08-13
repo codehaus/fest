@@ -15,12 +15,13 @@
  */
 package org.fest.swing.test.task;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import javax.swing.JTree;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands a task that sets a <code>{@link TreeSelectionModel}</code> in a <code>{@link JTree}</code>. This task is
@@ -30,6 +31,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
  */
 public final class JTreeSetSelectionModelTask {
 
+  @RunsInEDT
   public static void setSelectionModel(final JTree tree, final TreeSelectionModel selectionModel) {
     execute(new GuiTask() {
       protected void executeInEDT() {

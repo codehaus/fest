@@ -17,52 +17,42 @@ package org.fest.swing.fixture;
 
 import static javax.swing.SwingConstants.HORIZONTAL;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import javax.swing.JSlider;
 
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.*;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests lookup of <code>{@link JSlider}</code>s in <code>{@link ContainerFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class ContainerFixtureJSliderLookupTest {
+public class ContainerFixtureJSliderLookupTest extends RobotBasedTestCase {
 
   private ConcreteContainerFixture fixture;
-  private Robot robot;
   private MyWindow window;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected final void onSetUp() {
     window = MyWindow.createNew();
     fixture = new ConcreteContainerFixture(robot, window);
     robot.showWindow(window);
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
+  @Test
   public void shouldFindJSliderByType() {
     JSliderFixture slider = fixture.slider();
     assertThatFixtureHasCorrectJSlider(slider);
   }
 
+  @Test
   public void shouldFailIfJSliderCannotBeFoundByType() {
     execute(new GuiTask() {
       protected void executeInEDT() {
@@ -79,11 +69,13 @@ public class ContainerFixtureJSliderLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJSliderByName() {
     JSliderFixture slider = fixture.slider("slideMeSlider");
     assertThatFixtureHasCorrectJSlider(slider);
   }
 
+  @Test
   public void shouldFailIfJSliderCannotBeFoundByName() {
     try {
       fixture.slider("mySlider");
@@ -94,6 +86,7 @@ public class ContainerFixtureJSliderLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJSliderWithCustomMatcher() {
     JSliderFixture slider = fixture.slider(new GenericTypeMatcher<JSlider>(JSlider.class) {
       protected boolean isMatching(JSlider s) {
@@ -107,6 +100,7 @@ public class ContainerFixtureJSliderLookupTest {
     assertThat(sliderFixture.component()).isSameAs(window.slider);
   }
 
+  @Test
   public void shouldFailIfJSliderCannotBeFoundWithCustomMatcher() {
     try {
       fixture.slider(new GenericTypeMatcher<JSlider>(JSlider.class) {

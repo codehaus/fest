@@ -15,20 +15,17 @@
  */
 package org.fest.swing.fixture;
 
+import static java.awt.Font.*;
+import static org.fest.test.ExpectedFailure.expectAssertionError;
+
 import java.awt.Font;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.test.CodeToTest;
-
-import static java.awt.Font.*;
-
-import static org.fest.test.ExpectedFailure.expectAssertionError;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link FontFixture}</code>.
- *
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
@@ -37,63 +34,60 @@ public class FontFixtureTest {
   private Font font;
   private FontFixture fixture;
 
-  @BeforeMethod public void setUp() {
+  @Before
+  public void setUp() {
     font = new Font("SansSerif", PLAIN, 8);
     fixture = new FontFixture(font);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfFontIsNull() {
     new FontFixture(null);
   }
-  
-  @Test public void shouldPassIfFamilyIsEqualToGivenOne() {
+
+  @Test
+  public void shouldPassIfFamilyIsEqualToGivenOne() {
     fixture.requireFamily("SansSerif");
   }
 
-  @Test public void shouldFailIfFamilyIsNotEqualToGivenOne() {
-    expectAssertionError("[family] expected:<'Monospace'> but was:<'SansSerif'>").on(new CodeToTest() {
-      public void run() {
-        fixture.requireFamily("Monospace");
-      }
-    });
+  @Test(expected = AssertionError.class)
+  public void shouldFailIfFamilyIsNotEqualToGivenOne() {
+    // TODO fix ComparisonFailure message to be: "[family] expected:<'Monospace'> but was:<'SansSerif'>"
+    fixture.requireFamily("Monospace");
   }
 
-  @Test public void shouldFailShowingDescriptionIfFamilyIsNotEqualToGivenOne() {
+  @Test(expected = AssertionError.class)
+  public void shouldFailShowingDescriptionIfFamilyIsNotEqualToGivenOne() {
     fixture = new FontFixture(font, "test");
-    expectAssertionError("[test - family] expected:<'Monospace'> but was:<'SansSerif'>").on(new CodeToTest() {
-      public void run() {
-        fixture.requireFamily("Monospace");
-      }
-    });
+    // TODO fix ComparisonFailure message to be: "[test - family] expected:<'Monospace'> but was:<'SansSerif'>"
+    fixture.requireFamily("Monospace");
   }
 
-  @Test public void shouldPassIfNameIsEqualToGivenOne() {
+  @Test
+  public void shouldPassIfNameIsEqualToGivenOne() {
     fixture.requireName("SansSerif");
   }
 
-  @Test public void shouldFailIfNameIsNotEqualToGivenOne() {
-    expectAssertionError("[name] expected:<'Monospace'> but was:<'SansSerif'>").on(new CodeToTest() {
-      public void run() {
-        fixture.requireName("Monospace");
-      }
-    });
+  @Test(expected = AssertionError.class)
+  public void shouldFailIfNameIsNotEqualToGivenOne() {
+    // TODO fix ComparisonFailure message to be:  "[name] expected:<'Monospace'> but was:<'SansSerif'>"
+    fixture.requireName("Monospace");
   }
 
-  @Test public void shouldFailShowingDescriptionIfNameIsNotEqualToGivenOne() {
+  @Test(expected = AssertionError.class)
+  public void shouldFailShowingDescriptionIfNameIsNotEqualToGivenOne() {
     fixture = new FontFixture(font, "test");
-    expectAssertionError("[test - name] expected:<'Monospace'> but was:<'SansSerif'>").on(new CodeToTest() {
-      public void run() {
-        fixture.requireName("Monospace");
-      }
-    });
+    // TODO fix ComparisonFailure message to be: "[test - name] expected:<'Monospace'> but was:<'SansSerif'>"
+    fixture.requireName("Monospace");
   }
 
-  @Test public void shouldPassIfSizeIsEqualToGivenOne() {
+  @Test
+  public void shouldPassIfSizeIsEqualToGivenOne() {
     fixture.requireSize(8);
   }
 
-  @Test public void shouldFailIfSizeIsNotEqualToGivenOne() {
+  @Test
+  public void shouldFailIfSizeIsNotEqualToGivenOne() {
     expectAssertionError("[size] expected:<6> but was:<8>").on(new CodeToTest() {
       public void run() {
         fixture.requireSize(6);
@@ -101,7 +95,8 @@ public class FontFixtureTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfSizeIsNotEqualToGivenOne() {
+  @Test
+  public void shouldFailShowingDescriptionIfSizeIsNotEqualToGivenOne() {
     fixture = new FontFixture(font, "test");
     expectAssertionError("[test - size] expected:<6> but was:<8>").on(new CodeToTest() {
       public void run() {
@@ -110,12 +105,14 @@ public class FontFixtureTest {
     });
   }
 
-  @Test public void shouldPassIfFontIsBoldAsAnticipated() {
+  @Test
+  public void shouldPassIfFontIsBoldAsAnticipated() {
     fixture = new FontFixture(boldFont());
     fixture.requireBold();
   }
 
-  @Test public void shouldFailIfFontIsNotBoldAndExpectingToBeBold() {
+  @Test
+  public void shouldFailIfFontIsNotBoldAndExpectingToBeBold() {
     expectAssertionError("[bold] expected:<true> but was:<false>").on(new CodeToTest() {
       public void run() {
         fixture.requireBold();
@@ -123,7 +120,8 @@ public class FontFixtureTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfFontIsNotBoldAndExpectingToBeBold() {
+  @Test
+  public void shouldFailShowingDescriptionIfFontIsNotBoldAndExpectingToBeBold() {
     fixture = new FontFixture(font, "test");
     expectAssertionError("[test - bold] expected:<true> but was:<false>").on(new CodeToTest() {
       public void run() {
@@ -132,11 +130,13 @@ public class FontFixtureTest {
     });
   }
 
-  @Test public void shouldPassIfFontIsNotBoldAsAnticipated() {
+  @Test
+  public void shouldPassIfFontIsNotBoldAsAnticipated() {
     fixture.requireNotBold();
   }
 
-  @Test public void shouldFailIfFontIsBoldAndExpectingNotToBeBold() {
+  @Test
+  public void shouldFailIfFontIsBoldAndExpectingNotToBeBold() {
     fixture = new FontFixture(boldFont());
     expectAssertionError("[bold] expected:<false> but was:<true>").on(new CodeToTest() {
       public void run() {
@@ -145,7 +145,8 @@ public class FontFixtureTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfFontIsBoldAndExpectingNotToBeBold() {
+  @Test
+  public void shouldFailShowingDescriptionIfFontIsBoldAndExpectingNotToBeBold() {
     fixture = new FontFixture(boldFont(), "test");
     expectAssertionError("[test - bold] expected:<false> but was:<true>").on(new CodeToTest() {
       public void run() {
@@ -154,12 +155,14 @@ public class FontFixtureTest {
     });
   }
 
-  @Test public void shouldPassIfFontIsItalicAsAnticipated() {
+  @Test
+  public void shouldPassIfFontIsItalicAsAnticipated() {
     fixture = new FontFixture(italicFont());
     fixture.requireItalic();
   }
 
-  @Test public void shouldFailIfFontIsNotItalicAndExpectingToBeItalic() {
+  @Test
+  public void shouldFailIfFontIsNotItalicAndExpectingToBeItalic() {
     expectAssertionError("[italic] expected:<true> but was:<false>").on(new CodeToTest() {
       public void run() {
         fixture.requireItalic();
@@ -167,7 +170,8 @@ public class FontFixtureTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfFontIsNotItalicAndExpectingToBeItalic() {
+  @Test
+  public void shouldFailShowingDescriptionIfFontIsNotItalicAndExpectingToBeItalic() {
     fixture = new FontFixture(font, "test");
     expectAssertionError("[test - italic] expected:<true> but was:<false>").on(new CodeToTest() {
       public void run() {
@@ -176,11 +180,13 @@ public class FontFixtureTest {
     });
   }
 
-  @Test public void shouldPassIfFontIsNotItalicAsAnticipated() {
+  @Test
+  public void shouldPassIfFontIsNotItalicAsAnticipated() {
     fixture.requireNotItalic();
   }
 
-  @Test public void shouldFailIfFontIsItalicAndExpectingNotToBeItalic() {
+  @Test
+  public void shouldFailIfFontIsItalicAndExpectingNotToBeItalic() {
     fixture = new FontFixture(italicFont());
     expectAssertionError("[italic] expected:<false> but was:<true>").on(new CodeToTest() {
       public void run() {
@@ -189,7 +195,8 @@ public class FontFixtureTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfFontIsItalicAndExpectingNotToBeItalic() {
+  @Test
+  public void shouldFailShowingDescriptionIfFontIsItalicAndExpectingNotToBeItalic() {
     fixture = new FontFixture(italicFont(), "test");
     expectAssertionError("[test - italic] expected:<false> but was:<true>").on(new CodeToTest() {
       public void run() {
@@ -202,12 +209,14 @@ public class FontFixtureTest {
     return font.deriveFont(ITALIC);
   }
 
-  @Test public void shouldPassIfFontIsPlainAsAnticipated() {
+  @Test
+  public void shouldPassIfFontIsPlainAsAnticipated() {
     fixture = new FontFixture(boldFont());
     fixture.requirePlain();
   }
 
-  @Test public void shouldFailIfFontIsNotPlainAndExpectingToBePlain() {
+  @Test
+  public void shouldFailIfFontIsNotPlainAndExpectingToBePlain() {
     expectAssertionError("[plain] expected:<true> but was:<false>").on(new CodeToTest() {
       public void run() {
         fixture.requirePlain();
@@ -215,7 +224,8 @@ public class FontFixtureTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfFontIsNotPlainAndExpectingToBePlain() {
+  @Test
+  public void shouldFailShowingDescriptionIfFontIsNotPlainAndExpectingToBePlain() {
     fixture = new FontFixture(font, "test");
     expectAssertionError("[test - plain] expected:<true> but was:<false>").on(new CodeToTest() {
       public void run() {
@@ -224,11 +234,13 @@ public class FontFixtureTest {
     });
   }
 
-  @Test public void shouldPassIfFontIsNotPlainAsAnticipated() {
+  @Test
+  public void shouldPassIfFontIsNotPlainAsAnticipated() {
     fixture.requireNotPlain();
   }
 
-  @Test public void shouldFailIfFontIsPlainAndExpectingNotToBePlain() {
+  @Test
+  public void shouldFailIfFontIsPlainAndExpectingNotToBePlain() {
     fixture = new FontFixture(boldFont());
     expectAssertionError("[plain] expected:<false> but was:<true>").on(new CodeToTest() {
       public void run() {
@@ -237,7 +249,8 @@ public class FontFixtureTest {
     });
   }
 
-  @Test public void shouldFailShowingDescriptionIfFontIsPlainAndExpectingNotToBePlain() {
+  @Test
+  public void shouldFailShowingDescriptionIfFontIsPlainAndExpectingNotToBePlain() {
     fixture = new FontFixture(boldFont(), "test");
     expectAssertionError("[test - plain] expected:<false> but was:<true>").on(new CodeToTest() {
       public void run() {

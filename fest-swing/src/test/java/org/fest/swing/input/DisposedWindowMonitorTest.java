@@ -15,48 +15,51 @@
  */
 package org.fest.swing.input;
 
+import static java.awt.event.WindowEvent.WINDOW_CLOSED;
+import static java.awt.event.WindowEvent.WINDOW_CLOSING;
+import static java.awt.event.WindowEvent.WINDOW_OPENED;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.MapAssert.entry;
+import static org.fest.swing.test.builder.JFrames.frame;
+
 import java.awt.AWTEvent;
 import java.awt.Window;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import static java.awt.event.WindowEvent.*;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.MapAssert.entry;
-import static org.fest.swing.test.builder.JFrames.frame;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link DisposedWindowMonitor}</code>.
  *
  * @author Alex Ruiz
  */
-@Test
 public class DisposedWindowMonitorTest {
 
   private DisposedWindowMonitor monitor;
   private Window window;
 
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     monitor = new DisposedWindowMonitor();
     window = frame().createNew();
   }
 
+  @Test
   public void shouldReturnIsNotDuplicateIfEventIsNotWindowEvent() {
     assertThat(monitor.isDuplicateDispose(createMock(AWTEvent.class))).isFalse();
     assertThat(monitor.disposedWindows).isEmpty();
   }
 
+  @Test
   public void shouldReturnIsNotDuplicateIfWindowIsClosing() {
     WindowEvent e = new WindowEvent(window, WINDOW_CLOSING);
     assertThat(monitor.isDuplicateDispose(e)).isFalse();
     assertThat(monitor.disposedWindows).isEmpty();
   }
 
+  @Test
   public void shouldReturnIsNotDuplicateIfWindowIsNotClosingAndIsNotClosed() {
     monitor.disposedWindows.put(window, true);
     WindowEvent e = new WindowEvent(window, WINDOW_OPENED);
@@ -64,6 +67,7 @@ public class DisposedWindowMonitorTest {
     assertThat(monitor.disposedWindows).isEmpty();
   }
 
+  @Test
   public void shouldReturnIsDuplicateIfWindowIsClosedAndIsInDisposedWindowsMap() {
     monitor.disposedWindows.put(window, true);
     WindowEvent e = new WindowEvent(window, WINDOW_CLOSED);
@@ -72,6 +76,7 @@ public class DisposedWindowMonitorTest {
     assertThat(monitor.disposedWindows).includes(entry(window, true));
   }
 
+  @Test
   public void shouldReturnIsNotDuplicateIfWindowIsClosedAndIsNotInDisposedWindowsMap() {
     WindowEvent e = new WindowEvent(window, WINDOW_CLOSED);
     assertThat(monitor.isDuplicateDispose(e)).isFalse();

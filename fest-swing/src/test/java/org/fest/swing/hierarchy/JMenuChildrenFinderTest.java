@@ -15,6 +15,10 @@
  */
 package org.fest.swing.hierarchy;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.builder.JTextFields.textField;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.util.Collection;
@@ -23,20 +27,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPopupMenu;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.lock.ScreenLock;
+import org.fest.swing.test.core.EDTSafeTestCase;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.builder.JTextFields.textField;
-import static org.fest.swing.test.core.TestGroups.GUI;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JMenuChildrenFinder}</code>.
@@ -44,28 +41,26 @@ import static org.fest.swing.test.core.TestGroups.GUI;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-@Test public class JMenuChildrenFinderTest {
+public class JMenuChildrenFinderTest extends EDTSafeTestCase {
 
   private JMenuChildrenFinder finder;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     finder = new JMenuChildrenFinder();
   }
 
+  @Test
   public void shouldReturnEmptyCollectionIfComponentIsNotJMenu() {
     Container container = textField().createNew();
     assertThat(finder.nonExplicitChildrenOf(container)).isEmpty();
   }
 
+  @Test
   public void shouldReturnEmptyCollectionIfComponentIsNull() {
     assertThat(finder.nonExplicitChildrenOf(null)).isEmpty();
   }
 
-  @Test(groups = GUI)
+  @Test
   public void shouldReturnPopupMenuIfComponentIsJMenu() {
     ScreenLock.instance().acquire(this);
     final MyWindow window = MyWindow.createAndShow();

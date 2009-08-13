@@ -15,12 +15,12 @@
  */
 package org.fest.swing.test.task;
 
+import static org.fest.swing.timing.Pause.pause;
+
 import java.awt.Window;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.timing.Condition;
-
-import static org.fest.swing.timing.Pause.pause;
 
 /**
  * Understands a task that hides and disposes a <code>{@link Window}</code>. This task is <b>not</b> executed in the

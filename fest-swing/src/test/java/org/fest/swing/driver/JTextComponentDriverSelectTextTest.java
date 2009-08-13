@@ -25,7 +25,10 @@ import static org.fest.swing.test.core.TestGroups.GUI;
 
 import java.awt.Dimension;
 
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JViewport;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
@@ -38,7 +41,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  */
 @Test(groups = GUI)
-public class JTextComponentDriverSelectTextTest extends JTextComponentDriverTestCase {
+public class JTextComponentDriverSelectTextTest extends JTextComponentDriver_TestCase {
 
   private JTextField scrollToViewTextField;
 
@@ -75,7 +78,7 @@ public class JTextComponentDriverSelectTextTest extends JTextComponentDriverTest
       driver().selectText(textField(), "llo W");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -85,7 +88,7 @@ public class JTextComponentDriverSelectTextTest extends JTextComponentDriverTest
       driver().selectText(textField(), "llo W");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 

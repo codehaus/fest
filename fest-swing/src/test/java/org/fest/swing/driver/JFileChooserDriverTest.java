@@ -15,27 +15,7 @@
  */
 package org.fest.swing.driver;
 
-import java.io.File;
-
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
-import org.fest.swing.test.swing.TestWindow;
-
 import static javax.swing.JFileChooser.*;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.driver.AbstractButtonTextQuery.textOf;
@@ -47,6 +27,24 @@ import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
 import static org.fest.util.Arrays.array;
 import static org.fest.util.Files.*;
 import static org.fest.util.Strings.isEmpty;
+
+import java.io.File;
+
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+
+import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.core.Robot;
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
+import org.fest.swing.test.swing.TestWindow;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JFileChooserDriver}</code>.
@@ -115,7 +113,7 @@ public class JFileChooserDriverTest {
       driver.selectFile(fileChooser, temporaryFile);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     } finally {
       temporaryFile.delete();
     }
@@ -136,7 +134,7 @@ public class JFileChooserDriverTest {
       driver.selectFile(fileChooser, new File("Fake"));
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -199,7 +197,7 @@ public class JFileChooserDriverTest {
       driver.selectFiles(fileChooser, array(new File("Fake")));
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     } 
   }
   
@@ -357,7 +355,7 @@ public class JFileChooserDriverTest {
       driver.setCurrentDirectory(fileChooser, userHomeDirectory());
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -373,7 +371,7 @@ public class JFileChooserDriverTest {
       driver.setCurrentDirectory(fileChooser, userHomeDirectory());
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
   

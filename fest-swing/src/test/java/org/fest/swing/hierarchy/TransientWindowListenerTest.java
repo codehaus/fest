@@ -15,51 +15,46 @@
  */
 package org.fest.swing.hierarchy;
 
+import static java.awt.event.ComponentEvent.COMPONENT_SHOWN;
+import static java.awt.event.WindowEvent.WINDOW_CLOSED;
+import static java.awt.event.WindowEvent.WINDOW_OPENED;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.swing.timing.Pause.pause;
+
 import java.awt.AWTEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.test.core.EDTSafeTestCase;
 import org.fest.swing.test.swing.TestDialog;
 import org.fest.swing.test.swing.TestWindow;
-
-import static java.awt.event.ComponentEvent.COMPONENT_SHOWN;
-import static java.awt.event.WindowEvent.*;
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.swing.timing.Pause.pause;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link TransientWindowListener}</code>.
  *
  * @author Alex Ruiz
  */
-public class TransientWindowListenerTest {
+public class TransientWindowListenerTest extends EDTSafeTestCase {
 
   private TransientWindowListener listener;
   private WindowFilter mockWindowFilter;
   private TestDialog eventSource;
   private TestWindow parent;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     mockWindowFilter = createMock(MockWindowFilter.class);
     listener = new TransientWindowListener(mockWindowFilter);
     parent = TestWindow.createNewWindow(getClass());
     eventSource = TestDialog.createNewDialog(parent);
   }
 
-  @AfterMethod public void tearDown() {
+  @After public void tearDown() {
     eventSource.destroy();
     parent.destroy();
   }

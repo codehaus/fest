@@ -16,9 +16,7 @@
 package org.fest.swing.fixture;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.timing.Timeout.timeout;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
@@ -26,52 +24,43 @@ import static org.fest.util.Strings.quote;
 import javax.swing.JFileChooser;
 
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.exception.WaitTimedOutError;
 import org.fest.swing.finder.WindowFinderTest;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.JFileChooserLauncherWindow;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests lookup of <code>{@link JFileChooser}</code>s in <code>{@link ContainerFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class ContainerFixtureJFileChooserLookupTest {
+public class ContainerFixtureJFileChooserLookupTest extends RobotBasedTestCase {
 
   private ConcreteContainerFixture fixture;
-  private Robot robot;
   private JFileChooserLauncherWindow window;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected final void onSetUp() {
     window = JFileChooserLauncherWindow.createNew(WindowFinderTest.class);
     fixture = new ConcreteContainerFixture(robot, window);
     robot.showWindow(window);
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
+  @Test
   public void shouldFindJFileChooserByType() {
     launchJFileChooser(0);
     JFileChooserFixture fileChooser = fixture.fileChooser();
     assertCorrectJFileChooserWasFound(fileChooser);
   }
 
+  @Test
   public void shouldFindJFileChooserByTypeUsingTimeout() {
     launchJFileChooser(200);
     JFileChooserFixture fileChooser = fixture.fileChooser(timeout(300));
     assertCorrectJFileChooserWasFound(fileChooser);
   }
 
+  @Test
   public void shouldFailIfJFileChooserNotFoundAfterTimeout() {
     try {
       fixture.fileChooser(timeout(100));
@@ -81,6 +70,7 @@ public class ContainerFixtureJFileChooserLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJFileChooserWithMatcher() {
     launchJFileChooser(0);
     GenericTypeMatcher<JFileChooser> matcher = new JFileChooserByTitleMatcher();
@@ -88,12 +78,14 @@ public class ContainerFixtureJFileChooserLookupTest {
     assertCorrectJFileChooserWasFound(fileChooser);
   }
 
+  @Test
   public void shouldFindJFileChooserWithMatcherUsingTimeout() {
     launchJFileChooser(200);
     JFileChooserFixture fileChooser = fixture.fileChooser(new JFileChooserByTitleMatcher(), timeout(300));
     assertCorrectJFileChooserWasFound(fileChooser);
   }
 
+  @Test
   public void shouldFailIfJFileChooserNotFoundWithMatcherAfterTimeout() {
     try {
       fixture.fileChooser(new JFileChooserByTitleMatcher(), timeout(300));
@@ -103,12 +95,14 @@ public class ContainerFixtureJFileChooserLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJFileChooserByName() {
     launchJFileChooser(0);
     JFileChooserFixture fileChooser = fixture.fileChooser("fileChooser");
     assertCorrectJFileChooserWasFound(fileChooser);
   }
 
+  @Test
   public void shouldFindJFileChooserByNameUsingTimeout() {
     launchJFileChooser(200);
     JFileChooserFixture fileChooser = fixture.fileChooser("fileChooser", timeout(300));
@@ -119,6 +113,7 @@ public class ContainerFixtureJFileChooserLookupTest {
     assertThat(fileChooser.component()).isSameAs(window.fileChooser());
   }
 
+  @Test
   public void shouldFailIfJFileChooserNotFoundByNameAfterTimeout() {
     try {
       fixture.fileChooser("fileChooser", timeout(300));

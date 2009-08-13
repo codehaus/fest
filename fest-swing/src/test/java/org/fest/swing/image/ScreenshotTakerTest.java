@@ -22,7 +22,6 @@ import static org.fest.assertions.ImageAssert.read;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.test.swing.TestWindow.createAndShowNewWindow;
 import static org.fest.util.Files.temporaryFolderPath;
 import static org.fest.util.Strings.concat;
@@ -38,12 +37,11 @@ import javax.swing.JTextField;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.lock.ScreenLock;
+import org.fest.swing.test.core.SequentialTestCase;
 import org.fest.swing.test.swing.TestWindow;
 import org.fest.swing.util.RobotFactory;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link ScreenshotTaker}</code>.
@@ -51,46 +49,38 @@ import org.testng.annotations.*;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = GUI)
-public class ScreenshotTakerTest {
+public class ScreenshotTakerTest extends SequentialTestCase {
 
   private static final BufferedImage NO_IMAGE = null;
   private ScreenshotTaker taker;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
+  @Override protected void onSetUp() {
     taker = new ScreenshotTaker();
   }
 
-  @AfterMethod public void tearDown() {
-    ScreenLock screenLock = ScreenLock.instance();
-    if (screenLock.acquiredBy(this)) screenLock.release(this);
-  }
-
-  @Test(groups = GUI, expectedExceptions = ImageException.class)
+  @Test(expected = ImageException.class)
   public void shouldThrowErrorIfFilePathIsNull() {
     taker.saveImage(NO_IMAGE, null);
   }
 
-  @Test(groups = GUI, expectedExceptions = ImageException.class)
+  @Test(expected = ImageException.class)
   public void shouldThrowErrorIfFilePathIsEmpty() {
     taker.saveImage(NO_IMAGE, "");
   }
 
-  @Test(groups = GUI, expectedExceptions = ImageException.class)
+  @Test(expected = ImageException.class)
   public void shouldThrowErrorIfFilePathNotEndingWithPng() {
     taker.saveImage(NO_IMAGE, "somePathWithoutPng");
   }
 
+  @Test
   public void shouldTakeDesktopScreenshotAndSaveItInGivenPath() throws Exception {
     String imagePath = concat(temporaryFolderPath(), imageFileName());
     taker.saveDesktopAsPng(imagePath);
     assertThat(read(imagePath)).hasSize(Toolkit.getDefaultToolkit().getScreenSize());
   }
 
+  @Test
   public void shouldTakeScreenshotOfWindowAndSaveItInGivenPath() throws Exception {
     TestWindow frame = createAndShowNewWindow(getClass());
     String imagePath = concat(temporaryFolderPath(), imageFileName());
@@ -99,6 +89,7 @@ public class ScreenshotTakerTest {
     frame.destroy();
   }
 
+  @Test
   public void shouldRethrowExceptionAsImageExceptionWhenWritingImageToFile() {
     final BufferedImage image = createMock(BufferedImage.class);
     final String path = "image.png";
@@ -121,6 +112,7 @@ public class ScreenshotTakerTest {
     }.run();
   }
 
+  @Test
   public void shouldRethrowExceptionAsImageExceptionWhenCreatingRobot() {
     final ImageFileWriter writer = createMock(ImageFileWriter.class);
     final RobotFactory robotFactory = createMock(RobotFactory.class);
@@ -141,9 +133,8 @@ public class ScreenshotTakerTest {
     }.run();
   }
 
-  @Test(groups = GUI)
+  @Test
   public void shouldTakeScreenshotOfButtonAndSaveItInGivenPath() throws Exception {
-    ScreenLock.instance().acquire(this);
     MyWindow frame = MyWindow.createNew();
     try {
       frame.display();
@@ -155,9 +146,8 @@ public class ScreenshotTakerTest {
     }
   }
 
-  @Test(groups = GUI)
+  @Test
   public void shouldTakeScreenshotOfFrameAndSaveItInGivenPath() throws Exception {
-    ScreenLock.instance().acquire(this);
     MyWindow frame = MyWindow.createNew();
     try {
       frame.display();

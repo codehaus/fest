@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  */
 @Test(groups = GUI)
-public class JTextComponentDriverRequireTextAsPatternTest extends JTextComponentDriverTestCase {
+public class JTextComponentDriverRequireTextAsPatternTest extends JTextComponentDriver_TestCase {
 
   public void shouldPassIfTextMatchesPattern() {
     setTextFieldText("Hi");

@@ -15,6 +15,8 @@
  */
 package org.fest.swing.input;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 import java.awt.Window;
 import java.awt.event.ComponentEvent;
 import java.util.HashMap;
@@ -22,12 +24,9 @@ import java.util.Map;
 
 import javax.swing.JFrame;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link DisposalMonitor}</code>.
@@ -40,7 +39,7 @@ public class DisposalMonitorTest {
   private Map<Window, Boolean> disposedWindows;
   private DisposalMonitor monitor;
   
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     frame = TestWindow.createNewWindow(DisposalMonitorTest.class);
     disposedWindows = new HashMap<Window, Boolean>();
     monitor = new DisposalMonitor(disposedWindows);

@@ -15,27 +15,20 @@
  */
 package org.fest.swing.fixture;
 
-import javax.swing.JTable;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.test.swing.TableRenderDemo;
-import org.fest.swing.test.swing.TestWindow;
-
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.util.Arrays.format;
 import static org.fest.util.Strings.concat;
+
+import javax.swing.JTable;
+
+import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.test.core.RobotBasedTestCase;
+import org.fest.swing.test.swing.TableRenderDemo;
+import org.fest.swing.test.swing.TestWindow;
+import org.junit.Test;
 
 /**
  * Test case for <a href="http://code.google.com/p/fest/issues/detail?id=135">Bug 135</a>.
@@ -43,28 +36,18 @@ import static org.fest.util.Strings.concat;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = GUI)
-public class TableContentsTest {
+public class TableContentsTest extends RobotBasedTestCase {
 
-  private Robot robot;
   private MyWindow window;
   private JTableFixture fixture;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected void onSetUp() {
     window = MyWindow.createNew();
     robot.showWindow(window);
     fixture = new JTableFixture(robot, window.table);
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
+  @Test
   public void shouldReturnTableContents() {
     String[][] contents = fixture.contents();
     assertThat(contents.length).isEqualTo(5);
@@ -96,6 +79,7 @@ public class TableContentsTest {
     assertThat(contents[4][4]).isEqualTo("false");
   }
 
+  @Test
   public void shouldPassIfContentIsEqualToExpected() {
     String[][] contents = new String[][] {
         { "Mary",   "Campione", "Snowboarding",   "5", "false" },
@@ -107,7 +91,7 @@ public class TableContentsTest {
     fixture.requireContents(contents);
   }
 
-  @Test(groups = GUI, dependsOnMethods = "shouldReturnTableContents")
+  @Test
   public void shouldFailIfContentNotEqualToExpected() {
     try {
       fixture.requireContents(new String[][] { { "hello" } });

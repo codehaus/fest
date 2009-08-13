@@ -15,30 +15,31 @@
  */
 package org.fest.swing.test.swing;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.FlowLayout;
 
 import javax.swing.JApplet;
 import javax.swing.JButton;
 
+import net.jcip.annotations.GuardedBy;
+
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 
-import static org.fest.swing.edt.GuiActionRunner.execute;
-
 /**
  * Understands a simple applet.
- *
  * @author Alex Ruiz
  */
 public class TestApplet extends JApplet {
 
   private static final long serialVersionUID = 1L;
-  
-  private boolean initialized;
-  private boolean destroyed;
-  private boolean started;
-  private boolean stopped;
+
+  @GuardedBy("this") private boolean initialized;
+  @GuardedBy("this") private boolean destroyed;
+  @GuardedBy("this") private boolean started;
+  @GuardedBy("this") private boolean stopped;
 
   @RunsInEDT
   public static TestApplet createNew() {
@@ -56,28 +57,40 @@ public class TestApplet extends JApplet {
     button.setName("clickMe");
     add(button);
   }
-  
-  @Override public void init() { 
+
+  @Override
+  public synchronized void init() {
     initialized = true;
   }
-  
-  @Override public void start() {
+
+  @Override
+  public synchronized void start() {
     started = true;
   }
 
-  @Override public void stop() {
+  @Override
+  public synchronized void stop() {
     stopped = true;
   }
-  
-  @Override public void destroy() {
+
+  @Override
+  public synchronized void destroy() {
     destroyed = true;
   }
 
-  public boolean initialized() { return initialized; }
-  
-  public boolean started() { return started; }
-  
-  public boolean stopped() { return stopped; }
+  public synchronized boolean initialized() {
+    return initialized;
+  }
 
-  public boolean destroyed() { return destroyed; }
+  public synchronized boolean started() {
+    return started;
+  }
+
+  public synchronized boolean stopped() {
+    return stopped;
+  }
+
+  public synchronized boolean destroyed() {
+    return destroyed;
+  }
 }

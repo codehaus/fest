@@ -27,7 +27,10 @@ import static org.fest.util.Arrays.array;
 import static org.fest.util.Objects.*;
 import static org.fest.util.Strings.concat;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
 
 import org.fest.swing.annotation.RunsInEDT;
@@ -35,7 +38,10 @@ import org.fest.swing.core.Robot;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.exception.ComponentLookupException;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JOptionPaneDriver}</code>.

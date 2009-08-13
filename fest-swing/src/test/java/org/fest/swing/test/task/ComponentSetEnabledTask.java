@@ -15,11 +15,12 @@
  */
 package org.fest.swing.test.task;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.Component;
 
+import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands a task that enables or disables a <code>{@link Component}</code>. This task is executed in the event
@@ -29,14 +30,17 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
  */
 public final class ComponentSetEnabledTask {
 
+  @RunsInEDT
   public static void enable(Component component) {
     setEnabled(component, true);
   }
 
+  @RunsInEDT
   public static void disable(Component component) {
     setEnabled(component, false);
   }
 
+  @RunsInEDT
   public static void setEnabled(final Component component, final boolean enabled) {
     execute(new GuiTask() {
       protected void executeInEDT() {

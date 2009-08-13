@@ -15,13 +15,13 @@
  */
 package org.fest.swing.launcher;
 
+import static javax.swing.SwingUtilities.invokeLater;
+
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
-
-import static javax.swing.SwingUtilities.invokeLater;
 
 /**
  * An application with a "main" method that shows a <code>{@link JFrame}</code>.

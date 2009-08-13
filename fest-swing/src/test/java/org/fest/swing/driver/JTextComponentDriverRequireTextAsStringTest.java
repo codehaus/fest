@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * @author Yvonne Wang
  */
 @Test(groups = GUI)
-public class JTextComponentDriverRequireTextAsStringTest extends JTextComponentDriverTestCase {
+public class JTextComponentDriverRequireTextAsStringTest extends JTextComponentDriver_TestCase {
 
   public void shouldPassIfHasExpectedText() {
     setTextFieldText("Hi");

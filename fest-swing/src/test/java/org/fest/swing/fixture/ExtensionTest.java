@@ -14,22 +14,17 @@
  */
 package org.fest.swing.fixture;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.test.builder.JTextFields.textField;
+
 import java.awt.Container;
 
 import javax.swing.JTextField;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.test.builder.JTextFields.textField;
-import static org.fest.swing.test.core.TestGroups.GUI;
+import org.junit.Test;
 
 /**
  * Tests for issue <a href="http://code.google.com/p/fest/issues/detail?id=109" target="_blank">109</a>: Add support for
@@ -37,23 +32,15 @@ import static org.fest.swing.test.core.TestGroups.GUI;
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class ExtensionTest {
+public class ExtensionTest extends RobotBasedTestCase {
 
   private FrameFixture fixture;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
+  @Override protected void onSetUp() {
+    fixture = new FrameFixture(robot, TestWindow.createNewWindow(ExtensionTest.class));
   }
 
-  @BeforeMethod public void setUp() {
-    fixture = new FrameFixture(TestWindow.createNewWindow(ExtensionTest.class));
-  }
-
-  @AfterMethod public void tearDown() {
-    fixture.cleanUp();
-  }
-
+  @Test
   public void shouldCreateFixtureUsingExtension() {
     JTextFieldFixture textField = fixture.with(JTextFieldFixtureExtension.textFieldWithName("hello"));
     assertThat(textField).isNotNull();

@@ -17,19 +17,16 @@ package org.fest.swing.finder;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import javax.swing.JOptionPane;
 
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.exception.WaitTimedOutError;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.JOptionPaneFixture;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.JOptionPaneLauncherWindow;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JOptionPaneFinder}</code>.
@@ -37,34 +34,25 @@ import org.testng.annotations.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class JOptionPaneFinderTest {
+public class JOptionPaneFinderTest extends RobotBasedTestCase {
 
-  private Robot robot;
   private JOptionPaneLauncherWindow window;
   private FrameFixture frameFixture;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected void onSetUp() {
     window = JOptionPaneLauncherWindow.createNew(JOptionPaneFinderTest.class);
     frameFixture = new FrameFixture(robot, window);
     frameFixture.show();
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
+  @Test
   public void shouldFindJOptionPane() {
     clickMessageButton();
     JOptionPaneFixture found = JOptionPaneFinder.findOptionPane().using(robot);
     assertThat(found.target).isNotNull();
   }
 
+  @Test
   public void shouldFindJOptionPaneUsingGivenMatcher() {
     clickMessageButton();
     GenericTypeMatcher<JOptionPane> matcher = new GenericTypeMatcher<JOptionPane>(JOptionPane.class) {
@@ -76,6 +64,7 @@ public class JOptionPaneFinderTest {
     assertThat(found.target).isNotNull();
   }
 
+  @Test
   public void shouldFindJOptionPaneBeforeGivenTimeoutExpires() {
     window.launchDelay(2000);
     clickMessageButton();
@@ -87,7 +76,7 @@ public class JOptionPaneFinderTest {
     frameFixture.button("message").click();
   }
 
-  @Test(groups = GUI, expectedExceptions = WaitTimedOutError.class)
+  @Test(expected = WaitTimedOutError.class)
   public void shouldFailIfJOptionPaneNotFound() {
     JOptionPaneFinder.findOptionPane().using(robot);
   }

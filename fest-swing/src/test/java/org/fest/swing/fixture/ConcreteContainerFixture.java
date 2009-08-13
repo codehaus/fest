@@ -22,7 +22,7 @@ import javax.swing.JFrame;
 import org.fest.swing.core.Robot;
 
 /**
- * Understands a concrete implementation of <code>{@link ContainerFixture}</code>.
+ * Understands an implementation of <code>{@link ContainerFixture}</code> for testing purposes.
  *
  * @author Alex Ruiz
  */

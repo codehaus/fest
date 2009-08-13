@@ -16,52 +16,42 @@
 package org.fest.swing.fixture;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import javax.swing.JRadioButton;
 
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.*;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests lookup of <code>{@link JRadioButton}</code>s in <code>{@link ContainerFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class ContainerFixtureJRadioButtonLookupTest {
+public class ContainerFixtureJRadioButtonLookupTest extends RobotBasedTestCase {
 
   private ConcreteContainerFixture fixture;
-  private Robot robot;
   private MyWindow window;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected final void onSetUp() {
     window = MyWindow.createNew();
     fixture = new ConcreteContainerFixture(robot, window);
     robot.showWindow(window);
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
+  @Test
   public void shouldFindJRadioButtonByType() {
     JRadioButtonFixture radioButton = fixture.radioButton();
     assertThatFixtureHasCorrectJRadioButton(radioButton);
   }
 
+  @Test
   public void shouldFailIfJRadioButtonCannotBeFoundByType() {
     execute(new GuiTask() {
       protected void executeInEDT() {
@@ -78,11 +68,13 @@ public class ContainerFixtureJRadioButtonLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJRadioButtonByName() {
     JRadioButtonFixture radioButton = fixture.radioButton("selectMeRadioButton");
     assertThatFixtureHasCorrectJRadioButton(radioButton);
   }
 
+  @Test
   public void shouldFailIfJRadioButtonCannotBeFoundByName() {
     try {
       fixture.radioButton("myRadioButton");
@@ -93,6 +85,7 @@ public class ContainerFixtureJRadioButtonLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJRadioButtonWithCustomMatcher() {
     JRadioButtonFixture radioButton = fixture.radioButton(new GenericTypeMatcher<JRadioButton>(JRadioButton.class) {
       protected boolean isMatching(JRadioButton r) {
@@ -106,6 +99,7 @@ public class ContainerFixtureJRadioButtonLookupTest {
     assertThat(radioButtonFixture.component()).isSameAs(window.radioButton);
   }
 
+  @Test
   public void shouldFailIfJRadioButtonCannotBeFoundWithCustomMatcher() {
     try {
       fixture.radioButton(new GenericTypeMatcher<JRadioButton>(JRadioButton.class) {

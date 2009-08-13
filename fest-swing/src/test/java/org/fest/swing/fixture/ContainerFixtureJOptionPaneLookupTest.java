@@ -16,59 +16,48 @@
 package org.fest.swing.fixture;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.timing.Timeout.timeout;
 
 import javax.swing.JOptionPane;
 
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.exception.WaitTimedOutError;
 import org.fest.swing.finder.WindowFinderTest;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.JOptionPaneLauncherWindow;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests lookup of <code>{@link JOptionPane}</code>s in <code>{@link ContainerFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class ContainerFixtureJOptionPaneLookupTest {
+public class ContainerFixtureJOptionPaneLookupTest extends RobotBasedTestCase {
 
   private ConcreteContainerFixture launcher;
-  private Robot robot;
   private JOptionPaneLauncherWindow window;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected final void onSetUp() {
     window = JOptionPaneLauncherWindow.createNew(WindowFinderTest.class);
     launcher = new ConcreteContainerFixture(robot, window);
     robot.showWindow(window);
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
+  @Test
   public void shouldFindJOptionPaneByType() {
     launchJOptionPane(0);
     JOptionPaneFixture optionPane = launcher.optionPane();
     assertCorrectJOptionPaneWasFound(optionPane);
   }
 
+  @Test
   public void shouldFindJOptionPaneByTypeUsingTimeout() {
     launchJOptionPane(200);
     JOptionPaneFixture optionPane = launcher.optionPane(timeout(300));
     assertCorrectJOptionPaneWasFound(optionPane);
   }
 
+  @Test
   public void shouldFailIfJOptionPaneNotFoundAfterTimeout() {
     try {
       launcher.optionPane(timeout(100));

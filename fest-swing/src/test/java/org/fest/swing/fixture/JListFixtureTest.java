@@ -39,7 +39,7 @@ import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JListDriver;
 import org.fest.swing.util.Range.From;
 import org.fest.swing.util.Range.To;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JListFixture}</code>.
@@ -47,7 +47,7 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test public class JListFixtureTest extends CommonComponentFixtureTestCase<JList> {
+public class JListFixtureTest extends CommonComponentFixtureTestCase<JList> {
 
   private JListDriver driver;
   private JList target;
@@ -56,21 +56,23 @@ import org.testng.annotations.Test;
   void onSetUp() {
     driver = createMock(JListDriver.class);
     target = list().createNew();
-    fixture = new JListFixture(robot(), target);
+    fixture = new JListFixture(robot, target);
     fixture.driver(driver);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "list";
     expectLookupByName(name, JList.class);
-    verifyLookup(new JListFixture(robot(), name));
+    verifyLookup(new JListFixture(robot, name));
   }
 
+  @Test
   public void shouldReturnContents() {
     final String[] contents = array("Luke", "Leia");
     new EasyMockTemplate(driver) {
@@ -85,6 +87,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldReturnSelection() {
     final String[] selection = array("Luke", "Leia");
     new EasyMockTemplate(driver) {
@@ -99,6 +102,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldClearSelection() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -112,6 +116,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSelectItemsInRange() {
     final From from = from(6);
     final To to = to(8);
@@ -127,6 +132,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSelectItemsUnderIndices() {
     final int[] indices = new int[] { 6, 8 };
     new EasyMockTemplate(driver) {
@@ -141,6 +147,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSelectItemUnderIndex() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -154,6 +161,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSelectItemsWithValues() {
     final String[] values = array("Frodo", "Sam");
     new EasyMockTemplate(driver) {
@@ -168,6 +176,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSelectItemsMatchingPatterns() {
     final Pattern[] patterns = array(regex("Frodo"), regex("Sam"));
     new EasyMockTemplate(driver) {
@@ -182,6 +191,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSelectItemWithValue() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -195,6 +205,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSelectItemMatchingPattern() {
     final Pattern pattern = regex("Hello");
     new EasyMockTemplate(driver) {
@@ -237,6 +248,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireSelectionValue() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -250,6 +262,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireSelectionMatchingPattern() {
     final Pattern p = regex("hello");
     new EasyMockTemplate(driver) {
@@ -264,6 +277,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireSelectionIndex() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -277,6 +291,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireSelectedItems() {
     final String[] items = array("Frodo", "Sam");
     new EasyMockTemplate(driver) {
@@ -291,6 +306,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireSelectedItemsToMatchPatterns() {
     final Pattern[] patterns = array(regex("Frodo"), regex("Sam"));
     new EasyMockTemplate(driver) {
@@ -305,6 +321,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireSelectedIndices() {
     final int[] items = { 0, 1 };
     new EasyMockTemplate(driver) {
@@ -319,6 +336,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireNoSelection() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -332,6 +350,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldReturnValueAtIndex() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -344,12 +363,14 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldReturnJListItemFixture() {
     JListItemFixture item = fixture.item(6);
     assertThat(item.index).isEqualTo(6);
     assertThat(item.list).isSameAs(fixture);
   }
 
+  @Test
   public void shouldReturnJListItemFixtureUsingValue() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -364,6 +385,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldReturnJListItemFixtureWithItemMatchingPatternAsString() {
     final Pattern pattern = regex("Frodo");
     new EasyMockTemplate(driver) {
@@ -379,6 +401,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldDragElementMatchingValue() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -392,6 +415,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldDragElementMatchingPattern() {
     final Pattern p = regex("Frodo");
     new EasyMockTemplate(driver) {
@@ -406,6 +430,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldDropElementMatchingValue() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -419,6 +444,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldDropElementMatchingPattern() {
     final Pattern p = regex("Frodo");
     new EasyMockTemplate(driver) {
@@ -433,6 +459,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldDragElementUnderIndex() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -446,6 +473,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldDrop() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -459,6 +487,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldDropElementUnderIndex() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -472,6 +501,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldShowJPopupMenuAtItemUnderIndex() {
     final JPopupMenu popup = popupMenu().createNew();
     new EasyMockTemplate(driver) {
@@ -486,6 +516,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldShowJPopupMenuAtItemWithValue() {
     final JPopupMenu popup = popupMenu().createNew();
     new EasyMockTemplate(driver) {
@@ -500,6 +531,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldShowJPopupMenuAtItemMatchingPattern() {
     final Pattern pattern = regex("Frodo");
     final JPopupMenu popup = popupMenu().createNew();
@@ -515,6 +547,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSetCellReaderInDriver() {
     final JListCellReader reader = createMock(JListCellReader.class);
     new EasyMockTemplate(driver) {
@@ -529,6 +562,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTip() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -542,6 +576,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTipToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver()) {
@@ -556,6 +591,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenu() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     new EasyMockTemplate(driver()) {
@@ -565,12 +601,13 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtPoint() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     final Point p = new Point();
@@ -581,12 +618,13 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldReturnClientProperty() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {

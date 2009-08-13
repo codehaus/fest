@@ -15,9 +15,7 @@
  */
 package org.fest.swing.fixture;
 
-import static java.awt.event.KeyEvent.VK_A;
-import static java.awt.event.KeyEvent.VK_B;
-import static java.awt.event.KeyEvent.VK_C;
+import static java.awt.event.KeyEvent.*;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
@@ -39,7 +37,7 @@ import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.cell.JComboBoxCellReader;
 import org.fest.swing.driver.JComboBoxDriver;
 import org.fest.swing.driver.JComponentDriver;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JComboBoxFixture}</code>.
@@ -47,7 +45,7 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test public class JComboBoxFixtureTest extends CommonComponentFixtureTestCase<JComboBox> {
+public class JComboBoxFixtureTest extends CommonComponentFixtureTestCase<JComboBox> {
 
   private JComboBoxDriver driver;
   private JComboBox target;
@@ -56,21 +54,23 @@ import org.testng.annotations.Test;
   void onSetUp() {
     driver = EasyMock.createMock(JComboBoxDriver.class);
     target = comboBox().createNew();
-    fixture = new JComboBoxFixture(robot(), target);
+    fixture = new JComboBoxFixture(robot, target);
     fixture.driver(driver);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "comboBox";
     expectLookupByName(name, JComboBox.class);
-    verifyLookup(new JComboBoxFixture(robot(), name));
+    verifyLookup(new JComboBoxFixture(robot, name));
   }
 
+  @Test
   public void shouldReturnContents() {
     final String[] contents = array("Frodo", "Sam");
     new EasyMockTemplate(driver) {
@@ -85,6 +85,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldReplaceText() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -98,6 +99,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSelectAllText() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -111,6 +113,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldEnterText() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -124,7 +127,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
-  @Override public void shouldPressAndReleaseKeys() {
+  @Override public void should_press_and_release_keys() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
         driver.pressAndReleaseKeys(target, VK_A, VK_B, VK_C);
@@ -137,6 +140,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldReturnList() {
     final JList list = list().createNew();
     new EasyMockTemplate(driver) {
@@ -151,6 +155,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldClearSelection() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -164,6 +169,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSelectItemUnderIndex() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -177,6 +183,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSelectItemWithText() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -190,6 +197,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSelectItemWithTextMatchingPattern() {
     final Pattern p = regex(".");
     new EasyMockTemplate(driver) {
@@ -204,6 +212,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldReturnValueAtIndex() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -217,6 +226,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireEditable() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -230,6 +240,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireNotEditable() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -243,6 +254,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireNoSelection() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -256,6 +268,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldSetCellReaderInDriver() {
     final JComboBoxCellReader reader = createMock(JComboBoxCellReader.class);
     new EasyMockTemplate(driver) {
@@ -270,6 +283,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireSelectionValue() {
     final String value = "Hello";
     new EasyMockTemplate(driver) {
@@ -284,6 +298,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireSelectionByPatternMatching() {
     final Pattern p = regex("Hello");
     new EasyMockTemplate(driver) {
@@ -298,6 +313,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireSelectionIndex() {
     final int index = 6;
     new EasyMockTemplate(driver) {
@@ -312,6 +328,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTip() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -325,6 +342,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTipToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver()) {
@@ -339,6 +357,7 @@ import org.testng.annotations.Test;
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenu() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     new EasyMockTemplate(driver()) {
@@ -348,12 +367,13 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtPoint() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     final Point p = new Point();
@@ -364,12 +384,13 @@ import org.testng.annotations.Test;
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldReturnClientProperty() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {

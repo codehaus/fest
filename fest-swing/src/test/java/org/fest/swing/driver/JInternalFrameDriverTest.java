@@ -15,17 +15,28 @@
  */
 package org.fest.swing.driver;
 
+import static java.lang.String.valueOf;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
+import static org.fest.swing.driver.ComponentLocationQuery.locationOf;
+import static org.fest.swing.driver.JInternalFrameAction.*;
+import static org.fest.swing.driver.JInternalFrameIconQuery.isIconified;
+import static org.fest.swing.driver.JInternalFrameSetIconTask.setIcon;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
+import static org.fest.swing.test.core.CommonAssertions.assertThatErrorCauseIsNotShowingComponent;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.TestGroups.GUI;
+import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
+import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Dimension;
 import java.awt.Point;
 import java.beans.PropertyVetoException;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
@@ -38,22 +49,10 @@ import org.fest.swing.test.awt.FluentDimension;
 import org.fest.swing.test.awt.FluentPoint;
 import org.fest.swing.test.swing.TestWindow;
 import org.fest.swing.test.util.StopWatch;
-
-import static java.lang.String.valueOf;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
-import static org.fest.swing.driver.ComponentLocationQuery.locationOf;
-import static org.fest.swing.driver.JInternalFrameAction.*;
-import static org.fest.swing.driver.JInternalFrameIconQuery.isIconified;
-import static org.fest.swing.driver.JInternalFrameSetIconTask.setIcon;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
-import static org.fest.swing.test.core.CommonAssertions.*;
-import static org.fest.swing.test.core.TestGroups.GUI;
-import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
-import static org.fest.swing.test.task.ComponentSetVisibleTask.hide;
-import static org.fest.util.Strings.concat;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JInternalFrameDriver}</code>.
@@ -177,7 +176,7 @@ public class JInternalFrameDriverTest {
       driver.maximize(internalFrame);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -187,7 +186,7 @@ public class JInternalFrameDriverTest {
       driver.maximize(internalFrame);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 

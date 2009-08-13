@@ -14,24 +14,22 @@
  */
 package org.fest.swing.fixture;
 
-import org.testng.annotations.Test;
 
 /**
  * Tests case for implementations of <code>{@link StateVerificationFixture}</code>
  * 
  * @author Alex Ruiz
  */
-@Test
 public interface StateVerificationFixtureTestCase {
 
-  void shouldRequireDisabled();
+  void should_require_enabled();
 
-  void shouldRequireEnabled();
+  void should_require_enabled_using_timeout();
+  
+  void should_require_disabled();
+  
+  void should_require_visible();
 
-  void shouldRequireEnabledUsingTimeout();
-
-  void shouldRequireNotVisible();
-
-  void shouldRequireVisible();
+  void should_require_not_visible();
 
 }

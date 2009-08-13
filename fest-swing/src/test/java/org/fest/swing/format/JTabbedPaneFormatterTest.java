@@ -15,15 +15,6 @@
  */
 package org.fest.swing.format;
 
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import org.fest.swing.edt.GuiTask;
-import org.fest.swing.timing.Condition;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.builder.JTabbedPanes.tabbedPane;
@@ -31,27 +22,37 @@ import static org.fest.swing.test.builder.JTextFields.textField;
 import static org.fest.swing.timing.Pause.pause;
 import static org.fest.util.Strings.concat;
 
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
+import org.fest.swing.edt.GuiTask;
+import org.fest.swing.test.core.EDTSafeTestCase;
+import org.fest.swing.timing.Condition;
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * Tests for <code>{@link JTabbedPaneFormatter}</code>.
  *
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-@Test public class JTabbedPaneFormatterTest {
+public class JTabbedPaneFormatterTest extends EDTSafeTestCase {
 
   private JTabbedPane tabbedPane;
   private JTabbedPaneFormatter formatter;
   
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     tabbedPane = tabbedPane().withName("tabbedPane").createNew();
     formatter = new JTabbedPaneFormatter();
   }
   
-  @Test(expectedExceptions = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void shouldThrowErrorIfComponentIsNotJTabbedPane() {
     formatter.format(textField().createNew());
   }
 
+  @Test
   public void shouldFormatJTabbedPaneWithTabsAndSelection() {
     addTwoTabsTo(tabbedPane);
     setSelectedIndex(tabbedPane, 1);    
@@ -67,6 +68,7 @@ import static org.fest.util.Strings.concat;
                          .contains("showing=false");
   }
 
+  @Test
   public void shouldFormatJTabbedPaneWithTabsAndNoSelection() {
     addTwoTabsTo(tabbedPane);
     setSelectedIndex(tabbedPane, -1);    
@@ -109,6 +111,7 @@ import static org.fest.util.Strings.concat;
     });
   }
 
+  @Test
   public void shouldFormatJTabbedPaneWithNoTabs() {
     String formatted = formatter.format(tabbedPane);
     assertThat(formatted).contains(tabbedPane.getClass().getName())

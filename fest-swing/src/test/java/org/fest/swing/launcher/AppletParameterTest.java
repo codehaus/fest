@@ -17,10 +17,11 @@ package org.fest.swing.launcher;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link AppletParameter}</code>.
+ * TODO Split
  *
  * @author Yvonne Wang
  */

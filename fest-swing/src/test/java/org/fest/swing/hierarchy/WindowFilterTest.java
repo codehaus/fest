@@ -15,45 +15,39 @@
  */
 package org.fest.swing.hierarchy;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.builder.JButtons.button;
+import static org.fest.swing.test.builder.JDialogs.dialog;
+
 import java.awt.Component;
 import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
+import org.fest.swing.test.core.EDTSafeTestCase;
 import org.fest.swing.test.swing.TestDialog;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.builder.JButtons.button;
-import static org.fest.swing.test.builder.JDialogs.dialog;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link WindowFilter}</code>.
  *
  * @author Alex Ruiz
  */
-public class WindowFilterTest {
+public class WindowFilterTest extends EDTSafeTestCase {
 
   private Map<Component, Boolean> ignored;
   private Map<Component, Boolean> implictlyIgnored;
 
   private WindowFilter filter;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     filter = new WindowFilter(new ParentFinder(), new ChildrenFinder());
     ignored = filter.ignored;
     ignored.clear();
@@ -104,7 +98,7 @@ public class WindowFilterTest {
     assertThat(implictlyIgnored.size()).isZero();
   }
 
-  @Test(dependsOnMethods = "shouldFilterChildrenOfSharedInvisibleFrame")
+  @Test
   public void shouldUnfilterChildrenOfSharedInvisibleFrame() {
     JDialog dialog = dialog().createNew();
     ignored.put(dialog, true);

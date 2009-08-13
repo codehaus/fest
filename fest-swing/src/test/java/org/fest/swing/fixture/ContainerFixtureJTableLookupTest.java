@@ -16,52 +16,42 @@
 package org.fest.swing.fixture;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import javax.swing.JTable;
 
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.*;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests lookup of <code>{@link JTable}</code>s in <code>{@link ContainerFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class ContainerFixtureJTableLookupTest {
+public class ContainerFixtureJTableLookupTest extends RobotBasedTestCase {
 
   private ConcreteContainerFixture fixture;
-  private Robot robot;
   private MyWindow window;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected final void onSetUp() {
     window = MyWindow.createNew();
     fixture = new ConcreteContainerFixture(robot, window);
     robot.showWindow(window);
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
+  @Test
   public void shouldFindJTableByType() {
     JTableFixture table = fixture.table();
     assertThatFixtureHasCorrectJTable(table);
   }
 
+  @Test
   public void shouldFailIfJTableCannotBeFoundByType() {
     execute(new GuiTask() {
       protected void executeInEDT() {
@@ -78,11 +68,13 @@ public class ContainerFixtureJTableLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJTableByName() {
     JTableFixture table = fixture.table("myTable");
     assertThatFixtureHasCorrectJTable(table);
   }
 
+  @Test
   public void shouldFailIfJTableCannotBeFoundByName() {
     try {
       fixture.table("someTable");
@@ -93,6 +85,7 @@ public class ContainerFixtureJTableLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJTableWithCustomMatcher() {
     JTableFixture table = fixture.table(new GenericTypeMatcher<JTable>(JTable.class) {
       protected boolean isMatching(JTable t) {
@@ -106,6 +99,7 @@ public class ContainerFixtureJTableLookupTest {
     assertThat(tableFixture.component()).isSameAs(window.table);
   }
 
+  @Test
   public void shouldFailIfJTableCannotBeFoundWithCustomMatcher() {
     try {
       fixture.table(new GenericTypeMatcher<JTable>(JTable.class) {

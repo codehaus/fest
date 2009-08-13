@@ -15,55 +15,47 @@
  */
 package org.fest.swing.monitor;
 
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.swing.test.core.MethodInvocations.Args.args;
+
 import java.awt.Component;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.test.core.MethodInvocations;
+import org.fest.swing.test.core.SequentialTestCase;
 import org.fest.swing.test.core.MethodInvocations.Args;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.builder.JTextFields.textField;
-import static org.fest.swing.test.core.MethodInvocations.Args.args;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link WindowVisibilityMonitor}</code>.
+ * TODO: Split
  *
  * @author Alex Ruiz
  */
-public class WindowVisibilityMonitorTest {
+public class WindowVisibilityMonitorTest extends SequentialTestCase {
 
   private WindowVisibilityMonitor monitor;
 
   private MyWindow window;
   private Windows windows;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
+  @Override protected final void onSetUp() {
     window = MyWindow.createNew();
     windows = createMock(Windows.class);
     createAndAttachMonitor();
   }
 
-  @AfterMethod public void tearDown() {
+  @Override protected final void onTearDown() {
     window.destroy();
   }
 

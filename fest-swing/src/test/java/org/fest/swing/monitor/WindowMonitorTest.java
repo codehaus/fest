@@ -15,6 +15,14 @@
  */
 package org.fest.swing.monitor;
 
+import static java.awt.AWTEvent.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.easymock.classextension.EasyMock.reset;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Window;
@@ -22,31 +30,21 @@ import java.awt.event.AWTEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.listener.WeakEventListener;
 import org.fest.swing.test.awt.ToolkitStub;
+import org.fest.swing.test.core.SequentialTestCase;
 import org.fest.swing.test.swing.TestWindow;
-
-import static java.awt.AWTEvent.*;
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.*;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link WindowMonitor}</code>.
+ * TODO: Split
  *
  * @author Alex Ruiz
  */
-public class WindowMonitorTest {
+public class WindowMonitorTest extends SequentialTestCase {
 
   private static final long WINDOWS_AVAILABILITY_MONITOR_EVENT_MASK = MOUSE_MOTION_EVENT_MASK | MOUSE_EVENT_MASK | PAINT_EVENT_MASK;
 
@@ -60,11 +58,7 @@ public class WindowMonitorTest {
   private WindowStatus windowStatus;
   private TestWindow frame;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
+  @Override protected final void onSetUp() {
     toolkit = ToolkitStub.createNew();
     windows = createMock(Windows.class);
     context = createMock(Context.class);
@@ -118,7 +112,7 @@ public class WindowMonitorTest {
     });
   }
   
-  @AfterMethod public void tearDown() {
+  @Override protected final void onTearDown() {
     frame.destroy();
   }
 

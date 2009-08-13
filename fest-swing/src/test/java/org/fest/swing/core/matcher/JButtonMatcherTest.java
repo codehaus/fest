@@ -20,18 +20,15 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.builder.JButtons.button;
 import static org.fest.swing.test.builder.JTextFields.textField;
 import static org.fest.swing.test.core.Regex.regex;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import javax.swing.JButton;
 
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.lock.ScreenLock;
+import org.fest.swing.test.core.EDTSafeTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JButtonMatcher}</code>.
@@ -39,22 +36,21 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = GUI) public class JButtonMatcherTest {
+public class JButtonMatcherTest extends EDTSafeTestCase {
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
+  @Test
   public void shouldReturnTrueIfMatchingAnyJButton() {
     JButtonMatcher matcher = JButtonMatcher.any();
     assertThat(matcher.matches(button().createNew())).isTrue();
   }
 
+  @Test
   public void shouldReturnFalseIfComponentIsNotJButton() {
     JButtonMatcher matcher = JButtonMatcher.any();
     assertThat(matcher.matches(textField().createNew())).isFalse();
   }
 
+  @Test
   public void shouldReturnTrueIfNameIsEqualToExpected() {
     String name = "button";
     JButtonMatcher matcher = JButtonMatcher.withName(name);
@@ -62,38 +58,42 @@ import org.testng.annotations.Test;
     assertThat(matcher.matches(button)).isTrue();
   }
 
+  @Test
   public void shouldReturnFalseIfNameIsNotEqualToExpected() {
     JButtonMatcher matcher = JButtonMatcher.withName("button");
     JButton button = button().withName("label").createNew();
     assertThat(matcher.matches(button)).isFalse();
   }
 
+  @Test
   public void shouldReturnTrueIfNameAndTextAreEqualToExpected() {
     JButtonMatcher matcher = JButtonMatcher.withName("button").andText("Hello");
     JButton button = button().withName("button").withText("Hello").createNew();
     assertThat(matcher.matches(button)).isTrue();
   }
 
+  @Test
   public void shouldReturnTrueIfNameMatchesAndTextMatchesPatternAsString() {
     JButtonMatcher matcher = JButtonMatcher.withName("button").andText("Hel.*");
     JButton button = button().withName("button").withText("Hello").createNew();
     assertThat(matcher.matches(button)).isTrue();
   }
 
+  @Test
   public void shouldReturnTrueIfNameMatchesAndTextMatchesPattern() {
     JButtonMatcher matcher = JButtonMatcher.withName("button").andText(regex("Hel.*"));
     JButton button = button().withName("button").withText("Hello").createNew();
     assertThat(matcher.matches(button)).isTrue();
   }
 
-  @Test(groups = GUI, dataProvider = "notMatchingNameAndText")
-  public void shouldReturnFalseIfNameAndTextAreNotEqualToExpected(String name, String text) {
+  @Test
+  public void shouldReturnFalseIfNameAndTextAreNotEqualToExpected() {
     JButtonMatcher matcher = JButtonMatcher.withName("someName").andText("someText");
-    JButton button = button().withName(name).withText(text).createNew();
+    JButton button = button().withName("name").withText("text").createNew();
     assertThat(matcher.matches(button)).isFalse();
   }
 
-  @DataProvider(name = "notMatchingNameAndText")
+  // TODO parameterize
   public Object[][] notMatchingNameAndText() {
     return new Object[][] {
         { "someName", "text" },
@@ -102,30 +102,35 @@ import org.testng.annotations.Test;
     };
   }
 
+  @Test
   public void shouldReturnTrueIfTextIsEqualToExpected() {
     JButtonMatcher matcher = JButtonMatcher.withText("Hello");
     JButton button = button().withText("Hello").createNew();
     assertThat(matcher.matches(button)).isTrue();
   }
 
+  @Test
   public void shouldReturnTrueIfTextMatchesExpectedPatternAsString() {
     JButtonMatcher matcher = JButtonMatcher.withText("He.*");
     JButton button = button().withText("Hello").createNew();
     assertThat(matcher.matches(button)).isTrue();
   }
 
+  @Test
   public void shouldReturnTrueIfTextMatchesExpectedPattern() {
     JButtonMatcher matcher = JButtonMatcher.withText(regex("He.*"));
     JButton button = button().withText("Hello").createNew();
     assertThat(matcher.matches(button)).isTrue();
   }
 
+  @Test
   public void shouldReturnFalseIfTextIsNotEqualToExpected() {
     JButtonMatcher matcher = JButtonMatcher.withText("Hello");
     JButton button = button().withText("Bye").createNew();
     assertThat(matcher.matches(button)).isFalse();
   }
 
+  @Test
   public void shouldReturnTrueIfButtonIsShowingAndTextIsEqualToExpected() {
     ScreenLock.instance().acquire(this);
     MyWindow window = MyWindow.createAndShow();
@@ -138,6 +143,7 @@ import org.testng.annotations.Test;
     }
   }
 
+  @Test
   public void shouldReturnFalseIfButtonIsNotShowingAndTextIsEqualToExpected() {
     String text = "Hello";
     JButtonMatcher matcher = JButtonMatcher.withText(text).andShowing();
@@ -145,7 +151,7 @@ import org.testng.annotations.Test;
     assertThat(matcher.matches(button)).isFalse();
   }
 
-  @Test(groups = GUI)
+  @Test
   public void shouldReturnFalseIfButtonIsShowingAndTextIsNotEqualToExpected() {
     ScreenLock.instance().acquire(this);
     MyWindow window = MyWindow.createAndShow();
@@ -158,12 +164,14 @@ import org.testng.annotations.Test;
     }
   }
 
+  @Test
   public void shouldReturnFalseIfButtonIsNotShowingAndTextIsNotEqualToExpected() {
     JButtonMatcher matcher = JButtonMatcher.withText("Hello").andShowing();
     JButton button = button().withText("Bye").createNew();
     assertThat(matcher.matches(button)).isFalse();
   }
 
+  @Test
   public void shouldImplementToString() {
     JButtonMatcher matcher = JButtonMatcher.withName("button").andText("Hello").andShowing();
     assertThat(matcher.toString()).isEqualTo(

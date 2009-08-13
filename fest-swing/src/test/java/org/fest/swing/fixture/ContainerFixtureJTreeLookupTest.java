@@ -16,53 +16,43 @@
 package org.fest.swing.fixture;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.*;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests lookup of <code>{@link JTree}</code>s in <code>{@link ContainerFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class ContainerFixtureJTreeLookupTest {
+public class ContainerFixtureJTreeLookupTest extends RobotBasedTestCase {
 
   private ConcreteContainerFixture fixture;
-  private Robot robot;
   private MyWindow window;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected final void onSetUp() {
     window = MyWindow.createNew();
     fixture = new ConcreteContainerFixture(robot, window);
     robot.showWindow(window);
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
+  @Test
   public void shouldFindJTreeByType() {
     JTreeFixture tree = fixture.tree();
     assertThatFixtureHasCorrectJTree(tree);
   }
 
+  @Test
   public void shouldFailIfJTreeCannotBeFoundByType() {
     execute(new GuiTask() {
       protected void executeInEDT() {
@@ -79,11 +69,13 @@ public class ContainerFixtureJTreeLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJTreeByName() {
     JTreeFixture tree = fixture.tree("expandMeTree");
     assertThatFixtureHasCorrectJTree(tree);
   }
 
+  @Test
   public void shouldFailIfJTreeCannotBeFoundByName() {
     try {
       fixture.tree("myTree");
@@ -94,6 +86,7 @@ public class ContainerFixtureJTreeLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJTreeWithCustomMatcher() {
     JTreeFixture tree = fixture.tree(new GenericTypeMatcher<JTree>(JTree.class) {
       protected boolean isMatching(JTree t) {
@@ -107,6 +100,7 @@ public class ContainerFixtureJTreeLookupTest {
     assertThat(treeFixture.component()).isSameAs(window.tree);
   }
 
+  @Test
   public void shouldFailIfJTreeCannotBeFoundWithCustomMatcher() {
     try {
       fixture.tree(new GenericTypeMatcher<JTree>(JTree.class) {

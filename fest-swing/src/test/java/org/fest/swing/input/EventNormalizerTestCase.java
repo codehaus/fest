@@ -15,24 +15,20 @@
  */
 package org.fest.swing.input;
 
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+
 import java.awt.event.AWTEventListener;
 import java.util.List;
 
-import org.testng.annotations.Test;
-
 import org.fest.swing.listener.WeakEventListener;
 import org.fest.swing.test.awt.ToolkitStub;
-
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.assertions.Assertions.assertThat;
 
 /**
  * Test case for <code>{@link EventNormalizer}</code> and subclasses.
  *
  * @author Alex Ruiz
  */
-@Test
 public abstract class EventNormalizerTestCase {
 
   final void assertEventNormalizerIsInToolkit(ToolkitStub toolkit, EventNormalizer eventNormalizer, int mask) {

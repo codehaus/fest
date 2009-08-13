@@ -15,6 +15,12 @@
  */
 package org.fest.swing.hierarchy;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.hierarchy.ContainerComponentsQuery.componentsOf;
+import static org.fest.swing.hierarchy.JInternalFrameIconifyTask.iconify;
+import static org.fest.swing.test.swing.TestMdiWindow.createAndShowNewWindow;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.util.ArrayList;
@@ -25,25 +31,16 @@ import javax.swing.JDesktopPane;
 import javax.swing.JMenu;
 import javax.swing.JTextField;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.builder.JMenus;
+import org.fest.swing.test.core.EDTSafeTestCase;
 import org.fest.swing.test.swing.TestDialog;
 import org.fest.swing.test.swing.TestMdiWindow;
 import org.fest.swing.test.swing.TestWindow;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.hierarchy.ContainerComponentsQuery.componentsOf;
-import static org.fest.swing.hierarchy.JInternalFrameIconifyTask.iconify;
-import static org.fest.swing.test.core.TestGroups.GUI;
-import static org.fest.swing.test.swing.TestMdiWindow.createAndShowNewWindow;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link ChildrenFinder}</code>.
@@ -51,7 +48,7 @@ import static org.fest.swing.test.swing.TestMdiWindow.createAndShowNewWindow;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-@Test public class ChildrenFinderTest {
+public class ChildrenFinderTest extends EDTSafeTestCase {
 
   private ChildrenFinder finder;
 
@@ -59,18 +56,14 @@ import static org.fest.swing.test.swing.TestMdiWindow.createAndShowNewWindow;
   private JMenuChildrenFinder menuChildrenFinder;
   private WindowChildrenFinder windowChildrenFinder;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     finder = new ChildrenFinder();
     desktopPaneChildrenFinder = new JDesktopPaneChildrenFinder();
     menuChildrenFinder = new JMenuChildrenFinder();
     windowChildrenFinder = new WindowChildrenFinder();
   }
 
-  @Test(groups = GUI)
+  @Test
   public void shouldReturnIconifiedInternalFramesIfComponentIsJDesktopPane() {
     ScreenLock.instance().acquire(this);
     TestMdiWindow window = createAndShowNewWindow(getClass());
@@ -87,12 +80,13 @@ import static org.fest.swing.test.swing.TestMdiWindow.createAndShowNewWindow;
     }
   }
 
+  @Test
   public void shouldReturnPopupMenuIfComponentIsJMenu() {
     JMenu menu = JMenus.menu().createNew();
     assertThat(children(finder, menu)).containsOnly(childrenOf(menu));
   }
 
-  @Test(groups = GUI)
+  @Test
   public void shouldReturnOwnedWindowsIfComponentIsWindow() {
     ScreenLock.instance().acquire(this);
     TestWindow window = TestWindow.createAndShowNewWindow(getClass());
@@ -109,7 +103,7 @@ import static org.fest.swing.test.swing.TestMdiWindow.createAndShowNewWindow;
     }
   }
 
-  @Test(groups = GUI)
+  @Test
   public void shouldReturnChildrenOfContainer() {
     ScreenLock.instance().acquire(this);
     final MyWindow window = MyWindow.createAndShow();

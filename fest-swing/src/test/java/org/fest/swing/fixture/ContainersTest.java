@@ -18,7 +18,6 @@ package org.fest.swing.fixture;
 import static java.awt.GridBagConstraints.REMAINDER;
 import static javax.swing.BorderFactory.createEmptyBorder;
 import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -26,20 +25,19 @@ import java.awt.GridBagLayout;
 import javax.swing.*;
 
 import org.fest.swing.edt.GuiQuery;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link Containers}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
 public class ContainersTest {
 
   private MyPanel panel;
 
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     panel = execute(new GuiQuery<MyPanel>() {
       protected MyPanel executeInEDT() {
         return new MyPanel();
@@ -47,6 +45,7 @@ public class ContainersTest {
     });
   }
 
+  @Test
   public void shouldShowContainerInJFrame() {
     FrameFixture frameFixture = null;
     try {
@@ -57,6 +56,7 @@ public class ContainersTest {
     }
   }
 
+  @Test
   public void shouldPlaceContainerInJFrameWithoutSowing() {
     FrameFixture frameFixture = null;
     try {

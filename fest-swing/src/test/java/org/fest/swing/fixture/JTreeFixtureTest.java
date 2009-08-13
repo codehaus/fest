@@ -34,7 +34,7 @@ import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.cell.JTreeCellReader;
 import org.fest.swing.driver.JComponentDriver;
 import org.fest.swing.driver.JTreeDriver;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JTreeFixture}</code>.
@@ -43,7 +43,6 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test
 public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
 
   private JTreeDriver driver;
@@ -53,21 +52,23 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
   void onSetUp() {
     driver = createMock(JTreeDriver.class);
     target = tree().createNew();
-    fixture = new JTreeFixture(robot(), target);
+    fixture = new JTreeFixture(robot, target);
     fixture.driver(driver);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfDriverIsNull() {
     fixture.driver(null);
   }
 
+  @Test
   public void shouldCreateFixtureWithGivenComponentName() {
     String name = "tree";
     expectLookupByName(name, JTree.class);
-    verifyLookup(new JTreeFixture(robot(), name));
+    verifyLookup(new JTreeFixture(robot, name));
   }
   
+  @Test
   public void shouldDoubleClickRow() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -81,6 +82,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldDoubleClickPath() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -94,6 +96,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldExpandRow() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -107,6 +110,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldCollapseRow() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -120,6 +124,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldExpandPath() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -133,6 +138,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldCollapsePath() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -146,6 +152,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldDragAtRow() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -159,6 +166,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldDragAtTreePath() {
     final String path = "root/node1";
     new EasyMockTemplate(driver) {
@@ -173,6 +181,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldDropAtRow() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -186,6 +195,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldDropAtTreePath() {
     final String path = "root/node1";
     new EasyMockTemplate(driver) {
@@ -200,6 +210,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldSelectRow() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -213,6 +224,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldSelectRows() {
     final int[] rows = { 6, 8 };
     new EasyMockTemplate(driver) {
@@ -227,6 +239,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldSelectTreePath() {
     final String path = "root/node1";
     new EasyMockTemplate(driver) {
@@ -241,6 +254,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldSelectTreePaths() {
     final String[] paths = array("root/node1", "root/node2");
     new EasyMockTemplate(driver) {
@@ -255,6 +269,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldRequireSelectedTreePath() {
     final String[] paths = { "root/node1" };
     new EasyMockTemplate(driver) {
@@ -269,6 +284,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldRequireSelectedRow() {
     final int[] rows = { 0 };
     new EasyMockTemplate(driver) {
@@ -283,6 +299,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldRequireNoSelection() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -296,6 +313,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldToggleRow() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -309,6 +327,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldRequireEditable() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -322,6 +341,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldRequireNotEditable() {
     new EasyMockTemplate(driver) {
       protected void expectations() {
@@ -335,6 +355,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldRequireSelectedPath() {
     final String[] paths = { "root/node1" };
     new EasyMockTemplate(driver) {
@@ -350,6 +371,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
 
   }
 
+  @Test
   public void shouldSetCellReaderInDriver() {
     final JTreeCellReader reader = createMock(JTreeCellReader.class);
     new EasyMockTemplate(driver) {
@@ -364,6 +386,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldReturnSeparatorFromDriver() {
     final String separator = "\\";
     new EasyMockTemplate(driver) {
@@ -378,6 +401,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldSetSeparatorInDriver() {
     final String separator = "\\";
     new EasyMockTemplate(driver) {
@@ -392,6 +416,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtRow() {
     final int row = 0;
     final JPopupMenu popupMenu = popupMenu().createNew();
@@ -407,6 +432,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtPath() {
     final String path = "root";
     final JPopupMenu popupMenu = popupMenu().createNew();
@@ -422,6 +448,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTip() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
@@ -435,6 +462,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldRequireToolTipToMatchPattern() {
     final Pattern pattern = regex(".");
     new EasyMockTemplate(driver()) {
@@ -449,6 +477,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenu() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     new EasyMockTemplate(driver()) {
@@ -458,12 +487,13 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
+  @Test
   public void shouldShowPopupMenuAtPoint() {
     final JPopupMenu popupMenu = createMock(JPopupMenu.class);
     final Point p = new Point();
@@ -474,7 +504,7 @@ public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
 
       protected void codeToTest() {
         JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot());
+        assertThat(popupMenuFixture.robot).isSameAs(robot);
         assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();

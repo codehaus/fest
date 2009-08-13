@@ -17,39 +17,41 @@ package org.fest.swing.input;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JLabels.label;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.fest.swing.test.core.EDTSafeTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link NativeDnDIdentifier}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class NativeDnDIdentifierTest {
+public class NativeDnDIdentifierTest extends EDTSafeTestCase {
 
   private NativeDnDIdentifier dnd;
 
-  @BeforeClass public void setUpOnce() {
+  @Before public void setUp() {
     FailOnThreadViolationRepaintManager.install();
     dnd = new NativeDnDIdentifier();
   }
 
+  @Test
   public void shouldReturnIsNativeDnDIfEventIsMouseEventAndClassNameIsSunDropTargetEvent() {
     assertThat(dnd.isNativeDragAndDrop(new SunDropTargetEvent())).isTrue();
   }
 
+  @Test
   public void shouldReturnIsNotNativeDnDIfEventIsNotMouseEvent() {
     KeyEvent e = new KeyEvent(label().createNew(), 0, 0, 0, 0, 'a');
     assertThat(dnd.isNativeDragAndDrop(e)).isFalse();
   }
 
+  @Test
   public void shouldReturnIsNotNativeDnDIfEventClassNameIsNotSunDropTargetEvent() {
     MouseEvent e = new MouseEvent(label().createNew(), 0, 0, 0, 0, 0, 0, false);
     assertThat(dnd.isNativeDragAndDrop(e)).isFalse();

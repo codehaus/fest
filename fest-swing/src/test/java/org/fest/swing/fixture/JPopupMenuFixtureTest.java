@@ -15,27 +15,24 @@
  */
 package org.fest.swing.fixture;
 
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-
-import org.testng.annotations.Test;
-
-import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.driver.ComponentDriver;
-import org.fest.swing.driver.JPopupMenuDriver;
-
 import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JMenuItems.menuItem;
 import static org.fest.swing.test.builder.JPopupMenus.popupMenu;
 import static org.fest.util.Arrays.array;
 
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+
+import org.fest.mocks.EasyMockTemplate;
+import org.fest.swing.core.GenericTypeMatcher;
+import org.fest.swing.driver.ComponentDriver;
+import org.fest.swing.driver.JPopupMenuDriver;
+import org.junit.Test;
+
 /**
  * Tests for <code>{@link JPopupMenuFixture}</code>.
- *
  * @author Yvonne Wang
  */
 public class JPopupMenuFixtureTest extends CommonComponentFixtureTestCase<JPopupMenu> {
@@ -43,21 +40,22 @@ public class JPopupMenuFixtureTest extends CommonComponentFixtureTestCase<JPopup
   private JPopupMenuDriver driver;
   private JPopupMenu target;
   private JPopupMenuFixture fixture;
-  
+
   void onSetUp() {
     driver = createMock(JPopupMenuDriver.class);
     target = popupMenu().createNew();
-    fixture = new JPopupMenuFixture(robot(), target);
+    fixture = new JPopupMenuFixture(robot, target);
     fixture.driver(driver);
   }
 
-  @Test public void shouldReturnMenuLabels() {
-    final String[] labels = array("Ben", "Leia"); 
+  @Test
+  public void shouldReturnMenuLabels() {
+    final String[] labels = array("Ben", "Leia");
     new EasyMockTemplate(driver) {
       protected void expectations() {
         expect(driver.menuLabelsOf(target)).andReturn(labels);
       }
-      
+
       protected void codeToTest() {
         String[] result = fixture.menuLabels();
         assertThat(result).isSameAs(labels);
@@ -65,29 +63,31 @@ public class JPopupMenuFixtureTest extends CommonComponentFixtureTestCase<JPopup
     }.run();
   }
 
-  @Test public void shouldReturnMenuItemByName() {
+  @Test
+  public void shouldReturnMenuItemByName() {
     final JMenuItem menuItem = menuItem().createNew();
     new EasyMockTemplate(driver) {
       protected void expectations() {
         expect(driver.menuItem(target, "menuItem")).andReturn(menuItem);
       }
-      
+
       protected void codeToTest() {
         JMenuItemFixture result = fixture.menuItem("menuItem");
         assertThat(result.target).isSameAs(menuItem);
       }
     }.run();
   }
-  
+
   @SuppressWarnings("unchecked")
-  @Test public void shouldReturnMenuItemUsingSearchCriteria() {
+  @Test
+  public void shouldReturnMenuItemUsingSearchCriteria() {
     final GenericTypeMatcher<JMenuItem> matcher = createMock(GenericTypeMatcher.class);
     final JMenuItem menuItem = menuItem().createNew();
     new EasyMockTemplate(driver) {
       protected void expectations() {
         expect(driver.menuItem(target, matcher)).andReturn(menuItem);
       }
-      
+
       protected void codeToTest() {
         JMenuItemFixture result = fixture.menuItem(matcher);
         assertThat(result.target).isSameAs(menuItem);
@@ -97,5 +97,5 @@ public class JPopupMenuFixtureTest extends CommonComponentFixtureTestCase<JPopup
 
   ComponentDriver driver() { return driver; }
   JPopupMenu target() { return target; }
-  JPopupMenuFixture fixture() { return fixture; }  
+  JPopupMenuFixture fixture() { return fixture; }
 }

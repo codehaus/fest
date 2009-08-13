@@ -17,10 +17,8 @@ package org.fest.swing.fixture;
 
 import static java.awt.BorderLayout.NORTH;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import java.awt.BorderLayout;
 
@@ -28,44 +26,36 @@ import javax.swing.JLabel;
 import javax.swing.JToolBar;
 
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.*;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests lookup of <code>{@link JToolBar}</code>s in <code>{@link ContainerFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class ContainerFixtureJToolBarLookupTest {
+public class ContainerFixtureJToolBarLookupTest extends RobotBasedTestCase {
 
   private ConcreteContainerFixture fixture;
-  private Robot robot;
   private MyWindow window;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected final void onSetUp() {
     window = MyWindow.createNew();
     fixture = new ConcreteContainerFixture(robot, window);
     robot.showWindow(window);
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
+  @Test
   public void shouldFindJToolBarByType() {
     JToolBarFixture toolBar = fixture.toolBar();
     assertThatFixtureHasCorrectJToolBar(toolBar);
   }
 
+  @Test
   public void shouldFailIfJToolBarCannotBeFoundByType() {
     execute(new GuiTask() {
       protected void executeInEDT() {
@@ -82,11 +72,13 @@ public class ContainerFixtureJToolBarLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJToolBarByName() {
     JToolBarFixture toolBar = fixture.toolBar("myToolBar");
     assertThatFixtureHasCorrectJToolBar(toolBar);
   }
 
+  @Test
   public void shouldFailIfJToolBarCannotBeFoundByName() {
     try {
       fixture.toolBar("myButton");
@@ -97,6 +89,7 @@ public class ContainerFixtureJToolBarLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJToolBarWithCustomMatcher() {
     JToolBarFixture toolBar = fixture.toolBar(new GenericTypeMatcher<JToolBar>(JToolBar.class) {
       protected boolean isMatching(JToolBar t) {
@@ -110,6 +103,7 @@ public class ContainerFixtureJToolBarLookupTest {
     assertThat(toolBarFixture.component()).isSameAs(window.toolBar);
   }
 
+  @Test
   public void shouldFailIfJToolBarCannotBeFoundWithCustomMatcher() {
     try {
       fixture.toolBar(new GenericTypeMatcher<JToolBar>(JToolBar.class) {

@@ -15,9 +15,9 @@
  */
 package org.fest.swing.exception;
 
-import org.testng.annotations.Test;
-
 import static org.fest.assertions.Assertions.assertThat;
+
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link UnexpectedException}</code>.

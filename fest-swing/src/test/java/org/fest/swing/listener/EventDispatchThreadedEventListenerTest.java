@@ -15,20 +15,20 @@
  */
 package org.fest.swing.listener;
 
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.timing.Pause.pause;
+
 import java.awt.AWTEvent;
 
 import javax.swing.SwingUtilities;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.timing.Pause.pause;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link EventDispatchThreadedEventListener}</code>.
+ * TODO Split 
  *
  * @author Alex Ruiz
  */
@@ -37,7 +37,7 @@ public class EventDispatchThreadedEventListenerTest {
   private AWTEvent event;
   private Listener listener;
   
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     event = createMock(AWTEvent.class);
     listener = new Listener();
   }

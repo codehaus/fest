@@ -23,61 +23,71 @@ import static org.fest.util.Objects.hashCodeFor;
 import javax.swing.JLabel;
 
 import org.fest.util.Objects;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link NamedComponentMatcherTemplate}</code>.
  *
  * @author Alex Ruiz
  */
-@Test public class NamedComponentMatcherTemplateTest {
+public class NamedComponentMatcherTemplateTest {
 
   private Matcher matcher;
 
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     matcher = new Matcher(JLabel.class);
   }
 
+  @Test
   public void shouldSetNameToAnyWhenNameNotSpecified() {
     assertThat(matcher.name).isSameAs(NamedComponentMatcherTemplate.ANY);
   }
 
+  @Test
   public void shouldNotQuoteAny() {
     assertThat(matcher.quoted(NamedComponentMatcherTemplate.ANY)).isSameAs(NamedComponentMatcherTemplate.ANY);
   }
 
+  @Test
   public void shouldQuotePatternAsStringIfItIsPattern() {
     assertThat(matcher.quoted(regex("hello"))).isEqualTo("'hello'");
   }
 
+  @Test
   public void shouldQuoteIfNotAny() {
     assertThat(matcher.quoted("hello")).isEqualTo("'hello'");
   }
 
+  @Test
   public void shouldNotQuoteNameIfNameIsAny() {
     assertThat(matcher.quotedName()).isSameAs(NamedComponentMatcherTemplate.ANY);
   }
 
+  @Test
   public void shouldQuoteNameIfNotAny() {
     matcher = new Matcher(JLabel.class, "hello");
     assertThat(matcher.quotedName()).isEqualTo("'hello'");
   }
 
+  @Test
   public void shouldImplementToStringInAny() {
     assertThat(NamedComponentMatcherTemplate.ANY.toString()).isEqualTo("<Any>");
   }
 
+  @Test
   public void shouldAlwaysMatchIfExpectedValueIsAny() {
     matcher = new Matcher(JLabel.class, NamedComponentMatcherTemplate.ANY);
     assertThat(matcher.isNameMatching("hello")).isTrue();
   }
 
+  @Test
   public void shouldMatchNameIfGivenValueIsEqualToNameInMatcher() {
     matcher = new Matcher(JLabel.class, "hello");
     assertThat(matcher.isNameMatching("hello")).isTrue();
   }
 
+  @Test
   public void shouldMatchValuesUsingEqualityIfExpectedAndActualValuesAreRegularObjects() {
     matcher = new Matcher(JLabel.class, "hello");
     assertThat(matcher.arePropertyValuesMatching(new Dog("Bob"), new Dog("Bob"))).isTrue();

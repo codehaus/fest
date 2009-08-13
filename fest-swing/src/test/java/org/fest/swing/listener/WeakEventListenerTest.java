@@ -15,20 +15,19 @@
  */
 package org.fest.swing.listener;
 
+import static java.awt.AWTEvent.WINDOW_EVENT_MASK;
+import static org.fest.assertions.Assertions.assertThat;
+
 import java.awt.AWTEvent;
 import java.awt.event.AWTEventListener;
 
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
-
 import org.fest.swing.test.awt.ToolkitStub;
-
-import static java.awt.AWTEvent.WINDOW_EVENT_MASK;
-
-import static org.fest.assertions.Assertions.assertThat;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link WeakEventListener}</code>.
+ * TODO Split
  *
  * @author Alex Ruiz
  */
@@ -40,7 +39,7 @@ public class WeakEventListenerTest {
   private UnderlyingEventListener underlying;
   private WeakEventListener listener;
 
-  @BeforeTest public void setUp() {
+  @Before public void setUp() {
     toolkit = ToolkitStub.createNew();
     underlying = new UnderlyingEventListener();
   }
@@ -51,7 +50,7 @@ public class WeakEventListenerTest {
     assertThat(toolkit.contains(listener, EVENT_MASK)).isTrue();
   }
 
-  @Test(dependsOnMethods = "shouldWrapListenerAndAddItselfToToolkitWithGivenMask")
+  @Test
   public void shouldDispatchEventsToWrappedListener() {
     AWTEvent event = awtEvent();
     listener = WeakEventListener.attachAsWeakEventListener(toolkit, underlying, EVENT_MASK);
@@ -59,7 +58,7 @@ public class WeakEventListenerTest {
     assertThat(underlying.dispatchedEvent).isSameAs(event);
   }
 
-  @Test(dependsOnMethods = "shouldDispatchEventsToWrappedListener")
+  @Test
   public void shouldRemoveItselfFromToolkitIfWrappedListenerIsNull() {
     AWTEvent event = awtEvent();
     listener = WeakEventListener.attachAsWeakEventListener(toolkit, underlying, EVENT_MASK);

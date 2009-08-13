@@ -15,10 +15,10 @@
  */
 package org.fest.swing.hierarchy;
 
+import static org.easymock.classextension.EasyMock.createMock;
+
 import java.awt.Component;
 import java.util.Collection;
-
-import static org.easymock.classextension.EasyMock.createMock;
 
 /**
  * Understands a subclass of <code>{@link ChildrenFinder}</code> which methods have been overriden to be public,

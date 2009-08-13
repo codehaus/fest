@@ -17,52 +17,42 @@ package org.fest.swing.fixture;
 
 import static java.awt.Adjustable.VERTICAL;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import javax.swing.JScrollBar;
 
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.*;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.junit.Test;
 
 /**
  * Tests lookup of <code>{@link JScrollBar}</code>s in <code>{@link ContainerFixture}</code>.
  *
  * @author Alex Ruiz
  */
-@Test(groups = GUI)
-public class ContainerFixtureJScrollBarLookupTest {
+public class ContainerFixtureJScrollBarLookupTest extends RobotBasedTestCase {
 
   private ConcreteContainerFixture fixture;
-  private Robot robot;
   private MyWindow window;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    robot = robotWithNewAwtHierarchy();
+  @Override protected final void onSetUp() {
     window = MyWindow.createNew();
     fixture = new ConcreteContainerFixture(robot, window);
     robot.showWindow(window);
   }
 
-  @AfterMethod public void tearDown() {
-    robot.cleanUp();
-  }
-
+  @Test
   public void shouldFindJScrollBarByType() {
     JScrollBarFixture scrollBar = fixture.scrollBar();
     assertThatFixtureHasCorrectJScrollBar(scrollBar);
   }
 
+  @Test
   public void shouldFailIfJScrollBarCannotBeFoundByType() {
     execute(new GuiTask() {
       protected void executeInEDT() {
@@ -79,11 +69,13 @@ public class ContainerFixtureJScrollBarLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJScrollBarByName() {
     JScrollBarFixture scrollBar = fixture.scrollBar("scrollMeScrollBar");
     assertThatFixtureHasCorrectJScrollBar(scrollBar);
   }
 
+  @Test
   public void shouldFailIfJScrollBarCannotBeFoundByName() {
     try {
       fixture.scrollBar("myScrollBar");
@@ -94,6 +86,7 @@ public class ContainerFixtureJScrollBarLookupTest {
     }
   }
 
+  @Test
   public void shouldFindJScrollBarWithCustomMatcher() {
     JScrollBarFixture scrollBar = fixture.scrollBar(new GenericTypeMatcher<JScrollBar>(JScrollBar.class) {
       protected boolean isMatching(JScrollBar s) {
@@ -107,6 +100,7 @@ public class ContainerFixtureJScrollBarLookupTest {
     assertThat(scrollBarFixture.component()).isSameAs(window.scrollBar);
   }
 
+  @Test
   public void shouldFailIfJScrollBarCannotBeFoundWithCustomMatcher() {
     try {
       fixture.scrollBar(new GenericTypeMatcher<JScrollBar>(JScrollBar.class) {

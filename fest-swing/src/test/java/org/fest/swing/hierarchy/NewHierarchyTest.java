@@ -15,31 +15,25 @@
  */
 package org.fest.swing.hierarchy;
 
+import static java.awt.AWTEvent.COMPONENT_EVENT_MASK;
+import static java.awt.AWTEvent.WINDOW_EVENT_MASK;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.hierarchy.JFrameContentPaneQuery.contentPaneOf;
+import static org.fest.util.Arrays.array;
+
 import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.listener.WeakEventListener;
-import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.awt.ToolkitStub;
+import org.fest.swing.test.core.SequentialTestCase;
 import org.fest.swing.test.swing.TestWindow;
-
-import static java.awt.AWTEvent.*;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.hierarchy.JFrameContentPaneQuery.contentPaneOf;
-import static org.fest.swing.test.core.TestGroups.GUI;
-import static org.fest.util.Arrays.array;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link NewHierarchy}</code>.
@@ -47,8 +41,7 @@ import static org.fest.util.Arrays.array;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = GUI)
-public class NewHierarchyTest {
+public class NewHierarchyTest extends SequentialTestCase {
 
   private static final long EVENT_MASK = WINDOW_EVENT_MASK | COMPONENT_EVENT_MASK;
 
@@ -56,31 +49,24 @@ public class NewHierarchyTest {
   private WindowFilter filter;
   private MyWindow window;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public void setUp() {
-    ScreenLock.instance().acquire(this);
+  @Override protected final void onSetUp() {
     toolkit = ToolkitStub.createNew();
-    window = MyWindow.createAndShow();
+    window = MyWindow.createNew();
     filter = new WindowFilter();
   }
 
-  @AfterMethod public void tearDown() {
-    try {
-     window.destroy();
-    } finally {
-      ScreenLock.instance().release(this);
-    }
+  @Override protected final void onTearDown() {
+    window.destroy();
   }
 
+  @Test
   public void shouldIgnoreExistingComponentsAndAddTransientWindowListenerToToolkit() {
     new NewHierarchy(toolkit, filter, true);
     assertThat(filter.isIgnored(window)).isTrue();
     assertThatTransientWindowListenerWasAddedToToolkit();
   }
 
+  @Test
   public void shouldNotIgnoreExistingComponentsAndAddTransientWindowListenerToToolkit() {
     new NewHierarchy(toolkit, filter, false);
     assertThat(filter.isIgnored(window)).isFalse();
@@ -94,37 +80,44 @@ public class NewHierarchyTest {
     assertThat(weakEventListener.underlyingListener()).isInstanceOf(TransientWindowListener.class);
   }
 
+  @Test
   public void shouldReturnNoChildrenIfComponentIsFiltered() {
     NewHierarchy hierarchy = new NewHierarchy(toolkit, filter, true);
     assertThat(hierarchy.childrenOf(window)).isEmpty();
   }
 
+  @Test
   public void shouldReturnUnfilteredChildrenOfUnfilteredComponent() {
     NewHierarchy hierarchy = new NewHierarchy(toolkit, filter, false);
     filter.ignore(window.textField);
     assertThat(hierarchy.childrenOf(contentPaneOf(window))).containsOnly(window.comboBox);
   }
 
+  @Test
   public void shouldNotContainFilteredComponent() {
     NewHierarchy hierarchy = new NewHierarchy(toolkit, filter, true);
     assertThat(hierarchy.contains(window)).isFalse();
   }
 
+  @Test
   public void shouldContainUnfilteredComponent() {
     NewHierarchy hierarchy = new NewHierarchy(toolkit, filter, false);
     assertThat(hierarchy.contains(window)).isTrue();
   }
 
+  @Test
   public void shouldNotContainFilteredWindowsInRootWindows() {
     NewHierarchy hierarchy = new NewHierarchy(toolkit, filter, true);
     assertThat(hierarchy.roots()).excludes(window);
   }
 
+  @Test
   public void shouldContainUnfilteredWindowsInRootWindows() {
     NewHierarchy hierarchy = new NewHierarchy(toolkit, filter, false);
     assertThat(hierarchy.roots()).contains(window);
   }
 
+  @Test
   public void shouldRecognizeGivenComponent() {
     NewHierarchy hierarchy = new NewHierarchy(toolkit, filter, true);
     assertThat(hierarchy.roots()).excludes(window);
@@ -138,10 +131,10 @@ public class NewHierarchyTest {
     private static final long serialVersionUID = 1L;
 
     @RunsInEDT
-    static MyWindow createAndShow() {
+    static MyWindow createNew() {
       return execute(new GuiQuery<MyWindow>() {
         protected MyWindow executeInEDT() {
-          return display(new MyWindow());
+          return new MyWindow();
         }
       });
     }

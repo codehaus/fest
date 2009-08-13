@@ -41,6 +41,10 @@ class RobotEventGenerator implements InputEventGenerator {
   private final Robot robot;
   private final Settings settings;
 
+  RobotEventGenerator() {
+    this(new Settings());
+  }
+  
   RobotEventGenerator(Settings settings) {
     this(new RobotFactory(), settings);
   }

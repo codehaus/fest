@@ -22,9 +22,7 @@ import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.data.Index.atIndex;
 import static org.fest.swing.driver.JTabbedPaneSelectTabTask.setSelectedTab;
 import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.core.CommonAssertions.assertActionFailureDueToDisabledComponent;
-import static org.fest.swing.test.core.CommonAssertions.assertActionFailureDueToNotShowingComponent;
-import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.test.core.CommonAssertions.*;
 import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.swing.test.core.TestGroups.GUI;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
@@ -45,11 +43,7 @@ import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.exception.LocationUnavailableException;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 /**
  * Tests for <code>{@link JTabbedPaneDriver}</code>.
@@ -111,7 +105,7 @@ public class JTabbedPaneDriverTest {
       driver.selectTab(tabbedPane, 1);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
   
@@ -121,7 +115,7 @@ public class JTabbedPaneDriverTest {
       driver.selectTab(tabbedPane, 1);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -207,7 +201,7 @@ public class JTabbedPaneDriverTest {
       driver.selectTab(tabbedPane, "Two");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
   
@@ -217,7 +211,7 @@ public class JTabbedPaneDriverTest {
       driver.selectTab(tabbedPane, "Two");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 

@@ -15,30 +15,30 @@
  */
 package org.fest.swing.edt;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.Test;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.exception.UnexpectedException;
 import org.fest.swing.test.core.MethodInvocations;
-
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import org.junit.After;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link GuiActionRunner}</code>.
  *
  * @author Alex Ruiz
  */
-@Test public class GuiActionRunnerTest {
+public class GuiActionRunnerTest {
 
-  @AfterMethod public void tearDown() {
+  @After public void tearDown() {
     GuiActionRunner.executeInEDT(true);
   }
   
+  @Test
   public void shouldExecuteTaskDirectlyIfActionsShouldNotBeExecutedInEDT() {
     TestGuiTask task = new TestGuiTask();
     GuiActionRunner.executeInEDT(false);
@@ -47,6 +47,7 @@ import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingExcepti
     task.requireInvoked("executeInEDT");
   }
   
+  @Test
   public void shouldWrapThrownExceptionWhenExecutingTaskDirectly() {
     final TestGuiTask task = createMock(TestGuiTask.class);
     final RuntimeException error = expectedError();
@@ -68,6 +69,7 @@ import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingExcepti
     }.run();
   }
   
+  @Test
   public void shouldExecuteQueryDirectlyIfActionsShouldNotBeExecutedInEDT() {
     String valueToReturnWhenExecuted = "Hello";
     TestGuiQuery query = new TestGuiQuery(valueToReturnWhenExecuted);
@@ -78,6 +80,7 @@ import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingExcepti
     query.requireInvoked("executeInEDT");
   }
 
+  @Test
   public void shouldWrapThrownExceptionWhenExecutingQueryDirectly() {
     final TestGuiQuery query = createMock(TestGuiQuery.class);
     final RuntimeException error = expectedError();
@@ -117,7 +120,6 @@ import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingExcepti
   }
   
   private static class TestGuiQuery extends GuiQuery<String> {
-    
     private final MethodInvocations methodInvocations = new MethodInvocations();
     private final String valueToReturnWhenExecuted;
     

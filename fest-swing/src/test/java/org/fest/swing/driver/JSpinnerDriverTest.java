@@ -30,17 +30,24 @@ import static org.fest.util.Strings.concat;
 
 import java.awt.Dimension;
 
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerListModel;
 import javax.swing.text.JTextComponent;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
-import org.fest.swing.edt.*;
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ActionFailedException;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.test.data.ZeroAndNegativeProvider;
 import org.fest.swing.test.swing.TestWindow;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Tests for <code>{@link JSpinnerDriver}</code>.
@@ -83,7 +90,7 @@ public class JSpinnerDriverTest {
       driver.increment(spinner);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -93,7 +100,7 @@ public class JSpinnerDriverTest {
       driver.increment(spinner);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -109,7 +116,7 @@ public class JSpinnerDriverTest {
       driver.increment(spinner, 2);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -119,7 +126,7 @@ public class JSpinnerDriverTest {
       driver.increment(spinner, 2);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -147,7 +154,7 @@ public class JSpinnerDriverTest {
       driver.decrement(spinner);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -157,7 +164,7 @@ public class JSpinnerDriverTest {
       driver.decrement(spinner);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -177,7 +184,7 @@ public class JSpinnerDriverTest {
       driver.decrement(spinner, 2);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -187,7 +194,7 @@ public class JSpinnerDriverTest {
       driver.decrement(spinner, 2);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -203,14 +210,14 @@ public class JSpinnerDriverTest {
     }
   }
 
-  @Test(groups = GUI, expectedExceptions=ActionFailedException.class)
+  @Test(groups = GUI, expectedExceptions = ActionFailedException.class)
   public void shouldThrowErrorIfTextComponentEditorNotFoundWhenEnteringText() {
     setJLabelAsEditorIn(spinner);
     robot.waitForIdle();
     driver.enterText(spinner, "hello");
   }
 
-  @Test(groups = GUI, expectedExceptions=ComponentLookupException.class)
+  @Test(groups = GUI, expectedExceptions = ComponentLookupException.class)
   public void shouldThrowErrorIfTextComponentEditorNotFound() {
     setJLabelAsEditorIn(spinner);
     robot.waitForIdle();
@@ -228,7 +235,7 @@ public class JSpinnerDriverTest {
       driver.enterTextAndCommit(spinner, "Gandalf");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -238,7 +245,7 @@ public class JSpinnerDriverTest {
       driver.enterTextAndCommit(spinner, "Gandalf");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
@@ -280,7 +287,7 @@ public class JSpinnerDriverTest {
       driver.enterText(spinner, "Gandalf");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToDisabledComponent(e);
+      assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
@@ -290,7 +297,7 @@ public class JSpinnerDriverTest {
       driver.enterText(spinner, "Gandalf");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
-      assertActionFailureDueToNotShowingComponent(e);
+      assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 

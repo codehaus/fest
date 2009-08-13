@@ -15,49 +15,35 @@
  */
 package org.fest.swing.launcher;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.query.ComponentShowingQuery.isShowing;
+import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+
 import java.applet.Applet;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JButton;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
 import org.fest.swing.applet.AppletViewer;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.exception.UnexpectedException;
-import org.fest.swing.lock.ScreenLock;
+import org.fest.swing.test.core.SequentialTestCase;
 import org.fest.swing.test.swing.TestApplet;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.query.ComponentShowingQuery.isShowing;
-import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link AppletLauncher}</code>.
  *
  * @author Yvonne Wang
  */
-@Test public class AppletLauncherTest {
+public class AppletLauncherTest extends SequentialTestCase {
 
   private TestApplet applet;
   private AppletViewer viewer;
 
-  @BeforeClass public void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @AfterMethod public void tearDown() {
-    try {
-      disposeViewer();
-      disposeApplet();
-    } finally {
-      ScreenLock screenLock = ScreenLock.instance();
-      if (screenLock.acquiredBy(this)) screenLock.release(this);
-    }
+  @Override protected final void onTearDown() {
+    disposeViewer();
+    disposeApplet();
   }
 
   private void disposeViewer() {
@@ -72,37 +58,38 @@ import static org.fest.swing.test.core.TestGroups.GUI;
     applet.destroy();
   }
 
-  @Test(groups = GUI) public void shouldLaunchGivenApplet() {
-    ScreenLock.instance().acquire(this);
+  @Test
+  public void shouldLaunchGivenApplet() {
     applet = TestApplet.createNew();
     viewer = AppletLauncher.applet(applet).start();
     assertAppletWasLaunched();
     assertThat(viewer.applet()).isSameAs(applet);
   }
 
-  @Test(groups = GUI) public void shouldInstantiateAndLaunchApplet() {
-    ScreenLock.instance().acquire(this);
+  @Test
+  public void shouldInstantiateAndLaunchApplet() {
     viewer = AppletLauncher.applet(TestApplet.class).start();
     assertAppletWasLaunched();
   }
 
-  @Test(groups = GUI) public void shouldLoadAndLaunchApplet() {
-    ScreenLock.instance().acquire(this);
+  @Test
+  public void shouldLoadAndLaunchApplet() {
     viewer = AppletLauncher.applet(TestApplet.class.getName()).start();
     assertAppletWasLaunched();
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfAppletIsNull() {
     AppletLauncher.applet((Applet)null);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfAppletTypeIsNull() {
     Class<? extends Applet> type = null;
     AppletLauncher.applet(type);
   }
 
+  @Test
   public void shouldThrowErrorIfAppletCannotBeInstantiated() {
     try {
       AppletLauncher.applet(AnApplet.class);
@@ -112,22 +99,23 @@ import static org.fest.swing.test.core.TestGroups.GUI;
     }
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfAppletTypeNameIsNull() {
     String type = null;
     AppletLauncher.applet(type);
   }
 
-  @Test(expectedExceptions = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void shouldThrowErrorIfAppletTypeNameIsEmpty() {
     AppletLauncher.applet("");
   }
 
-  @Test(expectedExceptions = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void shouldThrowErrorIfAppletTypeNameIsNotApplet() {
     AppletLauncher.applet(JButton.class.getName());
   }
 
+  @Test
   public void shouldThrowErrorIfAppletTypeIsNotType() {
     try {
       AppletLauncher.applet("Hello");
@@ -136,7 +124,8 @@ import static org.fest.swing.test.core.TestGroups.GUI;
       assertThat(e.getMessage()).contains("Unable to load class Hello");
     }
   }
-
+  
+  @Test
   public void shouldThrowErrorIfAppletCannotBeInstantiatedFromTypeName() {
     try {
       AppletLauncher.applet(AnApplet.class.getName());
@@ -146,20 +135,19 @@ import static org.fest.swing.test.core.TestGroups.GUI;
     }
   }
 
-  private static class AnApplet extends Applet {
+  static class AnApplet extends Applet {
     private static final long serialVersionUID = 1L;
-
     AnApplet(String name) {}
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfParameterMapIsNull() {
     Map<String, String> parameters = null;
     AppletLauncher.applet(TestApplet.createNew()).withParameters(parameters);
   }
 
-  @Test(groups = GUI) public void shouldSetParametersInMap() {
-    ScreenLock.instance().acquire(this);
+  @Test
+  public void shouldSetParametersInMap() {
     Map<String, String> parameters = new HashMap<String, String>();
     parameters.put("bgcolor", "blue");
     parameters.put("color", "red");
@@ -170,13 +158,13 @@ import static org.fest.swing.test.core.TestGroups.GUI;
     assertThat(applet.getParameter("color")).isEqualTo("red");
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfParameterArrayIsNull() {
     AppletParameter[] parameters = null;
     AppletLauncher.applet(TestApplet.createNew()).withParameters(parameters);
   }
 
-  @Test(expectedExceptions = NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfParameterInArrayIsNull() {
     AppletParameter[] parameters = new AppletParameter[2];
     parameters[0] = AppletParameter.name("bgcolor").value("blue");
@@ -184,8 +172,7 @@ import static org.fest.swing.test.core.TestGroups.GUI;
     AppletLauncher.applet(TestApplet.createNew()).withParameters(parameters);
   }
 
-  @Test(groups = GUI) public void shouldSetParametersInArray() {
-    ScreenLock.instance().acquire(this);
+  @Test public void shouldSetParametersInArray() {
     applet = TestApplet.createNew();
     viewer = AppletLauncher.applet(applet).withParameters(
         AppletParameter.name("bgcolor").value("blue"),
