@@ -1,16 +1,16 @@
 /*
  * Created on Aug 5, 2009
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * Copyright @2009 the original author or authors.
  */
 package org.fest.swing.core;
@@ -28,17 +28,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
+import org.fest.swing.edt.*;
+import org.fest.swing.hierarchy.SingleComponentHierarchy;
 import org.junit.After;
 import org.junit.Test;
 
 /**
- * Understands SOMETHING DUMMY.
+ * Tests for <code>{@link SingleComponentHierarchy#childrenOf(Component)}</code>.
  *
- * @author 
- *
+ * @author Alex Ruiz
  */
 public class SingleComponentHierarchy_childrenOf_Test extends SingleComponentHierarchy_TestCase {
 
@@ -48,7 +46,7 @@ public class SingleComponentHierarchy_childrenOf_Test extends SingleComponentHie
     parent = FrameWithButton.createNew();
   }
 
-  @After 
+  @After
   public void tearDown() {
     GuiActionRunner.execute(new GuiTask() {
       protected void executeInEDT() {
@@ -57,7 +55,7 @@ public class SingleComponentHierarchy_childrenOf_Test extends SingleComponentHie
       }
     });
   }
-  
+
   @Test
   public void should_return_children_of_Component() {
     final List<Component> children = list((Component)parent.button);
