@@ -27,7 +27,7 @@ public class FEST137_SelectAllOnDoubleClickInJTextComponent_Test extends JTextCo
   @Test
   public void should_select_all_text_on_double_click() {
     setTextFieldText("Hello");
-    driver().doubleClick(textField());
+    driver.doubleClick(textField);
     requireSelectedTextInTextField("Hello");
   }
 }
