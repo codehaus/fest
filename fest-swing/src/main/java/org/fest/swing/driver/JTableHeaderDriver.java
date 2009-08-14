@@ -31,9 +31,7 @@ import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.exception.LocationUnavailableException;
-import org.fest.swing.util.PatternTextMatcher;
-import org.fest.swing.util.StringTextMatcher;
-import org.fest.swing.util.TextMatcher;
+import org.fest.swing.util.*;
 
 /**
  * Understands simulation of user input on a <code>{@link JTableHeader}</code>. Unlike
@@ -83,7 +81,7 @@ public class JTableHeaderDriver extends JComponentDriver {
     Point p = pointAtIndex(tableHeader, columnIndex, location);
     robot.click(tableHeader, p, button, times);
   }
-  
+
   /**
    * Clicks the column which name matches the given value.
    * @param tableHeader the target <code>JTableHeader</code>.
@@ -128,7 +126,7 @@ public class JTableHeaderDriver extends JComponentDriver {
   }
 
   /**
-   * Clicks the column which name matches the given regular expression pattern using the given mouse button the given 
+   * Clicks the column which name matches the given regular expression pattern using the given mouse button the given
    * number of times.
    * @param tableHeader the target <code>JTableHeader</code>.
    * @param columnNamePattern the regular expression pattern to match.
@@ -165,14 +163,14 @@ public class JTableHeaderDriver extends JComponentDriver {
   public JPopupMenu showPopupMenu(JTableHeader tableHeader, int columnIndex) {
     return robot.showPopupMenu(tableHeader, pointAtIndex(tableHeader, columnIndex, location));
   }
-  
+
   @RunsInEDT
-  private static Point pointAtIndex(final JTableHeader tableHeader, final int columnIndex, 
+  private static Point pointAtIndex(final JTableHeader tableHeader, final int columnIndex,
       final JTableHeaderLocation location) {
     return execute(new GuiQuery<Point>() {
       protected Point executeInEDT() {
-        validateIsEnabledAndShowing(tableHeader);
         Point p = location.pointAt(tableHeader, columnIndex);
+        validateIsEnabledAndShowing(tableHeader);
         tableHeader.getTable().scrollRectToVisible(tableHeader.getHeaderRect(columnIndex));
         return p;
       }
@@ -210,12 +208,14 @@ public class JTableHeaderDriver extends JComponentDriver {
   }
 
   @RunsInEDT
-  private static Point pointAtName(final JTableHeader tableHeader, final TextMatcher matcher, 
+  private static Point pointAtName(final JTableHeader tableHeader, final TextMatcher matcher,
       final JTableHeaderLocation location) {
     return execute(new GuiQuery<Point>() {
       protected Point executeInEDT() {
+        Pair<Integer, Point> indexAndLocation = location.pointAt(tableHeader, matcher);
         validateIsEnabledAndShowing(tableHeader);
-        return location.pointAt(tableHeader, matcher);
+        tableHeader.getTable().scrollRectToVisible(tableHeader.getHeaderRect(indexAndLocation.i));
+        return indexAndLocation.ii;
       }
     });
   }
