@@ -23,7 +23,7 @@ import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
 
 /**
- * Base class for test cases for <code>{@link JComponentDriver}</code>.
+ * Base test case for <code>{@link JComponentDriver}</code>.
  *
  * @author Alex Ruiz
  */

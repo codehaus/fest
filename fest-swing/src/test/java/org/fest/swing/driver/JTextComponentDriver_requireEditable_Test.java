@@ -17,37 +17,32 @@ package org.fest.swing.driver;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
- * Tests for <code>{@link JTextComponentDriver#requireEmpty(javax.swing.text.JTextComponent)}</code>.
+ * Tests for <code>{@link JTextComponentDriver#requireEditable(javax.swing.text.JTextComponent)}</code>.
  *
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = GUI)
-public class JTextComponentDriverRequireEmptyTest extends JTextComponentDriver_TestCase {
+public class JTextComponentDriver_requireEditable_Test extends JTextComponentDriver_TestCase {
 
-  public void shouldPassIfEmpty() {
-    clearTextField();
-    driver().requireEmpty(textField());
+  @Test
+  public void should_pass_if_JTextComponent_is_editable() {
+    makeTextFieldEditable();
+    driver.requireEditable(textField);
   }
 
-  public void shouldPassIfTextIsNull() {
-    setTextFieldText(null);
-    driver().requireEmpty(textField());
-  }
-
-  public void shouldFailIfNotEmpty() {
-    setTextFieldText("Hi");
+  @Test
+  public void should_fail_if_JTextComponent_is_not_editable() {
+    makeTextFieldNotEditable();
     try {
-      driver().requireEmpty(textField());
+      driver.requireEditable(textField);
       failWhenExpectingException();
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("property:'text'")
-                                .contains("expecting empty String but was:<'Hi'>");
+      assertThat(e.getMessage()).contains("property:'editable'")
+                                .contains("expected:<true> but was:<false>");
     }
   }
 }

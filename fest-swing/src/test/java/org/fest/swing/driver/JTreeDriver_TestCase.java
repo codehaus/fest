@@ -34,7 +34,7 @@ import org.fest.swing.test.swing.TestTree;
 import org.fest.swing.test.swing.TestWindow;
 
 /**
- * Base class for test cases for <code>{@link JTreeDriver}</code>.
+ * Base test case for <code>{@link JTreeDriver}</code>.
  *
  * @author Alex Ruiz
  */

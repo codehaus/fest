@@ -25,72 +25,56 @@ import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
 import javax.swing.JTextField;
 
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.BasicRobot;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
+import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.fest.swing.test.task.ComponentSetVisibleTask;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 
 /**
- * Base class for test cases for <code>{@link JTextComponentDriver}</code>.
+ * Base test case for <code>{@link JTextComponentDriver}</code>.
  *
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public abstract class JTextComponentDriver_TestCase {
+public abstract class JTextComponentDriver_TestCase extends RobotBasedTestCase {
 
-  private Robot robot;
-  private JTextComponentDriver driver;
-  private MyWindow window;
+  MyWindow window;
+  JTextField textField;
+  JTextComponentDriver driver;
 
-  @BeforeClass public final void setUpOnce() {
-    FailOnThreadViolationRepaintManager.install();
-  }
-
-  @BeforeMethod public final void setUp() {
-    robot = BasicRobot.robotWithNewAwtHierarchy();
+  @Override protected final void onSetUp() {
     driver = new JTextComponentDriver(robot);
     window = MyWindow.createNew(getClass());
-    beforeShowingWindow();
-    robot.showWindow(window);
+    textField = window.textField;
+    extraSetUp();
   }
 
-  void beforeShowingWindow() {}
-
-  @AfterMethod public final void tearDown() {
-    robot.cleanUp();
-  }
+  void extraSetUp() {}
 
   @RunsInEDT
   final void requireSelectedTextInTextField(String expected) {
-    assertThat(selectedTextOf(textField())).isEqualTo(expected);
+    assertThat(selectedTextOf(textField)).isEqualTo(expected);
   }
 
   @RunsInEDT
   final void requireTextInTextField(String expected) {
-    assertThat(textOf(textField())).isEqualTo(expected);
+    assertThat(textOf(textField)).isEqualTo(expected);
   }
 
   @RunsInEDT
   final void requireEmptyTextField() {
-    assertThat(textOf(textField())).isNullOrEmpty();
+    assertThat(textOf(textField)).isNullOrEmpty();
   }
 
   @RunsInEDT
   final void disableTextField() {
-    disable(textField());
+    showWindow();
+    disable(textField);
     robot.waitForIdle();
   }
 
-  @RunsInEDT
-  final void hideWindow() {
-    ComponentSetVisibleTask.hide(window);
-    robot.waitForIdle();
+  final void showWindow() {
+    robot.showWindow(window);
   }
 
   @RunsInEDT
@@ -100,18 +84,12 @@ public abstract class JTextComponentDriver_TestCase {
 
   @RunsInEDT
   final void setTextFieldText(String text) {
-    setText(textField(), text);
-    robot.waitForIdle();
-  }
-
-  @RunsInEDT
-  final void updateText(JTextField textField, String text) {
     setText(textField, text);
     robot.waitForIdle();
   }
 
   @RunsInEDT
-  private static void setText(final JTextField textField, final String text) {
+  static void setText(final JTextField textField, final String text) {
     execute(new GuiTask() {
       protected void executeInEDT() {
         textField.setText(text);
@@ -121,20 +99,15 @@ public abstract class JTextComponentDriver_TestCase {
 
   @RunsInEDT
   final void makeTextFieldEditable() {
-    setTextFieldEditable(textField(), true);
+    setTextFieldEditable(textField, true);
     robot.waitForIdle();
   }
 
   @RunsInEDT
   final void makeTextFieldNotEditable() {
-    setTextFieldEditable(textField(), false);
+    setTextFieldEditable(textField, false);
     robot.waitForIdle();
   }
-
-  final Robot robot() { return robot; }
-  final JTextComponentDriver driver() { return driver; }
-  final MyWindow window() { return window; }
-  final JTextField textField() { return window.textField; }
 
   static class MyWindow extends TestWindow {
     private static final long serialVersionUID = 1L;

@@ -16,39 +16,40 @@
 package org.fest.swing.driver;
 
 import static org.fest.swing.test.core.CommonAssertions.*;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
- * Tests for <code>{@link JTextComponentDriver#selectAll(javax.swing.text.JTextComponent)}</code>.
+ * Tests for <code>{@link JTextComponentDriver#enterText(javax.swing.text.JTextComponent, String)}</code>.
  *
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = GUI)
-public class JTextComponentDriverSelectAllTest extends JTextComponentDriver_TestCase {
+public class JTextComponentDriver_enterText_Test extends JTextComponentDriver_TestCase {
 
-  public void shouldSelectAllText() {
-    setTextFieldText("Hello");
-    driver().selectAll(textField());
-    requireSelectedTextInTextField("Hello");
+  @Test
+  public void should_enter_text() {
+    showWindow();
+    clearTextField();
+    driver.enterText(textField, "Entering text");
+    requireTextInTextField("Entering text");
   }
 
-  public void shouldThrowErrorWhenSelectingAllTextInDisabledJTextComponent() {
+  @Test
+  public void should_throw_error_if_JTextComponent_is_disabled() {
     disableTextField();
     try {
-      driver().selectAll(textField());
+      driver.enterText(textField, "Entering text");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
-  public void shouldThrowErrorWhenSelectingAllTextInNotShowingJTextComponent() {
-    hideWindow();
+  @Test
+  public void should_throw_error_if_JTextComponent_is_not_showing_on_the_screen() {
     try {
-      driver().selectAll(textField());
+      driver.enterText(textField, "Entering text");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertThatErrorCauseIsNotShowingComponent(e);

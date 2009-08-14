@@ -17,9 +17,8 @@ package org.fest.swing.driver;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JTextComponentDriver#requireText(javax.swing.text.JTextComponent, String)}</code>.
@@ -27,23 +26,25 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = GUI)
-public class JTextComponentDriverRequireTextAsStringTest extends JTextComponentDriver_TestCase {
+public class JTextComponentDriver_requireTextAsString_Test extends JTextComponentDriver_TestCase {
 
-  public void shouldPassIfHasExpectedText() {
+  @Test
+  public void should_pass_if_has_expected_text() {
     setTextFieldText("Hi");
-    driver().requireText(textField(), "Hi");
+    driver.requireText(textField, "Hi");
   }
 
-  public void shouldPassIfTextMatchesPatternAsString() {
+  @Test
+  public void shoul_pass_if_text_matches_pattern() {
     setTextFieldText("Hi");
-    driver().requireText(textField(), "H.*");
+    driver.requireText(textField, "H.*");
   }
 
-  public void shouldFailIfDoesNotHaveExpectedText() {
+  @Test
+  public void should_fail_if_does_not_have_expected_text() {
     setTextFieldText("Hi");
     try {
-      driver().requireText(textField(), "Bye");
+      driver.requireText(textField, "Bye");
       failWhenExpectingException();
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("property:'text'")

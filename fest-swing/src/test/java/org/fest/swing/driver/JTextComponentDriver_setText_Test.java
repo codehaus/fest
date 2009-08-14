@@ -16,47 +16,43 @@
 package org.fest.swing.driver;
 
 import static org.fest.swing.test.core.CommonAssertions.*;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
- * Tests for <code>{@link JTextComponentDriver#deleteText(javax.swing.text.JTextComponent)}</code>.
+ * Tests for <code>{@link JTextComponentDriver#setText(javax.swing.text.JTextComponent, String)}</code>.
  *
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = GUI)
-public class JTextComponentDriverDeleteTextTest extends JTextComponentDriver_TestCase {
+public class JTextComponentDriver_setText_Test extends JTextComponentDriver_TestCase {
 
-  public void shouldDeleteText() {
-    driver().deleteText(textField());
-    requireEmptyTextField();
+  @Test
+  public void should_set_text() {
+    showWindow();
+    clearTextField();
+    driver.setText(textField, "Entering text");
+    requireTextInTextField("Entering text");
   }
 
-  public void shouldThrowErrorWhenDeletingTextInDisabledJTextComponent() {
+  @Test
+  public void should_throw_error_if_JTextComponent_is_disabled() {
     disableTextField();
     try {
-      driver().deleteText(textField());
+      driver.setText(textField, "Entering text");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
-  public void shouldThrowErrorWhenDeletingTextInNotShowingJTextComponent() {
-    hideWindow();
+  @Test
+  public void should_throw_error_if_JTextComponent_is_not_showing_on_the_screen() {
     try {
-      driver().deleteText(textField());
+      driver.setText(textField, "Entering text");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertThatErrorCauseIsNotShowingComponent(e);
     }
-  }
-
-  public void shouldDeleteTextInEmptyTextComponent() {
-    setTextFieldText("");
-    driver().deleteText(textField());
-    requireEmptyTextField();
   }
 }

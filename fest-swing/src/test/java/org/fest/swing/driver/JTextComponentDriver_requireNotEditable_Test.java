@@ -17,33 +17,32 @@ package org.fest.swing.driver;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.test.core.Regex.regex;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
- * Tests for <code>{@link JTextComponentDriver#requireText(javax.swing.text.JTextComponent, java.util.regex.Pattern)}</code>.
+ * Tests for <code>{@link JTextComponentDriver#requireNotEditable(javax.swing.text.JTextComponent)}</code>.
  *
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = GUI)
-public class JTextComponentDriverRequireTextAsPatternTest extends JTextComponentDriver_TestCase {
+public class JTextComponentDriver_requireNotEditable_Test extends JTextComponentDriver_TestCase {
 
-  public void shouldPassIfTextMatchesPattern() {
-    setTextFieldText("Hi");
-    driver().requireText(textField(), regex("H.*"));
+  @Test
+  public void should_pass_if_JTextComponent_is_not_editable() {
+    makeTextFieldNotEditable();
+    driver.requireNotEditable(textField);
   }
 
-  public void shouldFailIfTextDoesNotMatchPattern() {
-    setTextFieldText("Hi");
+  @Test
+  public void should_fail_if_JTextComponent_is_editable() {
+    makeTextFieldEditable();
     try {
-      driver().requireText(textField(), regex("Bye"));
+      driver.requireNotEditable(textField);
       failWhenExpectingException();
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("property:'text'")
-                                .contains("actual value:<'Hi'> does not match pattern:<'Bye'>");
+      assertThat(e.getMessage()).contains("property:'editable'")
+                                .contains("expected:<false> but was:<true>");
     }
   }
 }

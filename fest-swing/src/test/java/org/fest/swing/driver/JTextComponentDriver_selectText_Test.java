@@ -21,18 +21,14 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.driver.JTextComponentSelectedTextQuery.selectedTextOf;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.*;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import java.awt.Dimension;
 
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.JViewport;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JTextComponentDriver#selectText(javax.swing.text.JTextComponent, String)}</code>.
@@ -40,13 +36,12 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = GUI)
-public class JTextComponentDriverSelectTextTest extends JTextComponentDriver_TestCase {
+public class JTextComponentDriver_selectText_Test extends JTextComponentDriver_TestCase {
 
   private JTextField scrollToViewTextField;
 
   @RunsInEDT
-  @Override void beforeShowingWindow() {
+  @Override void extraSetUp() {
     execute(new GuiTask() {
       protected void executeInEDT() {
         scrollToViewTextField = new JTextField(10);
@@ -55,37 +50,48 @@ public class JTextComponentDriverSelectTextTest extends JTextComponentDriver_Tes
         viewport.add(new JLabel("A Label"));
         viewport.add(scrollToViewTextField);
         scrollPane.setPreferredSize(new Dimension(50, 50));
-        window().add(scrollPane);
+        window.add(scrollPane);
       }
     });
   }
 
-  public void shouldSelectGivenTextOnly() {
+  @Test
+  public void should_select_given_text() {
+    showWindow();
     setTextFieldText("Hello World");
-    driver().selectText(textField(), "llo W");
-    assertThat(selectedTextOf(textField())).isEqualTo("llo W");
+    driver.selectText(textField, "llo W");
+    assertThat(selectedTextOf(textField)).isEqualTo("llo W");
   }
 
-  public void shouldScrollToTextToSelect() {
-    updateText(scrollToViewTextField, "one two three four five six seven eight nine ten");
-    driver().selectText(scrollToViewTextField, "ten");
+  @Test
+  public void should_scroll_to_text_to_select() {
+    showWindow();
+    updateTextTo(scrollToViewTextField, "one two three four five six seven eight nine ten");
+    driver.selectText(scrollToViewTextField, "ten");
     assertThat(selectedTextOf(scrollToViewTextField)).isEqualTo("ten");
   }
 
-  public void shouldThrowErrorWhenSelectingGivenTextInDisabledJTextComponent() {
+  @RunsInEDT
+  final void updateTextTo(JTextField f, String text) {
+    setText(f, text);
+    robot.waitForIdle();
+  }
+
+  @Test
+  public void should_throw_error_if_JTextComponent_is_disabled() {
     disableTextField();
     try {
-      driver().selectText(textField(), "llo W");
+      driver.selectText(textField, "llo W");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
-  public void shouldThrowErrorWhenSelectingGivenTextInNotShowingJTextComponent() {
-    hideWindow();
+  @Test
+  public void should_throw_error_if_JTextComponent_is_not_showing_on_the_screen() {
     try {
-      driver().selectText(textField(), "llo W");
+      driver.selectText(textField, "llo W");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertThatErrorCauseIsNotShowingComponent(e);

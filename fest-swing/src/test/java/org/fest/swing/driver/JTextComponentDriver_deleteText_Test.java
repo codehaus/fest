@@ -16,43 +16,50 @@
 package org.fest.swing.driver;
 
 import static org.fest.swing.test.core.CommonAssertions.*;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
- * Tests for <code>{@link JTextComponentDriver#enterText(javax.swing.text.JTextComponent, String)}</code>.
+ * Tests for <code>{@link JTextComponentDriver#deleteText(javax.swing.text.JTextComponent)}</code>.
  *
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = GUI)
-public class JTextComponentDriverEnterTextTest extends JTextComponentDriver_TestCase {
+public class JTextComponentDriver_deleteText_Test extends JTextComponentDriver_TestCase {
 
-  public void shouldEnterText() {
-    clearTextField();
-    driver().enterText(textField(), "Entering text");
-    requireTextInTextField("Entering text");
+  @Test
+  public void should_delete_text() {
+    showWindow();
+    driver.deleteText(textField);
+    requireEmptyTextField();
   }
 
-  public void shouldThrowErrorWhenEnteringTextInDisabledJTextComponent() {
+  @Test
+  public void should_throw_error_if_JTextComponent_is_disabled() {
     disableTextField();
     try {
-      driver().enterText(textField(), "Entering text");
+      driver.deleteText(textField);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
-  public void shouldThrowErrorWhenEnteringTextInNotShowingJTextComponent() {
-    hideWindow();
+  @Test
+  public void should_throw_error_if_JTextComponent_is_not_showing_on_the_screen() {
     try {
-      driver().enterText(textField(), "Entering text");
+      driver.deleteText(textField);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
+  @Test
+  public void should_delete_text_in_empty_JTextComponent() {
+    showWindow();
+    setTextFieldText("");
+    driver.deleteText(textField);
+    requireEmptyTextField();
+  }
 }

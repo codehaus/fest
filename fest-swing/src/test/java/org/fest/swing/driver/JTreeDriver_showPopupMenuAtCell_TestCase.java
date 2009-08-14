@@ -29,7 +29,7 @@ import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
 
 /**
- * Base class for test cases in <code>{@link JTreeDriver}</code> related to showing a pop-up menu at any cell in a
+ * Base test case in <code>{@link JTreeDriver}</code> related to showing a pop-up menu at any cell in a
  * <code>{@link JTree}</code>.
  *
  * @author Alex Ruiz

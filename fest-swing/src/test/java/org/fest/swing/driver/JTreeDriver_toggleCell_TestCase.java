@@ -25,7 +25,7 @@ import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 
 /**
- * Base class for test cases in <code>{@link JTreeDriver}</code> related to expanding/collapsing cells in a
+ * Base test case in <code>{@link JTreeDriver}</code> related to expanding/collapsing cells in a
  * <code>{@link JTree}</code>.
  *
  * @author Alex Ruiz

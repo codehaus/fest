@@ -17,10 +17,9 @@ package org.fest.swing.driver;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.core.CommonAssertions.*;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
 import org.fest.swing.exception.ActionFailedException;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JTextComponentDriver#selectText(javax.swing.text.JTextComponent, int, int)}</code>.
@@ -28,37 +27,41 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = GUI)
-public class JTextComponentDriverSelectTextByIndexRangeTest extends JTextComponentDriver_TestCase {
+public class JTextComponentDriver_selectTextByIndexRange_Test extends JTextComponentDriver_TestCase {
 
-  public void shouldSelectTextRange() {
-    driver().selectText(textField(), 8, 14);
+  @Test
+  public void should_select_text_range() {
+    showWindow();
+    driver.selectText(textField, 8, 14);
     requireSelectedTextInTextField("a test");
   }
 
-  public void shouldThrowErrorWhenSelectingTextRangeInDisabledJTextComponent() {
+  @Test
+  public void should_throw_error_if_JTextComponent_is_disabled() {
     disableTextField();
     try {
-      driver().selectText(textField(), 8, 14);
+      driver.selectText(textField, 8, 14);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
-  public void shouldThrowErrorWhenSelectingTextRangeInNotShowingJTextComponent() {
-    hideWindow();
+  @Test
+  public void should_throw_error_if_JTextComponent_is_not_showing_on_the_screen() {
     try {
-      driver().selectText(textField(), 8, 14);
+      driver.selectText(textField, 8, 14);
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertThatErrorCauseIsNotShowingComponent(e);
     }
   }
 
-  public void shouldThrowErrorIfIndicesAreOutOfBoundsWhenSelectingText() {
+  @Test
+  public void should_throw_error_if_indices_are_out_of_bounds() {
+    showWindow();
     try {
-      driver().selectText(textField(), 20, 22);
+      driver.selectText(textField, 20, 22);
       failWhenExpectingException();
     } catch (ActionFailedException expected) {
       assertThat(expected.getMessage()).contains("Unable to get location for index '20' in javax.swing.JTextField");

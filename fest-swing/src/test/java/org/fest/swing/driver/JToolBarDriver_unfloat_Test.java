@@ -15,26 +15,30 @@
  */
 package org.fest.swing.driver;
 
-import static javax.swing.SwingConstants.VERTICAL;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
-import org.testng.annotations.Test;
+import java.awt.Point;
+import java.awt.Window;
+
+import javax.swing.JToolBar;
+
+import org.junit.Test;
 
 /**
- * Tests for <code>{@link JSliderDriver}</code>.
+ * Tests for <code>{@link JToolBarDriver#unfloat(JToolBar)}</code>.
  *
- * @author Yvonne Wang
  * @author Alex Ruiz
+ * @author Yvonne Wang
  */
-public class VerticalJSliderDriverTest extends JSliderDriverTestCase {
+public class JToolBarDriver_unfloat_Test extends JToolBarDriver_TestCase {
 
-  int orientation() {
-    return VERTICAL;
-  }
-
-  @Test(groups = GUI)
-  public void shouldHaveGivenOrientation() {
-    assertThat(sliderOrientation()).isEqualTo(VERTICAL);
+  @Test
+  public void should_unfloat_JToolbar() {
+    showWindow();
+    Window oldAncestor = toolBarAncestor();
+    Point where = whereToFloatTo();
+    driver.floatTo(toolBar, where.x, where.y);
+    driver.unfloat(toolBar);
+    assertThat(toolBarAncestor()).isSameAs(oldAncestor);
   }
 }

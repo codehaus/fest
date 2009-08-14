@@ -16,9 +16,8 @@
 package org.fest.swing.driver;
 
 import static org.fest.swing.test.core.CommonAssertions.*;
-import static org.fest.swing.test.core.TestGroups.GUI;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JTextComponentDriver#replaceText(javax.swing.text.JTextComponent, String)}</code>.
@@ -26,42 +25,34 @@ import org.testng.annotations.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-@Test(groups = GUI)
-public class JTextComponentDriverReplaceTextTest extends JTextComponentDriver_TestCase {
+public class JTextComponentDriver_replaceText_Test extends JTextComponentDriver_TestCase {
 
-  public void shouldReplaceText() {
+  @Test
+  public void should_replace_Text() {
+    showWindow();
     setTextFieldText("Hi");
-    driver().replaceText(textField(), "Bye");
+    driver.replaceText(textField, "Bye");
     requireTextInTextField("Bye");
   }
 
-  public void shouldThrowErrorWhenReplacingTextInDisabledJTextComponent() {
+  @Test
+  public void should_throw_error_if_JTextComponent_is_disabled() {
     disableTextField();
     try {
-      driver().replaceText(textField(), "Hello");
+      driver.replaceText(textField, "Hello");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertThatErrorCauseIsDisabledComponent(e);
     }
   }
 
-  public void shouldThrowErrorWhenReplacingTextInNotShowingJTextComponent() {
-    hideWindow();
+  @Test
+  public void should_throw_error_if_JTextComponent_is_not_showing_on_the_screen() {
     try {
-      driver().replaceText(textField(), "Hello");
+      driver.replaceText(textField, "Hello");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertThatErrorCauseIsNotShowingComponent(e);
     }
-  }
-
-  @Test(groups = GUI, expectedExceptions = NullPointerException.class)
-  public void shouldThrowErrorIfReplacementTextIsNull() {
-    driver().replaceText(textField(), null);
-  }
-
-  @Test(groups = GUI, expectedExceptions = IllegalArgumentException.class)
-  public void shouldThrowErrorIfReplacementTextIsEmpty() {
-    driver().replaceText(textField(), "");
   }
 }

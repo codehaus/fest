@@ -34,7 +34,7 @@ import org.fest.swing.test.swing.TestWindow;
 import org.fest.swing.test.util.StopWatch;
 
 /**
- * Base class for test cases for <code>{@link ComponentDriver}</code>.
+ * Base test case for <code>{@link ComponentDriver}</code>.
  *
  * @author Alex Ruiz
  */
