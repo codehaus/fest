@@ -1,5 +1,5 @@
 /*
- * Created on Apr 5, 2008
+ * Created on Feb 25, 2008
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -16,75 +16,70 @@
 package org.fest.swing.driver;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.driver.AbstractButtonSelectedQuery.isSelected;
 import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.task.AbstractButtonSetSelectedTask.setSelected;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
 
-import javax.swing.JCheckBox;
+import java.awt.Dimension;
+
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.fest.swing.test.task.ComponentSetVisibleTask;
 
 /**
- * Base test case for <code>{@link AbstractButtonDriver}</code>.
- *
- * TODO split up
+ * Base test case for <code>{@link JTabbedPaneDriver}</code>.
  *
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public abstract class AbstractButtonDriver_TestCase extends RobotBasedTestCase {
+public abstract class JTabbedPaneDriver_TestCase extends RobotBasedTestCase {
 
-  AbstractButtonDriver driver;
+  JTabbedPaneDriver driver;
   MyWindow window;
-  JCheckBox checkBox;
+  JTabbedPane tabbedPane;
 
   @Override protected final void onSetUp() {
-    driver = new AbstractButtonDriver(robot);
+    driver = new JTabbedPaneDriver(robot);
     window = MyWindow.createNew(getClass());
-    checkBox = window.checkBox;
+    tabbedPane = window.tabbedPane;
   }
 
-  @RunsInEDT
-  final void disableCheckBox() {
-    disable(checkBox);
-    robot.waitForIdle();
-  }
-
-  @RunsInEDT
   final void showWindow() {
     robot.showWindow(window);
   }
 
   @RunsInEDT
-  final void hideWindow() {
-    ComponentSetVisibleTask.hide(window);
+  final void disableTabbedPane() {
+    disable(tabbedPane);
     robot.waitForIdle();
   }
 
-  @RunsInEDT
-  final void assertThatCheckBoxIsNotSelected() {
-    assertThat(isSelected(checkBox)).isFalse();
+  static Object[][] tabIndices() {
+    return new Object[][] { { 0 }, { 1 } };
   }
 
   @RunsInEDT
-  final void selectCheckBox() {
-    setSelected(checkBox, true);
-    robot.waitForIdle();
+  final void assertThatSelectedTabIndexIs(int expected) {
+    int selectedIndex = selectedIndexIn(tabbedPane);
+    assertThat(selectedIndex).isEqualTo(expected);
   }
 
   @RunsInEDT
-  final void unselectCheckBox() {
-    setSelected(checkBox, false);
-    robot.waitForIdle();
+  private static int selectedIndexIn(final JTabbedPane tabbedPane) {
+    return execute(new GuiQuery<Integer>() {
+      protected Integer executeInEDT() {
+        return tabbedPane.getSelectedIndex();
+      }
+    });
   }
 
-  static class MyWindow extends TestWindow {
+  private static class MyWindow extends TestWindow {
     private static final long serialVersionUID = 1L;
+
+    final JTabbedPane tabbedPane = new JTabbedPane();
 
     @RunsInEDT
     static MyWindow createNew(final Class<?> testClass) {
@@ -95,11 +90,18 @@ public abstract class AbstractButtonDriver_TestCase extends RobotBasedTestCase {
       });
     }
 
-    final JCheckBox checkBox = new JCheckBox("Hello", true);
-
     private MyWindow(Class<?> testClass) {
       super(testClass);
-      add(checkBox);
+      tabbedPane.addTab("One", panelWithName("panel1"));
+      tabbedPane.addTab("Two", panelWithName("panel2"));
+      add(tabbedPane);
+      setPreferredSize(new Dimension(100, 100));
+    }
+
+    private JPanel panelWithName(String name) {
+      JPanel panel = new JPanel();
+      panel.setName(name);
+      return panel;
     }
   }
 }

@@ -61,7 +61,7 @@ public class JSplitPaneDriver_moveDividerTo_Test extends RobotBasedTestCase {
   public JSplitPaneDriver_moveDividerTo_Test(int orientation) {
     this.orientation = orientation;
   }
-  
+
   @Override protected final void onSetUp() {
     driver = new JSplitPaneDriver(robot);
   }
@@ -76,7 +76,7 @@ public class JSplitPaneDriver_moveDividerTo_Test extends RobotBasedTestCase {
 
   @Test
   public void should_throw_error_if_JSplitPane_is_disabled() {
-    MyWindow window = createAndShowWindow();
+    MyWindow window = createWindow();
     disable(window.splitPane);
     robot.waitForIdle();
     try {

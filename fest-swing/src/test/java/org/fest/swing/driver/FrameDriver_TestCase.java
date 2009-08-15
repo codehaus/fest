@@ -52,19 +52,19 @@ public abstract class FrameDriver_TestCase extends RobotBasedTestCase {
   final FluentDimension windowSize() {
     return new FluentDimension(sizeOf(window));
   }
-  
+
   @RunsInEDT
   final FluentPoint windowLocationOnScreen() {
     return new FluentPoint(locationOnScreen(window));
   }
-  
+
   @RunsInEDT
   final void makeWindowNotResizable() {
     showWindow();
     makeNotResizable(window);
     robot.waitForIdle();
   }
-  
+
   @RunsInEDT
   private static void makeNotResizable(final TestWindow window) {
     execute(new GuiTask() {
@@ -73,10 +73,9 @@ public abstract class FrameDriver_TestCase extends RobotBasedTestCase {
       }
     });
   }
-  
+
   @RunsInEDT
   final void disableWindow() {
-    showWindow();
     disable(window);
     robot.waitForIdle();
   }

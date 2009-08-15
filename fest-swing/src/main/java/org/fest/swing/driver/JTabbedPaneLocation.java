@@ -39,7 +39,7 @@ public class JTabbedPaneLocation {
   /**
    * Returns the index of the first tab that matches the given <code>String</code>.
    * <p>
-   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param tabbedPane the target <code>JTabbedPane</code>.
@@ -55,7 +55,7 @@ public class JTabbedPaneLocation {
   /**
    * Returns the index of the first tab whose title matches the value in the given <code>{@link TextMatcher}</code>.
    * <p>
-   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param tabbedPane the target <code>JTabbedPane</code>.
@@ -74,7 +74,7 @@ public class JTabbedPaneLocation {
   /**
    * Returns the coordinates of the tab under the given index.
    * <p>
-   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for 
+   * <b>Note:</b> This method is <b>not</b> executed in the event dispatch thread (EDT.) Clients are responsible for
    * invoking this method in the EDT.
    * </p>
    * @param tabbedPane the target <code>JTabbedPane</code>.
@@ -85,7 +85,6 @@ public class JTabbedPaneLocation {
    */
   @RunsInCurrentThread
   public Point pointAt(final JTabbedPane tabbedPane, final int index) {
-    validateIndex(tabbedPane, index);
     Rectangle rect = tabbedPane.getUI().getTabBounds(tabbedPane, index);
     // From Abbot: TODO figure out the effects of tab layout policy sometimes tabs are not directly visible
     if (rect == null || rect.x < 0)

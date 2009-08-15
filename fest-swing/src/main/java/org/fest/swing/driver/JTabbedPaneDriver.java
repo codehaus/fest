@@ -36,10 +36,7 @@ import org.fest.swing.core.Robot;
 import org.fest.swing.data.Index;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.exception.LocationUnavailableException;
-import org.fest.swing.util.Pair;
-import org.fest.swing.util.PatternTextMatcher;
-import org.fest.swing.util.StringTextMatcher;
-import org.fest.swing.util.TextMatcher;
+import org.fest.swing.util.*;
 
 /**
  * Understands simulation of user input on a <code>{@link JTabbedPane}</code>. Unlike <code>JTabbedPaneFixture</code>,
@@ -93,7 +90,7 @@ public class JTabbedPaneDriver extends JComponentDriver {
   public void selectTab(JTabbedPane tabbedPane, String title) {
     selectTab(tabbedPane, new StringTextMatcher(title));
   }
-  
+
 
   /**
    * Simulates a user selecting the tab whose title matches the given regular expression pattern.
@@ -122,12 +119,13 @@ public class JTabbedPaneDriver extends JComponentDriver {
   }
 
   @RunsInEDT
-  private static Pair<Integer, Point> tabToSelectInfo(final JTabbedPaneLocation location, 
+  private static Pair<Integer, Point> tabToSelectInfo(final JTabbedPaneLocation location,
       final JTabbedPane tabbedPane, final TextMatcher matcher) {
     return execute(new GuiQuery<Pair<Integer, Point>>() {
       protected Pair<Integer, Point> executeInEDT() {
         validateIsEnabledAndShowing(tabbedPane);
         int index = location.indexOf(tabbedPane, matcher);
+        location.validateIndex(tabbedPane, index);
         Point point = null;
         try {
           point = location.pointAt(tabbedPane, index);
@@ -158,6 +156,7 @@ public class JTabbedPaneDriver extends JComponentDriver {
   private static Point pointAt(final JTabbedPaneLocation location, final JTabbedPane tabbedPane, final int index) {
     return execute(new GuiQuery<Point>() {
       protected Point executeInEDT() {
+        location.validateIndex(tabbedPane, index);
         validateIsEnabledAndShowing(tabbedPane);
         return location.pointAt(tabbedPane, index);
       }
@@ -233,7 +232,7 @@ public class JTabbedPaneDriver extends JComponentDriver {
 
   /**
    * Asserts that the tabs of the given <code>{@link JTabbedPane}</code> have the given titles. The tab titles are
-   * evaluated by index order, for example, the first tab is expected to have the first title in the given array, and so 
+   * evaluated by index order, for example, the first tab is expected to have the first title in the given array, and so
    * on.
    * @param tabbedPane the target <code>JTabbedPane</code>.
    * @param titles the expected titles.

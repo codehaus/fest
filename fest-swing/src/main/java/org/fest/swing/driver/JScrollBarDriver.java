@@ -14,6 +14,13 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
+import static org.fest.swing.driver.JScrollBarSetValueTask.setValue;
+import static org.fest.swing.driver.JScrollBarValueQuery.valueOf;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Point;
 
 import javax.swing.JScrollBar;
@@ -24,13 +31,6 @@ import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.util.GenericRange;
 import org.fest.swing.util.Pair;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
-import static org.fest.swing.driver.JScrollBarSetValueTask.setValue;
-import static org.fest.swing.driver.JScrollBarValueQuery.valueOf;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands simulation of user input on a <code>{@link JScrollBar}</code>. Unlike <code>JScrollBarFixture</code>,
@@ -265,8 +265,8 @@ public class JScrollBarDriver extends JComponentDriver {
       final JScrollBarLocation location, final int position) {
     return execute(new GuiQuery<GenericRange<Point>>() {
       protected GenericRange<Point> executeInEDT() {
-        validateIsEnabledAndShowing(scrollBar);
         validatePosition(scrollBar, position);
+        validateIsEnabledAndShowing(scrollBar);
         return scrollInfo(scrollBar, location, position);
       }
     });

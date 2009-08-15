@@ -68,7 +68,6 @@ public abstract class JTextComponentDriver_TestCase extends RobotBasedTestCase {
 
   @RunsInEDT
   final void disableTextField() {
-    showWindow();
     disable(textField);
     robot.waitForIdle();
   }

@@ -43,7 +43,6 @@ public class JInternalFrameDriver_iconify_deiconify_Test extends JInternalFrameD
   @Test
   public void should_iconify_and_deiconify_disabled_JInternalFrame() {
     disableInternalFrame();
-    showWindow();
     driver.iconify(internalFrame);
     assertThat(isIconified(internalFrame)).isTrue();
     driver.deiconify(internalFrame);

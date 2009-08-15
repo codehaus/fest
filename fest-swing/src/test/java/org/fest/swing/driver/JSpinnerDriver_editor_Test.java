@@ -13,16 +13,22 @@
  *
  * Copyright @2008-2009 the original author or authors.
  */
-package org.fest.swing.test.data;
+package org.fest.swing.driver;
+
+import org.fest.swing.exception.ComponentLookupException;
+import org.junit.Test;
 
 /**
- * Understands a provider of zero and a negative number.
+ * Tests for <code>{@link JSpinnerDriver#editor(javax.swing.JSpinner)}</code>.
  *
  * @author Alex Ruiz
  */
-public class ZeroAndNegativeProvider {
+public class JSpinnerDriver_editor_Test extends JSpinnerDriver_TestCase {
 
-  public static Object[][] zeroAndNegative() {
-    return new Object[][] { { 0 }, { -1 } };
+  @Test(expected = ComponentLookupException.class)
+  public void should_throw_error_if_JTextComponentEditor_not_found() {
+    setJLabelAsEditor();
+    showWindow();
+    driver.editor(spinner);
   }
 }

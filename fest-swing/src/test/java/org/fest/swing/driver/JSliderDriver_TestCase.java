@@ -73,7 +73,6 @@ public abstract class JSliderDriver_TestCase extends RobotBasedTestCase {
 
   @RunsInEDT
   final void disableSlider() {
-    showWindow();
     disable(slider);
     robot.waitForIdle();
   }

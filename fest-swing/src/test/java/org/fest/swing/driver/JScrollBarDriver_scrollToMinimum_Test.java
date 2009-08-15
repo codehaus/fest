@@ -1,5 +1,5 @@
 /*
- * Created on Feb 25, 2008
+ * Created on Feb 24, 2008
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,16 +13,21 @@
  *
  * Copyright @2008-2009 the original author or authors.
  */
-package org.fest.swing.test.data;
+package org.fest.swing.driver;
+
+import org.junit.Test;
 
 /**
- * Understands a provider of zero and a negative number.
+ * Tests for <code>{@link JScrollBarDriver#scrollToMinimum(javax.swing.JScrollBar)}</code>.
  *
  * @author Alex Ruiz
  */
-public class ZeroAndNegativeProvider {
+public class JScrollBarDriver_scrollToMinimum_Test extends JScrollBarDriver_TestCase {
 
-  public static Object[][] zeroAndNegative() {
-    return new Object[][] { { 0 }, { -1 } };
+  @Test
+  public void should_scroll_to_minimum() {
+    showWindow();
+    driver.scrollToMinimum(scrollBar);
+    assertThatScrollBarValueIs(MINIMUM);
   }
 }

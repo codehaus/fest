@@ -13,16 +13,23 @@
  *
  * Copyright @2008-2009 the original author or authors.
  */
-package org.fest.swing.test.data;
+package org.fest.swing.driver;
+
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.util.Arrays.array;
+
+import org.junit.Test;
 
 /**
- * Understands a provider of zero and a negative number.
+ * Tests for <code>{@link JTabbedPaneDriver#tabTitles(javax.swing.JTabbedPane)}</code>.
  *
  * @author Alex Ruiz
  */
-public class ZeroAndNegativeProvider {
+public class JTabbedPaneDriver_tabTitles_Test extends JTabbedPaneDriver_TestCase {
 
-  public static Object[][] zeroAndNegative() {
-    return new Object[][] { { 0 }, { -1 } };
+  @Test
+  public void should_return_tab_titles() {
+    assertThat(driver.tabTitles(tabbedPane)).isEqualTo(array("One", "Two"));
   }
+
 }

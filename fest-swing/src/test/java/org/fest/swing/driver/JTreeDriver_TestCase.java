@@ -55,7 +55,6 @@ public abstract class JTreeDriver_TestCase extends RobotBasedTestCase {
 
   @RunsInEDT
   final void disableTree() {
-    showWindow();
     disable(tree);
     robot.waitForIdle();
   }
@@ -63,7 +62,7 @@ public abstract class JTreeDriver_TestCase extends RobotBasedTestCase {
   final void showWindow() {
     robot.showWindow(window);
   }
-  
+
   @RunsInEDT
   final String textOf(TreePath path) {
     return textOf(path, driver.separator());

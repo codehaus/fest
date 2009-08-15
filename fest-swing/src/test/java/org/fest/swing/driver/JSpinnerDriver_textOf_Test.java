@@ -13,16 +13,29 @@
  *
  * Copyright @2008-2009 the original author or authors.
  */
-package org.fest.swing.test.data;
+package org.fest.swing.driver;
+
+import static org.fest.assertions.Assertions.assertThat;
+
+import org.junit.Test;
 
 /**
- * Understands a provider of zero and a negative number.
+ * Tests for <code>{@link JSpinnerDriver#editor(javax.swing.JSpinner)}</code>.
  *
  * @author Alex Ruiz
  */
-public class ZeroAndNegativeProvider {
+public class JSpinnerDriver_textOf_Test extends JSpinnerDriver_TestCase {
 
-  public static Object[][] zeroAndNegative() {
-    return new Object[][] { { 0 }, { -1 } };
+  @Test
+  public void should_return_text() {
+    updateValue("Frodo");
+    assertThat(driver.textOf(spinner)).isEqualTo("Frodo");
+  }
+
+  @Test
+  public void should_return_text_representation_of_selected_value_even_if_editor_is_not_JTextComponent() {
+    setJLabelAsEditor();
+    updateValue("Frodo");
+    assertThat(driver.textOf(spinner)).isEqualTo("Frodo");
   }
 }
