@@ -15,17 +15,16 @@
  */
 package org.fest.swing.test.swing;
 
+import static javax.swing.SwingUtilities.invokeLater;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.timing.Pause.pause;
+
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.timing.Condition;
-
-import static javax.swing.SwingUtilities.invokeLater;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.timing.Pause.pause;
 
 /**
  * Understands launching a <code>{@link JOptionPane}</code>.
@@ -54,11 +53,7 @@ public final class JOptionPaneLauncher {
    */
   @RunsInEDT
   public static JDialog launch(final JOptionPane optionPane, final String title) {
-    final JDialog dialog = execute(new GuiQuery<JDialog>() {
-      protected JDialog executeInEDT() {
-        return optionPane.createDialog(title);
-      }
-    });
+    final JDialog dialog = pack(optionPane, title);
     invokeLater(new Runnable() {
       public void run() {
         dialog.pack();
@@ -69,6 +64,22 @@ public final class JOptionPaneLauncher {
     pause(new Condition("JOptionPane is showing") {
       public boolean test() {
         return dialog.isShowing();
+      }
+    });
+    return dialog;
+  }
+
+  /**
+   * Packs the given <code>{@link JOptionPane}</code> in a <code>{@link JDialog}</code>.
+   * @param optionPane the <code>JOptionPane</code> to launch.
+   * @param title the title of the dialog to host the <code>JOptionPane</code>.
+   * @return the dialog hosting the <code>JOptionPane</code>.
+   */
+  @RunsInEDT
+  public static JDialog pack(final JOptionPane optionPane, final String title) {
+    final JDialog dialog = execute(new GuiQuery<JDialog>() {
+      protected JDialog executeInEDT() {
+        return optionPane.createDialog(title);
       }
     });
     return dialog;
