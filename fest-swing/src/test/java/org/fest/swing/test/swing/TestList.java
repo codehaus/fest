@@ -15,6 +15,10 @@
  */
 package org.fest.swing.test.swing;
 
+import static javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -24,10 +28,6 @@ import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.util.Collections;
-
-import static javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands a list that:
@@ -71,6 +71,11 @@ public final class TestList extends JList {
         return elements;
       }
     });
+  }
+
+  @RunsInEDT
+  public void requireElements(String...expected) {
+    assertThat(elements()).isEqualTo(expected);
   }
 
   private static class ListTransferHandler extends StringTransferHandler<JList> {

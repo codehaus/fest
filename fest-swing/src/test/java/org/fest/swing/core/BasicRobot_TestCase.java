@@ -20,11 +20,10 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.query.ComponentLocationOnScreenQuery.locationOnScreen;
 import static org.fest.swing.query.ComponentShowingQuery.isShowing;
 import static org.fest.swing.test.task.ComponentRequestFocusAndWaitForFocusGainTask.giveFocusAndWaitTillIsFocused;
+import static org.fest.swing.test.task.ComponentSetPopupMenuTask.createAndSetPopupMenu;
 
 import java.awt.Point;
 
-import javax.swing.JComponent;
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
@@ -46,7 +45,7 @@ public abstract class BasicRobot_TestCase extends EDTSafeTestCase {
   BasicRobot robot;
   MyWindow window;
 
-  @Before 
+  @Before
   public final void setUp() {
     robot = (BasicRobot)BasicRobot.robotWithCurrentAwtHierarchy();
     window = MyWindow.createAndShow(getClass());
@@ -58,7 +57,7 @@ public abstract class BasicRobot_TestCase extends EDTSafeTestCase {
 
   void beforeShowingWindow() {}
 
-  @After 
+  @After
   public final void tearDown() {
     try {
       window.destroy();
@@ -71,26 +70,12 @@ public abstract class BasicRobot_TestCase extends EDTSafeTestCase {
   final void giveFocusToTextField() {
     giveFocusAndWaitTillIsFocused(window.textField);
   }
- 
+
   @RunsInEDT
   final JPopupMenu addPopupMenuToTextField() {
-    return addPopupMenuTo(window.textField);
+    return createAndSetPopupMenu(window.textField, "Luke", "Leia");
   }
-  
-  @RunsInEDT
-  private static JPopupMenu addPopupMenuTo(final JComponent c) {
-    return execute(new GuiQuery<JPopupMenu>() {
-      protected JPopupMenu executeInEDT() {
-        JPopupMenu popupMenu = new JPopupMenu("Pop-up Menu");
-        c.setComponentPopupMenu(popupMenu);
-        popupMenu.add(new JMenuItem("Luke"));
-        popupMenu.add(new JMenuItem("Leia"));
-        return popupMenu;
-      }
-    });
 
-  }
-  
   static class MyWindow extends TestWindow {
     private static final long serialVersionUID = 1L;
 

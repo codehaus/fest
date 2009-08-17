@@ -128,6 +128,7 @@ public class JListDriver extends JComponentDriver {
   private void selectItems(final JList list, final TextMatcher matcher) {
     final List<Integer> indices = matchingItemIndices(list, matcher, cellReader);
     if (indices.isEmpty()) throw failMatchingNotFound(list, matcher);
+    clearSelection(list);
     new MultipleSelectionTemplate(robot) {
       int elementCount() {
         return indices.size();
@@ -226,6 +227,7 @@ public class JListDriver extends JComponentDriver {
    */
   public void selectItems(final JList list, final int[] indices) {
     validateArrayOfIndices(indices);
+    clearSelection(list);
     new MultipleSelectionTemplate(robot) {
       int elementCount() { return indices.length; }
       void selectElement(int index) { selectItem(list, indices[index]); }
@@ -279,6 +281,7 @@ public class JListDriver extends JComponentDriver {
    */
   @RunsInEDT
   public void selectItems(JList list, int start, int end) {
+    clearSelection(list);
     selectItem(list, start);
     robot.pressKey(VK_SHIFT);
     clickItem(list, end, LEFT_BUTTON, 1);

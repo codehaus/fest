@@ -17,10 +17,10 @@ package org.fest.swing.test.task;
 
 import static org.fest.swing.edt.GuiActionRunner.execute;
 
-import javax.swing.JComponent;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
 
 /**
@@ -32,10 +32,23 @@ import org.fest.swing.edt.GuiTask;
 public final class ComponentSetPopupMenuTask {
 
   @RunsInEDT
-  public static void setPopupMenu(final JComponent component, final JPopupMenu popupMenu) {
+  public static void setPopupMenu(final JComponent c, final JPopupMenu popupMenu) {
     execute(new GuiTask() {
       protected void executeInEDT() {
-        component.setComponentPopupMenu(popupMenu);
+        c.setComponentPopupMenu(popupMenu);
+      }
+    });
+  }
+
+  @RunsInEDT
+  public static JPopupMenu createAndSetPopupMenu(final JComponent c, final String...items) {
+    return execute(new GuiQuery<JPopupMenu>() {
+      protected JPopupMenu executeInEDT() {
+        JPopupMenu popupMenu = new JPopupMenu();
+        for (String item : items)
+          popupMenu.add(new JMenuItem(item));
+        c.setComponentPopupMenu(popupMenu);
+        return popupMenu;
       }
     });
   }
