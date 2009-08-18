@@ -15,15 +15,16 @@
  */
 package org.fest.swing.test.swing;
 
+import static java.lang.String.valueOf;
+import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.util.Strings.concat;
+
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
-
-import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.util.Strings.concat;
 
 
 /**
@@ -62,12 +63,12 @@ public class TestTable extends JTable {
     Object[][] data = new Object[rowCount][columnCount];
     for (int i = 0; i < rowCount; i++)
       for (int j = 0; j < columnCount; j++)
-        data[i][j] = createCellTextUsing(i, j);
+        data[i][j] = createCellValueFrom(i, j);
     return data;
   }
 
-  public static String createCellTextUsing(int row, int column) {
-    return concat(String.valueOf(row), "-", String.valueOf(column));
+  public static String createCellValueFrom(int row, int column) {
+    return concat(valueOf(row), "-", valueOf(column));
   }
 
   public TestTable(Object[][] rowData, Object[] columnNames) {
@@ -83,10 +84,12 @@ public class TestTable extends JTable {
     setTransferHandler(new TableTransferHandler());
   }
 
+  @RunsInEDT
   public void cellEditable(final int row, final int column, final boolean editable) {
     cellEditable(model, row, column, editable);
   }
 
+  @RunsInEDT
   private static void cellEditable(final CustomModel model, final int row, final int column, final boolean editable) {
     execute(new GuiTask() {
       protected void executeInEDT() {
@@ -96,7 +99,6 @@ public class TestTable extends JTable {
   }
 
   private static class CustomModel extends DefaultTableModel {
-
     private final boolean[][] editableCells;
 
     CustomModel(Object[][] data, Object[] columnNames) {
