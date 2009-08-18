@@ -1,5 +1,5 @@
 /*
- * Created on Feb 24, 2008
+ * Created on Apr 5, 2008
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -15,58 +15,34 @@
  */
 package org.fest.swing.driver;
 
-import static org.fest.swing.query.ComponentLocationOnScreenQuery.locationOnScreen;
-import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
+import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
 import static org.fest.swing.test.task.FrameSetResizableTask.setResizable;
 
+import java.awt.*;
+
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.annotation.ThreadSafeAction;
-import org.fest.swing.test.awt.FluentDimension;
-import org.fest.swing.test.awt.FluentPoint;
+import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;
 
 /**
- * Base test case for <code>{@link FrameDriver}</code>.
+ * Tests for <code>{@link WindowDriver}</code>.
  *
  * @author Alex Ruiz
  */
-public abstract class FrameDriver_TestCase extends RobotBasedTestCase {
+public abstract class WindowDriver_TestCase extends RobotBasedTestCase {
 
-  TestWindow window;
-  FrameDriver driver;
+  Frame window;
+  WindowDriver driver;
 
   @Override protected final void onSetUp() {
     window = TestWindow.createNewWindow(getClass());
-    driver = new FrameDriver(robot);
+    driver = new WindowDriver(robot);
   }
 
-  @ThreadSafeAction
-  final int frameState() {
-    return window.getExtendedState();
-  }
-
-  @RunsInEDT
-  final FluentDimension windowSize() {
-    return new FluentDimension(sizeOf(window));
-  }
-
-  @RunsInEDT
-  final FluentPoint windowLocationOnScreen() {
-    return new FluentPoint(locationOnScreen(window));
-  }
-
-  @RunsInEDT
-  final void makeWindowNotResizable() {
-    showWindow();
-    makeNotResizable(window);
-    robot.waitForIdle();
-  }
-
-  @RunsInEDT
-  private static void makeNotResizable(final TestWindow window) {
-    setResizable(window, false);
+  final void showWindow() {
+    robot.showWindow(window, new Dimension(100, 100));
   }
 
   @RunsInEDT
@@ -75,7 +51,18 @@ public abstract class FrameDriver_TestCase extends RobotBasedTestCase {
     robot.waitForIdle();
   }
 
-  final void showWindow() {
-    robot.showWindow(window);
+  @RunsInEDT
+  final void makeWindowNotResizable() {
+    setResizable(window, false);
+    robot.waitForIdle();
+  }
+
+  @RunsInEDT
+  static boolean isActive(final Window w) {
+    return execute(new GuiQuery<Boolean>() {
+      protected Boolean executeInEDT() {
+        return w.isActive();
+      }
+    });
   }
 }
