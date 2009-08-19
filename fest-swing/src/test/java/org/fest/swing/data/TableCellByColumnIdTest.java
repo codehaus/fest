@@ -16,7 +16,7 @@
 package org.fest.swing.data;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.test.core.EqualsHashCodeContractAssert.*;
+import static org.fest.test.EqualsHashCodeContractAssert.*;
 
 import org.fest.test.EqualsHashCodeContractTestCase;
 import org.junit.Before;
@@ -36,59 +36,59 @@ public class TableCellByColumnIdTest implements EqualsHashCodeContractTestCase {
   }
 
   @Test
-  public void shouldHaveConsistentEquals() {
+  public void should_have_consistent_equals() {
     TableCellByColumnId other = TableCellByColumnId.row(6).columnId("id");
     assertThat(cell.equals(other)).isTrue();
   }
 
   @Test
-  public void shouldHaveReflexiveEquals() {
+  public void should_have_reflexive_equals() {
     assertEqualsIsReflexive(cell);
   }
 
   @Test
-  public void shouldHaveSymmetricEquals() {
+  public void should_have_symmetric_equals() {
     TableCellByColumnId other = TableCellByColumnId.row(6).columnId("id");
     assertEqualsIsSymmetric(cell, other);
   }
 
   @Test
-  public void shouldHaveTransitiveEquals() {
+  public void should_have_transitive_equals() {
     TableCellByColumnId other1 = TableCellByColumnId.row(6).columnId("id");
     TableCellByColumnId other2 = TableCellByColumnId.row(6).columnId("id");
     assertEqualsIsTransitive(cell, other1, other2);
   }
 
   @Test
-  public void shouldMaintainEqualsAndHashCodeContract() {
+  public void should_maintain_equals_and_hashCode_contract() {
     TableCellByColumnId other = TableCellByColumnId.row(6).columnId("id");
     assertMaintainsEqualsAndHashCodeContract(cell, other);
   }
 
   @Test
-  public void shouldNotBeEqualToNull() {
+  public void should_not_be_equal_to_null() {
     assertThat(cell.equals(null)).isFalse();
   }
 
   @Test
-  public void shouldNotBeEqualToObjectNotBeingOfSameClass() {
+  public void should_not_be_equal_to_Object_not_being_of_same_type() {
     assertThat(cell.equals("Hello")).isFalse();
   }
 
   @Test
-  public void shouldReturnNotEqualIfRowValuesAreNotEqual() {
+  public void should_return_not_equal_if_row_values_are_not_equal() {
     TableCellByColumnId other = TableCellByColumnId.row(8).columnId("id");
     assertThat(cell.equals(other)).isFalse();
   }
 
   @Test
-  public void shouldReturnNotEqualIfColumnValuesAreNotEqual() {
+  public void should_return_not_equal_if_column_values_are_not_equal() {
     TableCellByColumnId other = TableCellByColumnId.row(6).columnId("anotherId");
     assertThat(cell.equals(other)).isFalse();
   }
 
   @Test
-  public void shouldImplementToString() {
+  public void should_implement_toString() {
     assertThat(cell.toString()).isEqualTo("[row=6, columnId='id']");
   }
 }

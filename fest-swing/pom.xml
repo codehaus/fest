@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.easytesting</groupId>
   <artifactId>fest-swing</artifactId>
-  <version>1.2a3-SNAPSHOT</version>
+  <version>1.2a3</version>
   <name>FEST Swing</name>
   <description>Fluent interface for functional GUI testing</description>
   <inceptionYear>2007</inceptionYear>
@@ -47,10 +47,9 @@
   </issueManagement>
   <dependencies>
     <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>5.7</version>
-      <classifier>jdk15</classifier>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.5</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -74,7 +73,7 @@
     <dependency>
       <groupId>org.easytesting</groupId>
       <artifactId>fest-test</artifactId>
-      <version>1.1</version>
+      <version>1.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>

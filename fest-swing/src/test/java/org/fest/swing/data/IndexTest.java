@@ -16,7 +16,7 @@
 package org.fest.swing.data;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.test.core.EqualsHashCodeContractAssert.*;
+import static org.fest.test.EqualsHashCodeContractAssert.*;
 
 import org.fest.test.EqualsHashCodeContractTestCase;
 import org.junit.Before;
@@ -36,53 +36,54 @@ public class IndexTest implements EqualsHashCodeContractTestCase {
   }
 
   @Test
-  public void shouldHaveConsistentEquals() {
+  public void should_have_consistent_equals() {
     Index other = Index.atIndex(8);
     assertThat(index.equals(other)).isTrue();
   }
 
   @Test
-  public void shouldHaveReflexiveEquals() {
+  public void should_have_reflexive_equals() {
     assertEqualsIsReflexive(index);
   }
 
   @Test
-  public void shouldHaveSymmetricEquals() {
+  public void should_have_symmetric_equals() {
     Index other = Index.atIndex(8);
     assertEqualsIsSymmetric(index, other);
   }
 
   @Test
-  public void shouldHaveTransitiveEquals() {
+  public void should_have_transitive_equals() {
     Index other1 = Index.atIndex(8);
     Index other2 = Index.atIndex(8);
     assertEqualsIsTransitive(index, other1, other2);
   }
 
   @Test
-  public void shouldMaintainEqualsAndHashCodeContract() {
+  public void should_maintain_equals_and_hashCode_contract() {
     Index other = Index.atIndex(8);
     assertMaintainsEqualsAndHashCodeContract(index, other);
   }
 
   @Test
-  public void shouldNotBeEqualToNull() {
+  public void should_not_be_equal_to_null() {
     assertThat(index.equals(null)).isFalse();
   }
 
   @Test
-  public void shouldNotBeEqualToObjectNotBeingOfSameClass() {
+  public void should_not_be_equal_to_Object_not_being_of_same_type() {
     assertThat(index.equals("Hello")).isFalse();
   }
 
   @Test
-  public void shouldReturnNotEqualIfIndexValuesAreNotEqual() {
+  public void should_return_not_equal_if_index_values_are_not_equal() {
     Index other = Index.atIndex(6);
     assertThat(index.equals(other)).isFalse();
   }
 
   @Test
-  public void shouldImplementToString() {
+  public void should_implement_toString() {
     assertThat(index.toString()).isEqualTo("org.fest.swing.data.Index[value=8]");
   }
+
 }
