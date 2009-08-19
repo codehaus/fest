@@ -19,49 +19,25 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.task.ComponentSetEnabledTask.disable;
 
-import java.awt.*;
+import java.awt.Point;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.recorder.ClickRecorder;
-import org.fest.swing.test.swing.TestTable;
-import org.fest.swing.test.swing.TestWindow;
 
 /**
  * Base test case for <code>{@link JTableHeaderDriver}</code>.
  *
  * @author Yvonne Wang
  */
-public abstract class JTableHeaderDriver_TestCase extends RobotBasedTestCase {
+public abstract class JTableHeaderDriver_TestCase extends JTableHeaderBasedTestCase {
 
-  MyWindow window;
-  JTableHeader tableHeader;
   JTableHeaderDriver driver;
 
-  @Override protected final void onSetUp() {
+  final void setUpTestTarget() {
     driver = new JTableHeaderDriver(robot);
-    window = MyWindow.createNew(getClass());
-    tableHeader = window.table.getTableHeader();
-    extraSetUp();
-  }
-
-  void extraSetUp() {}
-
-  static Object[][] columnIndices() {
-    return new Object[][] { { 0 }, { 1 } };
-  }
-
-  final void showWindow() {
-    robot.showWindow(window);
-  }
-
-  final String columnNameFromIndex(int index) {
-    return String.valueOf(index);
   }
 
   @RunsInEDT
@@ -83,35 +59,5 @@ public abstract class JTableHeaderDriver_TestCase extends RobotBasedTestCase {
         return header.getTable().columnAtPoint(point);
       }
     });
-  }
-
-  static class MyWindow extends TestWindow {
-    private static final long serialVersionUID = 1L;
-
-    private static final Dimension TABLE_SIZE = new Dimension(400, 200);
-
-    final TestTable table;
-
-    @RunsInEDT
-    static MyWindow createNew(final Class<?> testClass) {
-      return execute(new GuiQuery<MyWindow>() {
-        protected MyWindow executeInEDT() {
-          return new MyWindow(testClass);
-        }
-      });
-    }
-
-    private MyWindow(Class<?> testClass) {
-      super(testClass);
-      table = new TestTable(6, 2);
-      add(decorate(table));
-      setPreferredSize(new Dimension(600, 400));
-    }
-
-    private static Component decorate(JTable table) {
-      JScrollPane scrollPane = new JScrollPane(table);
-      scrollPane.setPreferredSize(TABLE_SIZE);
-      return scrollPane;
-    }
   }
 }

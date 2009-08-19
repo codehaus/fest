@@ -29,27 +29,27 @@ import org.fest.swing.test.swing.TestWindow;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link DialogMatcher}</code>.
+ * Tests for <code>{@link DialogMatcher#matches(java.awt.Component)}</code>.
  *
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class DialogMatcherTest extends EDTSafeTestCase {
+public class DialogMatcher_matches_Test extends EDTSafeTestCase {
 
   @Test
-  public void shouldReturnTrueIfMatchingAnyDialog() {
+  public void should_return_true_if_matching_any_Dialog() {
     DialogMatcher matcher = DialogMatcher.any();
     assertThat(matcher.matches(dialog().createNew())).isTrue();
   }
 
   @Test
-  public void shouldReturnFalseIfComponentIsNotDialog() {
+  public void should_return_false_if_Component_is_not_Dialog() {
     DialogMatcher matcher = DialogMatcher.any();
     assertThat(matcher.matches(textField().createNew())).isFalse();
   }
 
   @Test
-  public void shouldReturnTrueIfNameIsEqualToExpected() {
+  public void should_return_true_if_name_is_equal_to_expected() {
     String name = "dialog";
     DialogMatcher matcher = DialogMatcher.withName(name);
     JDialog dialog = dialog().withName(name).createNew();
@@ -57,35 +57,35 @@ public class DialogMatcherTest extends EDTSafeTestCase {
   }
 
   @Test
-  public void shouldReturnFalseIfNameIsNotEqualToExpected() {
+  public void should_return_false_if_name_is_not_equal_to_expected() {
     DialogMatcher matcher = DialogMatcher.withName("dialog");
     JDialog dialog = dialog().withName("label").createNew();
     assertThat(matcher.matches(dialog)).isFalse();
   }
 
   @Test
-  public void shouldReturnTrueIfNameAndTitleAreEqualToExpected() {
+  public void should_return_true_if_name_and_title_are_equal_to_expected() {
     DialogMatcher matcher = DialogMatcher.withName("dialog").andTitle("Hello");
     JDialog dialog = dialog().withName("dialog").withTitle("Hello").createNew();
     assertThat(matcher.matches(dialog)).isTrue();
   }
-  
+
   @Test
-  public void shouldReturnTrueIfNameMatchesAndTitleMatchesPatternAsString() {
+  public void should_return_true_if_name_is_equal_to_expected_and_title_matches_pattern_as_String() {
     DialogMatcher matcher = DialogMatcher.withName("dialog").andTitle("Hel.*");
     JDialog dialog = dialog().withName("dialog").withTitle("Hello").createNew();
     assertThat(matcher.matches(dialog)).isTrue();
   }
 
   @Test
-  public void shouldReturnTrueIfNameMatchesAndTitleMatchesPattern() {
+  public void should_return_true_if_name_is_equal_to_expected_and_title_matches_pattern() {
     DialogMatcher matcher = DialogMatcher.withName("dialog").andTitle(regex("Hel.*"));
     JDialog dialog = dialog().withName("dialog").withTitle("Hello").createNew();
     assertThat(matcher.matches(dialog)).isTrue();
   }
 
   @Test
-  public void shouldReturnFalseIfNameAndTitleAreNotEqualToExpected() {
+  public void should_return_false_if_NameAndTitleAreNotEqualToExpected() {
     DialogMatcher matcher = DialogMatcher.withName("someName").andTitle("someTitle");
     JDialog dialog = dialog().withName("someName").withTitle("title").createNew();
     assertThat(matcher.matches(dialog)).isFalse();
@@ -101,35 +101,35 @@ public class DialogMatcherTest extends EDTSafeTestCase {
   }
 
   @Test
-  public void shouldReturnTrueIfTitleIsEqualToExpected() {
+  public void should_return_true_if_title_is_equal_to_expected() {
     DialogMatcher matcher = DialogMatcher.withTitle("Hello");
     JDialog dialog = dialog().withTitle("Hello").createNew();
     assertThat(matcher.matches(dialog)).isTrue();
   }
 
   @Test
-  public void shouldReturnTrueIfTitleMatchesPatternAsString() {
+  public void should_return_true_if_title_matches_pattern_as_String() {
     DialogMatcher matcher = DialogMatcher.withTitle("He.*");
     JDialog dialog = dialog().withTitle("Hello").createNew();
     assertThat(matcher.matches(dialog)).isTrue();
   }
 
   @Test
-  public void shouldReturnTrueIfTitleMatchesPattern() {
+  public void should_return_true_if_title_matches_pattern() {
     DialogMatcher matcher = DialogMatcher.withTitle(regex("He.*"));
     JDialog dialog = dialog().withTitle("Hello").createNew();
     assertThat(matcher.matches(dialog)).isTrue();
   }
 
   @Test
-  public void shouldReturnFalseIfTitleIsNotEqualToExpected() {
+  public void should_return_false_if_Title_is_not_equal_to_expected() {
     DialogMatcher matcher = DialogMatcher.withTitle("Hello");
     JDialog dialog = dialog().withTitle("Bye").createNew();
     assertThat(matcher.matches(dialog)).isFalse();
   }
 
   @Test
-  public void shouldReturnTrueIfDialogIsShowingAndTitleIsEqualToExpected() {
+  public void should_return_true_if_DialogIsShowingAndTitleIsEqualToExpected() {
     ScreenLock.instance().acquire(this);
     String title = "Hello";
     JDialog dialog = dialog().withTitle(title).createAndShow();
@@ -142,7 +142,7 @@ public class DialogMatcherTest extends EDTSafeTestCase {
   }
 
   @Test
-  public void shouldReturnFalseIfDialogIsNotShowingAndTitleIsEqualToExpected() {
+  public void should_return_false_if_DialogIsNotShowingAndTitleIsEqualToExpected() {
     String title = "Hello";
     DialogMatcher matcher = DialogMatcher.withTitle(title).andShowing();
     JDialog dialog = dialog().withTitle(title).createNew();
@@ -150,7 +150,7 @@ public class DialogMatcherTest extends EDTSafeTestCase {
   }
 
   @Test
-  public void shouldReturnFalseIfDialogIsShowingAndTitleIsNotEqualToExpected() {
+  public void should_return_false_if_DialogIsShowingAndTitleIsNotEqualToExpected() {
     ScreenLock.instance().acquire(this);
     TestWindow window = TestWindow.createAndShowNewWindow(DialogMatcher.class);
     TestDialog dialog = TestDialog.createAndShowNewDialog(window);
@@ -165,7 +165,7 @@ public class DialogMatcherTest extends EDTSafeTestCase {
   }
 
   @Test
-  public void shouldReturnFalseIfDialogIsNotShowingAndTitleIsNotEqualToExpected() {
+  public void should_return_false_if_DialogIsNotShowingAndTitleIsNotEqualToExpected() {
     DialogMatcher matcher = DialogMatcher.withTitle("Hello").andShowing();
     JDialog dialog = dialog().withTitle("Bye").createNew();
     assertThat(matcher.matches(dialog)).isFalse();

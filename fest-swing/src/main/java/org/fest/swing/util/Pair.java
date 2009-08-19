@@ -15,6 +15,7 @@
  */
 package org.fest.swing.util;
 
+
 /**
  * Understands a tuple of size 2.
  * @param <I> the generic type of the 1st. value in this tuple.
