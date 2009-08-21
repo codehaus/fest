@@ -22,10 +22,7 @@ import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
 
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
@@ -55,7 +52,7 @@ public abstract class KeyStrokeMappingProviderTestCase extends RobotBasedTestCas
 
   private JTextComponent textArea;
   private JTextComponentDriver driver;
-  
+
   final char character;
   final KeyStroke keyStroke;
 
@@ -63,7 +60,7 @@ public abstract class KeyStrokeMappingProviderTestCase extends RobotBasedTestCas
     this.character = character;
     this.keyStroke = keyStroke;
   }
-  
+
   @Override protected final void onSetUp() {
     MyWindow window = MyWindow.createNew(getClass());
     textArea = window.textArea;
@@ -93,7 +90,7 @@ public abstract class KeyStrokeMappingProviderTestCase extends RobotBasedTestCas
   final void pressKeyStrokeAndVerify(char expectedChar) {
     pressInTextArea();
     final String expectedText = valueOf(expectedChar);
-    pause(new Condition(concat("text in JTextArea is ", quote(expectedText))) {
+    pause(new Condition(concat("text in JTextArea to be ", quote(expectedText))) {
       public boolean test() {
         return expectedText.equals(textArea.getText());
       }
@@ -117,7 +114,7 @@ public abstract class KeyStrokeMappingProviderTestCase extends RobotBasedTestCas
       keyStrokes.add(new Object[] { mapping.character(), mapping.keyStroke() });
     return keyStrokes;
   }
-  
+
   private void pressInTextArea() {
     driver.pressAndReleaseKey(textArea, keyStroke.getKeyCode(), new int[] { keyStroke.getModifiers() });
   }

@@ -38,12 +38,11 @@ public class BasicJTableCellReader_fontAt_Test extends BasicJTableCellReader_Tes
 
   @Test
   public void should_return_font_from_cellRenderer() {
-    JLabel label = setJLabelAsCellRendererOf(table);
-    robot.waitForIdle();
+    JLabel label = setJLabelAsCellRenderer();
     Font font = fontAt(reader, table, 0, 0);
     assertThat(font).isEqualTo(fontOf(label));
   }
-  
+
   @RunsInEDT
   private static Font fontAt(final BasicJTableCellReader reader, final JTable table, final int row, final int column) {
     return execute(new GuiQuery<Font>() {

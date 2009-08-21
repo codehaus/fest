@@ -33,6 +33,7 @@ public class JInternalFrameDriver_resizeHeightTo_Test extends JInternalFrameDriv
 
   @Test
   public void should_resize_height() {
+    showWindow();
     int newHeight = 600;
     assertThat(heightOf(internalFrame)).isNotEqualTo(newHeight);
     driver.resizeHeightTo(internalFrame, newHeight);

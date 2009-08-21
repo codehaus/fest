@@ -20,9 +20,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.task.ComponentRequestFocusAndWaitForFocusGainTask.giveFocusAndWaitTillIsFocused;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Frame;
+import java.awt.*;
 
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -45,6 +43,7 @@ public class ContainerFocusOwnerFinder_focusOwnerOf_Test extends SequentialTestC
   private ContainerFocusOwnerFinder finder;
 
   @Override protected void onSetUp() {
+    finder = new ContainerFocusOwnerFinder();
     window = MyWindow.createNew();
   }
 

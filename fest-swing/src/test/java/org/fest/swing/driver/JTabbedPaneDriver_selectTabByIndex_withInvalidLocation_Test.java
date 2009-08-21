@@ -39,6 +39,7 @@ public class JTabbedPaneDriver_selectTabByIndex_withInvalidLocation_Test extends
     driver = new JTabbedPaneDriver(robot, location);
     new EasyMockTemplate(location) {
       protected void expectations() {
+        location.validateIndex(tabbedPane, index);
         expect(location.pointAt(tabbedPane, index)).andThrow(new LocationUnavailableException("Thrown on purpose"));
       }
 

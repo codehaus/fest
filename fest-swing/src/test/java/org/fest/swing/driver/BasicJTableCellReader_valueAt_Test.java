@@ -21,10 +21,7 @@ import static org.fest.util.Arrays.array;
 
 import java.awt.Component;
 
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JTable;
-import javax.swing.JToolBar;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
@@ -72,13 +69,14 @@ public class BasicJTableCellReader_valueAt_Test extends BasicJTableCellReader_Te
 
   @Test
   public void should_return_text_from_cellRenderer_if_it_is_JLabel() {
+    setJLabelAsCellRenderer();
     String value = valueAt(reader, table, 0, 0);
     assertThat(value).isEqualTo("Hello");
   }
 
   @Test
   public void should_return_selection_from_cellRenderer_if_it_is_JComboBox() {
-    setJComboBoxAsCellRenderer(table, 1);
+    setJComboBoxAsCellRendererWithSelection(1);
     robot.waitForIdle();
     String value = valueAt(reader, table, 0, 0);
     assertThat(value).isEqualTo("Two");
@@ -86,18 +84,24 @@ public class BasicJTableCellReader_valueAt_Test extends BasicJTableCellReader_Te
 
   @Test
   public void should_return_null_if_cellRenderer_is_JComboBox_without_selection() {
-    setJComboBoxAsCellRenderer(table, -1);
+    setJComboBoxAsCellRendererWithSelection(-1);
     robot.waitForIdle();
     String value = valueAt(reader, table, 0, 0);
     assertThat(value).isNull();
   }
 
   @RunsInEDT
-  private static void setJComboBoxAsCellRenderer(final JTable table, final int comboBoxSelectedIndex) {
+  void setJComboBoxAsCellRendererWithSelection(int itemIndex) {
+    setJComboBoxAsCellRenderer(table, itemIndex);
+    robot.waitForIdle();
+  }
+
+  @RunsInEDT
+  private static void setJComboBoxAsCellRenderer(final JTable table, final int itemIndex) {
     execute(new GuiTask() {
       protected void executeInEDT() {
         JComboBox comboBox = new JComboBox(array("One", "Two"));
-        comboBox.setSelectedIndex(comboBoxSelectedIndex);
+        comboBox.setSelectedIndex(itemIndex);
         setCellRendererComponent(table, comboBox);
       }
     });
@@ -126,9 +130,9 @@ public class BasicJTableCellReader_valueAt_Test extends BasicJTableCellReader_Te
     CustomCellRenderer cellRenderer = new CustomCellRenderer(renderer);
     table.getColumnModel().getColumn(0).setCellRenderer(cellRenderer);
   }
-  
+
   @RunsInEDT
-  private static String valueAt(final BasicJTableCellReader reader, final JTable table, final int row, final 
+  private static String valueAt(final BasicJTableCellReader reader, final JTable table, final int row, final
       int column) {
     return execute(new GuiQuery<String>() {
       protected String executeInEDT() {

@@ -15,10 +15,10 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.util.Platform.controlOrCommandKey;
+
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
-
-import static org.fest.swing.util.Platform.controlOrCommandKey;
 
 /**
  * Understands a template for simulating multiple selection on a GUI component.
@@ -32,7 +32,7 @@ abstract class MultipleSelectionTemplate {
   MultipleSelectionTemplate(Robot robot) {
     this.robot = robot;
   }
-  
+
   abstract int elementCount();
 
   @RunsInEDT
@@ -42,9 +42,12 @@ abstract class MultipleSelectionTemplate {
     if (elementCount == 1) return;
     int key = controlOrCommandKey();
     robot.pressKey(key);
-    for (int i = 1; i < elementCount; i++) selectElement(i);
-    robot.releaseKey(key);
+    try {
+      for (int i = 1; i < elementCount; i++) selectElement(i);
+    } finally {
+      robot.releaseKey(key);
+    }
   }
-  
+
   abstract void selectElement(int index);
 }

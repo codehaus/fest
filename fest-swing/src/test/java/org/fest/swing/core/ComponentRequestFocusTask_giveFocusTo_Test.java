@@ -25,7 +25,6 @@ import javax.swing.JButton;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.core.SequentialTestCase;
 import org.fest.swing.test.swing.TestWindow;
 import org.junit.Test;
@@ -41,7 +40,6 @@ public class ComponentRequestFocusTask_giveFocusTo_Test extends SequentialTestCa
   private MyWindow window;
 
   @Override protected void onSetUp() {
-    ScreenLock.instance().acquire(this);
     window = MyWindow.createNew();
     window.display();
   }

@@ -38,12 +38,11 @@ public class BasicJTableCellReader_backgroundAt_Test extends BasicJTableCellRead
 
   @Test
   public void should_return_background_from_cellRenderer() {
-    JLabel label = setJLabelAsCellRendererOf(table);
-    robot.waitForIdle();
+    JLabel label = setJLabelAsCellRenderer();
     Color background = backgroundAt(reader, table, 0, 0);
     assertThat(background).isEqualTo(backgroundOf(label));
   }
-  
+
   @RunsInEDT
   private static Color backgroundAt(final BasicJTableCellReader reader, final JTable table, final int row, final int column) {
     return execute(new GuiQuery<Color>() {

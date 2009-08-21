@@ -49,7 +49,14 @@ public class BasicJTableCellReader_TestCase extends RobotBasedTestCase {
   }
 
   @RunsInEDT
-  static JLabel setJLabelAsCellRendererOf(final JTable table) {
+  final JLabel setJLabelAsCellRenderer() {
+    JLabel label = setJLabelAsCellRendererOf(table);
+    robot.waitForIdle();
+    return label;
+  }
+
+  @RunsInEDT
+  private static JLabel setJLabelAsCellRendererOf(final JTable table) {
     return execute(new GuiQuery<JLabel>() {
       protected JLabel executeInEDT() {
         JLabel label = new JLabel("Hello");

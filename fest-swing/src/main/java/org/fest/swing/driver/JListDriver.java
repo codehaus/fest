@@ -130,12 +130,8 @@ public class JListDriver extends JComponentDriver {
     if (indices.isEmpty()) throw failMatchingNotFound(list, matcher);
     clearSelection(list);
     new MultipleSelectionTemplate(robot) {
-      int elementCount() {
-        return indices.size();
-      }
-      void selectElement(int index) {
-        selectItem(list, indices.get(index));
-      }
+      int elementCount() { return indices.size(); }
+      void selectElement(int index) { selectItem(list, indices.get(index)); }
     }.multiSelect();
   }
 
@@ -284,8 +280,11 @@ public class JListDriver extends JComponentDriver {
     clearSelection(list);
     selectItem(list, start);
     robot.pressKey(VK_SHIFT);
-    clickItem(list, end, LEFT_BUTTON, 1);
-    robot.releaseKey(VK_SHIFT);
+    try {
+      clickItem(list, end, LEFT_BUTTON, 1);
+    } finally {
+      robot.releaseKey(VK_SHIFT);
+    }
   }
 
   /**

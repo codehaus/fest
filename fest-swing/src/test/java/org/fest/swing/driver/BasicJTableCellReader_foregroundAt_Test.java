@@ -38,14 +38,14 @@ public class BasicJTableCellReader_foregroundAt_Test extends BasicJTableCellRead
 
   @Test
   public void should_return_foreground_from_cellRenderer() {
-    JLabel label = setJLabelAsCellRendererOf(table);
+    JLabel label = setJLabelAsCellRenderer();
     robot.waitForIdle();
     Color foreground = foregroundAt(reader, table, 0, 0);
     assertThat(foreground).isEqualTo(foregroundOf(label));
   }
 
   @RunsInEDT
-  private static Color foregroundAt(final BasicJTableCellReader reader, final JTable table, final int row, 
+  private static Color foregroundAt(final BasicJTableCellReader reader, final JTable table, final int row,
       final int column) {
     return execute(new GuiQuery<Color>() {
       protected Color executeInEDT() {
