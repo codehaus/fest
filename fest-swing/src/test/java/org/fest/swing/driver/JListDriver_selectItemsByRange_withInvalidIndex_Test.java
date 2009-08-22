@@ -50,7 +50,6 @@ public class JListDriver_selectItemsByRange_withInvalidIndex_Test extends JListD
 
   @Test
   public void should_throw_error_if_starting_index_is_out_of_bounds() {
-    showWindow();
     try {
       driver.selectItems(list, index, 1);
       failWhenExpectingException();
@@ -62,7 +61,6 @@ public class JListDriver_selectItemsByRange_withInvalidIndex_Test extends JListD
 
   @Test
   public void should_throw_error_if_endng_index_is_out_of_bounds() {
-    showWindow();
     try {
       driver.selectItems(list, 0, index);
       failWhenExpectingException();
@@ -70,5 +68,16 @@ public class JListDriver_selectItemsByRange_withInvalidIndex_Test extends JListD
       assertThat(e.getMessage()).isEqualTo(
           concat("Item index (", valueOf(index), ") should be between [0] and [2] (inclusive)"));
     }
+  }
+
+  @Test
+  public void should_keep_original_selection_if_index_is_out_of_bounds() {
+    select(1);
+    showWindow();
+    try {
+      driver.selectItems(list, 0, index);
+      failWhenExpectingException();
+    } catch (IndexOutOfBoundsException e) {}
+    assertThat(selectedValue()).isEqualTo("two");
   }
 }

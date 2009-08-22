@@ -23,6 +23,7 @@ import static org.fest.swing.awt.AWT.visibleCenterOf;
 import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
 import static org.fest.swing.driver.CommonValidations.validateCellReader;
 import static org.fest.swing.driver.JListContentQuery.contents;
+import static org.fest.swing.driver.JListItemIndexValidator.validateIndices;
 import static org.fest.swing.driver.JListItemValueQuery.itemValue;
 import static org.fest.swing.driver.JListMatchingItemQuery.*;
 import static org.fest.swing.driver.JListScrollToItemTask.*;
@@ -277,7 +278,7 @@ public class JListDriver extends JComponentDriver {
    */
   @RunsInEDT
   public void selectItems(JList list, int start, int end) {
-    clearSelection(list);
+    validateIndicesAndClearSelection(list, start, end);
     selectItem(list, start);
     robot.pressKey(VK_SHIFT);
     try {
@@ -285,6 +286,16 @@ public class JListDriver extends JComponentDriver {
     } finally {
       robot.releaseKey(VK_SHIFT);
     }
+  }
+
+  @RunsInEDT
+  private static void validateIndicesAndClearSelection(final JList list, final int...indices) {
+    execute(new GuiTask() {
+      protected void executeInEDT() {
+        validateIndices(list, indices);
+        list.clearSelection();
+      }
+    });
   }
 
   /**

@@ -15,13 +15,12 @@
  */
 package org.fest.swing.driver;
 
+import static java.lang.String.valueOf;
+import static org.fest.util.Strings.concat;
+
 import javax.swing.JList;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static java.lang.String.valueOf;
-
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands verification that a given number is a valid index of an item in a <code>{@link JList}</code>.
@@ -36,7 +35,16 @@ final class JListItemIndexValidator {
 
   @RunsInCurrentThread
   static void validateIndex(JList list, int index) {
+    validateIndex(index, list.getModel().getSize());
+  }
+
+  @RunsInCurrentThread
+  static void validateIndices(final JList list, int...indices) {
     int itemCount = list.getModel().getSize();
+    for (int index : indices) validateIndex(index, itemCount);
+  }
+
+  private static void validateIndex(int index, int itemCount) {
     if (index >= 0 && index < itemCount) return;
     throw new IndexOutOfBoundsException(concat(
         "Item index (", valueOf(index), ") should be between [", valueOf(0), "] and [", valueOf(itemCount - 1), "] (inclusive)"));

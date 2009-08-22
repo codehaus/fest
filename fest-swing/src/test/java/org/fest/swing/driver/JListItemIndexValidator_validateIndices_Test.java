@@ -30,17 +30,17 @@ import org.junit.Test;
  *
  * @author Alex Ruiz
  */
-public class JListItemIndexValidator_validateIndex_Test extends JListItemIndexValidator_TestCase {
+public class JListItemIndexValidator_validateIndices_Test extends JListItemIndexValidator_TestCase {
 
   @Test
-  public void should_pass_if_index_is_valid() {
-    validateIndex(0);
+  public void should_pass_if_indices_are_valid() {
+    validateIndices(0, 1, 2);
   }
 
   @Test
   public void should_throw_error_if_index_is_negative() {
     try {
-      validateIndex(-1);
+      validateIndices(-1, 0, 1);
       failWhenExpectingException();
     } catch (IndexOutOfBoundsException e) {
       Assertions.assertThat(e.getMessage()).isEqualTo("Item index (-1) should be between [0] and [2] (inclusive)");
@@ -50,7 +50,7 @@ public class JListItemIndexValidator_validateIndex_Test extends JListItemIndexVa
   @Test
   public void should_throw_error_if_index_is_greater_than_index_of_last_item() {
     try {
-      validateIndex(3);
+      validateIndices(0, 1, 3);
       failWhenExpectingException();
     } catch (IndexOutOfBoundsException e) {
       Assertions.assertThat(e.getMessage()).isEqualTo("Item index (3) should be between [0] and [2] (inclusive)");
@@ -58,15 +58,15 @@ public class JListItemIndexValidator_validateIndex_Test extends JListItemIndexVa
   }
 
   @RunsInEDT
-  private void validateIndex(int index) {
-    validateIndex(list, index);
+  private void validateIndices(int...indices) {
+    validateIndices(list, indices);
   }
 
   @RunsInEDT
-  private static void validateIndex(final JList list, final int index) {
+  private static void validateIndices(final JList list, final int...indices) {
     execute(new GuiTask() {
       protected void executeInEDT() {
-        JListItemIndexValidator.validateIndex(list, index);
+        JListItemIndexValidator.validateIndices(list, indices);
       }
     });
   }
