@@ -5,7 +5,7 @@
     <author email="alex.ruiz.05@gmail.com">Alex Ruiz</author>
   </properties>
   <body>
-    <release version="1.2a3" date="2009-08-25" description="Subsequent release">
+    <release version="1.2a3" date="2009-08-31" description="Subsequent release">
       <action dev="alexruiz" type="add" issue="FEST-7" due-to="Cephei">
         Added method 'expandRow(int)' to JTreeFixture.
       </action>
