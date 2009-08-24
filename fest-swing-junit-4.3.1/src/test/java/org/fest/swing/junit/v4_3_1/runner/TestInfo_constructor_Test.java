@@ -19,25 +19,26 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.lang.reflect.Method;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
- * Tests for <code>{@link TestInfo}</code>.
+ * Tests for <code>{@link TestInfo#TestInfo(Object, Class, Method)}</code>.
  *
  * @author Alex Ruiz
  */
-@Test public class TestInfoTest {
+public class TestInfo_constructor_Test {
 
   private Object test;
   private Class<?> type;
 
-  @BeforeClass public void setUpOnce() {
+  @Before public void setUpOnce() {
     test = new Object();
     type = SomeGuiTest.class;
   }
 
-  public void shouldCreateTestInfoForGuiTestMethod() throws Exception {
+  @Test
+  public void should_create_TestInfo_for_GUI_test_method() throws Exception {
     Method method = type.getDeclaredMethod("successfulGUITest");
     TestInfo testInfo = new TestInfo(test, type, method);
     assertTestInfoCreatedCorrectly(testInfo, method);
@@ -45,7 +46,8 @@ import org.testng.annotations.Test;
     assertThat(testInfo.screenshotFileName()).isEqualTo("org.fest.swing.junit.v4_3_1.runner.SomeGuiTest.successfulGUITest");
   }
 
-  public void shouldCreateTestInfoForNonGuiTestMethod() throws Exception {
+  @Test
+  public void should_create_TestInfo_for_non_GUI_test_method() throws Exception {
     Method method = method("successfulNonGUITest");
     TestInfo testInfo = new TestInfo(test, type, method);
     assertTestInfoCreatedCorrectly(testInfo, method);

@@ -25,68 +25,82 @@ import java.lang.reflect.Method;
 import org.easymock.IArgumentMatcher;
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.junit.runner.FailureScreenshotTaker;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 /**
- * Tests for <code>{@link MethodRunner}</code>.
+ * Tests for <code>{@link MethodRunner#addFailure(Throwable)}</code>.
  *
  * @author Alex Ruiz
  */
-@Test public class MethodRunnerTest {
+public class MethodRunner_addFailure_Test {
 
   private Class<?> testClass;
   private RunNotifier notifier;
   private FailureScreenshotTaker screenshotTaker;
+  private TestInfo testInfo;
+  private MethodRunner runner;
+  private Exception exception;
+  private Failure expectedFailure;
 
-  @BeforeMethod public void setUp() {
+  @Before public void setUp() {
     testClass = SomeGuiTest.class;
     notifier = createMock(RunNotifier.class);
     screenshotTaker = createMock(FailureScreenshotTaker.class);
+    exception = new Exception();
   }
 
-  public void shouldTakeScreenshotIfTestFailsAndIsGuiTest() throws Exception {
-    final TestInfo testInfo = new TestInfo(new Object(), testClass, method("failedGUITest"));
-    final MethodRunner runner = new MethodRunner(testInfo, notifier, screenshotTaker);
-    final Exception e = new Exception();
+  @Test
+  public void should_take_screenshot_if_test_fails_and_is_GUI_test() throws Exception {
+    setUpUsing("failedGUITest");
     new EasyMockTemplate(notifier, screenshotTaker) {
       protected void expectations() {
         screenshotTaker.saveScreenshot(testInfo.screenshotFileName());
         expectLastCall().once();
-        Failure expectedFailure = new Failure(testInfo.description(), e);
-        reportMatcher(new FailureMatcher(expectedFailure));
-        notifier.fireTestFailure(expectedFailure);
-        expectLastCall().once();
+        reportMatcherForFailure();
+        expectNotifierToFireTestFailure();
       }
 
       protected void codeToTest() {
-        runner.addFailure(e);
+        runner.addFailure(exception);
       }
     }.run();
   }
 
-  public void shouldNotTakeScreenshotIfTestFailsAndIsNotGuiTest() throws Exception {
-    final TestInfo testInfo = new TestInfo(new Object(), testClass, method("failedNonGUITest"));
-    final MethodRunner runner = new MethodRunner(testInfo, notifier, screenshotTaker);
-    final Exception e = new Exception();
+  @Test
+  public void should_not_take_screenshot_if_test_fails_and_is_not_GUI_test() throws Exception {
+    setUpUsing("failedNonGUITest");
     new EasyMockTemplate(notifier, screenshotTaker) {
       protected void expectations() {
-        Failure expectedFailure = new Failure(testInfo.description(), e);
-        reportMatcher(new FailureMatcher(expectedFailure));
-        notifier.fireTestFailure(expectedFailure);
-        expectLastCall().once();
+        reportMatcherForFailure();
+        expectNotifierToFireTestFailure();
       }
 
       protected void codeToTest() {
-        runner.addFailure(e);
+        runner.addFailure(exception);
       }
     }.run();
+  }
+
+  private void setUpUsing(String methodName) throws Exception {
+    testInfo = new TestInfo(new Object(), testClass, method(methodName));
+    runner = new MethodRunner(testInfo, notifier, screenshotTaker);
+    expectedFailure = new Failure(testInfo.description(), exception);
   }
 
   private Method method(String name) throws Exception {
     return testClass.getDeclaredMethod(name);
+  }
+
+  private void reportMatcherForFailure() {
+    reportMatcher(new FailureMatcher(expectedFailure));
+  }
+
+  private void expectNotifierToFireTestFailure() {
+    notifier.fireTestFailure(expectedFailure);
+    expectLastCall().once();
   }
 
   private static class FailureMatcher implements IArgumentMatcher {
