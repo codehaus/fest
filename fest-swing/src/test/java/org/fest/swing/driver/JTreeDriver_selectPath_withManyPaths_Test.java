@@ -52,7 +52,7 @@ public class JTreeDriver_selectPath_withManyPaths_Test extends JTreeDriver_selec
   public JTreeDriver_selectPath_withManyPaths_Test(String treePath) {
     this.treePath = treePath;
   }
-  
+
   @Test
   public void should_select_cell() {
     showWindow();

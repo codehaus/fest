@@ -17,12 +17,11 @@ package org.fest.swing.driver;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.task.JTreeSelectRowTask.selectRow;
 import static org.fest.util.Arrays.array;
 
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeSelectionModel;
-import javax.swing.tree.TreePath;
+import javax.swing.tree.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
@@ -95,6 +94,14 @@ public abstract class JTreeDriver_selectCell_TestCase extends JTreeDriver_TestCa
       assertThat(textOf(actualSelection[i])).isEqualTo(paths[i]);
   }
 
+  @RunsInEDT
+  private static TreePath[] selectionPathsOf(final JTree tree) {
+    return execute(new GuiQuery<TreePath[]>() {
+      protected TreePath[] executeInEDT()  {
+        return tree.getSelectionPaths();
+      }
+    });
+  }
 
   @RunsInEDT
   final void selectFirstChildOfRoot() {
@@ -112,6 +119,7 @@ public abstract class JTreeDriver_selectCell_TestCase extends JTreeDriver_TestCa
   private static void setSelectionPath(final JTree tree, final TreePath path) {
     execute(new GuiTask() {
       protected void executeInEDT() {
+        tree.expandPath(path);
         tree.setSelectionPath(path);
       }
     });
@@ -133,11 +141,8 @@ public abstract class JTreeDriver_selectCell_TestCase extends JTreeDriver_TestCa
   }
 
   @RunsInEDT
-  private static TreePath[] selectionPathsOf(final JTree tree) {
-    return execute(new GuiQuery<TreePath[]>() {
-      protected TreePath[] executeInEDT()  {
-        return tree.getSelectionPaths();
-      }
-    });
+  final void select(int row) {
+    selectRow(tree, row);
+    robot.waitForIdle();
   }
 }

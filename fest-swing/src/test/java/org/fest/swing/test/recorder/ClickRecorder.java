@@ -15,9 +15,10 @@
  */
 package org.fest.swing.test.recorder;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Point;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.core.MouseButton.*;
+
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
@@ -26,19 +27,24 @@ import java.util.Map;
 import org.fest.assertions.AssertExtension;
 import org.fest.swing.core.MouseButton;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.core.MouseButton.*;
-
 /**
  * Understands a mouse listener that records mouse events.
  *
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class ClickRecorder extends MouseAdapter implements AssertExtension {
+public class ClickRecorder implements AssertExtension {
 
   public static ClickRecorder attachTo(Component target) {
-    return new ClickRecorder(target);
+    ClickRecorder recorder = new ClickRecorder();
+    attach(new ClickListener(recorder), target);
+    return recorder;
+  }
+
+  private static void attach(ClickListener listener, Component target) {
+    target.addMouseListener(listener);
+    if (!(target instanceof Container)) return;
+    for (Component c : ((Container)target).getComponents()) attach(listener, c);
   }
 
   private static final Map<Integer, MouseButton> MOUSE_BUTTON_MAP = new HashMap<Integer, MouseButton>();
@@ -53,20 +59,19 @@ public class ClickRecorder extends MouseAdapter implements AssertExtension {
   private int clickCount;
   private Point pointClicked;
 
-  private ClickRecorder(Component target) {
-    attach(this, target);
-  }
+  private static class ClickListener extends MouseAdapter {
 
-  private static void attach(ClickRecorder mouseListener, Component target) {
-    target.addMouseListener(mouseListener);
-    if (!(target instanceof Container)) return;
-    for (Component c : ((Container)target).getComponents()) attach(mouseListener, c);
-  }
+    private final ClickRecorder owner;
 
-  @Override public void mousePressed(MouseEvent e) {
-    clickedButton = MOUSE_BUTTON_MAP.get(e.getButton());
-    clickCount = e.getClickCount();
-    pointClicked = e.getPoint();
+    ClickListener(ClickRecorder owner) {
+      this.owner = owner;
+    }
+
+    @Override public void mousePressed(MouseEvent e) {
+      owner.clickedButton = MOUSE_BUTTON_MAP.get(e.getButton());
+      owner.clickCount = e.getClickCount();
+      owner.pointClicked = e.getPoint();
+    }
   }
 
   public ClickRecorder wasNotClicked() {

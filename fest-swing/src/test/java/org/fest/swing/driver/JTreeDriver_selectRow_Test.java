@@ -15,8 +15,10 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.core.CommonAssertions.*;
 
+import org.fest.swing.test.recorder.ClickRecorder;
 import org.junit.Test;
 
 /**
@@ -36,6 +38,17 @@ public class JTreeDriver_selectRow_Test extends JTreeDriver_selectCell_TestCase 
     requireSelectedRows(1);
     driver.selectRow(tree, 0);
     requireSelectedRows(0);
+  }
+
+  @Test
+  public void should_not_do_anything_if_cell_is_already_selected() {
+    showWindow();
+    clearTreeSelection();
+    select(1);
+    ClickRecorder recorder = ClickRecorder.attachTo(tree);
+    driver.selectRow(tree, 1);
+    assertThat(recorder).wasNotClicked();
+    requireSelectedRows(1);
   }
 
   @Test

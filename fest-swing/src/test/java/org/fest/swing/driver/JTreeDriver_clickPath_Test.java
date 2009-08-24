@@ -17,28 +17,33 @@ package org.fest.swing.driver;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.core.CommonAssertions.*;
-import static org.fest.util.Arrays.array;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
-
-import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.exception.LocationUnavailableException;
 import org.fest.swing.test.recorder.ClickRecorder;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link JTreeDriver#selectPath(javax.swing.JTree, String)}</code>.
+ * Tests for <code>{@link JTreeDriver#clickPath(javax.swing.JTree, String)}</code>.
  *
  * @author Alex Ruiz
  */
-public class JTreeDriver_selectPath_Test extends JTreeDriver_selectCell_TestCase {
+public class JTreeDriver_clickPath_Test extends JTreeDriver_selectCell_TestCase {
+
+  @Test
+  public void should_click_path() {
+    showWindow();
+    ClickRecorder recorder = ClickRecorder.attachTo(tree);
+    driver.clickPath(tree, "root/branch1/branch1.1/branch1.1.1");
+    assertThat(recorder).wasClicked()
+                        .timesClicked(1);
+    requireSelectedPaths("root/branch1/branch1.1/branch1.1.1");
+  }
 
   @Test
   public void should_throw_error_if_path_not_found() {
     showWindow();
     try {
-      driver.selectPath(tree, "another");
+      driver.clickPath(tree, "another");
       failWhenExpectingException();
     } catch (LocationUnavailableException e) {
       assertThat(e.getMessage()).isEqualTo("Unable to find path 'another'");
@@ -49,7 +54,7 @@ public class JTreeDriver_selectPath_Test extends JTreeDriver_selectCell_TestCase
   public void should_throw_error_if_JTree_is_disabled() {
     disableTree();
     try {
-      driver.selectPath(tree, "root/branch1");
+      driver.clickPath(tree, "root/branch1");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertThatErrorCauseIsDisabledComponent(e);
@@ -57,28 +62,9 @@ public class JTreeDriver_selectPath_Test extends JTreeDriver_selectCell_TestCase
   }
 
   @Test
-  public void should_not_do_anything_if_cell_is_already_selected() {
-    showWindow();
-    clearTreeSelection();
-    select(pathToBranch_1_1_1());
-    ClickRecorder recorder = ClickRecorder.attachTo(tree);
-    driver.selectPath(tree, "root/branch1/branch1.1/branch1.1.1");
-    assertThat(recorder).wasNotClicked();
-    requireSelectedPaths("root/branch1/branch1.1/branch1.1.1");
-  }
-
-  @RunsInEDT
-  private TreePath pathToBranch_1_1_1() {
-    DefaultMutableTreeNode root = rootOf(tree);
-    DefaultMutableTreeNode branch_1 = firstChildOf(root);
-    DefaultMutableTreeNode branch_1_1 = firstChildOf(branch_1);
-    return new TreePath(array(root, branch_1, branch_1_1, firstChildOf(branch_1_1)));
-  }
-
-  @Test
   public void should_throw_error_if_JTree_is_not_showing_on_the_screen() {
     try {
-      driver.selectPath(tree, "root/branch1");
+      driver.clickPath(tree, "root/branch1");
       failWhenExpectingException();
     } catch (IllegalStateException e) {
       assertThatErrorCauseIsNotShowingComponent(e);

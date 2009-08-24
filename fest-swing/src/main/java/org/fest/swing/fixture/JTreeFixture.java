@@ -18,21 +18,14 @@ package org.fest.swing.fixture;
 import java.awt.Point;
 import java.util.regex.Pattern;
 
-import javax.swing.JButton;
-import javax.swing.JPopupMenu;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.tree.TreePath;
 
 import org.fest.swing.cell.JTreeCellReader;
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
-import org.fest.swing.core.Robot;
+import org.fest.swing.core.*;
 import org.fest.swing.driver.BasicJTreeCellReader;
 import org.fest.swing.driver.JTreeDriver;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.LocationUnavailableException;
+import org.fest.swing.exception.*;
 import org.fest.swing.timing.Timeout;
 
 /**
@@ -71,7 +64,7 @@ import org.fest.swing.timing.Timeout;
  * @author Yvonne Wang
  * @author Fabien Barbero
  */
-public class JTreeFixture extends ComponentFixture<JTree> implements CommonComponentFixture, 
+public class JTreeFixture extends ComponentFixture<JTree> implements CommonComponentFixture,
     JComponentFixture, JPopupMenuInvokerFixture {
 
   private JTreeDriver driver;
@@ -130,7 +123,7 @@ public class JTreeFixture extends ComponentFixture<JTree> implements CommonCompo
     driver.doubleClickRow(target, row);
     return this;
   }
-  
+
   /**
    * Double-clicks the given path.
    * @param path the path to double-click.
@@ -263,7 +256,21 @@ public class JTreeFixture extends ComponentFixture<JTree> implements CommonCompo
   }
 
   /**
-   * Select the given path, expanding parent nodes if necessary.
+   * Clicks the given path, expanding parent nodes if necessary.
+   * @param path the path to click.
+   * @return this fixture.
+   * @throws IllegalStateException if this fixture's <code>JTree</code> is disabled.
+   * @throws IllegalStateException if this fixture's <code>JTree</code> is not showing on the screen.
+   * @throws LocationUnavailableException if the given path cannot be found.
+   */
+  public JTreeFixture clickPath(String path) {
+    driver.clickPath(target, path);
+    return this;
+  }
+
+  /**
+   * Select the given path, expanding parent nodes if necessary. Unlike <code>{@link #clickPath(String)}</code>,
+   * this method will not click the path if it is already selected.
    * @param path the path to select.
    * @return this fixture.
    * @throws IllegalStateException if this fixture's <code>JTree</code> is disabled.
@@ -639,7 +646,7 @@ public class JTreeFixture extends ComponentFixture<JTree> implements CommonCompo
    * @param pattern the regular expression pattern to match.
    * @return this fixture.
    * @throws NullPointerException if the given regular expression pattern is <code>null</code>.
-   * @throws AssertionError if the toolTip in this fixture's <code>JTree</code> does not match the given regular 
+   * @throws AssertionError if the toolTip in this fixture's <code>JTree</code> does not match the given regular
    * expression.
    * @since 1.2
    */
@@ -647,7 +654,7 @@ public class JTreeFixture extends ComponentFixture<JTree> implements CommonCompo
     driver.requireToolTip(target, pattern);
     return this;
   }
-  
+
 
   /**
    * Returns the client property stored in this fixture's <code>{@link JButton}</code>, under the given key.
@@ -656,7 +663,7 @@ public class JTreeFixture extends ComponentFixture<JTree> implements CommonCompo
    * not found.
    * @throws NullPointerException if the given key is <code>null</code>.
    * @since 1.2
-   */  
+   */
   public Object clientProperty(Object key) {
     return driver.clientProperty(target, key);
   }
