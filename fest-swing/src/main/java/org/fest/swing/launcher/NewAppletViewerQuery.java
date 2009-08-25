@@ -15,15 +15,15 @@
  */
 package org.fest.swing.launcher;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.timing.Pause.pause;
+
 import java.applet.Applet;
 import java.util.Map;
 
 import org.fest.swing.applet.AppletViewer;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.timing.Condition;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.timing.Pause.pause;
 
 /**
  * Understands an action, executed in the event dispatch thread, that creates and shows a new
@@ -44,7 +44,7 @@ final class NewAppletViewerQuery {
         return newViewer;
       }
     });
-    pause(new Condition("new AppletViewer is showing") {
+    pause(new Condition("new AppletViewer to be showing") {
       public boolean test() {
         return viewer.isShowing();
       }

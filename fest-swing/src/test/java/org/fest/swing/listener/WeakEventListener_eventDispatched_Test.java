@@ -26,12 +26,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link WeakEventListener}</code>.
- * TODO Split
+ * Tests for <code>{@link WeakEventListener#eventDispatched(AWTEvent)}</code>.
  *
  * @author Alex Ruiz
  */
-public class WeakEventListenerTest {
+public class WeakEventListener_eventDispatched_Test {
 
   private static final long EVENT_MASK = WINDOW_EVENT_MASK;
 
@@ -42,32 +41,30 @@ public class WeakEventListenerTest {
   @Before public void setUp() {
     toolkit = ToolkitStub.createNew();
     underlying = new UnderlyingEventListener();
+    listener = WeakEventListener.attachAsWeakEventListener(toolkit, underlying, EVENT_MASK);
   }
 
-  @Test public void shouldWrapListenerAndAddItselfToToolkitWithGivenMask() {
-    listener = WeakEventListener.attachAsWeakEventListener(toolkit, underlying, EVENT_MASK);
+  @Test
+  public void should_wrap_given_EventListener_and_add_itself_to_Toolkit_with_given_mask() {
     assertThat(listener.underlyingListener()).isSameAs(underlying);
     assertThat(toolkit.contains(listener, EVENT_MASK)).isTrue();
   }
 
   @Test
-  public void shouldDispatchEventsToWrappedListener() {
+  public void should_dispatch_events_to_wrapped_EventListener() {
     AWTEvent event = awtEvent();
-    listener = WeakEventListener.attachAsWeakEventListener(toolkit, underlying, EVENT_MASK);
     listener.eventDispatched(event);
     assertThat(underlying.dispatchedEvent).isSameAs(event);
   }
 
   @Test
-  public void shouldRemoveItselfFromToolkitIfWrappedListenerIsNull() {
-    AWTEvent event = awtEvent();
-    listener = WeakEventListener.attachAsWeakEventListener(toolkit, underlying, EVENT_MASK);
+  public void should_remove_itself_from_Toolkit_if_wrapped_EventListener_is_null() {
     listener.simulateUnderlyingListenerIsGarbageCollected();
-    listener.eventDispatched(event);
+    listener.eventDispatched(awtEvent());
     assertThat(toolkit.contains(listener, EVENT_MASK)).isFalse();
   }
 
-  private AWTEvent awtEvent() {
+  private static AWTEvent awtEvent() {
     return new AWTEvent(new Object(), 0) {
       private static final long serialVersionUID = 1L;
     };
@@ -77,7 +74,7 @@ public class WeakEventListenerTest {
     AWTEvent dispatchedEvent;
 
     UnderlyingEventListener() {}
-    
+
     public void eventDispatched(AWTEvent event) {
       dispatchedEvent = event;
     }
