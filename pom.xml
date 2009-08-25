@@ -228,6 +228,9 @@
       <name>Manuel Kueblboeck</name>
     </contributor>
     <contributor>
+      <name>Felipe Leme</name>
+    </contributor>
+    <contributor>
       <name>Kwen K. Liu</name>
     </contributor>
     <contributor>
@@ -375,7 +378,6 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.4.3</version>
         <configuration>
-          <forkMode>always</forkMode>
           <includes>
             <include>**/*Test.java</include>
           </includes>
