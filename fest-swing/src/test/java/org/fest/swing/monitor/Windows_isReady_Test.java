@@ -20,7 +20,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link Windows#isClosed(java.awt.Component)}</code>.
+ * Tests for <code>{@link Windows#isReady(java.awt.Window)}</code>.
  *
  * @author Alex Ruiz
  */
