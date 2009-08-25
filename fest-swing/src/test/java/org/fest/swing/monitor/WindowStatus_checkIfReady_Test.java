@@ -20,29 +20,23 @@ import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.query.ComponentSizeQuery.sizeOf;
 import static org.fest.swing.timing.Pause.pause;
-import static org.fest.util.Strings.concat;
+import static org.fest.swing.timing.Timeout.timeout;
 
-import java.awt.AWTException;
-import java.awt.Dimension;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.util.logging.Logger;
+import java.awt.*;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.test.core.SequentialTestCase;
 import org.fest.swing.test.swing.TestWindow;
+import org.fest.swing.timing.Condition;
 import org.fest.swing.util.RobotFactory;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link WindowStatus}</code>.
- * TODO: Split
+ * Tests for <code>{@link WindowStatus#checkIfReady(Window)}</code>.
  *
  * @author Alex Ruiz
  */
-public class WindowStatusTest extends SequentialTestCase {
-
-  private static Logger logger = Logger.getAnonymousLogger();
+public class WindowStatus_checkIfReady_Test extends SequentialTestCase {
 
   private WindowStatus status;
   private TestWindow window;
@@ -59,22 +53,7 @@ public class WindowStatusTest extends SequentialTestCase {
   }
 
   @Test
-  public void shouldHaveRobotEqualToNullIfRobotCannotBeCreated() {
-    final RobotFactory factory = createMock(RobotFactory.class);
-    new EasyMockTemplate(factory) {
-      protected void expectations() throws Throwable {
-        expect(factory.newRobotInPrimaryScreen()).andThrow(new AWTException("Thrown on purpose"));
-      }
-
-      protected void codeToTest() {
-        status = new WindowStatus(windows, factory);
-        assertThat(status.robot).isNull();
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldMoveMouseToCenterWithFrameWidthGreaterThanHeight() {
+  public void should_move_mouse_to_center_of_Frame_if_width_is_greater_than_height() {
     window.display();
     Point center = new WindowMetrics(window).center();
     center.x += WindowStatus.sign();
@@ -87,11 +66,11 @@ public class WindowStatusTest extends SequentialTestCase {
         status.checkIfReady(window);
       }
     }.run();
-    assertThat(mousePointerLocation()).isEqualTo(center);
+    assertThat(MouseInfo.getPointerInfo().getLocation()).isEqualTo(center);
   }
 
   @Test
-  public void shouldMoveMouseToCenterWithFrameHeightGreaterThanWidth() {
+  public void should_move_mouse_to_center_of_Frame_if_height_is_greater_than_width() {
     window.display(new Dimension(200, 400));
     Point center = new WindowMetrics(window).center();
     center.y += WindowStatus.sign();
@@ -104,13 +83,17 @@ public class WindowStatusTest extends SequentialTestCase {
         status.checkIfReady(window);
       }
     }.run();
-    assertThat(mousePointerLocation()).isEqualTo(center);
+    assertThat(MouseInfo.getPointerInfo().getLocation()).isEqualTo(center);
+  }
+
+  private void expectFrameIsReady() {
+    expect(windows.isShowingButNotReady(window)).andReturn(false);
   }
 
   @Test
-  public void shouldResizeWindowToReceiveEvents() {
+  public void should_resize_Window_to_receive_events() {
     window.display(new Dimension(0 ,0));
-    Dimension original = sizeOf(window);
+    final Dimension original = sizeOf(window);
     new EasyMockTemplate(windows) {
       @Override protected void expectations() {
         expect(windows.isShowingButNotReady(window)).andReturn(true);
@@ -120,17 +103,17 @@ public class WindowStatusTest extends SequentialTestCase {
         status.checkIfReady(window);
       }
     }.run();
-    // wait till frame is resized
-    final int timeToPause = 5000;
-    logger.info(concat("Pausing for ", timeToPause, " ms"));
-    pause(timeToPause);
-    assertThat(sizeOf(window).height).isGreaterThan(original.height);
+    pause(new Condition("Frame to be resized") {
+      public boolean test() {
+        return sizeOf(window).height > original.height;
+      }
+    }, timeout(5000));
   }
 
   @Test
-  public void shouldNotCheckIfRobotIsNull() {
+  public void should_not_check_if_Frame_is_ready_if_Robot_is_Null() {
     final RobotFactory factory = createMock(RobotFactory.class);
-    Point before = mousePointerLocation();
+    Point before = MouseInfo.getPointerInfo().getLocation();
     new EasyMockTemplate(windows, factory) {
       @Override protected void expectations() throws Throwable {
         expect(factory.newRobotInPrimaryScreen()).andReturn(null);
@@ -142,14 +125,6 @@ public class WindowStatusTest extends SequentialTestCase {
       }
     }.run();
     // mouse pointer should not have moved
-    assertThat(mousePointerLocation()).isEqualTo(before);
-  }
-
-  private void expectFrameIsReady() {
-    expect(windows.isShowingButNotReady(window)).andReturn(false);
-  }
-
-  private Point mousePointerLocation() {
-    return MouseInfo.getPointerInfo().getLocation();
+    assertThat(MouseInfo.getPointerInfo().getLocation()).isEqualTo(before);
   }
 }

@@ -15,35 +15,26 @@
  */
 package org.fest.swing.monitor;
 
-import static java.lang.String.valueOf;
-import static java.util.logging.Logger.getAnonymousLogger;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.timing.Pause.pause;
-import static org.fest.util.Strings.concat;
 
 import java.awt.Window;
 import java.util.Map;
 import java.util.TimerTask;
-import java.util.logging.Logger;
 
-import org.fest.swing.edt.GuiTask;
 import org.fest.swing.test.core.SequentialTestCase;
 import org.fest.swing.test.swing.TestWindow;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link Windows}</code>.
- * TODO: Split
+ * Base test case for <code>{@link Windows}</code>.
  *
  * @author Alex Ruiz
  */
-public class WindowsTest extends SequentialTestCase {
+public abstract class Windows_TestCase extends SequentialTestCase {
 
-  private static Logger logger = getAnonymousLogger();
-
-  private Windows windows;
-  private TestWindow window;
+  TestWindow window;
+  Windows windows;
+  WindowStateAssert windowState;
 
   private Map<Window, TimerTask> pending;
   private Map<Window, Boolean> open;
@@ -53,6 +44,7 @@ public class WindowsTest extends SequentialTestCase {
   @Override protected final void onSetUp() {
     window = TestWindow.createNewWindow(getClass());
     windows = new Windows();
+    windowState = new WindowStateAssert(windows, window);
     pending = windows.pending;
     open = windows.open;
     closed = windows.closed;
@@ -62,79 +54,6 @@ public class WindowsTest extends SequentialTestCase {
   @Override protected final void onTearDown() {
     window.destroy();
   }
-
-  @Test
-  public void shouldEvaluateWindowAsReadyAndNotHiddenIfVisible() {
-    window.display();
-    markExisting(windows, window);
-    assertWindowIsReady();
-  }
-
-  @Test
-  public void shouldEvaluateWindowAsReadyAndHiddenIfNotVisible() {
-    pack(window);
-    markExisting(windows, window);
-    assertThat(frameClosed()).isFalse();
-    assertThat(frameHidden()).isTrue();
-    assertThat(frameOpen()).isTrue();
-    assertThat(framePending()).isFalse();
-  }
-
-  private static void markExisting(final Windows windows, final TestWindow window) {
-    execute(new GuiTask() {
-      protected void executeInEDT() {
-        windows.markExisting(window);
-      }
-    });
-  }
-
-  private static void pack(final TestWindow window) {
-    execute(new GuiTask() {
-      protected void executeInEDT() {
-        window.pack();
-      }
-    });
-  }
-
-  @Test
-  public void shouldMarkWindowAsHidden() {
-    windows.markAsHidden(window);
-    assertThat(frameClosed()).isFalse();
-    assertThat(frameHidden()).isTrue();
-    assertThat(frameOpen()).isFalse();
-    assertThat(framePending()).isFalse();
-  }
-
-  @Test
-  public void shouldMarkWindowAsShowing() {
-    windows.markAsShowing(window);
-    assertThat(windows.isShowingButNotReady(window)).isTrue();
-    int timeToPause = Windows.WINDOW_READY_DELAY * 2;
-    logger.info(concat("Pausing for ", valueOf(timeToPause), " ms"));
-    pause(timeToPause);
-    assertWindowIsReady();
-  }
-
-  private void assertWindowIsReady() {
-    assertThat(frameClosed()).isFalse();
-    assertThat(frameHidden()).isFalse();
-    assertThat(frameOpen()).isTrue();
-    assertThat(framePending()).isFalse();
-  }
-
-  @Test
-  public void shouldMarkWindowAsClosed() {
-    windows.markAsClosed(window);
-    assertThat(frameClosed()).isTrue();
-    assertThat(frameHidden()).isFalse();
-    assertThat(frameOpen()).isFalse();
-    assertThat(framePending()).isFalse();
-  }
-
-  private boolean framePending() { return pending.containsKey(window); }
-  private boolean frameOpen()    { return open.containsKey(window);    }
-  private boolean frameHidden()  { return hidden.containsKey(window);  }
-  private boolean frameClosed()  { return closed.containsKey(window);  }
 
   @Test
   public void shouldReturnTrueIfWindowIsClosed() {
