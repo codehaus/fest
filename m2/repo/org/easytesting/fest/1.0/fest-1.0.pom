@@ -21,10 +21,10 @@
   </organization>
   <developers>
     <developer>
-      <id>alruiz</id>
+      <id>alexruiz</id>
       <name>Alex Ruiz</name>
       <email>alex.ruiz.05 at gmail.com</email>
-      <url>http://www.jroller.com/alexRuiz/</url>
+      <url>http://alexruiz.developerblogs.com</url>
       <roles>
         <role>Owner</role>
         <role>Developer</role>
@@ -40,14 +40,21 @@
       </roles>
     </developer>
     <developer>
-      <name>Michael Huttermann</name>
-      <url>http://michaelhuettermann.blogspot.com/</url>
+      <name>Stephen Chin</name>
+      <url>http://steveonjava.com/</url>
       <roles>
         <role>Developer</role>
       </roles>
     </developer>
     <developer>
       <name>Juhos Csaba-Zsolt</name>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Szczepan Faber</name>
+      <url>http://monkeyisland.pl/</url>
       <roles>
         <role>Developer</role>
       </roles>
@@ -60,6 +67,21 @@
       </roles>
     </developer>
     <developer>
+      <name>Michael Huttermann</name>
+      <url>http://michaelhuettermann.blogspot.com/</url>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>konermann</id>
+      <name>Ansgar Konermann</name>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>tedyoung</id>
       <name>Ted Young</name>
       <url>http://tedyoung.blogsome.com/</url>
       <roles>
@@ -100,8 +122,23 @@
       <name>Wim Boffe</name>
     </contributor>
     <contributor>
+      <name>Morten Breum Mikkelsen</name>
+    </contributor>
+    <contributor>
+      <name>Lalitha Chandra</name>
+    </contributor>
+    <contributor>
+      <name>Cephei</name>
+    </contributor>
+    <contributor>
+      <name>Ricky Clarkson</name>
+    </contributor>
+    <contributor>
       <name>Stephen Colebourne</name>
       <url>http://www.jroller.com/scolebourne/</url>
+    </contributor>
+    <contributor>
+      <name>Dario Consoli</name>
     </contributor>
     <contributor>
       <name>Keith Coughtrey</name>
@@ -163,6 +200,10 @@
       <url>http://thediscoblog.com</url>
     </contributor>
     <contributor>
+      <name>Kirill Grouchnikov</name>
+      <url>http://www.pushing-pixels.org/</url>
+    </contributor>
+    <contributor>
       <name>Slava Gurilev</name>
     </contributor>
     <contributor>
@@ -185,6 +226,9 @@
     </contributor>
     <contributor>
       <name>Manuel Kueblboeck</name>
+    </contributor>
+    <contributor>
+      <name>Felipe Leme</name>
     </contributor>
     <contributor>
       <name>Kwen K. Liu</name>
@@ -246,6 +290,9 @@
     </contributor>
     <contributor>
       <name>Uli Schrempp</name>
+    </contributor>
+    <contributor>
+      <name>Joel Shellman</name>
     </contributor>
     <contributor>
       <name>Hayden Shorter</name>
@@ -329,8 +376,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.4.2</version>
+        <version>2.4.3</version>
         <configuration>
+          <includes>
+            <include>**/*Test.java</include>
+          </includes>
           <argLine>-Xms512m -Xmx512m</argLine>
         </configuration>
       </plugin>
