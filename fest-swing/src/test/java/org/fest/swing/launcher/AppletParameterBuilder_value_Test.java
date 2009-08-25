@@ -17,17 +17,18 @@ package org.fest.swing.launcher;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import org.fest.swing.launcher.AppletParameter.AppletParameterBuilder;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link AppletParameter}</code>.
- * TODO Split
+ * Tests for <code>{@link AppletParameterBuilder#value(String)}</code>.
  *
  * @author Yvonne Wang
  */
-public class AppletParameterTest {
+public class AppletParameterBuilder_value_Test {
 
-  @Test public void shouldCreateAppletParameter() {
+  @Test
+  public void should_create_AppletParameter() {
     AppletParameter parameter = AppletParameter.name("bgcolor").value("blue");
     assertThat(parameter.name).isEqualTo("bgcolor");
     assertThat(parameter.value).isEqualTo("blue");

@@ -32,15 +32,14 @@ import org.fest.swing.test.core.RobotBasedTestCase;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link ApplicationLauncher}</code>.
- * TODO Split
+ * Tests for <code>{@link ApplicationLauncher#start()}</code>.
  *
  * @author Yvonne Wang
  */
-public class ApplicationLauncherTest extends RobotBasedTestCase {
+public class ApplicationLauncher_start_Test extends RobotBasedTestCase {
 
   @Test
-  public void shouldThrowErrorIfApplicationClassNameIsInvalid() {
+  public void should_throw_error_if_application_class_name_is_invalid() {
     try {
       ApplicationLauncher.application("Hello").start();
       failWhenExpectingException();
@@ -50,19 +49,19 @@ public class ApplicationLauncherTest extends RobotBasedTestCase {
   }
 
   @Test
-  public void shouldLaunchApplicationWithoutArguments() {
+  public void should_launch_application_without_arguments() {
     ApplicationLauncher.application(JavaApp.class).start();
     assertFrameIsShowing();
   }
 
   @Test
-  public void shouldLaunchApplicationWithoutArgumentsUsingFQCN() {
+  public void should_launch_application_without_arguments_using_FQCN() {
     ApplicationLauncher.application(JavaApp.class.getName()).start();
     assertFrameIsShowing();
   }
 
   @Test
-  public void shouldLaunchApplicationUsingArguments() {
+  public void should_launch_application_using_arguments() {
     final List<String> arguments = new ArrayList<String>();
     ArgumentObserver observer = new ArgumentObserver() {
       public void arguments(String[] args) {
@@ -76,7 +75,7 @@ public class ApplicationLauncherTest extends RobotBasedTestCase {
   }
 
   @Test(expected = NullPointerException.class)
-  public void shouldThrowErrorIfArgumentArrayIsNull() {
+  public void should_throw_error_if_argument_array_is_null() {
     String[] args = null;
     ApplicationLauncher.application(JavaApp.class).withArgs(args).start();
   }
