@@ -21,6 +21,7 @@ import static java.awt.event.WindowEvent.WINDOW_OPENED;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
+import static org.easymock.classextension.EasyMock.makeThreadSafe;
 import static org.fest.swing.timing.Pause.pause;
 
 import java.awt.AWTEvent;
@@ -31,9 +32,7 @@ import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.test.core.EDTSafeTestCase;
 import org.fest.swing.test.swing.TestDialog;
 import org.fest.swing.test.swing.TestWindow;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * Tests for <code>{@link TransientWindowListener}</code>.
@@ -49,6 +48,7 @@ public class TransientWindowListenerTest extends EDTSafeTestCase {
 
   @Before public void setUp() {
     mockWindowFilter = createMock(MockWindowFilter.class);
+    makeThreadSafe(mockWindowFilter, true);
     listener = new TransientWindowListener(mockWindowFilter);
     parent = TestWindow.createNewWindow(getClass());
     eventSource = TestDialog.createNewDialog(parent);
