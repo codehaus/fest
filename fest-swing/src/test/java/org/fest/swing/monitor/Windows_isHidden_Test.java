@@ -15,33 +15,27 @@
  */
 package org.fest.swing.monitor;
 
-import static java.lang.String.valueOf;
-import static java.util.logging.Logger.getAnonymousLogger;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.timing.Pause.pause;
-import static org.fest.util.Strings.concat;
-
-import java.util.logging.Logger;
 
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link Windows#markAsShowing(java.awt.Window)}</code>.
+ * Tests for <code>{@link Windows#isHidden(java.awt.Window)}</code>.
  *
  * @author Alex Ruiz
  */
-public class Windows_markAsShowing_Test extends Windows_TestCase {
-
-  private static Logger logger = getAnonymousLogger();
+public class Windows_isHidden_Test extends Windows_TestCase {
 
   @Test
-  public void should_mark_Window_as_showing() {
-    windows.markAsShowing(window);
-    assertThat(windows.isShowingButNotReady(window)).isTrue();
-    int timeToPause = Windows.WINDOW_READY_DELAY * 2;
-    logger.info(concat("Pausing for ", valueOf(timeToPause), " ms"));
-    pause(timeToPause);
-    assertThat(windowState()).isReady();
+  public void should_return_true_if_Window_is_hidden() {
+    windows.hidden.put(window, true);
+    assertThat(windows.isHidden(window)).isTrue();
+  }
+
+  @Test
+  public void should_return_false_if_Window_is_not_hidden() {
+    windows.hidden.remove(window);
+    assertThat(windows.isHidden(window)).isFalse();
   }
 
 }

@@ -29,9 +29,9 @@ public class Windows_markAsHidden_Test extends Windows_TestCase {
   @Test
   public void should_mark_Window_as_hidden() {
     windows.markAsHidden(window);
-    assertThat(windowState).isNotClosed()
-                           .isHidden()
-                           .isNotOpen()
-                           .isNotPending();
+    assertThat(windowState()).isNotClosed()
+                             .isHidden()
+                             .isNotOpen()
+                             .isNotPending();
   }
 }

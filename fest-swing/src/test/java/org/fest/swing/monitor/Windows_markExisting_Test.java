@@ -34,17 +34,17 @@ public class Windows_markExisting_Test extends Windows_TestCase {
   public void should_mark_visible_Window_as_ready_and_not_hidden() {
     window.display();
     markExisting(windows, window);
-    assertThat(windowState).isReady();
+    assertThat(windowState()).isReady();
   }
 
   @Test
   public void should_mark_not_visible_Window_as_ready_and_hidden() {
     pack(window);
     markExisting(windows, window);
-    assertThat(windowState).isOpen()
-                           .isNotClosed()
-                           .isHidden()
-                           .isNotPending();
+    assertThat(windowState()).isOpen()
+                             .isNotClosed()
+                             .isHidden()
+                             .isNotPending();
   }
 
   @RunsInEDT

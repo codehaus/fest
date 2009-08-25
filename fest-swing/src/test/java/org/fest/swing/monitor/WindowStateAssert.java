@@ -18,8 +18,6 @@ package org.fest.swing.monitor;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.awt.Window;
-import java.util.Map;
-import java.util.TimerTask;
 
 import org.fest.assertions.AssertExtension;
 
@@ -31,19 +29,12 @@ import org.fest.assertions.AssertExtension;
  */
 class WindowStateAssert implements AssertExtension {
 
-  private final Map<Window, TimerTask> pending;
-  private final Map<Window, Boolean> open;
-  private final Map<Window, Boolean> hidden;
-  private final Map<Window, Boolean> closed;
+  private final Windows windows;
+  private final Window target;
 
-  private final Window window;
-
-  WindowStateAssert(Windows windows, Window window) {
-    pending = windows.pending;
-    open = windows.open;
-    hidden = windows.hidden;
-    closed = windows.closed;
-    this.window = window;
+  WindowStateAssert(Windows windows, Window target) {
+    this.windows = windows;
+    this.target = target;
   }
 
   WindowStateAssert isClosed() {
@@ -57,7 +48,7 @@ class WindowStateAssert implements AssertExtension {
   }
 
   private boolean isWindowClosed() {
-    return closed.containsKey(window);
+    return windows.closed.containsKey(target);
   }
 
   WindowStateAssert isPending() {
@@ -71,7 +62,7 @@ class WindowStateAssert implements AssertExtension {
   }
 
   private boolean isWindowPending() {
-    return pending.containsKey(window);
+    return windows.pending.containsKey(target);
   }
 
   WindowStateAssert isOpen() {
@@ -85,7 +76,7 @@ class WindowStateAssert implements AssertExtension {
   }
 
   private boolean isWindowOpen() {
-    return open.containsKey(window);
+    return windows.open.containsKey(target);
   }
 
   WindowStateAssert isHidden() {
@@ -99,7 +90,7 @@ class WindowStateAssert implements AssertExtension {
   }
 
   private boolean isWindowHidden() {
-    return hidden.containsKey(window);
+    return windows.hidden.containsKey(target);
   }
 
   WindowStateAssert isReady() {
