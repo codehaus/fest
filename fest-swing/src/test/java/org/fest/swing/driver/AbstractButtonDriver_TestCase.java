@@ -32,8 +32,6 @@ import org.fest.swing.test.task.ComponentSetVisibleTask;
 /**
  * Base test case for <code>{@link AbstractButtonDriver}</code>.
  *
- * TODO split up
- *
  * @author Alex Ruiz
  * @author Yvonne Wang
  */

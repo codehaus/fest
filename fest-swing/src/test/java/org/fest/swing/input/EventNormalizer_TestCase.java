@@ -29,7 +29,7 @@ import org.fest.swing.test.awt.ToolkitStub;
  *
  * @author Alex Ruiz
  */
-public abstract class EventNormalizerTestCase {
+public abstract class EventNormalizer_TestCase {
 
   final void assertEventNormalizerIsInToolkit(ToolkitStub toolkit, EventNormalizer eventNormalizer, int mask) {
     List<WeakEventListener> listeners = toolkit.eventListenersUnderEventMask(mask, WeakEventListener.class);

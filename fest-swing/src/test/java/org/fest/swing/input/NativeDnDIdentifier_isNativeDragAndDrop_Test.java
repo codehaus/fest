@@ -27,11 +27,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link NativeDnDIdentifier}</code>.
+ * Tests for <code>{@link NativeDnDIdentifier#isNativeDragAndDrop(java.awt.AWTEvent)}</code>.
  *
  * @author Alex Ruiz
  */
-public class NativeDnDIdentifierTest extends EDTSafeTestCase {
+public class NativeDnDIdentifier_isNativeDragAndDrop_Test extends EDTSafeTestCase {
 
   private NativeDnDIdentifier dnd;
 
@@ -41,18 +41,18 @@ public class NativeDnDIdentifierTest extends EDTSafeTestCase {
   }
 
   @Test
-  public void shouldReturnIsNativeDnDIfEventIsMouseEventAndClassNameIsSunDropTargetEvent() {
+  public void should_return_true_if_event_is_mouse_event_and_its_class_name_is_SunDropTargetEvent() {
     assertThat(dnd.isNativeDragAndDrop(new SunDropTargetEvent())).isTrue();
   }
 
   @Test
-  public void shouldReturnIsNotNativeDnDIfEventIsNotMouseEvent() {
+  public void should_return_false_if_event_is_not_mouse_event() {
     KeyEvent e = new KeyEvent(label().createNew(), 0, 0, 0, 0, 'a');
     assertThat(dnd.isNativeDragAndDrop(e)).isFalse();
   }
 
   @Test
-  public void shouldReturnIsNotNativeDnDIfEventClassNameIsNotSunDropTargetEvent() {
+  public void should_return_false_if_event_class_name_is_not_SunDropTargetEvent() {
     MouseEvent e = new MouseEvent(label().createNew(), 0, 0, 0, 0, 0, 0, false);
     assertThat(dnd.isNativeDragAndDrop(e)).isFalse();
   }
