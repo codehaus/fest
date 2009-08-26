@@ -543,11 +543,6 @@ public class ShortArrayAssertTest {
       }
     });
   }
-  
-  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
-    new ShortArrayAssert(null).isEqualTo(null);
-  }
-
 
   private short asShort(int i) {
     return (short)i;

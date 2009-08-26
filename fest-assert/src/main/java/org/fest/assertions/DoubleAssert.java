@@ -7,19 +7,19 @@ import static org.fest.assertions.PrimitiveFail.*;
 import static org.fest.util.Strings.concat;
 
 /**
- * Understands Assertion methods for <code>Double</code>. To create a new instance of this class use the method
- * <code>{@link Assertions#assertThat(Double)}</code>.
- * 
+ * Understands Assertion methods for <code>Double</code>. To create a new instance of this class use the
+ * method <code>{@link Assertions#assertThat(double)}</code>.
+ *
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public final class DoubleAssert extends GenericAssert<Double> {
+public final class DoubleAssert extends PrimitiveAssert {
 
-  private static final Double ZERO = Double.valueOf(0.0d);
+  private static final double ZERO = 0.0;
 
-  DoubleAssert(Double actual) {
-    super(actual);
-  }
+  private final double actual;
+
+  DoubleAssert(double actual) { this.actual = actual; }
 
   /**
    * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
@@ -27,11 +27,9 @@ public final class DoubleAssert extends GenericAssert<Double> {
    * failure will not show the provided description.
    * <p>
    * For example:
-   * 
    * <pre>
    * assertThat(value).<strong>as</strong>(&quot;Some value&quot;).isEqualTo(otherValue);
    * </pre>
-   * 
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
@@ -42,16 +40,14 @@ public final class DoubleAssert extends GenericAssert<Double> {
   }
 
   /**
-   * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in <a href="http://groovy.codehaus.org/"
-   * target="_blank">Groovy</a>. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
+   * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in
+   * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
+   * method, otherwise any assertion failure will not show the provided description.
    * <p>
    * For example:
-   * 
    * <pre>
    * assertThat(value).<strong>describedAs</strong>(&quot;Some value&quot;).isEqualTo(otherValue);
    * </pre>
-   * 
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
@@ -66,11 +62,9 @@ public final class DoubleAssert extends GenericAssert<Double> {
    * failure will not show the provided description.
    * <p>
    * For example:
-   * 
    * <pre>
    * assertThat(value).<strong>as</strong>(new BasicDescription(&quot;Some value&quot;)).isEqualTo(otherValue);
    * </pre>
-   * 
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
@@ -81,16 +75,14 @@ public final class DoubleAssert extends GenericAssert<Double> {
   }
 
   /**
-   * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in <a
-   * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
+   * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in
+   * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
    * For example:
-   * 
    * <pre>
    * assertThat(value).<strong>describedAs</strong>(new BasicDescription(&quot;Some value&quot;)).isEqualTo(otherValue);
    * </pre>
-   * 
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
@@ -100,117 +92,109 @@ public final class DoubleAssert extends GenericAssert<Double> {
   }
 
   /**
-   * Verifies that the actual <code>Double</code> value is equal to the given one.
+   * Verifies that the actual <code>double</code> value is equal to the given one.
    * @param expected the value to compare the actual one to.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>Double</code> value is not equal to the given one.
+   * @throws AssertionError if the actual <code>double</code> value is not equal to the given one.
    */
-  public DoubleAssert isEqualTo(Double expected) {
-    assertEqualTo(expected);
+  public DoubleAssert isEqualTo(double expected) {
+    failIfNotEqual(description(), actual, expected);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>Double</code> value is not equal to the given one.
+   * Verifies that the actual <code>double</code> value is not equal to the given one.
    * @param value the value to compare the actual one to.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>Double</code> value is equal to the given one.
+   * @throws AssertionError if the actual <code>double</code> value is equal to the given one.
    */
-  public DoubleAssert isNotEqualTo(Double value) {
-    assertNotEqualTo(value);
+  public DoubleAssert isNotEqualTo(double value) {
+    failIfEqual(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>Double</code> value is greater than the given one.
+   * Verifies that the actual <code>double</code> value is greater than the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>Double</code> value is not greater than the given one.
+   * @throws AssertionError if the actual <code>double</code> value is not greater than the given one.
    */
-  public DoubleAssert isGreaterThan(Double value) {
+  public DoubleAssert isGreaterThan(double value) {
     failIfNotGreaterThan(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>Double</code> value is less than the given one.
+   * Verifies that the actual <code>double</code> value is less than the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>Double</code> value is not less than the given one.
+   * @throws AssertionError if the actual <code>double</code> value is not less than the given one.
    */
-  public DoubleAssert isLessThan(Double value) {
+  public DoubleAssert isLessThan(double value) {
     failIfNotLessThan(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>Double</code> value is greater or equal to the given one.
+   * Verifies that the actual <code>double</code> value is greater or equal to the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>Double</code> value is not greater than or equal to the given one.
+   * @throws AssertionError if the actual <code>double</code> value is not greater than or equal to the given one.
    */
-  public DoubleAssert isGreaterThanOrEqualTo(Double value) {
+  public DoubleAssert isGreaterThanOrEqualTo(double value) {
     failIfNotGreaterThanOrEqualTo(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>Double</code> value is less or equal to the given one.
+   * Verifies that the actual <code>double</code> value is less or equal to the given one.
    * @param value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>Double</code> value is not less than or equal to the given one.
+   * @throws AssertionError if the actual <code>double</code> value is not less than or equal to the given one.
    */
-  public DoubleAssert isLessThanOrEqualTo(Double value) {
+  public DoubleAssert isLessThanOrEqualTo(double value) {
     failIfNotLessThanOrEqualTo(description(), actual, value);
     return this;
   }
 
   /**
-   * Verifies that the actual <code>Double</code> value is positive.
+   * Verifies that the actual <code>double</code> value is positive.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>Double</code> value is not positive.
+   * @throws AssertionError if the actual <code>double</code> value is not positive.
    */
-  public DoubleAssert isPositive() {
-    return isGreaterThan(ZERO);
-  }
+  public DoubleAssert isPositive() { return isGreaterThan(ZERO); }
 
   /**
-   * Verifies that the actual <code>Double</code> value is negative.
+   * Verifies that the actual <code>double</code> value is negative.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>Double</code> value is not negative.
+   * @throws AssertionError if the actual <code>double</code> value is not negative.
    */
-  public DoubleAssert isNegative() {
-    return isLessThan(ZERO);
-  }
+  public DoubleAssert isNegative() { return isLessThan(ZERO); }
 
   /**
-   * Verifies that the actual <code>Double</code> value is equal to zero.
+   * Verifies that the actual <code>double</code> value is equal to zero.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>Double</code> value is not equal to zero.
+   * @throws AssertionError if the actual <code>double</code> value is not equal to zero.
    */
-  public DoubleAssert isZero() {
-    return isEqualTo(ZERO);
-  }
+  public DoubleAssert isZero() { return isEqualTo(ZERO); }
 
   /**
-   * Verifies that the actual <code>Double</code> value is equal to <code>{@link Double#NaN}</code>.
+   * Verifies that the actual <code>double</code> value is equal to <code>{@link Double#NaN}</code>.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>Double</code> value is not equal to <code>NAN</code>.
+   * @throws AssertionError if the actual <code>double</code> value is not equal to <code>NAN</code>.
    */
-  public DoubleAssert isNaN() {
-    return isEqualTo(Double.NaN);
-  }
+  public DoubleAssert isNaN() { return isEqualTo(Double.NaN); }
 
   /**
-   * Verifies that the actual <code>Double</code> value is equal to the given one, within a positive delta.
+   * Verifies that the actual <code>double</code> value is equal to the given one, within a positive delta.
    * @param expected the value to compare the actual one to.
    * @param delta the given delta.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>Double</code> value is not equal to the given one.
-   * @deprecated use method <code>{@link #isEqualTo(Double, org.fest.assertions.Delta)}</code> instead. This method will
-   *             be removed in version 2.0.
+   * @throws AssertionError if the actual <code>double</code> value is not equal to the given one.
+   * @deprecated use method <code>{@link #isEqualTo(double, org.fest.assertions.Delta)}</code> instead. This method will
+   * be removed in version 2.0.
    */
-  public DoubleAssert isEqualTo(Double expected, Delta delta) {
+  public DoubleAssert isEqualTo(double expected, Delta delta) {
     if (Double.compare(expected, actual) == 0) return this;
     if (!(abs(expected - actual) <= delta.value))
       fail(concat(errorMessageIfNotEqual(actual, expected), " using delta:", inBrackets(delta.value)));
@@ -218,14 +202,14 @@ public final class DoubleAssert extends GenericAssert<Double> {
   }
 
   /**
-   * Verifies that the actual <code>Double</code> value is equal to the given one, within a positive delta.
+   * Verifies that the actual <code>double</code> value is equal to the given one, within a positive delta.
    * @param expected the value to compare the actual one to.
    * @param delta the given delta.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>Double</code> value is not equal to the given one.
+   * @throws AssertionError if the actual <code>double</code> value is not equal to the given one.
    * @since 1.1
    */
-  public DoubleAssert isEqualTo(Double expected, org.fest.assertions.Delta delta) {
+  public DoubleAssert isEqualTo(double expected, org.fest.assertions.Delta delta) {
     if (Double.compare(expected, actual) == 0) return this;
     if (!(abs(expected - actual) <= delta.value()))
       fail(concat(errorMessageIfNotEqual(actual, expected), " using delta:", inBrackets(delta.value())));
@@ -234,21 +218,21 @@ public final class DoubleAssert extends GenericAssert<Double> {
 
   /**
    * Creates a new holder for a delta value to be used in
-   * <code>{@link DoubleAssert#isEqualTo(Double, org.fest.assertions.DoubleAssert.Delta)}</code>.
+   * <code>{@link DoubleAssert#isEqualTo(double, org.fest.assertions.DoubleAssert.Delta)}</code>.
    * @param d the delta value.
    * @return a new delta value holder.
    * @deprecated use method <code>{@link org.fest.assertions.Delta#delta(double)}</code> instead. This method will be
-   *             removed in version 2.0.
+   * removed in version 2.0.
    */
-  public static Delta delta(Double d) {
+  public static Delta delta(double d) {
     return new Delta(d);
   }
 
   /**
    * Holds a delta value to be used in
-   * <code>{@link DoubleAssert#isEqualTo(Double, org.fest.assertions.DoubleAssert.Delta)}</code>.
+   * <code>{@link DoubleAssert#isEqualTo(double, org.fest.assertions.DoubleAssert.Delta)}</code>.
    * @deprecated use top-level class <code>{@link org.fest.assertions.Delta}</code> instead. This class will be removed
-   *             in version 2.0.
+   * in version 2.0.
    */
   public static class Delta {
     final double value;
@@ -256,46 +240,5 @@ public final class DoubleAssert extends GenericAssert<Double> {
     private Delta(double value) {
       this.value = value;
     }
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public DoubleAssert doesNotSatisfy(Condition<Double> condition) {
-    assertDoesNotSatisfy(condition);
-    return this;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public DoubleAssert isNotNull() {
-    assertNotNull();
-    return this;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public DoubleAssert isNotSameAs(Double other) {
-    assertNotSameAs(other);
-    return this;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public void isNull() {
-    assertNull();
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public DoubleAssert isSameAs(Double expected) {
-    assertSameAs(expected);
-    return this;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public DoubleAssert satisfies(Condition<Double> condition) {
-    assertSatisfies(condition);
-    return this;
   }
 }

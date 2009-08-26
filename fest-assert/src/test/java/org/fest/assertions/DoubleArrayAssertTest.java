@@ -600,11 +600,6 @@ public class DoubleArrayAssertTest {
         }
       });
   }
-  
-  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
-    new DoubleArrayAssert(null).isEqualTo(null);
-  }
-  
 
   private double[] array(double... args) {
     return args;

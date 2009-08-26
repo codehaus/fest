@@ -538,11 +538,6 @@ public class LongArrayAssertTest {
       }
     });
   }
-  
-  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
-    new LongArrayAssert(null).isEqualTo(null);
-  }
-
 
   private long[] array(long... args) {
     return args;

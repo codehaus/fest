@@ -27,7 +27,7 @@ import static org.fest.util.Strings.concat;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public abstract class GenericAssert<T> extends Assert implements NullableAssert<GenericAssert<T>> {
+public abstract class GenericAssert<T> extends Assert {
 
   protected final T actual;
 
@@ -39,10 +39,13 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
     this.actual = actual;
   }
 
-  public abstract void isNull();
-  
-  public abstract GenericAssert<T> isNotNull();
-  
+  /**
+   * Asserts that the actual value (specified in the constructor of this class) is <code>null</code>.
+   * @throws AssertionError if the actual value is not <code>null</code>.
+   */
+  public final void isNull() {
+    failIfNotNull(description(), actual);
+  }
 
   /**
    * Verifies that the actual value satisfies the given condition.
@@ -136,21 +139,26 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    */
   protected abstract GenericAssert<T> isNotEqualTo(T other);
 
-
+  /**
+   * Verifies that the actual value is not <code>null</code>.
+   * @return this assertion object.
+   * @throws AssertionError if the actual value is <code>null</code>.
+   */
+  protected abstract GenericAssert<T> isNotNull();
 
   /**
-   * Verifies that the actual value object instance is the same object instance as the given one.
-   * @param expected the given object instance to compare the actual value instance to.
+   * Verifies that the actual value is the same as the given one.
+   * @param expected the given value to compare the actual value to.
    * @return this assertion object.
-   * @throws AssertionError if the actual value instance is not the same as the given one.
+   * @throws AssertionError if the actual value is not the same as the given one.
    */
   protected abstract GenericAssert<T> isSameAs(T expected);
 
   /**
-   * Verifies that the actual value object instance is not the same object instance as the given one.
-   * @param other the given object instance to compare the actual value instance to.
+   * Verifies that the actual value is not the same as the given one.
+   * @param other the given value to compare the actual value to.
    * @return this assertion object.
-   * @throws AssertionError if the actual value instance is the same as the given one.
+   * @throws AssertionError if the actual value is the same as the given one.
    */
   protected abstract GenericAssert<T> isNotSameAs(T other);
 
@@ -215,28 +223,20 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
   protected final void assertNotNull() {
     failIfNull(description(), actual);
   }
-  
-  /**
-   * Verifies that the actual value is <code>null</code>.
-   * @throws AssertionError if the actual value is not <code>null</code>.
-   */
-  protected final void assertNull() {
-    failIfNotNull(description(), actual);
-  }  
 
   /**
-   * Verifies that the actual value object is the same object instance as the given one.
-   * @param expected the value object to compare the actual value object to.
-   * @throws AssertionError if the actual value object is not the same instance as the given one.
+   * Verifies that the actual value is the same as the given one.
+   * @param expected the value to compare the actual value to.
+   * @throws AssertionError if the actual value is not the same as the given one.
    */
   protected final void assertSameAs(T expected) {
     failIfNotSame(description(), actual, expected);
   }
 
   /**
-   * Verifies that the actual value object is not the same object instance as the given one.
-   * @param expected the value object to compare the actual value object to.
-   * @throws AssertionError if the actual value object is the same instance as the given one.
+   * Verifies that the actual value is not the same as the given one.
+   * @param expected the value to compare the actual value to.
+   * @throws AssertionError if the actual value is the same as the given one.
    */
   protected final void assertNotSameAs(T expected) {
     failIfSame(description(), actual, expected);

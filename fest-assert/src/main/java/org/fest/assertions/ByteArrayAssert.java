@@ -189,14 +189,6 @@ public final class ByteArrayAssert extends ArrayAssert<byte[]> {
   }
 
   /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void isNull() {
-    assertNull();
-  }
-
-  /**
    * Verifies that the actual <code>byte</code> array contains at least on element.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>byte</code> array is <code>null</code>.

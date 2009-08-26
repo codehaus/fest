@@ -267,7 +267,7 @@ public class ListAssert extends GroupAssert<List<?>> {
    * <p>
    * For example:
    * <pre>
-   * assertThat(employees).<strong>describedAs</strong>(&quot;New Hires&quot;).hasSize(6);
+   * assertThat(employees).&lt;strong&gt;describedAs&lt;/strong&gt;(&quot;New Hires&quot;).hasSize(6);
    * </pre>
    * </p>
    * @param description the description of the actual value.
@@ -458,11 +458,5 @@ public class ListAssert extends GroupAssert<List<?>> {
   public ListAssert isNotSameAs(List<?> other) {
     assertNotSameAs(other);
     return this;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public void isNull() {
-    assertNull();
   }
 }

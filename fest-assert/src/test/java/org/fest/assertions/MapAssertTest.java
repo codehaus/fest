@@ -556,11 +556,6 @@ public class MapAssertTest {
       }
     });
   }
-  
-  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
-    new MapAssert(null).isEqualTo(null);
-  }
-  
 
   @Test public void shouldFailShowingDescritptionIfArrayIsNotNullOrEmptyAndExpectingNullOrEmpty() {
     expectAssertionError("[A Test] expecting a null or empty map, but was:<{'key1'=1}>").on(new CodeToTest() {

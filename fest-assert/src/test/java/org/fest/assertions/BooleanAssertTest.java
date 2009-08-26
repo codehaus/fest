@@ -138,9 +138,4 @@ public class BooleanAssertTest {
   @Test public void shouldPassIfValuesAreEqual() {
     new BooleanAssert(false).isEqualTo(false);
   }
-  
-  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
-    new BooleanAssert(null).isEqualTo(null);
-  }
-  
 }

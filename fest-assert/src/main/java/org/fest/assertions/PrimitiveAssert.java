@@ -1,5 +1,5 @@
 /*
- * Created on Mar 19, 2007
+ * Created on Sep 16, 2007
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -15,23 +15,15 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.Fail.*;
+import static org.fest.assertions.Formatting.format;
+import static org.fest.util.Strings.concat;
 
 /**
- * Understands assertion methods for <code>boolean</code> values. To create a new instance of this class use the method
- * <code>{@link Assertions#assertThat(boolean)}</code>.
+ * Understands a template for assertion methods for primitive values.
  *
- * @author Alex Ruiz
  * @author Yvonne Wang
- * @author David DIDIER
  */
-public final class BooleanAssert extends PrimitiveAssert {
-
-  private final boolean actual;
-
-  BooleanAssert(boolean actual) {
-    this.actual = actual;
-  }
+abstract class PrimitiveAssert extends Assert {
 
   /**
    * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
@@ -46,10 +38,7 @@ public final class BooleanAssert extends PrimitiveAssert {
    * @param description the description of the actual value.
    * @return this assertion object.
    */
-  public BooleanAssert as(String description) {
-    description(description);
-    return this;
-  }
+  abstract PrimitiveAssert as(String description);
 
   /**
    * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in
@@ -64,9 +53,7 @@ public final class BooleanAssert extends PrimitiveAssert {
    * @param description the description of the actual value.
    * @return this assertion object.
    */
-  public BooleanAssert describedAs(String description) {
-    return as(description);
-  }
+  abstract PrimitiveAssert describedAs(String description);
 
   /**
    * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
@@ -75,16 +62,13 @@ public final class BooleanAssert extends PrimitiveAssert {
    * <p>
    * For example:
    * <pre>
-   * assertThat(value).<strong>as</strong>(new BasicDescription(&quot;Some value&quot;)).isEqualTo(otherValue);
+   * assertThat(val).<strong>as</strong>(new BasicDescription(&quot;name&quot;)).isEqualTo(&quot;Frodo&quot;);
    * </pre>
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
    */
-  public BooleanAssert as(Description description) {
-    description(description);
-    return this;
-  }
+  abstract PrimitiveAssert as(Description description);
 
   /**
    * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in
@@ -93,51 +77,19 @@ public final class BooleanAssert extends PrimitiveAssert {
    * <p>
    * For example:
    * <pre>
-   * assertThat(value).<strong>describedAs</strong>(new BasicDescription(&quot;Some value&quot;)).isEqualTo(otherValue);
+   * assertThat(val).<strong>describedAs</strong>(new BasicDescription(&quot;name&quot;)).isEqualTo(&quot;Frodo&quot;);
    * </pre>
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
    */
-  public BooleanAssert describedAs(Description description) {
-    return as(description);
+  abstract PrimitiveAssert describedAs(Description description);
+
+  final void fail(String reason) {
+    Fail.fail(formatted(reason));
   }
 
-  /**
-   * Verifies that the actual <code>boolean</code> value is <code>true</code>.
-   * @throws AssertionError if the actual <code>boolean</code> value is <code>false</code>.
-   */
-  public void isTrue() {
-    isEqualTo(true);
-  }
-
-  /**
-   * Verifies that the actual <code>boolean</code> value is <code>false</code>.
-   * @throws AssertionError if the actual <code>boolean</code> value is <code>true</code>.
-   */
-  public void isFalse() {
-    isEqualTo(false);
-  }
-
-  /**
-   * Verifies that the actual <code>boolean</code> is equal to the given one.
-   * @param expected the given <code>boolean</code> to compare the actual <code>boolean</code> to.
-   * @return this assertion object.
-   * @throws AssertionError if the actual <code>boolean</code> is not equal to the given one.
-   */
-  public BooleanAssert isEqualTo(boolean expected) {
-    failIfNotEqual(description(), actual, expected);
-    return this;
-  }
-
-  /**
-   * Verifies that the actual <code>boolean</code> is not equal to the given one.
-   * @param other the given <code>boolean</code> to compare the actual <code>boolean</code> to.
-   * @return this assertion object.
-   * @throws AssertionError if the actual <code>boolean</code> is equal to the given one.
-   */
-  public BooleanAssert isNotEqualTo(boolean other) {
-    failIfEqual(description(), actual, other);
-    return this;
+  private String formatted(String reason) {
+    return concat(format(description()), reason);
   }
 }

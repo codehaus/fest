@@ -537,11 +537,6 @@ public class IntArrayAssertTest {
       }
     });
   }
-  
-  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
-    new IntArrayAssert(null).isEqualTo(null);
-  }
-  
 
   private int[] array(int... args) {
     return args;

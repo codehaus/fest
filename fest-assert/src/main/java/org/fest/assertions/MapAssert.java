@@ -358,10 +358,4 @@ public final class MapAssert extends GroupAssert<Map<?, ?>> {
     isNotNull();
     return actual.size();
   }
-
-  /** {@inheritDoc} */
-  @Override
-  public void isNull() {
-    assertNull();
-  }
 }

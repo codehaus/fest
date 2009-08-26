@@ -301,9 +301,4 @@ public class IntAssertTest {
       }
     });
   }
-  
-  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
-    new IntAssert(null).isEqualTo(null);
-  }
-  
 }

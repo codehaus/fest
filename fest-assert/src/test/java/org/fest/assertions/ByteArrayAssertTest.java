@@ -538,10 +538,6 @@ public class ByteArrayAssertTest {
     });
   }
 
-  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
-    new ByteArrayAssert(null).isEqualTo(null);
-  }
-
   private byte asByte(int i) {
     return (byte) i;
   }

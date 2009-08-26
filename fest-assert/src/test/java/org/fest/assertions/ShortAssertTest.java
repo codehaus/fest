@@ -301,11 +301,6 @@ public class ShortAssertTest {
       }
     });
   }
-  
-  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
-    new ShortAssert(null).isEqualTo(null);
-  }
-  
 
 
   private static short asShort(int i) {

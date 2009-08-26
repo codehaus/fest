@@ -266,10 +266,4 @@ public final class CharArrayAssert extends ArrayAssert<char[]> {
     assertNotSameAs(expected);
     return this;
   }
-
-  /** {@inheritDoc} */
-  @Override
-  public void isNull() {
-    assertNull();
-  }
 }

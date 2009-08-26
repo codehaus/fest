@@ -331,10 +331,4 @@ public final class FileAssert extends GenericAssert<File> {
     if (!actual.isAbsolute()) fail(concat("file:", inBrackets(actual), " should be an absolute path"));
     return this;
   }
-
-  /** {@inheritDoc} */
-  @Override
-  public void isNull() {
-    assertNull();
-  }
 }

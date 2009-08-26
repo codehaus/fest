@@ -1073,9 +1073,4 @@ import org.testng.annotations.Test;
       }
     });
   }
-  
-  public void shouldPassIfNullReferenceComparedToNullReference() {
-    new ListAssert(null).isEqualTo(null);
-  }
-  
 }

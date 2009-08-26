@@ -672,11 +672,6 @@ public class BigDecimalAssertTest {
       }
     });
   }
-  
-  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
-    new BigDecimalAssert(null).isEqualTo(null);
-  }
-
 
 
   private BigDecimal eight() {

@@ -543,11 +543,6 @@ public class FloatArrayAssertTest {
       }
     });
   }
-  
-  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
-    new FloatArrayAssert(null).isEqualTo(null);
-  }
-
 
   private float[] array(float... args) { return args; }
 }

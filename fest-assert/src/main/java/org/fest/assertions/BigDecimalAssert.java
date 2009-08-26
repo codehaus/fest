@@ -160,14 +160,14 @@ public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
     return isEqualByComparingTo(ZERO);
   }
 
-
+  /**
+   * Verifies that the actual <code>{@link BigDecimal}</code> is not <code>null</code>.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>BigDecimal</code> is <code>null</code>.
+   */
   public BigDecimalAssert isNotNull() {
     assertNotNull();
     return this;
-  }
-  
-  public void isNull() {
-    assertNull();
   }
 
   /**

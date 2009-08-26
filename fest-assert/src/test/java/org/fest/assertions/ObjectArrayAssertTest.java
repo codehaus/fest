@@ -626,9 +626,4 @@ public class ObjectArrayAssertTest {
   @Test public void shouldPassIfEmptyActualContainsNoDuplicates() {
     new ObjectArrayAssert(EMPTY_ARRAY).doesNotHaveDuplicates();
   }
-  
-  @Test public void shouldPassIfNullReferenceComparedToNullReference() {
-    new ObjectArrayAssert((Object[]) null).isEqualTo(null);
-  }
-  
 }
