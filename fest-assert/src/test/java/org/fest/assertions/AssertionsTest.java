@@ -200,17 +200,4 @@ import org.testng.annotations.Test;
   public void shouldReturnThrowableAssertIfArgumentIsThrowable() {
     assertIsInstanceOf(assertThat(new Exception()), ThrowableAssert.class);
   }
-  
-  public static class DerivedAssertionsClass extends Assertions {
-    private DerivedAssertionsClass() {
-      super();
-    }
-    public static boolean doesThisWork() {
-      return true;
-    }
-  }
-  public void shouldAllowExtensionOfAssertionsClass() {
-    assertThat(DerivedAssertionsClass.doesThisWork()).isTrue();
-  }
-  
 }
