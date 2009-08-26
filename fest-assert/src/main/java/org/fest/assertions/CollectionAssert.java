@@ -32,9 +32,9 @@ import org.fest.util.Collections;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class CollectionAssert extends GroupAssert<Collection<?>> {
+public final class CollectionAssert extends GroupAssert<Collection<?>> {
 
-  protected CollectionAssert(Collection<?> actual) {
+  CollectionAssert(Collection<?> actual) {
     super(actual);
   }
 

@@ -27,7 +27,7 @@ public class ShortAssert extends GenericAssert<Short> {
 
   private static final Short ZERO = Short.valueOf((short) 0);
 
-  protected ShortAssert(Short actual) {
+  ShortAssert(Short actual) {
     super(actual);
   }
 

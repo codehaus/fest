@@ -13,11 +13,11 @@ import static org.fest.util.Strings.concat;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public class DoubleAssert extends GenericAssert<Double> {
+public final class DoubleAssert extends GenericAssert<Double> {
 
   private static final Double ZERO = Double.valueOf(0.0d);
 
-  protected DoubleAssert(Double actual) {
+  DoubleAssert(Double actual) {
     super(actual);
   }
 

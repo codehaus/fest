@@ -29,9 +29,9 @@ import java.util.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class DoubleArrayAssert extends ArrayAssert<double[]> {
+public final class DoubleArrayAssert extends ArrayAssert<double[]> {
 
-  protected DoubleArrayAssert(double... actual) {
+  DoubleArrayAssert(double... actual) {
     super(actual);
   }
 

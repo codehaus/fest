@@ -27,11 +27,11 @@ import static org.fest.util.Strings.concat;
  *
  * @author Yvonne Wang
  */
-public class FloatAssert extends GenericAssert<Float> {
+public final class FloatAssert extends GenericAssert<Float> {
 
   private static final float ZERO = Float.valueOf(0f);
 
-  protected FloatAssert(Float actual) {
+  FloatAssert(Float actual) {
     super(actual);
   }
 

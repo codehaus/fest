@@ -28,9 +28,9 @@ import static org.fest.assertions.Fail.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class ByteArrayAssert extends ArrayAssert<byte[]> {
+public final class ByteArrayAssert extends ArrayAssert<byte[]> {
 
-  protected ByteArrayAssert(byte... actual) {
+  ByteArrayAssert(byte... actual) {
     super(actual);
   }
 

@@ -29,9 +29,9 @@ import static java.math.BigDecimal.ZERO;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class BigDecimalAssert extends GenericAssert<BigDecimal> {
+public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
 
-  protected BigDecimalAssert(BigDecimal actual) {
+  BigDecimalAssert(BigDecimal actual) {
     super(actual);
   }
 

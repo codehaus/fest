@@ -28,9 +28,9 @@ import static org.fest.assertions.Fail.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class LongArrayAssert extends ArrayAssert<long[]> {
+public final class LongArrayAssert extends ArrayAssert<long[]> {
 
-  protected LongArrayAssert(long... actual) {
+  LongArrayAssert(long... actual) {
     super(actual);
   }
 

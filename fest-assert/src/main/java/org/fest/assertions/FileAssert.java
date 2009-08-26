@@ -32,7 +32,7 @@ import static org.fest.util.Systems.LINE_SEPARATOR;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class FileAssert extends GenericAssert<File> {
+public final class FileAssert extends GenericAssert<File> {
 
   private final FileContentComparator comparator;
 
@@ -40,7 +40,7 @@ public class FileAssert extends GenericAssert<File> {
    * Creates a new <code>FileAssert</code>.
    * @param actual the actual <code>File</code> to test.
    */
-  protected FileAssert(File actual) {
+  FileAssert(File actual) {
     this(actual, new FileContentComparator());
   }
 

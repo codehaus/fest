@@ -33,7 +33,7 @@ abstract class ArrayAssert<T> extends GroupAssert<T> {
    * Creates a new </code>{@link ArrayAssert}</code>.
    * @param actual
    */
-  protected ArrayAssert(T actual) {
+  ArrayAssert(T actual) {
     super(actual);
   }
 

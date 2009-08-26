@@ -28,9 +28,9 @@ import static org.fest.assertions.Fail.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class FloatArrayAssert extends ArrayAssert<float[]> {
+public final class FloatArrayAssert extends ArrayAssert<float[]> {
 
-  protected FloatArrayAssert(float... actual) {
+  FloatArrayAssert(float... actual) {
     super(actual);
   }
 

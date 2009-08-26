@@ -31,9 +31,9 @@ import java.util.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class ObjectArrayAssert extends ArrayAssert<Object[]> {
+public final class ObjectArrayAssert extends ArrayAssert<Object[]> {
 
-  protected ObjectArrayAssert(Object... actual) {
+  ObjectArrayAssert(Object... actual) {
     super(actual);
   }
 

@@ -28,9 +28,9 @@ import static org.fest.assertions.Fail.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class ShortArrayAssert extends ArrayAssert<short[]> {
+public final class ShortArrayAssert extends ArrayAssert<short[]> {
 
-  protected ShortArrayAssert(short... actual) {
+  ShortArrayAssert(short... actual) {
     super(actual);
   }
 

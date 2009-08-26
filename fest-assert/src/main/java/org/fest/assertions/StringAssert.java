@@ -27,9 +27,9 @@ import static org.fest.util.Strings.concat;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public class StringAssert extends GroupAssert<String> {
+public final class StringAssert extends GroupAssert<String> {
 
-  protected StringAssert(String actual) {
+  StringAssert(String actual) {
     super(actual);
   }
 

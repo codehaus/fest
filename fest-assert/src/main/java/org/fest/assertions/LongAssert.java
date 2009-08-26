@@ -23,11 +23,11 @@ import static org.fest.assertions.PrimitiveFail.*;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public class LongAssert extends GenericAssert<Long> {
+public final class LongAssert extends GenericAssert<Long> {
 
   private static final Long ZERO = Long.valueOf(0L);
 
-  protected LongAssert(Long actual) {
+  LongAssert(Long actual) {
     super(actual);
   }
 

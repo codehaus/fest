@@ -35,7 +35,7 @@ import java.io.IOException;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class ImageAssert extends GenericAssert<BufferedImage> {
+public final class ImageAssert extends GenericAssert<BufferedImage> {
 
   private static final Threshold ZERO_THRESHOLD = threshold(0);
 
@@ -55,7 +55,7 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
     return imageReader.read(imageFile);
   }
 
-  protected ImageAssert(BufferedImage actual) {
+  ImageAssert(BufferedImage actual) {
     super(actual);
   }
 

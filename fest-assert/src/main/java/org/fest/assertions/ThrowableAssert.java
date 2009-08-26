@@ -25,7 +25,7 @@ import static org.fest.util.Strings.concat;
  * @author David DIDIER
  * @author Alex Ruiz
  */
-public class ThrowableAssert extends GenericAssert<Throwable> {
+public final class ThrowableAssert extends GenericAssert<Throwable> {
 
   private final ObjectAssert objectAssert;
 
@@ -33,7 +33,7 @@ public class ThrowableAssert extends GenericAssert<Throwable> {
    * Creates a new <code>ThrowableAssert</code>.
    * @param actual the actual <code>Throwable</code> to test.
    */
-  protected ThrowableAssert(Throwable actual) {
+  ThrowableAssert(Throwable actual) {
     super(actual);
     objectAssert = new ObjectAssert(actual);
   }

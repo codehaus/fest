@@ -24,11 +24,11 @@ import static org.fest.assertions.PrimitiveFail.*;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public class IntAssert extends GenericAssert<Integer> {
+public final class IntAssert extends GenericAssert<Integer> {
 
   private static final Integer ZERO = Integer.valueOf(0);
 
-  protected IntAssert(Integer actual) {
+  IntAssert(Integer actual) {
     super(actual);
   }
 

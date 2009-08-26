@@ -25,9 +25,9 @@ import static org.fest.assertions.Fail.*;
  * @author David DIDIER
  * @author Ansgar Konermann
  */
-public class BooleanAssert extends GenericAssert<Boolean> {
+public final class BooleanAssert extends GenericAssert<Boolean> {
 
-  protected BooleanAssert(Boolean actual) {
+  BooleanAssert(Boolean actual) {
     super(actual);
   }
 
