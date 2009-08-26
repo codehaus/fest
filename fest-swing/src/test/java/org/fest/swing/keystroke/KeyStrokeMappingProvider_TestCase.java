@@ -15,6 +15,7 @@
  */
 package org.fest.swing.keystroke;
 
+import static java.awt.event.KeyEvent.*;
 import static java.lang.String.valueOf;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.timing.Pause.pause;
@@ -36,19 +37,24 @@ import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.recorder.KeyRecorder;
 import org.fest.swing.test.swing.TestWindow;
 import org.fest.swing.timing.Condition;
+import org.junit.Test;
 
 /**
  * Test case for implementations of <code>{@link KeyStrokeMappingProvider}</code>.
  *
  * @author Alex Ruiz
  */
-public abstract class KeyStrokeMappingProviderTestCase extends RobotBasedTestCase {
+public abstract class KeyStrokeMappingProvider_TestCase extends RobotBasedTestCase {
 
-  static final char BACKSPACE = 8;
-  static final char CR = 10;
-  static final char DELETE = 127;
-  static final char ESCAPE = 27;
-  static final char LF = 13;
+  private static final Map<Character, Integer> BASIC_CHARS_AND_KEYS_MAP = new HashMap<Character, Integer>();
+
+  static {
+    BASIC_CHARS_AND_KEYS_MAP.put((char)  8, VK_BACK_SPACE);
+    BASIC_CHARS_AND_KEYS_MAP.put((char) 10, VK_ENTER);
+    BASIC_CHARS_AND_KEYS_MAP.put((char)127, VK_DELETE);
+    BASIC_CHARS_AND_KEYS_MAP.put((char) 27, VK_ESCAPE);
+    BASIC_CHARS_AND_KEYS_MAP.put((char) 13, VK_ENTER);
+  }
 
   private JTextComponent textArea;
   private JTextComponentDriver driver;
@@ -56,7 +62,7 @@ public abstract class KeyStrokeMappingProviderTestCase extends RobotBasedTestCas
   final char character;
   final KeyStroke keyStroke;
 
-  public KeyStrokeMappingProviderTestCase(char character, KeyStroke keyStroke) {
+  public KeyStrokeMappingProvider_TestCase(char character, KeyStroke keyStroke) {
     this.character = character;
     this.keyStroke = keyStroke;
   }
@@ -68,26 +74,13 @@ public abstract class KeyStrokeMappingProviderTestCase extends RobotBasedTestCas
     driver = new JTextComponentDriver(robot);
   }
 
-  static class KeyStrokeMappingIterator implements Iterator<Object[]> {
-    private final Iterator<KeyStrokeMapping> realIterator;
-
-    KeyStrokeMappingIterator(Collection<KeyStrokeMapping> keyStrokeMappings) {
-      realIterator = keyStrokeMappings.iterator();
-    }
-
-    public boolean hasNext() {
-      return realIterator.hasNext();
-    }
-
-    public Object[] next() {
-      KeyStrokeMapping next = realIterator.next();
-      return new Object[] { next.character(), next.keyStroke() };
-    }
-
-    public void remove() {}
+  @Test
+  public void should_provide_key_strokes_for_keyboard() {
+    if (basicCharacterVerified()) return;
+    pressKeyStrokeAndVerify(character);
   }
 
-  final void pressKeyStrokeAndVerify(char expectedChar) {
+  private void pressKeyStrokeAndVerify(char expectedChar) {
     pressInTextArea();
     final String expectedText = valueOf(expectedChar);
     pause(new Condition(concat("text in JTextArea to be ", quote(expectedText))) {
@@ -97,7 +90,14 @@ public abstract class KeyStrokeMappingProviderTestCase extends RobotBasedTestCas
     }, 500);
   }
 
-  final void pressKeyStrokeAndVerify(final int expectedKey) {
+  private boolean basicCharacterVerified() {
+    if (!BASIC_CHARS_AND_KEYS_MAP.containsKey(character)) return false;
+    int key = BASIC_CHARS_AND_KEYS_MAP.get(character);
+    pressKeyStrokeAndVerify(key);
+    return true;
+  }
+
+  private void pressKeyStrokeAndVerify(final int expectedKey) {
     assertThat(keyStroke.getModifiers()).as("no modifiers should be specified").isEqualTo(0);
     final KeyRecorder recorder = KeyRecorder.attachTo(textArea);
     pressInTextArea();
@@ -105,7 +105,11 @@ public abstract class KeyStrokeMappingProviderTestCase extends RobotBasedTestCas
       public boolean test() {
         return recorder.keysWerePressed(expectedKey);
       }
-    }, 500);
+    }, 2000);
+  }
+
+  private void pressInTextArea() {
+    driver.pressAndReleaseKey(textArea, keyStroke.getKeyCode(), new int[] { keyStroke.getModifiers() });
   }
 
   static Collection<Object[]> keyStrokesFrom(Collection<KeyStrokeMapping> mappings) {
@@ -113,10 +117,6 @@ public abstract class KeyStrokeMappingProviderTestCase extends RobotBasedTestCas
     for (KeyStrokeMapping mapping : mappings)
       keyStrokes.add(new Object[] { mapping.character(), mapping.keyStroke() });
     return keyStrokes;
-  }
-
-  private void pressInTextArea() {
-    driver.pressAndReleaseKey(textArea, keyStroke.getKeyCode(), new int[] { keyStroke.getModifiers() });
   }
 
   static class MyWindow extends TestWindow {

@@ -35,12 +35,12 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 /**
- * Tests for <code>{@link KeyStrokeMappingProviderPicker}</code>.
+ * Tests for <code>{@link KeyStrokeMappingProviderPicker#providerFor(Locale)}</code>.
  *
  * @author Alex Ruiz
  */
 @RunWith(Parameterized.class)
-public class KeyStrokeMappingProviderPickerTest {
+public class KeyStrokeMappingProviderPicker_providerFor_Test {
 
   private KeyStrokeMappingProviderPicker picker;
 
@@ -51,22 +51,22 @@ public class KeyStrokeMappingProviderPickerTest {
     return list(new Object[][] { { FRENCH }, { ENGLISH }, { CHINESE }, { ITALIAN }, { SIMPLIFIED_CHINESE } });
   }
 
-  public KeyStrokeMappingProviderPickerTest(Locale locale) {
+  public KeyStrokeMappingProviderPicker_providerFor_Test(Locale locale) {
     this.locale = locale;
   }
-  
+
   @Before public void setUp() {
     picker = new KeyStrokeMappingProviderPicker();
   }
 
   @Ignore(value = "German-specific mapping disabled till FEST-175 is fixed")
-  public void shouldPickProviderForGermanIfLocaleHasGermanLanguage() {
+  public void should_pick_provider_for_German_if_locale_has_German_language() {
     KeyStrokeMappingProvider provider = picker.providerFor(GERMAN);
     assertThat(provider).isInstanceOf(KeyStrokeMappingProvider_de.class);
   }
 
   @Test
-  public void shouldPickProviderForEnglishForAnyOtherLocale() {
+  public void should_pick_English_provider_as_default() {
     KeyStrokeMappingProvider provider = picker.providerFor(locale);
     assertThat(provider).isInstanceOf(KeyStrokeMappingProvider_en.class);
   }

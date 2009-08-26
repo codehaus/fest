@@ -15,7 +15,6 @@
  */
 package org.fest.swing.keystroke;
 
-import static java.awt.event.InputEvent.CTRL_MASK;
 import static java.awt.event.InputEvent.SHIFT_MASK;
 import static java.awt.event.KeyEvent.CHAR_UNDEFINED;
 import static java.awt.event.KeyEvent.VK_A;
@@ -23,59 +22,20 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import javax.swing.KeyStroke;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link KeyStrokeMap}</code>.
+ * Tests for <code>{@link KeyStrokeMap#charFor(javax.swing.KeyStroke)}</code>.
  *
  * @author Alex Ruiz
  */
-public class KeyStrokeMapTest {
-
-  private KeyStrokeMappingProvider provider;
-  private KeyStroke keyStroke;
-  private KeyStrokeMapping mapping;
-  private Collection<KeyStrokeMapping> mappings;
-
-  @Before public void setUp() {
-    provider = createMock(KeyStrokeMappingProvider.class);
-    keyStroke = KeyStroke.getKeyStroke(VK_A, CTRL_MASK);
-    mapping = new KeyStrokeMapping('A', keyStroke);
-    mappings = new ArrayList<KeyStrokeMapping>();
-    mappings.add(mapping);
-    KeyStrokeMap.clearKeyStrokes();
-    assertThat(KeyStrokeMap.hasKeyStrokes()).isFalse();
-  }
-
-  @After public void tearDown() {
-    KeyStrokeMap.updateKeyStrokeMapCollection(new KeyStrokeMapCollection());
-    KeyStrokeMap.reloadFromLocale();
-  }
+public class KeyStrokeMap_charFor_Test extends KeyStrokeMap_TestCase {
 
   @Test
-  public void shouldReturnKeyStrokeFromChar() {
-    new EasyMockTemplate(provider) {
-      protected void expectations() {
-        expect(provider.keyStrokeMappings()).andReturn(mappings);
-      }
-
-      protected void codeToTest() {
-        KeyStrokeMap.addKeyStrokesFrom(provider);
-        assertThat(KeyStrokeMap.keyStrokeFor('A')).isSameAs(keyStroke);
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldReturnCharForKeyStroke() {
+  public void should_return_char_for_KeyStroke() {
     new EasyMockTemplate(provider) {
       protected void expectations() {
         expect(provider.keyStrokeMappings()).andReturn(mappings);
@@ -89,7 +49,7 @@ public class KeyStrokeMapTest {
   }
 
   @Test
-  public void shouldStripModifiersButShiftIfCharForKeyStrokeNotFoundInMap() {
+  public void should_strip_modifiers_except_Shift_if_char_for_KeyStroke_not_found() {
     final Character character = 'a';
     final KeyStrokeMapCollection maps = createMock(KeyStrokeMapCollection.class);
     KeyStrokeMap.updateKeyStrokeMapCollection(maps);
@@ -106,7 +66,7 @@ public class KeyStrokeMapTest {
   }
 
   @Test
-  public void shouldReturnUndefinedCharacterIfCharacterForKeyStrokeNotFound() {
+  public void should_return_undefined_character_if_char_for_KeyStroke_not_found() {
     final KeyStrokeMapCollection maps = createMock(KeyStrokeMapCollection.class);
     KeyStrokeMap.updateKeyStrokeMapCollection(maps);
     new EasyMockTemplate(maps) {
