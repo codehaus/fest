@@ -23,67 +23,67 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link Index}</code>.
+ * Tests for <code>{@link TableCell#equals(Object)}</code> and <code>{@link TableCell#hashCode()}</code>
  *
  * @author Alex Ruiz
  */
-public class IndexTest implements EqualsHashCodeContractTestCase {
+public class TableCell_equals_hashCode_Test implements EqualsHashCodeContractTestCase {
 
-  private Index index;
+  private TableCell cell;
 
   @Before public void setUp() {
-    index = Index.atIndex(8);
+    cell = TableCell.row(6).column(8);
   }
 
   @Test
   public void should_have_consistent_equals() {
-    Index other = Index.atIndex(8);
-    assertThat(index.equals(other)).isTrue();
+    TableCell other = TableCell.row(6).column(8);
+    assertThat(cell.equals(other)).isTrue();
   }
 
   @Test
   public void should_have_reflexive_equals() {
-    assertEqualsIsReflexive(index);
+    assertEqualsIsReflexive(cell);
   }
 
   @Test
   public void should_have_symmetric_equals() {
-    Index other = Index.atIndex(8);
-    assertEqualsIsSymmetric(index, other);
+    TableCell other = TableCell.row(6).column(8);
+    assertEqualsIsSymmetric(cell, other);
   }
 
   @Test
   public void should_have_transitive_equals() {
-    Index other1 = Index.atIndex(8);
-    Index other2 = Index.atIndex(8);
-    assertEqualsIsTransitive(index, other1, other2);
+    TableCell other1 = TableCell.row(6).column(8);
+    TableCell other2 = TableCell.row(6).column(8);
+    assertEqualsIsTransitive(cell, other1, other2);
   }
 
   @Test
   public void should_maintain_equals_and_hashCode_contract() {
-    Index other = Index.atIndex(8);
-    assertMaintainsEqualsAndHashCodeContract(index, other);
+    TableCell other = TableCell.row(6).column(8);
+    assertMaintainsEqualsAndHashCodeContract(cell, other);
   }
 
   @Test
   public void should_not_be_equal_to_null() {
-    assertThat(index.equals(null)).isFalse();
+    assertThat(cell.equals(null)).isFalse();
   }
 
   @Test
   public void should_not_be_equal_to_Object_not_being_of_same_type() {
-    assertThat(index.equals("Hello")).isFalse();
+    assertThat(cell.equals("Hello")).isFalse();
   }
 
   @Test
-  public void should_return_not_equal_if_index_values_are_not_equal() {
-    Index other = Index.atIndex(6);
-    assertThat(index.equals(other)).isFalse();
+  public void should_return_not_equal_if_row_values_are_not_equal() {
+    TableCell other = TableCell.row(8).column(8);
+    assertThat(cell.equals(other)).isFalse();
   }
 
   @Test
-  public void should_implement_toString() {
-    assertThat(index.toString()).isEqualTo("org.fest.swing.data.Index[value=8]");
+  public void should_return_not_equal_if_column_values_are_not_equal() {
+    TableCell other = TableCell.row(6).column(6);
+    assertThat(cell.equals(other)).isFalse();
   }
-
 }

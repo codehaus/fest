@@ -23,21 +23,22 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link TableCell}</code>
+ * Tests for <code>{@link TableCellByColumnId#equals(Object)}</code> and
+ * <code>{@link TableCellByColumnId#hashCode()}</code>.
  *
  * @author Alex Ruiz
  */
-public class TableCellTest implements EqualsHashCodeContractTestCase {
+public class TableCellByColumnId_equals_hashCode_Test implements EqualsHashCodeContractTestCase {
 
-  private TableCell cell;
+  private TableCellByColumnId cell;
 
   @Before public void setUp() {
-    cell = TableCell.row(6).column(8);
+    cell = TableCellByColumnId.row(6).columnId("id");
   }
 
   @Test
   public void should_have_consistent_equals() {
-    TableCell other = TableCell.row(6).column(8);
+    TableCellByColumnId other = TableCellByColumnId.row(6).columnId("id");
     assertThat(cell.equals(other)).isTrue();
   }
 
@@ -48,20 +49,20 @@ public class TableCellTest implements EqualsHashCodeContractTestCase {
 
   @Test
   public void should_have_symmetric_equals() {
-    TableCell other = TableCell.row(6).column(8);
+    TableCellByColumnId other = TableCellByColumnId.row(6).columnId("id");
     assertEqualsIsSymmetric(cell, other);
   }
 
   @Test
   public void should_have_transitive_equals() {
-    TableCell other1 = TableCell.row(6).column(8);
-    TableCell other2 = TableCell.row(6).column(8);
+    TableCellByColumnId other1 = TableCellByColumnId.row(6).columnId("id");
+    TableCellByColumnId other2 = TableCellByColumnId.row(6).columnId("id");
     assertEqualsIsTransitive(cell, other1, other2);
   }
 
   @Test
   public void should_maintain_equals_and_hashCode_contract() {
-    TableCell other = TableCell.row(6).column(8);
+    TableCellByColumnId other = TableCellByColumnId.row(6).columnId("id");
     assertMaintainsEqualsAndHashCodeContract(cell, other);
   }
 
@@ -77,18 +78,13 @@ public class TableCellTest implements EqualsHashCodeContractTestCase {
 
   @Test
   public void should_return_not_equal_if_row_values_are_not_equal() {
-    TableCell other = TableCell.row(8).column(8);
+    TableCellByColumnId other = TableCellByColumnId.row(8).columnId("id");
     assertThat(cell.equals(other)).isFalse();
   }
 
   @Test
   public void should_return_not_equal_if_column_values_are_not_equal() {
-    TableCell other = TableCell.row(6).column(6);
+    TableCellByColumnId other = TableCellByColumnId.row(6).columnId("anotherId");
     assertThat(cell.equals(other)).isFalse();
-  }
-
-  @Test
-  public void should_implement_toString() {
-    assertThat(cell.toString()).isEqualTo("[row=6, column=8]");
   }
 }
