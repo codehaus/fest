@@ -1,9 +1,0 @@
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
- 
-<suite name="All Tests" verbose="1">
-  <test name="All packages" >
-    <packages>
-      <package name="org.fest.assertions"/>
-    </packages>
-  </test>
-</suite>
