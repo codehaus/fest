@@ -22,28 +22,27 @@ import org.fest.swing.exception.ComponentLookupException;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link ContainerFixture#button()}</code>.
+ * Tests for <code>{@link ContainerFixture#checkBox()}</code>.
  *
  * @author Alex Ruiz
  */
-public class ContainerFixture_buttonLookUpByType_Test extends ContainerFixture_buttonLookUp_TestCase {
+public class ContainerFixture_checkBox_byType_Test extends ContainerFixture_checkBox_TestCase {
 
   @Test
-  public void should_find_visible_JButton() {
+  public void should_find_visible_JCheckBox() {
     showWindow();
-    JButtonFixture button = fixture.button();
-    assertThatJButtonWasFound(button);
+    JCheckBoxFixture checkBox = fixture.checkBox();
+    assertThatJCheckBoxWasFound(checkBox);
   }
 
   @Test
-  public void should_fail_if_visible_JButton_not_found() {
+  public void should_fail_if_visible_JCheckBox_not_found() {
     try {
-      fixture.button();
+      fixture.checkBox();
       failWhenExpectingException();
     } catch (ComponentLookupException e) {
       assertThat(e.getMessage()).contains("Unable to find component using matcher")
-                                .contains("type=javax.swing.JButton, requireShowing=true");
+                                .contains("type=javax.swing.JCheckBox, requireShowing=true");
     }
   }
-
 }

@@ -29,7 +29,7 @@ import org.fest.swing.test.swing.TestWindow;
  *
  * @author Alex Ruiz
  */
-public abstract class ContainerFixture_buttonLookUp_TestCase extends RobotBasedTestCase {
+public abstract class ContainerFixture_button_TestCase extends RobotBasedTestCase {
 
   ConcreteContainerFixture fixture;
   MyWindow window;

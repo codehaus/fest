@@ -16,28 +16,32 @@
 package org.fest.swing.fixture;
 
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
+import static org.fest.swing.timing.Timeout.timeout;
 
+import org.fest.swing.core.GenericTypeMatcher;
 import org.fest.swing.exception.WaitTimedOutError;
+import org.fest.swing.timing.Timeout;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link ContainerFixture#dialog(String)}</code>.
+ * Tests for <code>{@link ContainerFixture#dialog(GenericTypeMatcher, Timeout)}</code>.
  *
  * @author Alex Ruiz
  */
-public class ContainerFixture_dialogLookUpByName_Test extends ContainerFixture_dialogLookUp_TestCase {
+public class ContainerFixture_dialog_withMatcherAndTimeout_Test extends
+    ContainerFixture_dialog_TestCase {
 
   @Test
   public void should_find_visible_Dialog() {
-    launchDialogNow();
-    DialogFixture dialog = fixture.dialog("dialog");
+    launchDialogAfterWaitingFor(200);
+    DialogFixture dialog = fixture.dialog(new DialogByTitleMatcher(), timeout(300));
     assertThatDialogWasFound(dialog);
   }
 
   @Test
   public void should_fail_if_visible_Dialog_not_found() {
     try {
-      fixture.dialog("dialog");
+      fixture.dialog(new DialogByTitleMatcher(), timeout(100));
       failWhenExpectingException();
     } catch (WaitTimedOutError e) {
       assertThatErrorMessageIsCorrect(e);

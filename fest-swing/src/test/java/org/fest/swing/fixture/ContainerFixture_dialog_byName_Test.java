@@ -15,34 +15,32 @@
  */
 package org.fest.swing.fixture;
 
-import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
 
-import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.exception.WaitTimedOutError;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link ContainerFixture#checkBox(String)}</code>.
+ * Tests for <code>{@link ContainerFixture#dialog(String)}</code>.
  *
  * @author Alex Ruiz
  */
-public class ContainerFixture_checkBoxLookUpByName_Test extends ContainerFixture_checkBoxLookUp_TestCase {
+public class ContainerFixture_dialog_byName_Test extends ContainerFixture_dialog_TestCase {
 
   @Test
-  public void should_find_visible_JCheckBox() {
-    showWindow();
-    JCheckBoxFixture checkBox = fixture.checkBox("checkMeBox");
-    assertThatJCheckBoxWasFound(checkBox);
+  public void should_find_visible_Dialog() {
+    launchDialogNow();
+    DialogFixture dialog = fixture.dialog("dialog");
+    assertThatDialogWasFound(dialog);
   }
 
   @Test
-  public void should_fail_if_visible_JCheckBox_not_found() {
+  public void should_fail_if_visible_Dialog_not_found() {
     try {
-      fixture.checkBox("myCheckBox");
+      fixture.dialog("dialog");
       failWhenExpectingException();
-    } catch (ComponentLookupException e) {
-      assertThat(e.getMessage()).contains("Unable to find component using matcher")
-                                .contains("name='myCheckBox', type=javax.swing.JCheckBox, requireShowing=true");
+    } catch (WaitTimedOutError e) {
+      assertThatErrorMessageIsCorrect(e);
     }
   }
 }

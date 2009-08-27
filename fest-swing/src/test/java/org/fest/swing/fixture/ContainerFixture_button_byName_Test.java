@@ -15,34 +15,36 @@
  */
 package org.fest.swing.fixture;
 
+import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
-import static org.fest.swing.timing.Timeout.timeout;
 
-import org.fest.swing.exception.WaitTimedOutError;
+import org.fest.swing.exception.ComponentLookupException;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link ContainerFixture#dialog(org.fest.swing.timing.Timeout)}</code>.
+ * Tests for <code>{@link ContainerFixture#button(String)}</code>.
  *
- * @author Alex Ruiz 
+ * @author Alex Ruiz
  */
-public class ContainerFixture_dialogLookUpByTypeWithTimeout_Test extends ContainerFixture_dialogLookUp_TestCase {
+public class ContainerFixture_button_byName_Test extends ContainerFixture_button_TestCase {
 
   @Test
-  public void should_find_visible_Dialog() {
-    launchDialogAfterWaitingFor(200);
-    DialogFixture dialog = fixture.dialog(timeout(300));
-    assertThatDialogWasFound(dialog);
+  public void should_find_visible_JButton() {
+    showWindow();
+    JButtonFixture button = fixture.button("clickMeButton");
+    assertThatJButtonWasFound(button);
   }
 
   @Test
-  public void should_fail_if_visible_Dialog_not_found() {
+  public void should_fail_if_visible_JButton_not_found() {
     try {
-      fixture.dialog(timeout(100));
+      fixture.button("myButton");
       failWhenExpectingException();
-    } catch (WaitTimedOutError e) {
-      assertThatErrorMessageIsCorrect(e);
+    } catch (ComponentLookupException e) {
+      assertThat(e.getMessage()).contains("Unable to find component using matcher")
+                                .contains("name='myButton', type=javax.swing.JButton, requireShowing=true");
     }
   }
+
 
 }

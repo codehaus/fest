@@ -18,31 +18,41 @@ package org.fest.swing.fixture;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
 
+import javax.swing.JButton;
+
+import org.fest.swing.core.GenericTypeMatcher;
 import org.fest.swing.exception.ComponentLookupException;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link ContainerFixture#button(String)}</code>.
+ * Tests for <code>{@link ContainerFixture#button(GenericTypeMatcher)}</code>.
  *
  * @author Alex Ruiz
  */
-public class ContainerFixture_buttonLookUpByName_Test extends ContainerFixture_buttonLookUp_TestCase {
+public class ContainerFixture_button_withMatcher_Test extends ContainerFixture_button_TestCase {
 
   @Test
   public void should_find_visible_JButton() {
     showWindow();
-    JButtonFixture button = fixture.button("clickMeButton");
+    JButtonFixture button = fixture.button(new GenericTypeMatcher<JButton>(JButton.class) {
+      protected boolean isMatching(JButton b) {
+        return "Click Me".equals(b.getText());
+      }
+    });
     assertThatJButtonWasFound(button);
   }
 
   @Test
   public void should_fail_if_visible_JButton_not_found() {
     try {
-      fixture.button("myButton");
+      fixture.button(new GenericTypeMatcher<JButton>(JButton.class) {
+        protected boolean isMatching(JButton b) {
+          return false;
+        }
+      });
       failWhenExpectingException();
     } catch (ComponentLookupException e) {
-      assertThat(e.getMessage()).contains("Unable to find component using matcher")
-                                .contains("name='myButton', type=javax.swing.JButton, requireShowing=true");
+      assertThat(e.getMessage()).contains("Unable to find component using matcher");
     }
   }
 

@@ -26,7 +26,7 @@ import org.junit.Test;
  *
  * @author Alex Ruiz 
  */
-public class ContainerFixture_dialogLookUpByNameWithTimeout_Test extends ContainerFixture_dialogLookUp_TestCase {
+public class ContainerFixture_dialog_byNameWithTimeout_Test extends ContainerFixture_dialog_TestCase {
 
   @Test
   public void should_find_visible_Dialog() {

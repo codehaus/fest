@@ -34,7 +34,7 @@ import org.fest.swing.test.swing.WindowLauncher.DialogToLaunch;
  *
  * @author Alex Ruiz
  */
-public class ContainerFixture_dialogLookUp_TestCase extends RobotBasedTestCase {
+public class ContainerFixture_dialog_TestCase extends RobotBasedTestCase {
 
   ConcreteContainerFixture fixture;
   WindowLauncher window;

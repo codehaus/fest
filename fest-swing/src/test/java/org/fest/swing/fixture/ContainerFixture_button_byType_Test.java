@@ -18,41 +18,31 @@ package org.fest.swing.fixture;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
 
-import javax.swing.JCheckBox;
-
-import org.fest.swing.core.GenericTypeMatcher;
 import org.fest.swing.exception.ComponentLookupException;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link ContainerFixture#checkBox(org.fest.swing.core.GenericTypeMatcher)}</code>.
+ * Tests for <code>{@link ContainerFixture#button()}</code>.
  *
  * @author Alex Ruiz
  */
-public class ContainerFixture_checkBoxLookUpWithMatcher_Test extends ContainerFixture_checkBoxLookUp_TestCase {
+public class ContainerFixture_button_byType_Test extends ContainerFixture_button_TestCase {
 
   @Test
-  public void should_find_visible_JCheckBox() {
+  public void should_find_visible_JButton() {
     showWindow();
-    JCheckBoxFixture checkBox = fixture.checkBox(new GenericTypeMatcher<JCheckBox>(JCheckBox.class) {
-      protected boolean isMatching(JCheckBox c) {
-        return "Check Me".equals(c.getText());
-      }
-    });
-    assertThatJCheckBoxWasFound(checkBox);
+    JButtonFixture button = fixture.button();
+    assertThatJButtonWasFound(button);
   }
 
   @Test
-  public void should_fail_if_visible_JCheckBox_not_found() {
+  public void should_fail_if_visible_JButton_not_found() {
     try {
-      fixture.checkBox(new GenericTypeMatcher<JCheckBox>(JCheckBox.class) {
-        protected boolean isMatching(JCheckBox c) {
-          return false;
-        }
-      });
+      fixture.button();
       failWhenExpectingException();
     } catch (ComponentLookupException e) {
-      assertThat(e.getMessage()).contains("Unable to find component using matcher");
+      assertThat(e.getMessage()).contains("Unable to find component using matcher")
+                                .contains("type=javax.swing.JButton, requireShowing=true");
     }
   }
 
