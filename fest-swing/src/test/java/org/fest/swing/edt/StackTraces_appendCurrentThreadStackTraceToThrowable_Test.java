@@ -1,16 +1,16 @@
 /*
  * Created on Dec 13, 2008
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * Copyright @2008-2009 the original author or authors.
  */
 package org.fest.swing.edt;
@@ -27,14 +27,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link StackTraces}</code>.
+ * Tests for <code>{@link StackTraces#appendCurrentThreadStackTraceToThrowable(Throwable, String)}</code>.
  *
  * @author Alex Ruiz
  */
-public class StackTracesTest {
+public class StackTraces_appendCurrentThreadStackTraceToThrowable_Test {
 
-  private static final String TEST_NAME = StackTracesTest.class.getName();
-  
+  private static final String TEST_NAME = StackTraces_appendCurrentThreadStackTraceToThrowable_Test.class.getName();
+
   private AtomicReference<RuntimeException> exceptionReference;
 
   @Before public void setUp() {
@@ -44,9 +44,9 @@ public class StackTracesTest {
   @After public void tearDown() {
     exceptionReference.set(null);
   }
-  
+
   @Test
-  public void shouldAddStackTraceOfCurrentThread() {
+  public void should_add_stack_trace_of_current_thread() {
     final CountDownLatch latch = new CountDownLatch(1);
     new Thread() {
       @Override public void run() {
@@ -74,7 +74,7 @@ public class StackTracesTest {
   private void assertHasThreadStackTrace(StackTraceElement e) {
     assertHasMethodSignature(e, concat(TEST_NAME, "$1"), "run");
   }
-  
+
   private void assertHasMethodSignature(StackTraceElement e, String className, String methodName) {
     assertThat(e.getClassName()).isEqualTo(className);
     assertThat(e.getMethodName()).isEqualTo(methodName);

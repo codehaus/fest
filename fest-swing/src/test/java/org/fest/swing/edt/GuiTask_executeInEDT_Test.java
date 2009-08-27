@@ -1,5 +1,5 @@
 /*
- * Created on Jul 29, 2008
+ * Created on Aug 11, 2008
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -15,40 +15,42 @@
  */
 package org.fest.swing.edt;
 
-import static javax.swing.SwingUtilities.isEventDispatchThread;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.timing.Pause.pause;
 
-import org.fest.swing.exception.ActionFailedException;
+import org.fest.swing.timing.Condition;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link GuiQuery}</code>.
+ * Tests for <code>{@link GuiTask#executeInEDT()}</code>.
  *
- * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class GuiQueryTest {
-
-  @Test(expected = ActionFailedException.class)
-  public void shouldExecuteInEDTWhenNotCalledInEDT() {
-    GuiQueryInEDT task = new GuiQueryInEDT();
-    assertThat(isEventDispatchThread()).isFalse();
-    task.run();
-  }
+public class GuiTask_executeInEDT_Test {
 
   @Test
-  public void shouldExecuteInEDTWhenCalledInEDT() {
-    final GuiQueryInEDT task = new GuiQueryInEDT();
-    boolean executedFromEDT = execute(task);
-    assertThat(executedFromEDT).isTrue();
+  public void should_execute_in_EDT_when_called_in_EDT() {
+    final GuiTaskInEDT task = new GuiTaskInEDT();
+    execute(task);
+    pause(new Condition("Task is executed") {
+      public boolean test() {
+        return task.wasExecutedInEDT();
+      }
+    });
+    assertThat(task.executed()).isEqualTo(true);
   }
 
-  private static class GuiQueryInEDT extends GuiQuery<Boolean> {
-    GuiQueryInEDT() {}
+  private static class GuiTaskInEDT extends GuiTask {
+    private boolean executed;
 
-    protected Boolean executeInEDT() {
-      return isEventDispatchThread();
+    GuiTaskInEDT() {}
+
+    protected void executeInEDT() {
+      executed = true;
     }
+
+    boolean executed() { return executed; }
   }
+
 }
