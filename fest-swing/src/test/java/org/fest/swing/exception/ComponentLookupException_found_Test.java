@@ -26,14 +26,14 @@ import java.util.List;
 import org.junit.Test;
 
 /**
- * Test for <code>{@link ComponentLookupException}</code>
+ * Test for <code>{@link ComponentLookupException#found()}</code>
  *
  * @author Alex Ruiz
  */
-public class ComponentLookupExceptionTest {
+public class ComponentLookupException_found_Test {
 
   @Test
-  public void shouldReturnCopyOfFoundComponents() {
+  public void should_return_copy_of_found_Components() {
     List<Component> found = new ArrayList<Component>();
     found.add(label().createNew());
     found.add(textField().createNew());
