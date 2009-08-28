@@ -25,7 +25,7 @@ import javax.swing.JFileChooser;
 
 import org.fest.swing.core.GenericTypeMatcher;
 import org.fest.swing.exception.WaitTimedOutError;
-import org.fest.swing.finder.WindowFinderTest;
+import org.fest.swing.finder.WindowFinder_TestCase;
 import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.JFileChooserLauncherWindow;
 import org.junit.Test;
@@ -41,7 +41,7 @@ public class ContainerFixtureJFileChooserLookupTest extends RobotBasedTestCase {
   private JFileChooserLauncherWindow window;
 
   @Override protected final void onSetUp() {
-    window = JFileChooserLauncherWindow.createNew(WindowFinderTest.class);
+    window = JFileChooserLauncherWindow.createNew(WindowFinder_TestCase.class);
     fixture = new ConcreteContainerFixture(robot, window);
     robot.showWindow(window);
   }

@@ -26,7 +26,7 @@ import javax.swing.*;
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.finder.JOptionPaneFinderTest;
+import org.fest.swing.finder.JOptionPaneFinder_TestCase;
 
 /**
  * Understands a <code>{@link JFrame}</code> that launches a <code>{@link JOptionPane}</code> using a configurable
@@ -49,7 +49,7 @@ public class JOptionPaneLauncherWindow extends TestWindow {
   private int launchDelay;
 
   private JOptionPaneLauncherWindow(Class<?> testClass) {
-    super(JOptionPaneFinderTest.class);
+    super(JOptionPaneFinder_TestCase.class);
     setUp();
   }
 

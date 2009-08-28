@@ -22,7 +22,7 @@ import static org.fest.swing.timing.Timeout.timeout;
 import javax.swing.JOptionPane;
 
 import org.fest.swing.exception.WaitTimedOutError;
-import org.fest.swing.finder.WindowFinderTest;
+import org.fest.swing.finder.WindowFinder_TestCase;
 import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.JOptionPaneLauncherWindow;
 import org.junit.Test;
@@ -38,7 +38,7 @@ public class ContainerFixtureJOptionPaneLookupTest extends RobotBasedTestCase {
   private JOptionPaneLauncherWindow window;
 
   @Override protected final void onSetUp() {
-    window = JOptionPaneLauncherWindow.createNew(WindowFinderTest.class);
+    window = JOptionPaneLauncherWindow.createNew(WindowFinder_TestCase.class);
     launcher = new ConcreteContainerFixture(robot, window);
     robot.showWindow(window);
   }

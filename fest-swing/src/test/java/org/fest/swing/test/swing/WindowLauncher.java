@@ -131,6 +131,8 @@ public class WindowLauncher extends TestWindow {
 
     public WindowToLaunch() {
       setName("frame");
+      setTitle("Launched Window");
+      setPreferredSize(new Dimension(100, 50));
     }
   }
 
