@@ -36,10 +36,10 @@ import org.junit.Test;
  * @author Ken Geis
  * @author Alex Ruiz
  */
-public class Bug228_ModalWindowBlocksTest extends RobotBasedTestCase {
+public class Bug228_ModalWindowBlocks_Test extends RobotBasedTestCase {
 
   @Test
-  public void testModalDialog()
+  public void should_not_block()
   {
     TestWindow window = TestWindow.createNewWindow(getClass());
     robot.showWindow(window);
