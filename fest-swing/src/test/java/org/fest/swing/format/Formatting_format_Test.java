@@ -45,40 +45,19 @@ import org.fest.swing.test.core.EDTSafeTestCase;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link Formatting}</code>.
+ * Tests for <code>{@link Formatting#format(Component)}</code>.
  *
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class FormattingTest extends EDTSafeTestCase {
+public class Formatting_format_Test extends EDTSafeTestCase {
 
   private static Logger logger = Logger.getAnonymousLogger();
 
   @Test
-  public void shouldReplaceExistingFormatter() {
-    final Class<JComboBox> type = JComboBox.class;
-    ComponentFormatter oldFormatter = Formatting.formatter(type);
-    ComponentFormatter newFormatter = new ComponentFormatterTemplate() {
-      protected String doFormat(Component c) { return null; }
-
-      public Class<? extends Component> targetType() { 
-        return type;
-      }
-    };
-    try {
-      Formatting.register(newFormatter);
-      assertThat(Formatting.formatter(type)).isSameAs(newFormatter);
-    } finally {
-      Formatting.register(oldFormatter);
-    }
-  }
-  
-  @Test
-  public void shouldFormatDialog() {
-    JDialog dialog = dialog().withName("dialog")
-                             .withTitle("A dialog")
-                             .createNew();
-    assertThat(formatted(dialog)).contains(classNameOf(dialog))
+  public void should_format_Dialog() {
+    JDialog dialog = dialog().withName("dialog").withTitle("A dialog").createNew();
+    assertThat(formatted(dialog)).contains("javax.swing.JDialog")
                                  .contains("name='dialog'")
                                  .contains("title='A dialog'")
                                  .contains("enabled=true")
@@ -88,48 +67,41 @@ public class FormattingTest extends EDTSafeTestCase {
   }
 
   @Test
-  public void shouldFormatFrame() {
-    JFrame frame = frame().withName("frame")
-                          .withTitle("A frame")
-                          .createNew();
-    assertThat(formatted(frame)).contains(classNameOf(frame))
+  public void should_format_Frame() {
+    JFrame frame = frame().withName("frame").withTitle("A frame").createNew();
+    assertThat(formatted(frame)).contains("javax.swing.JFrame")
                                 .contains("name='frame'")
                                 .contains("title='A frame'")
                                 .contains("enabled=true")
                                 .contains("visible=false")
                                 .contains("showing=false");
   }
-  
+
   @Test
-  public void shouldFormatJComboBox() {
+  public void should_format_JButton() {
+    JButton button = button().enabled(false).withName("button").withText("A button").createNew();
+    assertThat(formatted(button)).contains("javax.swing.JButton")
+    .contains("name='button'")
+    .contains("text='A button'")
+    .contains("enabled=false")
+    .contains("visible=true")
+    .contains("showing=false");
+  }
+
+  @Test
+  public void should_format_JComboBox() {
     assertThat(Formatting.formatter(JComboBox.class)).isInstanceOf(JComboBoxFormatter.class);
   }
 
   @Test
-  public void shouldFormatJButton() {
-    JButton button = button().enabled(false)
-                             .withName("button")
-                             .withText("A button")
-                             .createNew();
-    assertThat(formatted(button)).contains(classNameOf(button))
-                                 .contains("name='button'")
-                                 .contains("text='A button'")
-                                 .contains("enabled=false")
-                                 .contains("visible=true")
-                                 .contains("showing=false");
-  }
-
-  @Test
-  public void shouldFormatJFileChooser() {
+  public void should_format_JFileChooser() {
     assertThat(Formatting.formatter(JFileChooser.class)).isInstanceOf(JFileChooserFormatter.class);
   }
 
   @Test
-  public void shouldFormatJLabel() {
-    JLabel label = label().withName("label")
-                          .withText("A label")
-                          .createNew();
-    assertThat(formatted(label)).contains(classNameOf(label))
+  public void should_format_JLabel() {
+    JLabel label = label().withName("label").withText("A label").createNew();
+    assertThat(formatted(label)).contains("javax.swing.JLabel")
                                 .contains("name='label'")
                                 .contains("text='A label'")
                                 .contains("enabled=true")
@@ -138,9 +110,9 @@ public class FormattingTest extends EDTSafeTestCase {
   }
 
   @Test
-  public void shouldFormatJLayeredPane() {
+  public void should_format_JLayeredPane() {
     JLayeredPane pane = newJLayeredPane();
-    assertThat(formatted(pane)).isEqualTo(concat(classNameOf(pane), "[]"));
+    assertThat(formatted(pane)).isEqualTo("javax.swing.JLayeredPane[]");
   }
 
   private static JLayeredPane newJLayeredPane() {
@@ -148,23 +120,20 @@ public class FormattingTest extends EDTSafeTestCase {
   }
 
   @Test
-  public void shouldFormatJList() {
+  public void should_format_JList() {
     assertThat(Formatting.formatter(JList.class)).isInstanceOf(JListFormatter.class);
   }
 
   @Test
-  public void shouldFormatJMenuBar() {
+  public void should_format_JMenuBar() {
     JMenuBar menuBar = menuBar().createNew();
-    assertThat(formatted(menuBar)).isEqualTo(concat(classNameOf(menuBar), "[]"));
+    assertThat(formatted(menuBar)).isEqualTo("javax.swing.JMenuBar[]");
   }
 
   @Test
-  public void shouldFormatJMenuItem() {
-    JMenuItem menuItem = menuItem().withName("menuItem")
-                                   .selected(true)
-                                   .withText("A menu item")
-                                   .createNew();
-    assertThat(formatted(menuItem)).contains(classNameOf(menuItem))
+  public void should_format_JMenuItem() {
+    JMenuItem menuItem = menuItem().withName("menuItem").selected(true).withText("A menu item").createNew();
+    assertThat(formatted(menuItem)).contains("javax.swing.JMenuItem")
                                    .contains("name='menuItem'")
                                    .contains("text='A menu item'")
                                    .contains("selected=true")
@@ -174,119 +143,21 @@ public class FormattingTest extends EDTSafeTestCase {
   }
 
   @Test
-  public void shouldFormatJOptionPane() {
+  public void should_format_JOptionPane() {
     assertThat(Formatting.formatter(JOptionPane.class)).isInstanceOf(JOptionPaneFormatter.class);
   }
 
   @Test
-  public void shouldFormatJPanel() {
+  public void should_format_JPanel() {
     JPanel panel = panel().withName("panel").createNew();
-    assertThat(formatted(panel)).contains(classNameOf(panel))
+    assertThat(formatted(panel)).contains("javax.swing.JPanel")
                                 .contains("name='panel'");
   }
 
   @Test
-  public void shouldFormatJPopupMenu() {
-    JPopupMenu popupMenu = popupMenu().withLabel("Menu")
-                                      .withName("popupMenu")
-                                      .createNew();
-    assertThat(formatted(popupMenu)).contains(classNameOf(popupMenu))
-                                    .contains("name='popupMenu'")
-                                    .contains("label='Menu'")
-                                    .contains("enabled=true")
-                                    .contains("visible=false")
-                                    .contains("showing=false");
-  }
-
-  @Test
-  public void shouldFormatJRootPane() {
-    JRootPane pane = newJRootPane();
-    assertThat(formatted(pane)).isEqualTo(concat(classNameOf(pane), "[]"));
-  }
-
-  @RunsInEDT
-  private static JRootPane newJRootPane() {
-    return execute(new GuiQuery<JRootPane>() {
-      protected JRootPane executeInEDT() {
-        return new JRootPane();
-      }
-    });
-  }
-
-  @Test
-  public void shouldFormatJScrollBar() {
-    JScrollBar scrollBar = scrollBar().withBlockIncrement(10)
-                                      .withMinimum(0)
-                                      .withMaximum(60)
-                                      .withName("scrollBar")
-                                      .withOrientation(VERTICAL)
-                                      .withValue(20)
-                                      .createNew();
-    assertThat(formatted(scrollBar)).contains(classNameOf(scrollBar))
-                                    .contains("name='scrollBar'")
-                                    .contains("value=20")
-                                    .contains("blockIncrement=10")
-                                    .contains("minimum=0")
-                                    .contains("maximum=60")
-                                    .contains("enabled=true")
-                                    .contains("visible=true")
-                                    .contains("showing=false");
-  }
-
-  @Test
-  public void shouldFormatJScrollPane() {
-    JScrollPane scrollPane = scrollPane().withName("scrollPane").createNew();
-    assertThat(formatted(scrollPane)).contains(classNameOf(scrollPane))
-                                     .contains("name='scrollPane'")
-                                     .contains("enabled=true")
-                                     .contains("visible=true")
-                                     .contains("showing=false");
-  }
-
-  @Test
-  public void shouldFormatJSlider() {
-    JSlider slider = slider().withMaximum(8)
-                             .withMinimum(2)
-                             .withValue(6)
-                             .withName("slider")
-                             .createNew();
-    assertThat(formatted(slider)).contains(classNameOf(slider))
-                                 .contains("name='slider'")   
-                                 .contains("value=6")   
-                                 .contains("minimum=2")   
-                                 .contains("maximum=8")   
-                                 .contains("enabled=true")   
-                                 .contains("visible=true")   
-                                 .contains("showing=false"); 
-  }
-
-  @Test
-  public void shouldFormatJSpinner() {
-    JSpinner spinner = spinner().withName("spinner")
-                                .withValues(6, 2, 8, 1)
-                                .createNew();
-    assertThat(formatted(spinner)).contains(classNameOf(spinner))
-                                  .contains("name='spinner'")
-                                  .contains("value=6")
-                                  .contains("enabled=true")
-                                  .contains("visible=true")
-                                  .contains("showing=false");
-  }
-
-  @Test
-  public void shouldFormatJTabbedPane() {
-    assertThat(Formatting.formatter(JTabbedPane.class)).isInstanceOf(JTabbedPaneFormatter.class);
-  }
-
-  @Test
-  public void shouldFormatJTable() {
-    assertThat(Formatting.formatter(JTable.class)).isInstanceOf(JTableFormatter.class);
-  }
-
-  @Test
-  public void shouldFormatJPasswordField() {
+  public void should_format_JPasswordField() {
     JPasswordField passwordField = newJPasswordField();
-    assertThat(formatted(passwordField)).contains(classNameOf(passwordField))
+    assertThat(formatted(passwordField)).contains("javax.swing.JPasswordField")
                                         .contains("name='passwordField'")
                                         .contains("enabled=true")
                                         .contains("visible=true")
@@ -305,11 +176,94 @@ public class FormattingTest extends EDTSafeTestCase {
   }
 
   @Test
-  public void shouldFormatJTextComponent() {
-    JTextField textField = textField().withName("textField")
-                                      .withText("Hello")
-                                      .createNew();
-    assertThat(formatted(textField)).contains(classNameOf(textField))
+  public void should_format_JPopupMenu() {
+    JPopupMenu popupMenu = popupMenu().withLabel("Menu").withName("popupMenu").createNew();
+    assertThat(formatted(popupMenu)).contains("javax.swing.JPopupMenu")
+                                    .contains("name='popupMenu'")
+                                    .contains("label='Menu'")
+                                    .contains("enabled=true")
+                                    .contains("visible=false")
+                                    .contains("showing=false");
+  }
+
+  @Test
+  public void should_format_JRootPane() {
+    JRootPane pane = newJRootPane();
+    assertThat(formatted(pane)).isEqualTo("javax.swing.JRootPane[]");
+  }
+
+  @RunsInEDT
+  private static JRootPane newJRootPane() {
+    return execute(new GuiQuery<JRootPane>() {
+      protected JRootPane executeInEDT() {
+        return new JRootPane();
+      }
+    });
+  }
+
+  @Test
+  public void should_format_JScrollBar() {
+    JScrollBar scrollBar = scrollBar().withBlockIncrement(10).withMinimum(0).withMaximum(60).withName("scrollBar")
+                                      .withOrientation(VERTICAL).withValue(20).createNew();
+    assertThat(formatted(scrollBar)).contains("javax.swing.JScrollBar")
+                                    .contains("name='scrollBar'")
+                                    .contains("value=20")
+                                    .contains("blockIncrement=10")
+                                    .contains("minimum=0")
+                                    .contains("maximum=60")
+                                    .contains("enabled=true")
+                                    .contains("visible=true")
+                                    .contains("showing=false");
+  }
+
+  @Test
+  public void should_format_JScrollPane() {
+    JScrollPane scrollPane = scrollPane().withName("scrollPane").createNew();
+    assertThat(formatted(scrollPane)).contains("javax.swing.JScrollPane")
+                                     .contains("name='scrollPane'")
+                                     .contains("enabled=true")
+                                     .contains("visible=true")
+                                     .contains("showing=false");
+  }
+
+  @Test
+  public void should_format_JSlider() {
+    JSlider slider = slider().withMaximum(8).withMinimum(2).withValue(6).withName("slider").createNew();
+    assertThat(formatted(slider)).contains("javax.swing.JSlider")
+                                 .contains("name='slider'")
+                                 .contains("value=6")
+                                 .contains("minimum=2")
+                                 .contains("maximum=8")
+                                 .contains("enabled=true")
+                                 .contains("visible=true")
+                                 .contains("showing=false");
+  }
+
+  @Test
+  public void should_format_JSpinner() {
+    JSpinner spinner = spinner().withName("spinner").withValues(6, 2, 8, 1).createNew();
+    assertThat(formatted(spinner)).contains("javax.swing.JSpinner")
+                                  .contains("name='spinner'")
+                                  .contains("value=6")
+                                  .contains("enabled=true")
+                                  .contains("visible=true")
+                                  .contains("showing=false");
+  }
+
+  @Test
+  public void should_format_JTabbedPane() {
+    assertThat(Formatting.formatter(JTabbedPane.class)).isInstanceOf(JTabbedPaneFormatter.class);
+  }
+
+  @Test
+  public void should_format_JTable() {
+    assertThat(Formatting.formatter(JTable.class)).isInstanceOf(JTableFormatter.class);
+  }
+
+  @Test
+  public void should_format_JTextComponent() {
+    JTextField textField = textField().withName("textField").withText("Hello").createNew();
+    assertThat(formatted(textField)).contains("javax.swing.JTextField")
                                     .contains("name='textField'")
                                     .contains("text='Hello'")
                                     .contains("enabled=true")
@@ -318,14 +272,11 @@ public class FormattingTest extends EDTSafeTestCase {
   }
 
   @Test
-  public void shouldFormatJToggleButton() {
-    JToggleButton toggleButton = toggleButton().withName("toggleButton")
-                                               .selected(true)
-                                               .withText("A toggle button")
-                                               .createNew();
-    assertThat(formatted(toggleButton)).contains(classNameOf(toggleButton))
+  public void should_format_JToggleButton() {
+    JToggleButton toggleButton = toggleButton().withName("toggleButton").selected(true).withText("Button").createNew();
+    assertThat(formatted(toggleButton)).contains("javax.swing.JToggleButton")
                                        .contains("name='toggleButton'")
-                                       .contains("text='A toggle button'")
+                                       .contains("text='Button'")
                                        .contains("selected=true")
                                        .contains("enabled=true")
                                        .contains("visible=true")
@@ -333,7 +284,7 @@ public class FormattingTest extends EDTSafeTestCase {
   }
 
   @Test
-  public void shouldFormatJTree() {
+  public void should_format_JTree() {
     assertThat(Formatting.formatter(JTree.class)).isInstanceOf(JTreeFormatter.class);
   }
 
@@ -343,12 +294,8 @@ public class FormattingTest extends EDTSafeTestCase {
     return formatted;
   }
 
-  private static String classNameOf(Object o) {
-    return o.getClass().getName();
-  }
-  
   @Test
-  public void shouldReturnComponentIsNullIfComponentIsNull() {
+  public void should_return_message_indicating_Component_is_null() {
     assertThat(Formatting.format(null)).isEqualTo("Null Component");
   }
 }

@@ -1,16 +1,16 @@
 /*
  * Created on Mar 24, 2008
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * Copyright @2008-2009 the original author or authors.
  */
 package org.fest.swing.format;
@@ -18,7 +18,6 @@ package org.fest.swing.format;
 import static javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JLists.list;
-import static org.fest.swing.test.builder.JTextFields.textField;
 
 import javax.swing.JList;
 
@@ -27,17 +26,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link JListFormatter}</code>.
+ * Tests for <code>{@link JListFormatter#format(java.awt.Component)}</code>.
  *
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JListFormatterTest extends EDTSafeTestCase {
+public class JListFormatter_format_Test extends EDTSafeTestCase {
 
   private JList list;
   private JListFormatter formatter;
-  
-  @Before public void setUp() {
+
+  @Before
+  public void setUp() {
     list = list().withItems("One", 2, "Three", 4)
                  .withName("list")
                  .withSelectedIndices(0, 1)
@@ -45,16 +45,11 @@ public class JListFormatterTest extends EDTSafeTestCase {
                  .createNew();
     formatter = new JListFormatter();
   }
-  
-  @Test(expected = IllegalArgumentException.class)
-  public void shouldThrowErrorIfComponentIsNotJList() {
-    formatter.format(textField().createNew());
-  }
 
   @Test
-  public void shouldFormatJList() {
+  public void should_format_JList() {
     String formatted = formatter.format(list);
-    assertThat(formatted).contains(list.getClass().getName())
+    assertThat(formatted).contains("javax.swing.JList")
                          .contains("name='list'")
                          .contains("selectedValues=['One', 2]")
                          .contains("contents=['One', 2, 'Three', 4]")

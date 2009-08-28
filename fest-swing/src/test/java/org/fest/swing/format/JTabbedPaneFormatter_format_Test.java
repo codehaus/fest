@@ -1,63 +1,50 @@
 /*
  * Created on Mar 24, 2008
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * Copyright @2008-2009 the original author or authors.
  */
 package org.fest.swing.format;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.builder.JTabbedPanes.tabbedPane;
-import static org.fest.swing.test.builder.JTextFields.textField;
-import static org.fest.swing.timing.Pause.pause;
-import static org.fest.util.Strings.concat;
-
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import org.fest.swing.edt.GuiTask;
 import org.fest.swing.test.core.EDTSafeTestCase;
-import org.fest.swing.timing.Condition;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link JTabbedPaneFormatter}</code>.
+ * Tests for <code>{@link JTabbedPaneFormatter#format(java.awt.Component)}</code>.
  *
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JTabbedPaneFormatterTest extends EDTSafeTestCase {
+public class JTabbedPaneFormatter_format_Test extends EDTSafeTestCase {
 
-  private JTabbedPane tabbedPane;
   private JTabbedPaneFormatter formatter;
-  
+
   @Before public void setUp() {
-    tabbedPane = tabbedPane().withName("tabbedPane").createNew();
     formatter = new JTabbedPaneFormatter();
-  }
-  
-  @Test(expected = IllegalArgumentException.class)
-  public void shouldThrowErrorIfComponentIsNotJTabbedPane() {
-    formatter.format(textField().createNew());
   }
 
   @Test
-  public void shouldFormatJTabbedPaneWithTabsAndSelection() {
-    addTwoTabsTo(tabbedPane);
-    setSelectedIndex(tabbedPane, 1);    
+  public void should_format_JTabbedPane_with_tabs_and_selection() {
+    JTabbedPane tabbedPane = tabbedPane().withName("tabbedPane")
+                                         .withTabs("One", "Two")
+                                         .withSelection(1)
+                                         .createNew();
     String formatted = formatter.format(tabbedPane);
-    assertThat(formatted).contains(tabbedPane.getClass().getName())
+    assertThat(formatted).contains("javax.swing.JTabbedPane")
                          .contains("name='tabbedPane'")
                          .contains("selectedTabIndex=1")
                          .contains("selectedTabTitle='Two'")
@@ -69,11 +56,12 @@ public class JTabbedPaneFormatterTest extends EDTSafeTestCase {
   }
 
   @Test
-  public void shouldFormatJTabbedPaneWithTabsAndNoSelection() {
-    addTwoTabsTo(tabbedPane);
-    setSelectedIndex(tabbedPane, -1);    
+  public void should_format_JTabbedPane_with_tabs_and_without_selection() {
+    JTabbedPane tabbedPane = tabbedPane().withName("tabbedPane")
+                                         .withTabs("One", "Two")
+                                         .createNew();
     String formatted = formatter.format(tabbedPane);
-    assertThat(formatted).contains(tabbedPane.getClass().getName())
+    assertThat(formatted).contains("javax.swing.JTabbedPane")
                          .contains("name='tabbedPane'")
                          .contains("selectedTabIndex=-1")
                          .contains("selectedTabTitle=<No selection>")
@@ -84,37 +72,11 @@ public class JTabbedPaneFormatterTest extends EDTSafeTestCase {
                          .contains("showing=false");
   }
 
-  private static void addTwoTabsTo(final JTabbedPane tabbedPane) {
-    execute(new GuiTask() {
-      protected void executeInEDT() {
-        tabbedPane.addTab("One", new JPanel());
-        tabbedPane.addTab("Two", new JPanel());
-        pause(new Condition("JTabbedPane has two tabs") {
-          public boolean test() {
-            return tabbedPane.getTabCount() == 2;
-          }
-        });
-      }
-    });
-  }
-  
-  private static void setSelectedIndex(final JTabbedPane tabbedPane, final int index) {
-    execute(new GuiTask() {
-      protected void executeInEDT() {
-        tabbedPane.setSelectedIndex(index);
-        pause(new Condition(concat("JTabbedPane's 'selectedIndex' property is ", index)) {
-          public boolean test() {
-            return tabbedPane.getSelectedIndex() == index;
-          }
-        });
-      }
-    });
-  }
-
   @Test
-  public void shouldFormatJTabbedPaneWithNoTabs() {
+  public void should_format_JTabbedPane_without_tabs() {
+    JTabbedPane tabbedPane = tabbedPane().withName("tabbedPane").createNew();
     String formatted = formatter.format(tabbedPane);
-    assertThat(formatted).contains(tabbedPane.getClass().getName())
+    assertThat(formatted).contains("javax.swing.JTabbedPane")
                          .contains("name='tabbedPane'")
                          .contains("selectedTabIndex=-1")
                          .contains("selectedTabTitle=<No selection>")

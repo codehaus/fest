@@ -18,10 +18,8 @@ package org.fest.swing.format;
 import static javax.swing.JFileChooser.OPEN_DIALOG;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.swing.test.query.JFileChooserCurrentDirectoryQuery.currentDirectoryOf;
 import static org.fest.util.Strings.concat;
-
-import java.io.File;
 
 import javax.swing.JFileChooser;
 
@@ -32,12 +30,12 @@ import org.fest.swing.test.swing.TestWindow;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link JFileChooserFormatter}</code>.
+ * Tests for <code>{@link JFileChooserFormatter#format(java.awt.Component)}</code>.
  *
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JFileChooserFormatterTest extends SequentialTestCase {
+public class JFileChooserFormatter_format_Test extends SequentialTestCase {
 
   private JFileChooser fileChooser;
   private JFileChooserFormatter formatter;
@@ -48,15 +46,10 @@ public class JFileChooserFormatterTest extends SequentialTestCase {
     formatter = new JFileChooserFormatter();
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void shouldThrowErrorIfComponentIsNotJFileChooser() {
-    formatter.format(textField().createNew());
-  }
-
   @Test
-  public void shouldFormatJFileChooser() {
+  public void should_format_JFileChooser() {
     String formatted = formatter.format(fileChooser);
-    assertThat(formatted).contains(fileChooser.getClass().getName())
+    assertThat(formatted).contains("javax.swing.JFileChooser")
                          .contains("name='fileChooser'")
                          .contains("dialogTitle='A file chooser'")
                          .contains("dialogType=OPEN_DIALOG")
@@ -64,15 +57,6 @@ public class JFileChooserFormatterTest extends SequentialTestCase {
                          .contains("enabled=true")
                          .contains("visible=true")
                          .contains("showing=false");
-  }
-
-  @RunsInEDT
-  private static File currentDirectoryOf(final JFileChooser fileChooser) {
-    return execute(new GuiQuery<File>() {
-      protected File executeInEDT() {
-        return fileChooser.getCurrentDirectory();
-      }
-    });
   }
 
   private static class MyWindow extends TestWindow {
@@ -90,7 +74,7 @@ public class JFileChooserFormatterTest extends SequentialTestCase {
     final JFileChooser fileChooser = new JFileChooser();
 
     private MyWindow() {
-      super(JFileChooserFormatterTest.class);
+      super(JFileChooserFormatter_format_Test.class);
       fileChooser.setDialogTitle("A file chooser");
       fileChooser.setName("fileChooser");
       fileChooser.setDialogType(OPEN_DIALOG);

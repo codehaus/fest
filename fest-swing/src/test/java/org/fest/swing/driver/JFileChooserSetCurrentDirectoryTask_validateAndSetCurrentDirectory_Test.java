@@ -18,6 +18,7 @@ package org.fest.swing.driver;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.exception.UnexpectedException.unexpected;
+import static org.fest.swing.test.query.JFileChooserCurrentDirectoryQuery.currentDirectoryOf;
 import static org.fest.util.Files.temporaryFolder;
 
 import java.io.File;
@@ -61,15 +62,6 @@ public class JFileChooserSetCurrentDirectoryTask_validateAndSetCurrentDirectory_
 
   private String currentDirectoryPath() {
     return canonicalPathOf(currentDirectoryOf(fileChooser));
-  }
-
-  @RunsInEDT
-  private static File currentDirectoryOf(final JFileChooser fileChooser) {
-    return execute(new GuiQuery<File>() {
-      protected File executeInEDT() {
-        return fileChooser.getCurrentDirectory();
-      }
-    });
   }
 
   private static String canonicalPathOf(File file) {

@@ -16,15 +16,14 @@
 package org.fest.swing.driver;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.core.CommonAssertions.*;
+import static org.fest.swing.test.query.JFileChooserCurrentDirectoryQuery.currentDirectoryOf;
 
 import java.io.File;
 
 import javax.swing.JFileChooser;
 
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.GuiQuery;
 import org.junit.Test;
 
 /**
@@ -45,12 +44,7 @@ public class JFileChooserDriver_setCurrentDirectory_Test extends JFileChooserDri
 
   @RunsInEDT
   private static String absolutePathOfCurrentDirectory(final JFileChooser fileChooser) {
-    File currentDirectory = execute(new GuiQuery<File>() {
-      protected File executeInEDT() {
-        return fileChooser.getCurrentDirectory();
-      }
-    });
-    return currentDirectory.getAbsolutePath();
+    return currentDirectoryOf(fileChooser).getAbsolutePath();
   }
 
   @Test
