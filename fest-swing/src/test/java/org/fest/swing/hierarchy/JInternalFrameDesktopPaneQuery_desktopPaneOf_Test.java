@@ -28,12 +28,12 @@ import org.fest.swing.test.swing.TestMdiWindow;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link JInternalFrameDesktopPaneQuery}</code>.
+ * Tests for <code>{@link JInternalFrameDesktopPaneQuery#desktopPaneOf(JInternalFrame)}</code>.
  *
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JInternalFrameDesktopPaneQueryTest extends SequentialTestCase {
+public class JInternalFrameDesktopPaneQuery_desktopPaneOf_Test extends SequentialTestCase {
 
   private TestMdiWindow window;
   private JInternalFrame internalFrame;
@@ -48,7 +48,7 @@ public class JInternalFrameDesktopPaneQueryTest extends SequentialTestCase {
   }
 
   @Test
-  public void shouldReturnNullIfJDesktopIconInJInternalFrameIsNull() {
+  public void should_return_null_if_JDesktopIcon_in_JInternalFrame_is_null() {
     JDesktopPane desktopPane = setNullIconAndReturnDesktopPane(internalFrame);
     assertThat(desktopPane).isNull();
   }
@@ -65,13 +65,13 @@ public class JInternalFrameDesktopPaneQueryTest extends SequentialTestCase {
   }
 
   @Test
-  public void shouldReturnJDesktopPaneFromJDesktopIconInJInternalFrameIsNull() {
-    JDesktopPane desktopPane = desktopFrameOf(internalFrame);
+  public void should_return_JDesktopPane_from_JDesktopIcon() {
+    JDesktopPane desktopPane = desktopPaneOf(internalFrame);
     assertThat(desktopPane).isSameAs(window.desktop());
   }
 
   @RunsInEDT
-  private static JDesktopPane desktopFrameOf(final JInternalFrame internalFrame) {
+  private static JDesktopPane desktopPaneOf(final JInternalFrame internalFrame) {
     return execute(new GuiQuery<JDesktopPane>() {
       protected JDesktopPane executeInEDT() {
         return JInternalFrameDesktopPaneQuery.desktopPaneOf(internalFrame);

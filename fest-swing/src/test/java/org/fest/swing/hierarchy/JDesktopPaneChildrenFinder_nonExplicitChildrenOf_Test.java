@@ -17,81 +17,63 @@ package org.fest.swing.hierarchy;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.builder.JFrames.frame;
+import static org.fest.swing.hierarchy.JInternalFrameIconifyTask.iconify;
 import static org.fest.swing.test.builder.JTextFields.textField;
+import static org.fest.swing.test.swing.TestMdiWindow.createAndShowNewWindow;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Window;
 import java.util.Collection;
 
-import javax.swing.JFrame;
-
-import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.core.EDTSafeTestCase;
-import org.fest.swing.test.swing.TestDialog;
-import org.fest.swing.test.swing.TestWindow;
+import org.fest.swing.test.swing.TestMdiWindow;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link WindowChildrenFinder}</code>.
- * @author Yvonne Wang
+ * Tests for <code>{@link JDesktopPaneChildrenFinder#nonExplicitChildrenOf(Container)}</code>.
+ *
  * @author Alex Ruiz
  */
-public class WindowChildrenFinderTest extends EDTSafeTestCase {
+public class JDesktopPaneChildrenFinder_nonExplicitChildrenOf_Test extends EDTSafeTestCase {
 
-  private WindowChildrenFinder finder;
+  private JDesktopPaneChildrenFinder finder;
 
-  @Before
-  public void setUp() {
-    finder = new WindowChildrenFinder();
+  @Before public void setUp() {
+    finder = new JDesktopPaneChildrenFinder();
   }
 
   @Test
-  public void shouldReturnEmptyCollectionIfComponentIsNotWindow() {
+  public void should_return_empty_Collection_if_Component_is_not_JDesktopPane() {
     Container container = textField().createNew();
     assertThat(finder.nonExplicitChildrenOf(container)).isEmpty();
   }
 
   @Test
-  public void shouldReturnEmptyCollectionIfComponentIsNull() {
+  public void should_return_empty_Collection_if_Component_is_null() {
     assertThat(finder.nonExplicitChildrenOf(null)).isEmpty();
   }
 
   @Test
-  public void shouldReturnEmptyCollectionIfWindowNotHavingOwnedWindows() {
-    final JFrame frame = frame().createNew();
-    Collection<Component> children = findChildren(finder, frame);
-    assertThat(children).isEmpty();
-  }
-
-  @Test
-  public void shouldReturnOwnedWindowsIfComponentIsWindow() {
+  public void should_return_iconified_JInternalFrames_if_Component_is_JDesktopPane() {
     ScreenLock.instance().acquire(this);
-    TestWindow window = TestWindow.createAndShowNewWindow(getClass());
-    TestDialog dialog = TestDialog.createAndShowNewDialog(window);
+    final TestMdiWindow window = createAndShowNewWindow(getClass());
+    iconify(window.internalFrame());
+    Collection<Component> children = execute(new GuiQuery<Collection<Component>>() {
+      protected Collection<Component> executeInEDT() {
+        return finder.nonExplicitChildrenOf(window.desktop());
+      }
+    });
     try {
-      Collection<Component> children = findChildren(finder, window);
-      assertThat(children).containsOnly(dialog);
+      assertThat(children).containsOnly(window.internalFrame());
     } finally {
       try {
-        dialog.destroy();
         window.destroy();
       } finally {
         ScreenLock.instance().release(this);
       }
     }
-  }
-
-  @RunsInEDT
-  private static Collection<Component> findChildren(final WindowChildrenFinder finder, final Window w) {
-    return execute(new GuiQuery<Collection<Component>>() {
-      protected Collection<Component> executeInEDT() {
-        return finder.nonExplicitChildrenOf(w);
-      }
-    });
   }
 }

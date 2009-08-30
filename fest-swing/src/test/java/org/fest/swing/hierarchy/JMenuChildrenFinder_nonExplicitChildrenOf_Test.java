@@ -17,63 +17,97 @@ package org.fest.swing.hierarchy;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.hierarchy.JInternalFrameIconifyTask.iconify;
 import static org.fest.swing.test.builder.JTextFields.textField;
-import static org.fest.swing.test.swing.TestMdiWindow.createAndShowNewWindow;
 
 import java.awt.Component;
 import java.awt.Container;
 import java.util.Collection;
 
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JPopupMenu;
+
+import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.core.EDTSafeTestCase;
-import org.fest.swing.test.swing.TestMdiWindow;
+import org.fest.swing.test.swing.TestWindow;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link JDesktopPaneChildrenFinder}</code>.
+ * Tests for <code>{@link JMenuChildrenFinder#nonExplicitChildrenOf(Container)}</code>.
  *
+ * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JDesktopPaneChildrenFinderTest extends EDTSafeTestCase {
+public class JMenuChildrenFinder_nonExplicitChildrenOf_Test extends EDTSafeTestCase {
 
-  private JDesktopPaneChildrenFinder finder;
+  private JMenuChildrenFinder finder;
 
   @Before public void setUp() {
-    finder = new JDesktopPaneChildrenFinder();
+    finder = new JMenuChildrenFinder();
   }
 
   @Test
-  public void shouldReturnEmptyCollectionIfComponentIsNotJDesktopPane() {
+  public void should_return_empty_Collection_if_Component_is_not_JMenu() {
     Container container = textField().createNew();
     assertThat(finder.nonExplicitChildrenOf(container)).isEmpty();
   }
 
   @Test
-  public void shouldReturnEmptyCollectionIfComponentIsNull() {
+  public void should_return_empty_Collection_if_Component_is_null() {
     assertThat(finder.nonExplicitChildrenOf(null)).isEmpty();
   }
 
   @Test
-  public void shouldReturnIconifiedInternalFramesIfComponentIsJDesktopPane() {
+  public void should_return_JPopupMenu_if_Component_is_JMenu() {
     ScreenLock.instance().acquire(this);
-    final TestMdiWindow window = createAndShowNewWindow(getClass());
-    iconify(window.internalFrame());
+    final MyWindow window = MyWindow.createNew();
     Collection<Component> children = execute(new GuiQuery<Collection<Component>>() {
       protected Collection<Component> executeInEDT() {
-        return finder.nonExplicitChildrenOf(window.desktop());
+        return finder.nonExplicitChildrenOf(window.menu);
       }
     });
     try {
-      assertThat(children).containsOnly(window.internalFrame());
+      assertThat(children).containsOnly(popupMenuOf(window.menu));
     } finally {
       try {
         window.destroy();
       } finally {
         ScreenLock.instance().release(this);
       }
+    }
+  }
+
+  @RunsInEDT
+  private static JPopupMenu popupMenuOf(final JMenu menu) {
+    return execute(new GuiQuery<JPopupMenu>() {
+      protected JPopupMenu executeInEDT() {
+        return menu.getPopupMenu();
+      }
+    });
+  }
+
+  private static class MyWindow extends TestWindow {
+    private static final long serialVersionUID = 1L;
+
+    @RunsInEDT
+    static MyWindow createNew() {
+      return execute(new GuiQuery<MyWindow>() {
+        protected MyWindow executeInEDT() {
+          return new MyWindow();
+        }
+      });
+    }
+
+    final JMenu menu = new JMenu("Menu");
+
+    private MyWindow() {
+      super(JMenuChildrenFinder_nonExplicitChildrenOf_Test.class);
+      JMenuBar menuBar = new JMenuBar();
+      menuBar.add(menu);
+      setJMenuBar(menuBar);
     }
   }
 }

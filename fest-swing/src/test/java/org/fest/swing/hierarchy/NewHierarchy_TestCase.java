@@ -1,5 +1,5 @@
 /*
- * Created on Aug 26, 2008
+ * Created on Nov 12, 2007
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -11,73 +11,68 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  *
- * Copyright @2008-2009 the original author or authors.
+ * Copyright @2007-2009 the original author or authors.
  */
 package org.fest.swing.hierarchy;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static java.awt.AWTEvent.COMPONENT_EVENT_MASK;
+import static java.awt.AWTEvent.WINDOW_EVENT_MASK;
 import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.util.Arrays.array;
 
-import java.awt.Component;
-import java.util.List;
-
-import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.test.awt.ToolkitStub;
 import org.fest.swing.test.core.SequentialTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.junit.Test;
 
 /**
- * Tests for <code>{@link ContainerComponentsQuery}</code>.
+ * Base test case for <code>{@link NewHierarchy}</code>.
  *
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class ContainerComponentsQueryTest extends SequentialTestCase {
+public abstract class NewHierarchy_TestCase extends SequentialTestCase {
 
-  private MyWindow window;
+  static final long EVENT_MASK = WINDOW_EVENT_MASK | COMPONENT_EVENT_MASK;
+
+  ToolkitStub toolkit;
+  WindowFilter filter;
+  MyWindow window;
 
   @Override protected final void onSetUp() {
-    window = MyWindow.createNew();
+    toolkit = ToolkitStub.createNew();
+    window = MyWindow.createNew(getClass());
+    filter = new WindowFilter();
   }
 
   @Override protected final void onTearDown() {
     window.destroy();
   }
 
-  @Test
-  public void shouldReturnComponentsOfContainer() {
-    assertThat(componentsOf(window)).containsOnly(window.button);
-  }
+  // TODO Test method dispose(Window)
 
-  @RunsInEDT
-  private static List<Component> componentsOf(final MyWindow window) {
-    return execute(new GuiQuery<List<Component>>() {
-      protected List<Component> executeInEDT() {
-        return ContainerComponentsQuery.componentsOf(window.getContentPane());
-      }
-    });
-  }
-
-  private static class MyWindow extends TestWindow {
+  static class MyWindow extends TestWindow {
     private static final long serialVersionUID = 1L;
 
-    final JButton button = new JButton("A button");
-
     @RunsInEDT
-    static MyWindow createNew() {
+    static MyWindow createNew(final Class<?> testClass) {
       return execute(new GuiQuery<MyWindow>() {
         protected MyWindow executeInEDT() {
-          return new MyWindow();
+          return new MyWindow(testClass);
         }
       });
     }
 
-    private MyWindow() {
-      super(ContainerComponentsQueryTest.class);
-      addComponents(button);
+    final JComboBox comboBox = new JComboBox(array("One", "Two"));
+    final JTextField textField = new JTextField(20);
+
+    private MyWindow(Class<?> testClass) {
+      super(testClass);
+      addComponents(comboBox, textField);
     }
   }
 }

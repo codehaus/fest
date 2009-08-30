@@ -34,12 +34,12 @@ import org.fest.swing.test.swing.TestWindow;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link ParentFinder}</code>.
+ * Tests for <code>{@link ParentFinder#parentOf(Component)}</code>.
  *
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class ParentFinderTest extends SequentialTestCase {
+public class ParentFinder_parentOf_Test extends SequentialTestCase {
 
   private ParentFinder finder;
 
@@ -48,7 +48,7 @@ public class ParentFinderTest extends SequentialTestCase {
   }
 
   @Test
-  public void shouldReturnParentOfComponent() {
+  public void should_return_parent_of_Component() {
     final MyWindow window = MyWindow.createNew();
     try {
       Container parent = findParent(finder, window.textField);
@@ -73,13 +73,13 @@ public class ParentFinderTest extends SequentialTestCase {
     final JTextField textField = new JTextField();
 
     private MyWindow() {
-      super(ParentFinderTest.class);
+      super(ParentFinder_parentOf_Test.class);
       addComponents(textField);
     }
   }
 
   @Test
-  public void shouldReturnParentOfInternalFrame() {
+  public void should_return_parent_of_JInternalFrame() {
     TestMdiWindow window = TestMdiWindow.createNewWindow(getClass());
     JInternalFrame internalFrame = window.internalFrame();
     try {
