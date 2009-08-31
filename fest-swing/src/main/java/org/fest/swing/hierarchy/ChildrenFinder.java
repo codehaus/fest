@@ -60,4 +60,11 @@ class ChildrenFinder {
       children.addAll(s.nonExplicitChildrenOf(c));
     return children;
   }
+
+  // For testing only
+  static List<ChildrenFinderStrategy> strategies() { return new ArrayList<ChildrenFinderStrategy>(strategies); }
+
+  static void replaceStrategiesWith(List<ChildrenFinderStrategy> newStrategies) {
+    strategies = new ArrayList<ChildrenFinderStrategy>(newStrategies);
+  }
 }
