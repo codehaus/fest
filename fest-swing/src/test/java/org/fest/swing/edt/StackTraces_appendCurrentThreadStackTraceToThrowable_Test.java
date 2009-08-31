@@ -33,7 +33,8 @@ import org.junit.Test;
  */
 public class StackTraces_appendCurrentThreadStackTraceToThrowable_Test {
 
-  private static final String TEST_NAME = StackTraces_appendCurrentThreadStackTraceToThrowable_Test.class.getName();
+  private static final String TEST_CLASS = StackTraces_appendCurrentThreadStackTraceToThrowable_Test.class.getName();
+  private static final String TEST_METHOD = "should_add_stack_trace_of_current_thread";
 
   private AtomicReference<RuntimeException> exceptionReference;
 
@@ -64,15 +65,15 @@ public class StackTraces_appendCurrentThreadStackTraceToThrowable_Test {
     StackTraceElement[] originalExceptionStackTrace = thrown.getStackTrace();
     assertThat(originalExceptionStackTrace).hasSize(1);
     assertHasThreadStackTrace(originalExceptionStackTrace[0]);
-    StackTraces.appendCurrentThreadStackTraceToThrowable(thrown, "shouldAddStackTraceOfCurrentThread");
+    StackTraces.appendCurrentThreadStackTraceToThrowable(thrown, TEST_METHOD);
     StackTraceElement[] exceptionStackTrace = thrown.getStackTrace();
     assertThat(exceptionStackTrace.length).isEqualTo(new RuntimeException().getStackTrace().length + 1);
     assertHasThreadStackTrace(exceptionStackTrace[0]);
-    assertHasMethodSignature(exceptionStackTrace[1], TEST_NAME, "shouldAddStackTraceOfCurrentThread");
+    assertHasMethodSignature(exceptionStackTrace[1], TEST_CLASS, TEST_METHOD);
   }
 
   private void assertHasThreadStackTrace(StackTraceElement e) {
-    assertHasMethodSignature(e, concat(TEST_NAME, "$1"), "run");
+    assertHasMethodSignature(e, concat(TEST_CLASS, "$1"), "run");
   }
 
   private void assertHasMethodSignature(StackTraceElement e, String className, String methodName) {
