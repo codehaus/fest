@@ -46,7 +46,7 @@ public class MethodRunner_addFailure_Test {
   private Failure expectedFailure;
 
   @Before public void setUp() {
-    testClass = SomeGuiTest.class;
+    testClass = SomeGuiTestFake.class;
     notifier = createMock(RunNotifier.class);
     screenshotTaker = createMock(FailureScreenshotTaker.class);
     exception = new Exception();

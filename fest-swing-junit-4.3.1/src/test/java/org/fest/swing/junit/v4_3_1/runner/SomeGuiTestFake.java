@@ -23,7 +23,7 @@ import org.junit.Test;
  *
  * @author Alex Ruiz
  */
-public class SomeGuiTest {
+public class SomeGuiTestFake {
 
   @GUITest @Test public void successfulGUITest() {}
 

@@ -27,7 +27,7 @@ import org.junit.Test;
  */
 public class GUITestRecognizer_isGUITest_Test {
 
-  private static final String TEST_CLASS_NAME = SomeTest.class.getName();
+  private static final String TEST_CLASS_NAME = SomeTestFake.class.getName();
 
   private static GUITestRecognizer recognizer;
 

@@ -1,5 +1,5 @@
 /*
- * Created on Apr 24, 2009
+ * Created on Mar 13, 2009
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,18 +13,25 @@
  *
  * Copyright @2009 the original author or authors.
  */
-package org.fest.swing.junit.ant;
+package org.fest.swing.junit.v4_5.runner;
 
 import org.fest.swing.annotation.GUITest;
+import org.fest.swing.junit.v4_5.runner.GUITestRunner;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
- * Understands a test case with GUI tests and regular non-GUI tests.
+ * Understands a JUnit test to be used to manually test <code>{@link GUITestRunner}</code>.
  *
  * @author Alex Ruiz
  */
-public class SomeTest {
+@RunWith(GUITestRunner.class)
+@GUITest
+public class SomeGUITestFake {
 
-  @GUITest public void guiTest() {}
+  @Test public void successfulGUITest() {}
 
-  public void nonGuiTest() {}
+  @Test public void failedGUITest() {
+    throw new RuntimeException("Failed on purpose");
+  }
 }

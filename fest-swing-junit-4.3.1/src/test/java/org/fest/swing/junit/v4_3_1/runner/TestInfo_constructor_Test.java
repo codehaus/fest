@@ -34,7 +34,7 @@ public class TestInfo_constructor_Test {
 
   @Before public void setUpOnce() {
     test = new Object();
-    type = SomeGuiTest.class;
+    type = SomeGuiTestFake.class;
   }
 
   @Test
@@ -43,7 +43,7 @@ public class TestInfo_constructor_Test {
     TestInfo testInfo = new TestInfo(test, type, method);
     assertTestInfoCreatedCorrectly(testInfo, method);
     assertThat(testInfo.isGUITest()).isTrue();
-    assertThat(testInfo.screenshotFileName()).isEqualTo("org.fest.swing.junit.v4_3_1.runner.SomeGuiTest.successfulGUITest");
+    assertThat(testInfo.screenshotFileName()).isEqualTo("org.fest.swing.junit.v4_3_1.runner.SomeGuiTestFake.successfulGUITest");
   }
 
   @Test
