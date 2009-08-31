@@ -39,7 +39,7 @@ import org.junit.Test;
  *
  * @author Alex Ruiz
  */
-public class JOptionPaneFixtureTest extends CommonComponentFixtureTestCase<JOptionPane> {
+public class JOptionPaneFixtureTest extends CommonComponentFixture_TestCase<JOptionPane> {
 
   private JOptionPaneDriver driver;
   private JOptionPane target;

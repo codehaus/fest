@@ -39,7 +39,7 @@ import org.junit.Test;
  * @author Alex Ruiz
  */
 public class JMenuItemFixtureTest extends ComponentFixtureTestCase<JMenuItem> implements
-    KeyboardInputSimulationFixtureTestCase, StateVerificationFixtureTestCase {
+    KeyboardInputSimulationFixture_TestCase, StateVerificationFixture_TestCase {
 
   private JMenuItemDriver driver;
   private JMenuItem target;

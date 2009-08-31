@@ -47,7 +47,7 @@ import org.junit.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JListFixtureTest extends CommonComponentFixtureTestCase<JList> {
+public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
 
   private JListDriver driver;
   private JList target;

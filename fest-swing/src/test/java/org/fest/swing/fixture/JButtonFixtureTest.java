@@ -38,7 +38,7 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JButtonFixtureTest extends CommonComponentFixtureTestCase<JButton> {
+public class JButtonFixtureTest extends CommonComponentFixture_TestCase<JButton> {
 
   private AbstractButtonDriver driver;
   private JButton target;

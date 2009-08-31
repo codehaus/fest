@@ -41,7 +41,7 @@ import org.junit.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JTabbedPaneFixtureTest extends CommonComponentFixtureTestCase<JTabbedPane> {
+public class JTabbedPaneFixtureTest extends CommonComponentFixture_TestCase<JTabbedPane> {
 
   private JTabbedPaneDriver driver;
   private JTabbedPane target;

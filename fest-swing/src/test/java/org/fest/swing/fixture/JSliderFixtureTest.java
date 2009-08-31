@@ -39,7 +39,7 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JSliderFixtureTest extends CommonComponentFixtureTestCase<JSlider> {
+public class JSliderFixtureTest extends CommonComponentFixture_TestCase<JSlider> {
 
   private JSliderDriver driver;
   private JSlider target;

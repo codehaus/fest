@@ -39,7 +39,7 @@ import org.junit.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JTextComponentFixtureTest extends CommonComponentFixtureTestCase<JTextComponent> {
+public class JTextComponentFixtureTest extends CommonComponentFixture_TestCase<JTextComponent> {
 
   private JTextComponentDriver driver;
   private JTextComponent target;

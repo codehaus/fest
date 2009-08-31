@@ -39,7 +39,7 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JSpinnerFixtureTest extends CommonComponentFixtureTestCase<JSpinner> {
+public class JSpinnerFixtureTest extends CommonComponentFixture_TestCase<JSpinner> {
 
   private JSpinnerDriver driver;
   private JSpinner target;

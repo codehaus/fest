@@ -43,7 +43,7 @@ import org.junit.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JTreeFixtureTest extends CommonComponentFixtureTestCase<JTree> {
+public class JTreeFixtureTest extends CommonComponentFixture_TestCase<JTree> {
 
   private JTreeDriver driver;
   private JTree target;

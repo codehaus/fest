@@ -38,7 +38,7 @@ import org.junit.Test;
  *
  * @author Alex Ruiz
  */
-public class JCheckBoxFixtureTest extends CommonComponentFixtureTestCase<JCheckBox> {
+public class JCheckBoxFixtureTest extends CommonComponentFixture_TestCase<JCheckBox> {
 
   private AbstractButtonDriver driver;
   private JCheckBox target;

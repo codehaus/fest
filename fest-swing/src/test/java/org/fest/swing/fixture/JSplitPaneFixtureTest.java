@@ -39,7 +39,7 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JSplitPaneFixtureTest extends CommonComponentFixtureTestCase<JSplitPane> {
+public class JSplitPaneFixtureTest extends CommonComponentFixture_TestCase<JSplitPane> {
 
   private JSplitPaneDriver driver;
   private JSplitPane target;

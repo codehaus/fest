@@ -14,18 +14,22 @@
  */
 package org.fest.swing.fixture;
 
+
 /**
- * Tests case for implementations of <code>{@link KeyboardInputSimulationFixture}</code>
+ * Tests case for implementations of <code>{@link StateVerificationFixture}</code>
  * 
  * @author Alex Ruiz
  */
-interface KeyboardInputSimulationFixtureTestCase {
+public interface StateVerificationFixture_TestCase {
 
-  void should_press_and_release_key();
+  void should_require_enabled();
 
-  void should_press_and_release_keys();
+  void should_require_enabled_using_timeout();
+  
+  void should_require_disabled();
+  
+  void should_require_visible();
 
-  void should_press_key();
+  void should_require_not_visible();
 
-  void should_release_key();
 }

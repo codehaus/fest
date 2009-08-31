@@ -38,7 +38,7 @@ import org.junit.Test;
  *
  * @author Alex Ruiz
  */
-public class JScrollBarFixtureTest extends CommonComponentFixtureTestCase<JScrollBar> {
+public class JScrollBarFixtureTest extends CommonComponentFixture_TestCase<JScrollBar> {
 
   private JScrollBarDriver driver;
   private JScrollBar target;

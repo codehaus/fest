@@ -41,7 +41,7 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JFileChooserFixtureTest extends CommonComponentFixtureTestCase<JFileChooser> {
+public class JFileChooserFixtureTest extends CommonComponentFixture_TestCase<JFileChooser> {
 
   private JFileChooserDriver driver;
   private JFileChooser target;

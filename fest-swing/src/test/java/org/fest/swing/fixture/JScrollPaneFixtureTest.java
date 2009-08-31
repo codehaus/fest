@@ -42,7 +42,7 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JScrollPaneFixtureTest extends CommonComponentFixtureTestCase<JScrollPane> {
+public class JScrollPaneFixtureTest extends CommonComponentFixture_TestCase<JScrollPane> {
 
   private JScrollPaneDriver driver;
   private JScrollPane target;

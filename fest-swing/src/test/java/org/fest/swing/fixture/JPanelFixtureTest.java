@@ -38,7 +38,7 @@ import org.junit.Test;
  *
  * @author Alex Ruiz
  */
-public class JPanelFixtureTest extends CommonComponentFixtureTestCase<JPanel> {
+public class JPanelFixtureTest extends CommonComponentFixture_TestCase<JPanel> {
 
   private JComponentDriver driver;
   private JPanel target;

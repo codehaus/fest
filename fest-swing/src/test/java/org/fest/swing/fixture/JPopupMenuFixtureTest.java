@@ -35,7 +35,7 @@ import org.junit.Test;
  * Tests for <code>{@link JPopupMenuFixture}</code>.
  * @author Yvonne Wang
  */
-public class JPopupMenuFixtureTest extends CommonComponentFixtureTestCase<JPopupMenu> {
+public class JPopupMenuFixtureTest extends CommonComponentFixture_TestCase<JPopupMenu> {
 
   private JPopupMenuDriver driver;
   private JPopupMenu target;

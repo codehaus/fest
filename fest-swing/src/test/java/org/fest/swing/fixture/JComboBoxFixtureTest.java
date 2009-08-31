@@ -45,7 +45,7 @@ import org.junit.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JComboBoxFixtureTest extends CommonComponentFixtureTestCase<JComboBox> {
+public class JComboBoxFixtureTest extends CommonComponentFixture_TestCase<JComboBox> {
 
   private JComboBoxDriver driver;
   private JComboBox target;

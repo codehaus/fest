@@ -28,7 +28,7 @@ import org.junit.Test;
  * Tests for <code>{@link GenericComponentFixture}</code>.
  * @author Alex Ruiz
  */
-public class GenericComponentFixtureTest extends CommonComponentFixtureTestCase<Component> {
+public class GenericComponentFixtureTest extends CommonComponentFixture_TestCase<Component> {
 
   private GenericComponentFixture<Component> fixture;
   private Component target;

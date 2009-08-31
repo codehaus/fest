@@ -38,7 +38,7 @@ import org.junit.Test;
  *
  * @author Alex Ruiz
  */
-public class JToggleButtonFixtureTest extends CommonComponentFixtureTestCase<JToggleButton> {
+public class JToggleButtonFixtureTest extends CommonComponentFixture_TestCase<JToggleButton> {
 
   private AbstractButtonDriver driver;
   private JToggleButton target;

@@ -40,7 +40,7 @@ import org.junit.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JToolBarFixtureTest extends CommonComponentFixtureTestCase<JToolBar> {
+public class JToolBarFixtureTest extends CommonComponentFixture_TestCase<JToolBar> {
 
   private JToolBarDriver driver;
   private JToolBar target;

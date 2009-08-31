@@ -58,7 +58,7 @@ import org.junit.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JTableFixtureTest extends CommonComponentFixtureTestCase<JTable> {
+public class JTableFixtureTest extends CommonComponentFixture_TestCase<JTable> {
 
   private JTableDriver driver;
   private JTable target;

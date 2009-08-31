@@ -40,7 +40,7 @@ import org.junit.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class FrameFixtureTest extends CommonComponentFixtureTestCase<Frame> {
+public class FrameFixtureTest extends CommonComponentFixture_TestCase<Frame> {
 
   private FrameDriver driver;
   private Frame target;

@@ -39,7 +39,7 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JLabelFixtureTest extends CommonComponentFixtureTestCase<JLabel> {
+public class JLabelFixtureTest extends CommonComponentFixture_TestCase<JLabel> {
 
   private JLabelDriver driver;
   private JLabel target;

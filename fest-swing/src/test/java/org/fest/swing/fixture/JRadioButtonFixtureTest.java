@@ -39,7 +39,7 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JRadioButtonFixtureTest extends CommonComponentFixtureTestCase<JRadioButton> {
+public class JRadioButtonFixtureTest extends CommonComponentFixture_TestCase<JRadioButton> {
 
   private AbstractButtonDriver driver;
   private JRadioButton target;

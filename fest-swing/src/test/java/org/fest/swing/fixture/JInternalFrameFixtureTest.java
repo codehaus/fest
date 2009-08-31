@@ -39,7 +39,7 @@ import org.junit.Test;
  *
  * @author Alex Ruiz
  */
-public class JInternalFrameFixtureTest extends CommonComponentFixtureTestCase<JInternalFrame> {
+public class JInternalFrameFixtureTest extends CommonComponentFixture_TestCase<JInternalFrame> {
 
   private JInternalFrameDriver driver;
   private JInternalFrame target;
