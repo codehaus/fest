@@ -15,6 +15,7 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ArrayInspection.copy;
 import static org.fest.assertions.ErrorMessages.messageForEqual;
 import static org.fest.assertions.ErrorMessages.messageForNotEqual;
 
@@ -27,9 +28,13 @@ import java.util.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public final class FloatArrayAssert extends ArrayAssert<float[]> {
+public class FloatArrayAssert extends ArrayAssert<float[]> {
 
-  FloatArrayAssert(float... actual) {
+  /**
+   * Creates a new </code>{@link FloatArrayAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected FloatArrayAssert(float... actual) {
     super(actual);
   }
 
@@ -115,7 +120,7 @@ public final class FloatArrayAssert extends ArrayAssert<float[]> {
   public FloatArrayAssert contains(float...values) {
     isNotNull();
     validateIsNotNull(values);
-    assertContains(list(values));
+    assertContains(copy(values));
     return this;
   }
 
@@ -131,7 +136,7 @@ public final class FloatArrayAssert extends ArrayAssert<float[]> {
   public FloatArrayAssert containsOnly(float...values) {
     isNotNull();
     validateIsNotNull(values);
-    assertContainsOnly(list(values));
+    assertContainsOnly(copy(values));
     return this;
   }
 
@@ -146,23 +151,13 @@ public final class FloatArrayAssert extends ArrayAssert<float[]> {
   public FloatArrayAssert excludes(float...values) {
     isNotNull();
     validateIsNotNull(values);
-    assertExcludes(list(values));
+    assertExcludes(copy(values));
     return this;
   }
 
   private void validateIsNotNull(float[] values) {
     if (values == null)
       throw new NullPointerException(formattedErrorMessage("the given array of floats should not be null"));
-  }
-
-  List<Object> copyActual() {
-    return list(actual);
-  }
-
-  private List<Object> list(float[] values) {
-    List<Object> list = new ArrayList<Object>();
-    for (float value : values) list.add(value);
-    return list;
   }
 
   /**
@@ -195,7 +190,7 @@ public final class FloatArrayAssert extends ArrayAssert<float[]> {
    * @throws AssertionError if the actual <code>float</code> array is <code>null</code>.
    */
   public FloatArrayAssert isNotNull() {
-    assertArrayNotNull();
+    assertThatActualIsNotNull();
     return this;
   }
 
@@ -206,7 +201,7 @@ public final class FloatArrayAssert extends ArrayAssert<float[]> {
    * @throws AssertionError if the actual <code>float</code> array is empty.
    */
   public FloatArrayAssert isNotEmpty() {
-    assertNotEmpty();
+    assertThatActualIsNotEmpty();
     return this;
   }
 
@@ -243,17 +238,8 @@ public final class FloatArrayAssert extends ArrayAssert<float[]> {
    * one.
    */
   public FloatArrayAssert hasSize(int expected) {
-    assertHasSize(expected);
+    assertThatActualHasSize(expected);
     return this;
-  }
-
-  /**
-   * Returns the number of elements in the actual <code>float</code> array.
-   * @return the number of elements in the actual <code>float</code> array.
-   */
-  protected int actualGroupSize() {
-    isNotNull();
-    return actual.length;
   }
 
   /**

@@ -15,6 +15,7 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ArrayInspection.copy;
 import static org.fest.assertions.ErrorMessages.messageForEqual;
 import static org.fest.assertions.ErrorMessages.messageForNotEqual;
 
@@ -27,9 +28,13 @@ import java.util.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
+public class BooleanArrayAssert extends ArrayAssert<boolean[]> {
 
-  BooleanArrayAssert(boolean... actual) {
+  /**
+   * Creates a new </code>{@link BooleanArrayAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected BooleanArrayAssert(boolean... actual) {
     super(actual);
   }
 
@@ -114,7 +119,7 @@ public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
   public BooleanArrayAssert contains(boolean...values) {
     isNotNull();
     validateIsNotNull(values);
-    assertContains(list(values));
+    assertContains(copy(values));
     return this;
   }
 
@@ -130,7 +135,7 @@ public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
   public BooleanArrayAssert containsOnly(boolean...values) {
     isNotNull();
     validateIsNotNull(values);
-    assertContainsOnly(list(values));
+    assertContainsOnly(copy(values));
     return this;
   }
 
@@ -145,23 +150,13 @@ public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
   public BooleanArrayAssert excludes(boolean...values) {
     isNotNull();
     validateIsNotNull(values);
-    assertExcludes(list(values));
+    assertExcludes(copy(values));
     return this;
   }
 
   private void validateIsNotNull(boolean[] values) {
     if (values == null)
       throw new NullPointerException(formattedErrorMessage("the given array of booleans should not be null"));
-  }
-
-  List<Object> copyActual() {
-    return list(actual);
-  }
-
-  private List<Object> list(boolean[] values) {
-    List<Object> list = new ArrayList<Object>();
-    for (boolean value : values) list.add(value);
-    return list;
   }
 
   /**
@@ -194,7 +189,7 @@ public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
    * @throws AssertionError if the actual <code>boolean</code> array is <code>null</code>.
    */
   public BooleanArrayAssert isNotNull() {
-    assertArrayNotNull();
+    assertThatActualIsNotNull();
     return this;
   }
 
@@ -205,7 +200,7 @@ public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
    * @throws AssertionError if the actual <code>boolean</code> array is empty.
    */
   public BooleanArrayAssert isNotEmpty() {
-    assertNotEmpty();
+    assertThatActualIsNotEmpty();
     return this;
   }
 
@@ -242,17 +237,8 @@ public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
    * one.
    */
   public BooleanArrayAssert hasSize(int expected) {
-    assertHasSize(expected);
+    assertThatActualHasSize(expected);
     return this;
-  }
-
-  /**
-   * Returns the number of elements in the actual <code>boolean</code> array.
-   * @return the number of elements in the actual <code>boolean</code> array.
-   */
-  protected int actualGroupSize() {
-    isNotNull();
-    return actual.length;
   }
 
   /**

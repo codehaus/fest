@@ -32,18 +32,19 @@ import org.fest.assertions.FileContentComparator.LineDiff;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public final class FileAssert extends GenericAssert<File> {
+public class FileAssert extends GenericAssert<File> {
 
   private final FileContentComparator comparator;
 
   /**
    * Creates a new <code>FileAssert</code>.
-   * @param actual the actual <code>File</code> to test.
+   * @param actual the target to verify.
    */
-  FileAssert(File actual) {
+  protected FileAssert(File actual) {
     this(actual, new FileContentComparator());
   }
 
+  /* for testing only */
   FileAssert(File actual, FileContentComparator comparator) {
     super(actual);
     this.comparator = comparator;

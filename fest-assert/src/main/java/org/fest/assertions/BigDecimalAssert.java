@@ -30,9 +30,13 @@ import java.math.BigDecimal;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
+public class BigDecimalAssert extends GenericAssert<BigDecimal> {
 
-  BigDecimalAssert(BigDecimal actual) {
+  /**
+   * Creates a new </code>{@link BigDecimalAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected BigDecimalAssert(BigDecimal actual) {
     super(actual);
   }
 

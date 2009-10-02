@@ -15,6 +15,8 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ArrayInspection.copy;
+import static org.fest.assertions.ArrayInspection.sizeOf;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Strings.concat;
 
@@ -27,14 +29,23 @@ import java.util.List;
  *
  * @author Alex Ruiz
  */
-abstract class ArrayAssert<T> extends GroupAssert<T> {
+public abstract class ArrayAssert<T> extends GroupAssert<T> {
 
   /**
    * Creates a new </code>{@link ArrayAssert}</code>.
-   * @param actual
+   * @param actual the target to verify.
    */
-  ArrayAssert(T actual) {
+  protected ArrayAssert(T actual) {
     super(actual);
+  }
+
+  /**
+   * Returns the size of the actual array.
+   * @return the size of the actual array.
+   */
+  protected final int actualGroupSize() {
+    isNotNull();
+    return sizeOf(actual);
   }
 
   /**
@@ -42,8 +53,8 @@ abstract class ArrayAssert<T> extends GroupAssert<T> {
    * @param values the values to look for.
    * @throws AssertionError if the actual <code>byte</code> array does not contain the given values.
    */
-  final void assertContains(List<Object> values) {
-    List<Object> copyOfActual = copyActual();
+  protected final void assertContains(List<Object> values) {
+    List<Object> copyOfActual = copy(actual);
     List<Object> notFound = new ArrayList<Object>();
     for (Object value : values) if (!copyOfActual.contains(value)) notFound.add(value);
     if (!notFound.isEmpty()) failIfElementsNotFound(notFound);
@@ -55,8 +66,8 @@ abstract class ArrayAssert<T> extends GroupAssert<T> {
    * @throws AssertionError if the actual array does not contain the given objects, or if the actual array contains
    * elements other than the ones specified.
    */
-  final void assertContainsOnly(List<Object> values) {
-    List<Object> copyOfActual = copyActual();
+  protected final void assertContainsOnly(List<Object> values) {
+    List<Object> copyOfActual = copy(actual);
     List<Object> notFound = new ArrayList<Object>();
     for (Object value : values) {
       if (!copyOfActual.contains(value)) {
@@ -79,17 +90,19 @@ abstract class ArrayAssert<T> extends GroupAssert<T> {
    * @param values the values the array should exclude.
    * @throws AssertionError if the actual array contains any of the given values.
    */
-  final void assertExcludes(List<Object> values) {
-    List<Object> copyOfActual = copyActual();
+  protected final void assertExcludes(List<Object> values) {
+    List<Object> copyOfActual = copy(actual);
     List<Object> found = new ArrayList<Object>();
     for (Object value : values) if (copyOfActual.contains(value)) found.add(value);
     if (!found.isEmpty())
       fail(concat("array:", actualInBrackets(), " does not exclude element(s):", inBrackets(found.toArray())));
   }
 
-  abstract List<Object> copyActual();
-
-  final String actualInBrackets() {
+  /**
+   * Returns the <code>String</code> representation of the actual array in between brackets ("<" and ">").
+   * @return the <code>String</code> representation of the actual array in between brackets ("<" and ">").
+   */
+  protected final String actualInBrackets() {
     return inBrackets(actual);
   }
 
@@ -97,7 +110,7 @@ abstract class ArrayAssert<T> extends GroupAssert<T> {
    * Verifies that the actual array is not <code>null</code>.
    * @throws AssertionError if the actual array is <code>null</code>.
    */
-  final void assertArrayNotNull() {
+  protected final void assertThatActualIsNotNull() {
     if (actual == null) fail("expecting a non-null array, but it was null");
   }
 
@@ -123,7 +136,7 @@ abstract class ArrayAssert<T> extends GroupAssert<T> {
    * @throws AssertionError if the actual array is <code>null</code>.
    * @throws AssertionError if the actual array is empty.
    */
-  final void assertNotEmpty() {
+  protected final void assertThatActualIsNotEmpty() {
     if (actualGroupSize() == 0) fail("expecting a non-empty array, but it was empty");
   }
 
@@ -133,7 +146,7 @@ abstract class ArrayAssert<T> extends GroupAssert<T> {
    * @throws AssertionError if the actual array is <code>null</code>.
    * @throws AssertionError if the number of elements in the actual array is not equal to the given one.
    */
-  final void assertHasSize(int expected) {
+  protected final void assertThatActualHasSize(int expected) {
     int actualSize = actualGroupSize();
     if (actualSize == expected) return;
     fail(concat(

@@ -30,12 +30,16 @@ import org.fest.util.Maps;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public final class MapAssert extends GroupAssert<Map<?, ?>> {
+public class MapAssert extends GroupAssert<Map<?, ?>> {
 
   private static final String ENTRY = "entry";
   private static final String ENTRIES= "entries";
 
-  MapAssert(Map<?, ?> actual) {
+  /**
+   * Creates a new </code>{@link MapAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected MapAssert(Map<?, ?> actual) {
     super(actual);
   }
 

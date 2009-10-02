@@ -26,13 +26,17 @@ import static org.fest.util.Strings.concat;
  *
  * @author Yvonne Wang
  */
-public final class FloatAssert extends PrimitiveAssert {
+public class FloatAssert extends PrimitiveAssert {
 
   private static final float ZERO = 0f;
 
   private final float actual;
 
-  FloatAssert(float actual) {
+  /**
+   * Creates a new </code>{@link FloatAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected FloatAssert(float actual) {
     this.actual = actual;
   }
 

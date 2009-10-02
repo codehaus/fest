@@ -25,15 +25,15 @@ import static org.fest.util.Strings.concat;
  * @author David DIDIER
  * @author Alex Ruiz
  */
-public final class ThrowableAssert extends GenericAssert<Throwable> {
+public class ThrowableAssert extends GenericAssert<Throwable> {
 
   private final ObjectAssert objectAssert;
 
   /**
    * Creates a new <code>ThrowableAssert</code>.
-   * @param actual the actual <code>Throwable</code> to test.
+   * @param actual the target to verify.
    */
-  ThrowableAssert(Throwable actual) {
+  protected ThrowableAssert(Throwable actual) {
     super(actual);
     objectAssert = new ObjectAssert(actual);
   }

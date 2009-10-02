@@ -25,11 +25,15 @@ import static org.fest.util.Strings.concat;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public final class CharAssert extends PrimitiveAssert {
+public class CharAssert extends PrimitiveAssert {
 
   private final char actual;
 
-  CharAssert(char actual) {
+  /**
+   * Creates a new </code>{@link CharAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected CharAssert(char actual) {
     this.actual = actual;
   }
 

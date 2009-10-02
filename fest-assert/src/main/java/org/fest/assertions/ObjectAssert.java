@@ -28,9 +28,13 @@ import java.util.Arrays;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public final class ObjectAssert extends GenericAssert<Object> {
+public class ObjectAssert extends GenericAssert<Object> {
 
-  ObjectAssert(Object actual) {
+  /**
+   * Creates a new </code>{@link ObjectAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected ObjectAssert(Object actual) {
     super(actual);
   }
 

@@ -24,13 +24,17 @@ import static org.fest.assertions.PrimitiveFail.*;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public final class IntAssert extends PrimitiveAssert {
+public class IntAssert extends PrimitiveAssert {
 
   private static final int ZERO = 0;
 
   private final int actual;
 
-  IntAssert(int actual) {
+  /**
+   * Creates a new </code>{@link IntAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected IntAssert(int actual) {
     this.actual = actual;
   }
 

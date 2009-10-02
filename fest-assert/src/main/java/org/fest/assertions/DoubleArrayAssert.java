@@ -15,6 +15,7 @@
 package org.fest.assertions;
 
 import static java.lang.Math.abs;
+import static org.fest.assertions.ArrayInspection.copy;
 import static org.fest.assertions.ErrorMessages.messageForEqual;
 import static org.fest.assertions.ErrorMessages.messageForNotEqual;
 import static org.fest.assertions.Formatting.inBrackets;
@@ -29,9 +30,13 @@ import java.util.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public final class DoubleArrayAssert extends ArrayAssert<double[]> {
+public class DoubleArrayAssert extends ArrayAssert<double[]> {
 
-  DoubleArrayAssert(double... actual) {
+  /**
+   * Creates a new </code>{@link DoubleArrayAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected DoubleArrayAssert(double... actual) {
     super(actual);
   }
 
@@ -124,7 +129,7 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
   public DoubleArrayAssert contains(double... values) {
     isNotNull();
     validateIsNotNull(values);
-    assertContains(list(values));
+    assertContains(copy(values));
     return this;
   }
 
@@ -140,7 +145,7 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
   public DoubleArrayAssert containsOnly(double... values) {
     isNotNull();
     validateIsNotNull(values);
-    assertContainsOnly(list(values));
+    assertContainsOnly(copy(values));
     return this;
   }
 
@@ -155,24 +160,13 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
   public DoubleArrayAssert excludes(double... values) {
     isNotNull();
     validateIsNotNull(values);
-    assertExcludes(list(values));
+    assertExcludes(copy(values));
     return this;
   }
 
   private void validateIsNotNull(double[] values) {
     if (values == null)
       throw new NullPointerException(formattedErrorMessage("the given array of doubles should not be null"));
-  }
-
-  List<Object> copyActual() {
-    return list(actual);
-  }
-
-  private List<Object> list(double[] values) {
-    List<Object> list = new ArrayList<Object>();
-    for (double value : values)
-      list.add(value);
-    return list;
   }
 
   /**
@@ -205,7 +199,7 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * @throws AssertionError if the actual <code>double</code> array is <code>null</code>.
    */
   public DoubleArrayAssert isNotNull() {
-    assertArrayNotNull();
+    assertThatActualIsNotNull();
     return this;
   }
 
@@ -216,7 +210,7 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * @throws AssertionError if the actual <code>double</code> array is empty.
    */
   public DoubleArrayAssert isNotEmpty() {
-    assertNotEmpty();
+    assertThatActualIsNotEmpty();
     return this;
   }
 
@@ -280,17 +274,8 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * one.
    */
   public DoubleArrayAssert hasSize(int expected) {
-    assertHasSize(expected);
+    assertThatActualHasSize(expected);
     return this;
-  }
-
-  /**
-   * Returns the number of elements in the actual <code>double</code> array.
-   * @return the number of elements in the actual <code>double</code> array.
-   */
-  protected int actualGroupSize() {
-    isNotNull();
-    return actual.length;
   }
 
   /**

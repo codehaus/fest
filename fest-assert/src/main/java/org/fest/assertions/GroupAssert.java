@@ -26,30 +26,30 @@ public abstract class GroupAssert<T> extends GenericAssert<T> {
 
   /**
    * Creates a new <code>{@link GroupAssert}</code>.
-   * @param actual the object to verify.
+   * @param actual the target to verify.
    */
-  GroupAssert(T actual) {
+  protected GroupAssert(T actual) {
     super(actual);
   }
 
   /**
-   * Verifies that the actual group of values is <code>null</code> or empty.
-   * @throws AssertionError if the actual group of values is not <code>null</code> or not empty.
+   * Verifies that the actual group is <code>null</code> or empty.
+   * @throws AssertionError if the actual group is not <code>null</code> or not empty.
    */
-  abstract void isNullOrEmpty();
+  protected abstract void isNullOrEmpty();
 
   /**
-   * Verifies that the actual group of values is empty.
-   * @throws AssertionError if the actual group of values is <code>null</code> or not empty.
+   * Verifies that the actual group is empty.
+   * @throws AssertionError if the actual group is <code>null</code> or not empty.
    */
-  abstract void isEmpty();
+  protected abstract void isEmpty();
 
   /**
-   * Verifies that the actual group of values contains at least on value.
+   * Verifies that the actual group contains at least on value.
    * @return this assertion object.
-   * @throws AssertionError if the actual group of values is <code>null</code> or empty.
+   * @throws AssertionError if the actual group is <code>null</code> or empty.
    */
-  abstract GroupAssert<T> isNotEmpty();
+  protected abstract GroupAssert<T> isNotEmpty();
 
   /**
    * Verifies that the number of values in the actual group is equal to the given one.
@@ -57,7 +57,7 @@ public abstract class GroupAssert<T> extends GenericAssert<T> {
    * @return this assertion object.
    * @throws AssertionError if the number of values of the actual group is not equal to the given one.
    */
-  abstract GroupAssert<T> hasSize(int expected);
+  protected abstract GroupAssert<T> hasSize(int expected);
 
   /**
    * Returns the size of the actual group (array, collection, etc.)

@@ -36,7 +36,11 @@ import org.fest.util.Collections;
  */
 public class ListAssert extends GroupAssert<List<?>> {
 
-  ListAssert(List<?> actual) {
+  /**
+   * Creates a new </code>{@link ListAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected ListAssert(List<?> actual) {
     super(actual);
   }
 

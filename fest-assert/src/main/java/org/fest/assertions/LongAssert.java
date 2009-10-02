@@ -23,13 +23,17 @@ import static org.fest.assertions.PrimitiveFail.*;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public final class LongAssert extends PrimitiveAssert {
+public class LongAssert extends PrimitiveAssert {
 
   private static final long ZERO = 0L;
 
   private final long actual;
 
-  LongAssert(long actual) {
+  /**
+   * Creates a new </code>{@link LongAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected LongAssert(long actual) {
     this.actual = actual;
   }
 

@@ -27,9 +27,13 @@ import org.fest.util.Strings;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public final class StringAssert extends GroupAssert<String> {
+public class StringAssert extends GroupAssert<String> {
 
-  StringAssert(String actual) {
+  /**
+   * Creates a new </code>{@link StringAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected StringAssert(String actual) {
     super(actual);
   }
 

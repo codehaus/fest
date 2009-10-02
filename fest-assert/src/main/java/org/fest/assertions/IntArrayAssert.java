@@ -15,6 +15,7 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ArrayInspection.copy;
 import static org.fest.assertions.ErrorMessages.messageForEqual;
 import static org.fest.assertions.ErrorMessages.messageForNotEqual;
 
@@ -27,9 +28,13 @@ import java.util.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public final class IntArrayAssert extends ArrayAssert<int[]> {
+public class IntArrayAssert extends ArrayAssert<int[]> {
 
-  IntArrayAssert(int... actual) {
+  /**
+   * Creates a new </code>{@link IntArrayAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected IntArrayAssert(int... actual) {
     super(actual);
   }
 
@@ -114,7 +119,7 @@ public final class IntArrayAssert extends ArrayAssert<int[]> {
   public IntArrayAssert contains(int...values) {
     isNotNull();
     validateIsNotNull(values);
-    assertContains(list(values));
+    assertContains(copy(values));
     return this;
   }
 
@@ -130,7 +135,7 @@ public final class IntArrayAssert extends ArrayAssert<int[]> {
   public IntArrayAssert containsOnly(int...values) {
     isNotNull();
     validateIsNotNull(values);
-    assertContainsOnly(list(values));
+    assertContainsOnly(copy(values));
     return this;
   }
 
@@ -145,23 +150,13 @@ public final class IntArrayAssert extends ArrayAssert<int[]> {
   public IntArrayAssert excludes(int...values) {
     isNotNull();
     validateIsNotNull(values);
-    assertExcludes(list(values));
+    assertExcludes(copy(values));
     return this;
   }
 
   private void validateIsNotNull(int[] values) {
     if (values == null)
       throw new NullPointerException(formattedErrorMessage("the given array of ints should not be null"));
-  }
-
-  List<Object> copyActual() {
-    return list(actual);
-  }
-
-  private List<Object> list(int[] values) {
-    List<Object> list = new ArrayList<Object>();
-    for (int value : values) list.add(value);
-    return list;
   }
 
   /**
@@ -194,7 +189,7 @@ public final class IntArrayAssert extends ArrayAssert<int[]> {
    * @throws AssertionError if the actual <code>int</code> array is <code>null</code>.
    */
   public IntArrayAssert isNotNull() {
-    assertArrayNotNull();
+    assertThatActualIsNotNull();
     return this;
   }
 
@@ -205,7 +200,7 @@ public final class IntArrayAssert extends ArrayAssert<int[]> {
    * @throws AssertionError if the actual <code>int</code> array is empty.
    */
   public IntArrayAssert isNotEmpty() {
-    assertNotEmpty();
+    assertThatActualIsNotEmpty();
     return this;
   }
 
@@ -244,17 +239,8 @@ public final class IntArrayAssert extends ArrayAssert<int[]> {
    * one.
    */
   public IntArrayAssert hasSize(int expected) {
-    assertHasSize(expected);
+    assertThatActualHasSize(expected);
     return this;
-  }
-
-  /**
-   * Returns the number of elements in the actual <code>int</code> array.
-   * @return the number of elements in the actual <code>int</code> array.
-   */
-  protected int actualGroupSize() {
-    isNotNull();
-    return actual.length;
   }
 
   /**

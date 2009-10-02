@@ -20,7 +20,7 @@ package org.fest.assertions;
  *
  * @author Yvonne Wang
  */
-abstract class PrimitiveAssert extends Assert {
+public abstract class PrimitiveAssert extends Assert {
 
   /**
    * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
@@ -35,7 +35,7 @@ abstract class PrimitiveAssert extends Assert {
    * @param description the description of the actual value.
    * @return this assertion object.
    */
-  abstract PrimitiveAssert as(String description);
+  protected abstract PrimitiveAssert as(String description);
 
   /**
    * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in
@@ -50,7 +50,7 @@ abstract class PrimitiveAssert extends Assert {
    * @param description the description of the actual value.
    * @return this assertion object.
    */
-  abstract PrimitiveAssert describedAs(String description);
+  protected abstract PrimitiveAssert describedAs(String description);
 
   /**
    * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
@@ -65,7 +65,7 @@ abstract class PrimitiveAssert extends Assert {
    * @param description the description of the actual value.
    * @return this assertion object.
    */
-  abstract PrimitiveAssert as(Description description);
+  protected abstract PrimitiveAssert as(Description description);
 
   /**
    * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in
@@ -80,9 +80,9 @@ abstract class PrimitiveAssert extends Assert {
    * @param description the description of the actual value.
    * @return this assertion object.
    */
-  abstract PrimitiveAssert describedAs(Description description);
+  protected abstract PrimitiveAssert describedAs(Description description);
 
-  final void fail(String reason) {
+  protected final void fail(String reason) {
     Fail.fail(formattedErrorMessage(reason));
   }
 }

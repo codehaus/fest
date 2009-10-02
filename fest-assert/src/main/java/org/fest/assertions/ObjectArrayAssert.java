@@ -31,9 +31,13 @@ import java.util.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public final class ObjectArrayAssert extends ArrayAssert<Object[]> {
+public class ObjectArrayAssert extends ArrayAssert<Object[]> {
 
-  ObjectArrayAssert(Object... actual) {
+  /**
+   * Creates a new </code>{@link ObjectArrayAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected ObjectArrayAssert(Object... actual) {
     super(actual);
   }
 
@@ -201,10 +205,6 @@ public final class ObjectArrayAssert extends ArrayAssert<Object[]> {
       throw new NullPointerException(formattedErrorMessage("the given array of objects should not be null"));
   }
 
-  List<Object> copyActual() {
-    return list(actual);
-  }
-
   /**
    * Verifies that the actual <code>Object</code> array does not have duplicates.
    * @return this assertion object.
@@ -250,7 +250,7 @@ public final class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * @throws AssertionError if the actual <code>Object</code> array is <code>null</code>.
    */
   public ObjectArrayAssert isNotNull() {
-    assertArrayNotNull();
+    assertThatActualIsNotNull();
     return this;
   }
 
@@ -261,7 +261,7 @@ public final class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * @throws AssertionError if the actual <code>Object</code> array is empty.
    */
   public ObjectArrayAssert isNotEmpty() {
-    assertNotEmpty();
+    assertThatActualIsNotEmpty();
     return this;
   }
 
@@ -298,17 +298,8 @@ public final class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * one.
    */
   public ObjectArrayAssert hasSize(int expected) {
-    assertHasSize(expected);
+    assertThatActualHasSize(expected);
     return this;
-  }
-
-  /**
-   * Returns the number of elements in the actual <code>Object</code> array.
-   * @return the number of elements in the actual <code>Object</code> array.
-   */
-  protected int actualGroupSize() {
-    isNotNull();
-    return actual.length;
   }
 
   /**

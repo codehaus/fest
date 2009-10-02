@@ -15,6 +15,7 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ArrayInspection.copy;
 import static org.fest.assertions.ErrorMessages.messageForEqual;
 import static org.fest.assertions.ErrorMessages.messageForNotEqual;
 
@@ -27,9 +28,13 @@ import java.util.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public final class LongArrayAssert extends ArrayAssert<long[]> {
+public class LongArrayAssert extends ArrayAssert<long[]> {
 
-  LongArrayAssert(long... actual) {
+  /**
+   * Creates a new </code>{@link LongArrayAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected LongArrayAssert(long... actual) {
     super(actual);
   }
 
@@ -114,7 +119,7 @@ public final class LongArrayAssert extends ArrayAssert<long[]> {
   public LongArrayAssert contains(long...values) {
     isNotNull();
     validateIsNotNull(values);
-    assertContains(list(values));
+    assertContains(copy(values));
     return this;
   }
 
@@ -130,7 +135,7 @@ public final class LongArrayAssert extends ArrayAssert<long[]> {
   public LongArrayAssert containsOnly(long...values) {
     isNotNull();
     validateIsNotNull(values);
-    assertContainsOnly(list(values));
+    assertContainsOnly(copy(values));
     return this;
   }
 
@@ -145,23 +150,13 @@ public final class LongArrayAssert extends ArrayAssert<long[]> {
   public LongArrayAssert excludes(long...values) {
     isNotNull();
     validateIsNotNull(values);
-    assertExcludes(list(values));
+    assertExcludes(copy(values));
     return this;
   }
 
   private void validateIsNotNull(long[] values) {
     if (values == null)
       throw new NullPointerException(formattedErrorMessage("the given array of longs should not be null"));
-  }
-
-  List<Object> copyActual() {
-    return list(actual);
-  }
-
-  private List<Object> list(long[] values) {
-    List<Object> list = new ArrayList<Object>();
-    for (long value : values) list.add(value);
-    return list;
   }
 
   /**
@@ -194,7 +189,7 @@ public final class LongArrayAssert extends ArrayAssert<long[]> {
    * @throws AssertionError if the actual <code>long</code> array is <code>null</code>.
    */
   public LongArrayAssert isNotNull() {
-    assertArrayNotNull();
+    assertThatActualIsNotNull();
     return this;
   }
 
@@ -205,7 +200,7 @@ public final class LongArrayAssert extends ArrayAssert<long[]> {
    * @throws AssertionError if the actual <code>long</code> array is empty.
    */
   public LongArrayAssert isNotEmpty() {
-    assertNotEmpty();
+    assertThatActualIsNotEmpty();
     return this;
   }
 
@@ -242,17 +237,8 @@ public final class LongArrayAssert extends ArrayAssert<long[]> {
    * one.
    */
   public LongArrayAssert hasSize(int expected) {
-    assertHasSize(expected);
+    assertThatActualHasSize(expected);
     return this;
-  }
-
-  /**
-   * Returns the number of elements in the actual <code>int</code> array.
-   * @return the number of elements in the actual <code>int</code> array.
-   */
-  protected int actualGroupSize() {
-    isNotNull();
-    return actual.length;
   }
 
   /**

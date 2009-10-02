@@ -15,6 +15,7 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ArrayInspection.copy;
 import static org.fest.assertions.ErrorMessages.messageForEqual;
 import static org.fest.assertions.ErrorMessages.messageForNotEqual;
 
@@ -27,9 +28,13 @@ import java.util.*;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public final class ShortArrayAssert extends ArrayAssert<short[]> {
+public class ShortArrayAssert extends ArrayAssert<short[]> {
 
-  ShortArrayAssert(short... actual) {
+  /**
+   * Creates a new </code>{@link ShortArrayAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected ShortArrayAssert(short... actual) {
     super(actual);
   }
 
@@ -114,7 +119,7 @@ public final class ShortArrayAssert extends ArrayAssert<short[]> {
   public ShortArrayAssert contains(short...values) {
     isNotNull();
     validateIsNotNull(values);
-    assertContains(list(values));
+    assertContains(copy(values));
     return this;
   }
 
@@ -130,7 +135,7 @@ public final class ShortArrayAssert extends ArrayAssert<short[]> {
   public ShortArrayAssert containsOnly(short...values) {
     isNotNull();
     validateIsNotNull(values);
-    assertContainsOnly(list(values));
+    assertContainsOnly(copy(values));
     return this;
   }
 
@@ -145,23 +150,13 @@ public final class ShortArrayAssert extends ArrayAssert<short[]> {
   public ShortArrayAssert excludes(short...values) {
     isNotNull();
     validateIsNotNull(values);
-    assertExcludes(list(values));
+    assertExcludes(copy(values));
     return this;
   }
 
   private void validateIsNotNull(short[] values) {
     if (values == null)
       throw new NullPointerException(formattedErrorMessage("the given array of shorts should not be null"));
-  }
-
-  List<Object> copyActual() {
-    return list(actual);
-  }
-
-  private List<Object> list(short[] values) {
-    List<Object> list = new ArrayList<Object>();
-    for (short value : values) list.add(value);
-    return list;
   }
 
   /**
@@ -194,7 +189,7 @@ public final class ShortArrayAssert extends ArrayAssert<short[]> {
    * @throws AssertionError if the actual <code>short</code> array is <code>null</code>.
    */
   public ShortArrayAssert isNotNull() {
-    assertArrayNotNull();
+    assertThatActualIsNotNull();
     return this;
   }
 
@@ -205,7 +200,7 @@ public final class ShortArrayAssert extends ArrayAssert<short[]> {
    * @throws AssertionError if the actual <code>short</code> array is empty.
    */
   public ShortArrayAssert isNotEmpty() {
-    assertNotEmpty();
+    assertThatActualIsNotEmpty();
     return this;
   }
 
@@ -242,17 +237,8 @@ public final class ShortArrayAssert extends ArrayAssert<short[]> {
    * one.
    */
   public ShortArrayAssert hasSize(int expected) {
-    assertHasSize(expected);
+    assertThatActualHasSize(expected);
     return this;
-  }
-
-  /**
-   * Returns the number of elements in the actual <code>short</code> array.
-   * @return the number of elements in the actual <code>short</code> array.
-   */
-  protected int actualGroupSize() {
-    isNotNull();
-    return actual.length;
   }
 
   /**

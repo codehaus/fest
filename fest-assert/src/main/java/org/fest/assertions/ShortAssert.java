@@ -29,7 +29,11 @@ public class ShortAssert extends PrimitiveAssert {
 
   private final short actual;
 
-  ShortAssert(short actual) {
+  /**
+   * Creates a new </code>{@link ShortAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected ShortAssert(short actual) {
     this.actual = actual;
   }
 

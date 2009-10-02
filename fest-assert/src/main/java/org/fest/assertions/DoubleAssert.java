@@ -13,13 +13,19 @@ import static org.fest.util.Strings.concat;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public final class DoubleAssert extends PrimitiveAssert {
+public class DoubleAssert extends PrimitiveAssert {
 
   private static final double ZERO = 0.0;
 
   private final double actual;
 
-  DoubleAssert(double actual) { this.actual = actual; }
+  /**
+   * Creates a new </code>{@link DoubleAssert}</code>.
+   * @param actual the target to verify.
+   */
+  protected DoubleAssert(double actual) {
+    this.actual = actual;
+  }
 
   /**
    * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
