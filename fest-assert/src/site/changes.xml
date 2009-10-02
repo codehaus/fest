@@ -6,6 +6,9 @@
   </properties>
   <body>
     <release version="1.1" date="2009-04-20" description="Subsequent release">
+      <action dev="tedyoung" type="fix" issue="FEST-147">
+        Class Formatting and its methods are now public.
+      </action>
       <action dev="konermann, alexruiz" type="fix" issue="FEST-165">
         Assertion classes are no longer final. Constructors are now protected, instead of package-protected.
       </action>
