@@ -33,6 +33,7 @@ import org.junit.Test;
  *
  * @author Yvonne Wang
  * @author Alex Ruiz
+ * @author Ansgar Konermann
  */
 public class ImageAssert_read_Test {
 

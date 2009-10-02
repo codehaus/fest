@@ -6,6 +6,9 @@
   </properties>
   <body>
     <release version="1.1" date="2009-04-20" description="Subsequent release">
+      <action dev="konermann" type="fix" issue="FEST-198">
+        ImageAssert no longer uses the constructor IOException(String, Throwable) from JDK 1.6
+      </action>
       <action dev="alexruiz" type="fix" issue="FEST-223">
         Reorganized tests and migrated to JUnit.
       </action>

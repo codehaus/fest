@@ -34,6 +34,7 @@ import java.io.IOException;
  *
  * @author Yvonne Wang
  * @author Alex Ruiz
+ * @author Ansgar Konermann
  */
 public final class ImageAssert extends GenericAssert<BufferedImage> {
 
