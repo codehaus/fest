@@ -43,12 +43,12 @@ public final class CollectionAssert extends GroupAssert<Collection<?>> {
    * @param objects the objects to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual collection is <code>null</code>.
-   * @throws AssertionError if the given array is <code>null</code>.
+   * @throws NullPointerException if the given array is <code>null</code>.
    * @throws AssertionError if the actual collection does not contain the given objects.
    */
   public CollectionAssert contains(Object...objects) {
     isNotNull();
-    failIfNull(objects);
+    validateIsNotNull(objects);
     Collection<Object> notFound = notFound(actual, objects);
     if (!notFound.isEmpty()) failIfElementsNotFound(notFound);
     return this;
@@ -59,13 +59,13 @@ public final class CollectionAssert extends GroupAssert<Collection<?>> {
    * @param objects the objects to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual collection is <code>null</code>.
-   * @throws AssertionError if the given array is <code>null</code>.
+   * @throws NullPointerException if the given array is <code>null</code>.
    * @throws AssertionError if the actual collection does not contain the given objects, or if the actual collection
    * contains elements other than the ones specified.
    */
   public CollectionAssert containsOnly(Object...objects) {
     isNotNull();
-    failIfNull(objects);
+    validateIsNotNull(objects);
     List<Object> notFound = new ArrayList<Object>();
     List<Object> copy = new ArrayList<Object>(actual);
     for (Object o : objects) {
@@ -90,20 +90,21 @@ public final class CollectionAssert extends GroupAssert<Collection<?>> {
    * @param objects the objects that the collection should exclude.
    * @return this assertion object.
    * @throws AssertionError if the actual collection is <code>null</code>.
-   * @throws AssertionError if the given array is <code>null</code>.
+   * @throws NullPointerException if the given array is <code>null</code>.
    * @throws AssertionError if the actual collection contains any of the given objects.
    */
   public CollectionAssert excludes(Object...objects) {
     isNotNull();
-    failIfNull(objects);
+    validateIsNotNull(objects);
     Collection<Object> found = found(actual, objects);
     if (!found.isEmpty())
       fail(concat("collection:", format(actual), " does not exclude element(s):", format(found)));
     return this;
   }
 
-  private void failIfNull(Object[] objects) {
-    if (objects == null) fail("the given array of objects should not be null");
+  private void validateIsNotNull(Object[] objects) {
+    if (objects == null)
+      throw new NullPointerException(formattedErrorMessage("the given array of objects should not be null"));
   }
 
   /**

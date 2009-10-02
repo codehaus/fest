@@ -15,11 +15,10 @@
  */
 package org.fest.assertions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import static org.fest.assertions.ErrorMessages.messageForEqual;
+import static org.fest.assertions.ErrorMessages.messageForNotEqual;
 
-import static org.fest.assertions.Fail.*;
+import java.util.*;
 
 /**
  * Understands assertion methods for <code>int</code> arrays. To create a new instance of this class use the
@@ -109,10 +108,12 @@ public final class IntArrayAssert extends ArrayAssert<int[]> {
    * @param values the values to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>int</code> array is <code>null</code>.
+   * @throws NullPointerException if the given <code>int</code> array is <code>null</code>.
    * @throws AssertionError if the actual <code>int</code> array does not contain the given values.
    */
   public IntArrayAssert contains(int...values) {
     isNotNull();
+    validateIsNotNull(values);
     assertContains(list(values));
     return this;
   }
@@ -122,11 +123,13 @@ public final class IntArrayAssert extends ArrayAssert<int[]> {
    * @param values the values to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>int</code> array is <code>null</code>.
-   * @throws AssertionError if the actual <code>int</code> array does not contain the given objects, or if the
-   *          actual <code>int</code> array contains elements other than the ones specified.
+   * @throws NullPointerException if the given <code>int</code> array is <code>null</code>.
+   * @throws AssertionError if the actual <code>int</code> array does not contain the given objects, or if the actual
+   * <code>int</code> array contains elements other than the ones specified.
    */
   public IntArrayAssert containsOnly(int...values) {
     isNotNull();
+    validateIsNotNull(values);
     assertContainsOnly(list(values));
     return this;
   }
@@ -136,12 +139,19 @@ public final class IntArrayAssert extends ArrayAssert<int[]> {
    * @param values the values the array should exclude.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>int</code> array is <code>null</code>.
-   * @throws AssertionError if the actual <code>Object</code> array contains any of the given values.
+   * @throws NullPointerException if the given <code>int</code> array is <code>null</code>.
+   * @throws AssertionError if the actual <code>int</code> array contains any of the given values.
    */
   public IntArrayAssert excludes(int...values) {
     isNotNull();
+    validateIsNotNull(values);
     assertExcludes(list(values));
     return this;
+  }
+
+  private void validateIsNotNull(int[] values) {
+    if (values == null)
+      throw new NullPointerException(formattedErrorMessage("the given array of ints should not be null"));
   }
 
   List<Object> copyActual() {
@@ -208,7 +218,7 @@ public final class IntArrayAssert extends ArrayAssert<int[]> {
    */
   public IntArrayAssert isEqualTo(int[] expected) {
     if (!Arrays.equals(actual, expected))
-      fail(errorMessageIfNotEqual(actual, expected));
+      fail(messageForNotEqual(actual, expected));
     return this;
   }
 
@@ -221,7 +231,7 @@ public final class IntArrayAssert extends ArrayAssert<int[]> {
    */
   public IntArrayAssert isNotEqualTo(int[] array) {
     if (Arrays.equals(actual, array))
-      fail(errorMessageIfEqual(actual, array));
+      fail(messageForEqual(actual, array));
     return this;
   }
 
@@ -231,7 +241,7 @@ public final class IntArrayAssert extends ArrayAssert<int[]> {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>int</code> array is <code>null</code>.
    * @throws AssertionError if the number of elements in the actual <code>int</code> array is not equal to the given
-   *          one.
+   * one.
    */
   public IntArrayAssert hasSize(int expected) {
     assertHasSize(expected);

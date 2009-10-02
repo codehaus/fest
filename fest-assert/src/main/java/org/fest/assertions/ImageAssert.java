@@ -1,22 +1,22 @@
 /*
  * Created on Jun 7, 2007
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
- * 
+ *
  * Copyright @2007-2009 the original author or authors.
  */
 package org.fest.assertions;
 
 import static java.lang.String.valueOf;
-import static org.fest.assertions.Fail.errorMessageIfEqual;
-import static org.fest.assertions.Fail.errorMessageIfNotEqual;
+import static org.fest.assertions.ErrorMessages.messageForEqual;
+import static org.fest.assertions.ErrorMessages.messageForNotEqual;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.assertions.Threshold.threshold;
 import static org.fest.util.Objects.areEqual;
@@ -31,7 +31,7 @@ import java.io.IOException;
 /**
  * Understands assertion methods for images. To create a new instance of this class use the method
  * <code>{@link Assertions#assertThat(BufferedImage)}</code>.
- * 
+ *
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
@@ -65,11 +65,11 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * failure will not show the provided description.
    * <p>
    * For example:
-   * 
+   *
    * <pre>
    * assertThat(picture).&lt;strong&gt;as&lt;/strong&gt;(&quot;Vacation Picture&quot;).hasSize(new Dimension(800, 600));
    * </pre>
-   * 
+   *
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
@@ -85,11 +85,11 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * failure will not show the provided description.
    * <p>
    * For example:
-   * 
+   *
    * <pre>
    * assertThat(picture).&lt;strong&gt;describedAs&lt;/strong&gt;(&quot;Vacation Picture&quot;).hasSize(new Dimension(800, 600));
    * </pre>
-   * 
+   *
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
@@ -104,11 +104,11 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * failure will not show the provided description.
    * <p>
    * For example:
-   * 
+   *
    * <pre>
    * assertThat(picture).&lt;strong&gt;as&lt;/strong&gt;(new BasicDescription(&quot;Vacation Picture&quot;)).hasSize(new Dimension(800, 600));
    * </pre>
-   * 
+   *
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
@@ -124,11 +124,11 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
    * For example:
-   * 
+   *
    * <pre>
    * assertThat(picture).&lt;strong&gt;describedAs&lt;/strong&gt;(new BasicDescription(&quot;Vacation Picture&quot;)).hasSize(new Dimension(800, 600));
    * </pre>
-   * 
+   *
    * </p>
    * @param description the description of the actual value.
    * @return this assertion object.
@@ -176,12 +176,13 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * Verifies that the actual image is equal to the given one. Two images are equal if:
    * <ol>
    * <li>they have the same size</li>
-   * <li>the difference between the RGB values of the color of each pixel is less than or equal to the given threshold</li>
+   * <li>the difference between the RGB values of the color of each pixel is less than or equal to the given
+   * threshold</li>
    * </ol>
    * @param expected the given image to compare the actual image to.
    * @param threshold the threshold to use to decide if the color of two pixels are similar: two pixels that are
-   *          identical to the human eye may still have slightly different color values. For example, by using a
-   *          threshold of 1 we can indicate that a blue value of 60 is similar to a blue value of 61.
+   * identical to the human eye may still have slightly different color values. For example, by using a threshold of 1
+   * we can indicate that a blue value of 60 is similar to a blue value of 61.
    * @return this assertion object.
    * @throws AssertionError if the actual image is not equal to the given one.
    * @since 1.1
@@ -196,7 +197,7 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
 
   private void failIfNull(BufferedImage expected) {
     if (expected != null) return;
-    fail(errorMessageIfNotEqual(actual, null));
+    fail(messageForNotEqual(actual, null));
   }
 
   private void failIfNotEqual(Dimension a, Dimension e) {
@@ -224,7 +225,7 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * @throws AssertionError if the actual image is equal to the given one.
    */
   public ImageAssert isNotEqualTo(BufferedImage image) {
-    if (areEqual(actual, image)) fail(errorMessageIfEqual(actual, image));
+    if (areEqual(actual, image)) fail(messageForEqual(actual, image));
     if (image == null) return this;
     if (areEqual(sizeOf(actual), sizeOf(image)) && hasEqualColor(image)) fail("images are equal");
     return this;
@@ -280,11 +281,13 @@ public final class ImageAssert extends GenericAssert<BufferedImage> {
    * @param expected the expected size of the actual image.
    * @return this assertion object.
    * @throws AssertionError if the actual image is <code>null</code>.
+   * @throws IllegalArgumentException if the given size is <code>null</code>.
    * @throws AssertionError if the size of the actual image is not equal to the given one.
    */
   public ImageAssert hasSize(Dimension expected) {
     isNotNull();
-    if (expected == null) throw new IllegalArgumentException("The size to compare to should not be null");
+    if (expected == null)
+      throw new IllegalArgumentException(formattedErrorMessage("The size to compare to should not be null"));
     Dimension actualDimension = new Dimension(actual.getWidth(), actual.getHeight());
     Fail.failIfNotEqual(description(), actualDimension, expected);
     return this;

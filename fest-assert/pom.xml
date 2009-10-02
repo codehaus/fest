@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.easytesting</groupId>
   <artifactId>fest-assert</artifactId>
-  <version>1.1</version>
+  <version>1.2</version>
   <name>FEST Fluent Assertions</name>
   <description>'Flexible' or 'fluent' assertions for testing</description>
   <inceptionYear>2007</inceptionYear>
@@ -48,21 +48,20 @@
     <dependency>
       <groupId>org.easytesting</groupId>
       <artifactId>fest-test</artifactId>
-      <version>1.1</version>
+      <version>1.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.easytesting</groupId>
       <artifactId>fest-mocks</artifactId>
-      <version>1.0</version>
+      <version>1.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>5.7</version>
-      <classifier>jdk15</classifier>
-      <scope>test</scope>
+    	<groupId>junit</groupId>
+    	<artifactId>junit</artifactId>
+    	<version>4.7</version>
+    	<scope>test</scope>
     </dependency>
   </dependencies>
 </project>

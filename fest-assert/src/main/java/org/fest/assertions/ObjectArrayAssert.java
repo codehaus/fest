@@ -15,8 +15,8 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.Fail.errorMessageIfEqual;
-import static org.fest.assertions.Fail.errorMessageIfNotEqual;
+import static org.fest.assertions.ErrorMessages.messageForEqual;
+import static org.fest.assertions.ErrorMessages.messageForNotEqual;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Collections.duplicatesFrom;
 import static org.fest.util.Collections.list;
@@ -121,7 +121,7 @@ public final class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * @param type the expected type.
    * @return this assertion object.
    * @throws AssertionError if the component type of the actual <code>Object</code> array is not the same as the
-   *          specified one.
+   * specified one.
    */
   public ObjectArrayAssert hasAllElementsOfType(Class<?> type) {
     isNotNull();
@@ -155,10 +155,12 @@ public final class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * @param objects the objects to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>Object</code> array is <code>null</code>.
+   * @throws NullPointerException if the given <code>Object</code> array is <code>null</code>.
    * @throws AssertionError if the actual <code>Object</code> array does not contain the given objects.
    */
   public ObjectArrayAssert contains(Object...objects) {
     isNotNull();
+    validateIsNotNull(objects);
     assertContains(list(objects));
     return this;
   }
@@ -168,11 +170,13 @@ public final class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * @param objects the objects to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>Object</code> array is <code>null</code>.
-   * @throws AssertionError if the actual <code>Object</code> array does not contain the given objects, or if the
-   *          actual <code>Object</code> array contains elements other than the ones specified.
+   * @throws NullPointerException if the given <code>Object</code> array is <code>null</code>.
+   * @throws AssertionError if the actual <code>Object</code> array does not contain the given objects, or if the actual
+   * <code>Object</code> array contains elements other than the ones specified.
    */
   public ObjectArrayAssert containsOnly(Object...objects) {
     isNotNull();
+    validateIsNotNull(objects);
     assertContainsOnly(list(objects));
     return this;
   }
@@ -182,12 +186,19 @@ public final class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * @param objects the objects the array should exclude.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>Object</code> array is <code>null</code>.
+   * @throws NullPointerException if the given <code>Object</code> array is <code>null</code>.
    * @throws AssertionError if the actual <code>Object</code> array contains any of the given objects.
    */
   public ObjectArrayAssert excludes(Object...objects) {
     isNotNull();
+    validateIsNotNull(objects);
     assertExcludes(list(objects));
     return this;
+  }
+
+  private void validateIsNotNull(Object[] objects) {
+    if (objects == null)
+      throw new NullPointerException(formattedErrorMessage("the given array of objects should not be null"));
   }
 
   List<Object> copyActual() {
@@ -262,7 +273,7 @@ public final class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * @throws AssertionError if the actual <code>Object</code> array is not equal to the given one.
    */
   public ObjectArrayAssert isEqualTo(Object[] expected) {
-    if (!Arrays.deepEquals(actual, expected)) fail(errorMessageIfNotEqual(actual, expected));
+    if (!Arrays.deepEquals(actual, expected)) fail(messageForNotEqual(actual, expected));
     return this;
   }
 
@@ -274,7 +285,7 @@ public final class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * @throws AssertionError if the actual <code>Object</code> array is equal to the given one.
    */
   public ObjectArrayAssert isNotEqualTo(Object[] array) {
-    if (Arrays.deepEquals(actual, array)) fail(errorMessageIfEqual(actual, array));
+    if (Arrays.deepEquals(actual, array)) fail(messageForEqual(actual, array));
     return this;
   }
 

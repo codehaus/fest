@@ -15,9 +15,6 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.Formatting.format;
-import static org.fest.util.Strings.concat;
-
 /**
  * Understands a template for assertion methods for primitive values.
  *
@@ -86,10 +83,6 @@ abstract class PrimitiveAssert extends Assert {
   abstract PrimitiveAssert describedAs(Description description);
 
   final void fail(String reason) {
-    Fail.fail(formatted(reason));
-  }
-
-  private String formatted(String reason) {
-    return concat(format(description()), reason);
+    Fail.fail(formattedErrorMessage(reason));
   }
 }

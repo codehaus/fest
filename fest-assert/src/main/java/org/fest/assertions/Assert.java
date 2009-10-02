@@ -15,6 +15,8 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.Formatting.format;
+
 /**
  * Understands the base class for all assertion methods for objects and primitives.
  *
@@ -49,6 +51,18 @@ public abstract class Assert {
    */
   protected final void description(Description d) {
     this.description = d;
+  }
+
+  /**
+   * Returns the given message formatted as follows:
+   * <pre>
+   * [assertion description] given message.
+   * </pre>
+   * @param message the message to format.
+   * @return the formatted message.
+   */
+  protected final String formattedErrorMessage(String message) {
+    return format(description(), message);
   }
 
   /**

@@ -15,9 +15,7 @@
  */
 package org.fest.assertions;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Understands utility methods related to <code>{@link Collections}</code>.

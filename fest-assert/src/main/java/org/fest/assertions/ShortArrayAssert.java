@@ -15,11 +15,10 @@
  */
 package org.fest.assertions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import static org.fest.assertions.ErrorMessages.messageForEqual;
+import static org.fest.assertions.ErrorMessages.messageForNotEqual;
 
-import static org.fest.assertions.Fail.*;
+import java.util.*;
 
 /**
  * Understands assertion methods for <code>short</code> arrays. To create a new instance of this class use the
@@ -109,10 +108,12 @@ public final class ShortArrayAssert extends ArrayAssert<short[]> {
    * @param values the values to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>short</code> array is <code>null</code>.
+   * @throws NullPointerException if the given <code>short</code> array is <code>null</code>.
    * @throws AssertionError if the actual <code>short</code> array does not contain the given values.
    */
   public ShortArrayAssert contains(short...values) {
     isNotNull();
+    validateIsNotNull(values);
     assertContains(list(values));
     return this;
   }
@@ -122,11 +123,13 @@ public final class ShortArrayAssert extends ArrayAssert<short[]> {
    * @param values the values to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>short</code> array is <code>null</code>.
-   * @throws AssertionError if the actual <code>short</code> array does not contain the given objects, or if the
-   *          actual <code>short</code> array contains elements other than the ones specified.
+   * @throws NullPointerException if the given <code>short</code> array is <code>null</code>.
+   * @throws AssertionError if the actual <code>short</code> array does not contain the given objects, or if the actual
+   * <code>short</code> array contains elements other than the ones specified.
    */
   public ShortArrayAssert containsOnly(short...values) {
     isNotNull();
+    validateIsNotNull(values);
     assertContainsOnly(list(values));
     return this;
   }
@@ -136,12 +139,19 @@ public final class ShortArrayAssert extends ArrayAssert<short[]> {
    * @param values the values the array should exclude.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>short</code> array is <code>null</code>.
+   * @throws NullPointerException if the given <code>short</code> array is <code>null</code>.
    * @throws AssertionError if the actual <code>Object</code> array contains any of the given values.
    */
   public ShortArrayAssert excludes(short...values) {
     isNotNull();
+    validateIsNotNull(values);
     assertExcludes(list(values));
     return this;
+  }
+
+  private void validateIsNotNull(short[] values) {
+    if (values == null)
+      throw new NullPointerException(formattedErrorMessage("the given array of shorts should not be null"));
   }
 
   List<Object> copyActual() {
@@ -207,7 +217,7 @@ public final class ShortArrayAssert extends ArrayAssert<short[]> {
    * @throws AssertionError if the actual <code>short</code> array is not equal to the given one.
    */
   public ShortArrayAssert isEqualTo(short[] expected) {
-    if (!Arrays.equals(actual, expected)) fail(errorMessageIfNotEqual(actual, expected));
+    if (!Arrays.equals(actual, expected)) fail(messageForNotEqual(actual, expected));
     return this;
   }
 
@@ -219,7 +229,7 @@ public final class ShortArrayAssert extends ArrayAssert<short[]> {
    * @throws AssertionError if the actual <code>short</code> array is equal to the given one.
    */
   public ShortArrayAssert isNotEqualTo(short[] array) {
-    if (Arrays.equals(actual, array)) fail(errorMessageIfEqual(actual, array));
+    if (Arrays.equals(actual, array)) fail(messageForEqual(actual, array));
     return this;
   }
 
@@ -229,7 +239,7 @@ public final class ShortArrayAssert extends ArrayAssert<short[]> {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>short</code> array is <code>null</code>.
    * @throws AssertionError if the number of elements in the actual <code>short</code> array is not equal to the given
-   *          one.
+   * one.
    */
   public ShortArrayAssert hasSize(int expected) {
     assertHasSize(expected);

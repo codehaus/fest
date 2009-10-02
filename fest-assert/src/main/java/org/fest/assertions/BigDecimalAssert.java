@@ -15,10 +15,11 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.Fail.*;
+import static java.math.BigDecimal.ZERO;
+import static org.fest.assertions.ErrorMessages.*;
+import static org.fest.assertions.Fail.failIfNull;
 
 import java.math.BigDecimal;
-import static java.math.BigDecimal.ZERO;
 
 /**
  * Understands assertion methods for <code>{@link BigDecimal}</code>. To create a new instance of this class use the
@@ -131,8 +132,8 @@ public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
   /**
    * Verifies that the actual <code>{@link BigDecimal}</code> is positive.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is <code>null</code>.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is not positive.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is <code>null</code>.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is not positive.
    */
   public BigDecimalAssert isPositive() {
     return isGreaterThan(ZERO);
@@ -141,8 +142,8 @@ public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
   /**
    * Verifies that the actual <code>{@link BigDecimal}</code> is negative.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is <code>null</code>.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is not negative.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is <code>null</code>.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is not negative.
    */
   public BigDecimalAssert isNegative() {
     return isLessThan(ZERO);
@@ -153,8 +154,8 @@ public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
    * Essentially, this is the same as
    * <code>{@link #isEqualByComparingTo(BigDecimal) isEqualByComparingTo}</code>(<code>{@link BigDecimal#ZERO BigDecimal.ZERO}</code>).
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is <code>null</code>.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is not equal to zero.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is <code>null</code>.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is not equal to zero.
    */
   public BigDecimalAssert isZero() {
     return isEqualByComparingTo(ZERO);
@@ -163,7 +164,7 @@ public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
   /**
    * Verifies that the actual <code>{@link BigDecimal}</code> is not <code>null</code>.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is <code>null</code>.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is <code>null</code>.
    */
   public BigDecimalAssert isNotNull() {
     assertNotNull();
@@ -174,7 +175,7 @@ public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
    * Verifies that the actual <code>{@link BigDecimal}</code> is the same as the given one.
    * @param expected the given <code>BigDecimal</code> to compare the actual <code>BigDecimal</code> to.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is not the same as the given one.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is not the same as the given one.
    */
   public BigDecimalAssert isSameAs(BigDecimal expected) {
     assertSameAs(expected);
@@ -185,7 +186,7 @@ public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
    * Verifies that the actual <code>{@link BigDecimal}</code> is not the same as the given one.
    * @param other the given <code>BigDecimal</code> to compare the actual <code>BigDecimal</code> to.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is the same as the given one.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is the same as the given one.
    */
   public BigDecimalAssert isNotSameAs(BigDecimal other) {
     assertNotSameAs(other);
@@ -199,7 +200,7 @@ public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
    * 2.00 when compared by this method).
    * @param expected the given <code>BigDecimal</code> to compare the actual <code>BigDecimal</code> to.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is not equal to the given one.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is not equal to the given one.
    * @see BigDecimal#equals(Object)
    * @see #isEqualByComparingTo(BigDecimal)
    */
@@ -212,7 +213,7 @@ public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
    * Verifies that the actual <code>{@link BigDecimal}</code> is not equal to the given one.
    * @param other the given <code>BigDecimal</code> to compare the actual <code>BigDecimal</code> to.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is equal to the given one.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is equal to the given one.
    */
   public BigDecimalAssert isNotEqualTo(BigDecimal other) {
     assertNotEqualTo(other);
@@ -225,14 +226,14 @@ public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
    * are considered equal by this method.
    * @param expected the given <code>BigDecimal</code> to compare the actual <code>BigDecimal</code> to.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is <code>null</code>.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is not equal to the given one.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is <code>null</code>.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is not equal to the given one.
    * @see BigDecimal#compareTo(BigDecimal)
    */
   public BigDecimalAssert isEqualByComparingTo(BigDecimal expected) {
     isNotNull();
     failIfNull(description(), expected);
-    if (actual.compareTo(expected) != 0) fail(errorMessageIfNotEqual(actual, expected));
+    if (actual.compareTo(expected) != 0) fail(messageForNotEqual(actual, expected));
     return this;
   }
 
@@ -242,14 +243,14 @@ public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
    * are considered equal by this method.
    * @param expected the given <code>BigDecimal</code> to use to compare to the actual <code>BigDecimal</code>.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is <code>null</code>.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is equal to the given one.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is <code>null</code>.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is equal to the given one.
    * @see BigDecimal#compareTo(BigDecimal)
    */
   public BigDecimalAssert isNotEqualByComparingTo(BigDecimal expected) {
     isNotNull();
     failIfNull(description(), expected);
-    if (actual.compareTo(expected) == 0) fail(errorMessageIfEqual(actual, expected));
+    if (actual.compareTo(expected) == 0) fail(messageForEqual(actual, expected));
     return this;
   }
 
@@ -257,12 +258,12 @@ public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
    * Verifies that the actual <code>{@link BigDecimal}</code> value is less than the given one.
    * @param value the value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is <code>null</code>.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is <code>null</code>.
    * @throws AssertionError if the actual <code>BigDecimal</code> value is not less than the given one.
    */
   public BigDecimalAssert isLessThan(BigDecimal value) {
     isNotNull();
-    if (actual.compareTo(value) >= 0) fail(errorMessageIfNotLessThan(actual, value));
+    if (actual.compareTo(value) >= 0) fail(messageForNotLessThan(actual, value));
     return this;
   }
 
@@ -270,12 +271,12 @@ public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
    * Verifies that the actual <code>{@link BigDecimal}</code> value is greater than the given one.
    * @param value the value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is <code>null</code>.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is <code>null</code>.
    * @throws AssertionError if the actual <code>BigDecimal</code> value is not greater than the given one.
    */
   public BigDecimalAssert isGreaterThan(BigDecimal value) {
     isNotNull();
-    if (actual.compareTo(value) <= 0) fail(errorMessageIfNotGreaterThan(actual, value));
+    if (actual.compareTo(value) <= 0) fail(messageForNotGreaterThan(actual, value));
     return this;
   }
 
@@ -283,12 +284,12 @@ public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
    * Verifies that the actual <code>{@link BigDecimal}</code> value is less than or equal to the given one.
    * @param value the value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is <code>null</code>.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is <code>null</code>.
    * @throws AssertionError if the actual <code>BigDecimal</code> value is not less than or equal to the given one.
    */
   public BigDecimalAssert isLessThanOrEqualTo(BigDecimal value) {
     isNotNull();
-    if (actual.compareTo(value) > 0) fail(errorMessageIfNotLessThanOrEqualTo(actual, value));
+    if (actual.compareTo(value) > 0) fail(messageForNotLessThanOrEqualTo(actual, value));
     return this;
   }
 
@@ -296,12 +297,12 @@ public final class BigDecimalAssert extends GenericAssert<BigDecimal> {
    * Verifies that the actual <code>{@link BigDecimal}</code> value is greater than or equal to the given one.
    * @param value the value the given value.
    * @return this assertion object.
-   * @throws AssertionError if the actual <code>BigDecimal</code> is <code>null</code>.
+   * @throws AssertionError if the actual <code>BigDecimal</code> value is <code>null</code>.
    * @throws AssertionError if the actual <code>BigDecimal</code> value is not greater than or equal to the given one.
    */
   public BigDecimalAssert isGreaterThanOrEqualTo(BigDecimal value) {
     isNotNull();
-    if (actual.compareTo(value) < 0) fail(errorMessageIfNotGreaterThanOrEqualTo(actual, value));
+    if (actual.compareTo(value) < 0) fail(messageForNotGreaterThanOrEqualTo(actual, value));
     return this;
   }
 }

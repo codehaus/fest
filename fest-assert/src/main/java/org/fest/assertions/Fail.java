@@ -16,10 +16,11 @@
 package org.fest.assertions;
 
 import static org.fest.assertions.ComparisonFailureFactory.comparisonFailure;
-import static org.fest.assertions.Formatting.format;
+import static org.fest.assertions.ErrorMessages.*;
 import static org.fest.assertions.Formatting.inBrackets;
+import static org.fest.assertions.Formatting.messageFrom;
+import static org.fest.util.Arrays.array;
 import static org.fest.util.Objects.areEqual;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands failure methods.
@@ -40,41 +41,48 @@ public final class Fail {
   /**
    * Throws an {@link AssertionError} with the given message an with the <code>{@link Throwable}</code> that caused the
    * failure.
-   * @param message error message.
+   * @param description error description.
    * @param realCause cause of the error.
    */
-  public static void fail(String message, Throwable realCause) {
-    AssertionError error = new AssertionError(message);
+  public static void fail(String description, Throwable realCause) {
+    AssertionError error = new AssertionError(description);
     error.initCause(realCause);
     throw error;
   }
 
-  static void failIfEqual(String message, Object first, Object second) {
-    if (areEqual(first, second)) fail(errorMessageIfEqual(message, first, second));
+  static void failIfEqual(String description, Object first, Object second) {
+    if (areEqual(first, second)) fail(messageForEqual(description, first, second));
   }
 
-  static void failIfNotEqual(String message, Object actual, Object expected) {
+  static void failIfNotEqual(String description, Object actual, Object expected) {
     if (areEqual(actual, expected)) return;
-    AssertionError comparisonFailure = comparisonFailure(message, expected, actual);
+    AssertionError comparisonFailure = comparisonFailure(description, expected, actual);
     if (comparisonFailure != null) throw comparisonFailure;
-    fail(errorMessageIfNotEqual(message, actual, expected));
+    fail(messageForNotEqual(description, actual, expected));
   }
 
-  static void failIfNull(String message, Object o) {
-    if (o == null) fail(concat(format(message), "expecting a non-null object, but it was null"));
+  static void failIfNull(String description, Object o) {
+    if (o != null) return;
+    fail(description, array("expecting a non-null object, but it was null"));
   }
 
-  static void failIfNotNull(String message, Object o) {
-    if (o != null) fail(concat(format(message), inBrackets(o), " should be null"));
+  static void failIfNotNull(String description, Object o) {
+    if (o == null) return;
+    fail(description, array(inBrackets(o), " should be null"));
   }
 
-  static void failIfSame(String message, Object first, Object second) {
-    if (first == second) fail(concat(format(message), "given objects are same:", inBrackets(first)));
+  static void failIfSame(String description, Object first, Object second) {
+    if (first != second) return;
+    fail(description, array("given objects are same:", inBrackets(first)));
   }
 
-  static void failIfNotSame(String message, Object first, Object second) {
-    if (first != second)
-      fail(concat(format(message), "expected same instance but found:", inBrackets(first), " and:", inBrackets(second)));
+  static void failIfNotSame(String description, Object first, Object second) {
+    if (first == second) return;
+    fail(description, array("expected same instance but found:", inBrackets(first), " and:", inBrackets(second)));
+  }
+
+  private static AssertionError fail(String description, Object[] message) {
+    return fail(messageFrom(description, message));
   }
 
   /**
@@ -85,62 +93,6 @@ public final class Fail {
    */
   public static AssertionError fail(String message) {
     throw new AssertionError(message);
-  }
-
-  static String errorMessageIfNotEqual(String message, Object actual, Object expected) {
-    return concat(format(message), errorMessageIfNotEqual(actual, expected));
-  }
-
-  static String errorMessageIfNotEqual(Object actual, Object expected) {
-    return concat("expected:", inBrackets(expected), " but was:", inBrackets(actual));
-  }
-
-  static String errorMessageIfEqual(String message, Object actual, Object o) {
-    return concat(format(message), errorMessageIfEqual(actual, o));
-  }
-
-  static String errorMessageIfEqual(Object actual, Object o) {
-    return comparisonFailed(actual, " should not be equal to:", o);
-  }
-
-  static String errorMessageIfNotGreaterThan(String message, Object actual, Object value) {
-    return concat(format(message), errorMessageIfNotGreaterThan(actual, value));
-  }
-
-  static String errorMessageIfNotGreaterThan(Object actual, Object value) {
-    return comparisonFailed(actual, " should be greater than:", value);
-  }
-
-  static String errorMessageIfNotGreaterThanOrEqualTo(String message, Object actual, Object value) {
-    return concat(format(message), errorMessageIfNotGreaterThanOrEqualTo(actual, value));
-  }
-
-  static String errorMessageIfNotGreaterThanOrEqualTo(Object actual, Object value) {
-    return comparisonFailed(actual, " should be greater than or equal to:", value);
-  }
-
-  static String errorMessageIfNotLessThan(String message, Object actual, Object value) {
-    return concat(format(message), errorMessageIfNotLessThan(actual, value));
-  }
-
-  static String errorMessageIfNotLessThan(Object actual, Object value) {
-    return comparisonFailed(actual, " should be less than:", value);
-  }
-
-  static String errorMessageIfNotLessThanOrEqualTo(String message, Object actual, Object value) {
-    return concat(format(message), errorMessageIfNotLessThanOrEqualTo(actual, value));
-  }
-
-  static String errorMessageIfNotLessThanOrEqualTo(Object actual, Object value) {
-    return comparisonFailed(actual, " should be less than or equal to:", value);
-  }
-
-  private static String comparisonFailed(Object actual, String reason, Object expected) {
-    return comparisonFailed(null, actual, reason, expected);
-  }
-
-  private static String comparisonFailed(String message, Object actual, String reason, Object expected) {
-    return concat(format(message), "actual value:", inBrackets(actual), reason, inBrackets(expected));
   }
 
   private Fail() {}

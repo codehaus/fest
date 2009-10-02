@@ -15,8 +15,7 @@
 package org.fest.assertions;
 
 import static java.lang.Math.abs;
-
-import static org.fest.assertions.Fail.errorMessageIfNotEqual;
+import static org.fest.assertions.ErrorMessages.messageForNotEqual;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.assertions.PrimitiveFail.*;
 import static org.fest.util.Strings.concat;
@@ -128,7 +127,7 @@ public final class FloatAssert extends PrimitiveAssert {
   public FloatAssert isEqualTo(float expected, Delta delta) {
     if (Float.compare(expected, actual) == 0) return this;
     if (!(abs(expected - actual) <= delta.value))
-      fail(concat(errorMessageIfNotEqual(actual, expected), " using delta:", inBrackets(delta.value)));
+      fail(concat(messageForNotEqual(actual, expected), " using delta:", inBrackets(delta.value)));
     return this;
   }
 

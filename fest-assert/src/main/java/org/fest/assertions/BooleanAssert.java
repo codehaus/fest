@@ -15,7 +15,8 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.Fail.*;
+import static org.fest.assertions.Fail.failIfEqual;
+import static org.fest.assertions.Fail.failIfNotEqual;
 
 /**
  * Understands assertion methods for <code>boolean</code> values. To create a new instance of this class use the method

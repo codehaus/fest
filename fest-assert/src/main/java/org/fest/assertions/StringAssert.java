@@ -15,10 +15,10 @@
  */
 package org.fest.assertions;
 
-import org.fest.util.Strings;
-
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Strings.concat;
+
+import org.fest.util.Strings;
 
 /**
  * Understands assertion methods for <code>String</code>s. To create a new instance of this class use the

@@ -14,15 +14,13 @@
  */
 package org.fest.assertions;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import static org.fest.assertions.Formatting.inBrackets;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
+import java.util.*;
 
 import org.fest.util.Maps;
-
-import static org.fest.assertions.Formatting.inBrackets;
-import static org.fest.util.Strings.*;
 
 /**
  * Understands assertions for <code>{@link Map}</code>. To create a new instance of this class use the method
@@ -127,7 +125,7 @@ public final class MapAssert extends GroupAssert<Map<?, ?>> {
    * @return this assertion error.
    * @throws AssertionError if the actual map is <code>null</code>.
    * @throws AssertionError if the actual <code>Map</code> does not contain any of the given entries.
-   * @throws IllegalArgumentException if the given array of entries is <code>null</code>.
+   * @throws NullPointerException if the given array of entries is <code>null</code>.
    * @throws IllegalArgumentException if any of the entries in the given array is <code>null</code>.
    */
   public MapAssert includes(Entry...entries) {
@@ -154,7 +152,7 @@ public final class MapAssert extends GroupAssert<Map<?, ?>> {
    * @return this assertion error.
    * @throws AssertionError if the actual map is <code>null</code>.
    * @throws AssertionError if the actual <code>Map</code> contains any of the given entries.
-   * @throws IllegalArgumentException if the given array of entries is <code>null</code>.
+   * @throws NullPointerException if the given array of entries is <code>null</code>.
    * @throws IllegalArgumentException if any of the entries in the given array is <code>null</code>.
    */
   public MapAssert excludes(Entry...entries) {
@@ -167,7 +165,8 @@ public final class MapAssert extends GroupAssert<Map<?, ?>> {
   }
 
   private boolean containsEntry(Entry e) {
-    if (e == null) throw new IllegalArgumentException("The entry to check should not be null");
+    if (e == null)
+      throw new IllegalArgumentException(formattedErrorMessage("Entries to check should not contain null"));
     if (!actual.containsKey(e.key)) return false;
     return actual.containsValue(e.value);
   }
@@ -213,7 +212,8 @@ public final class MapAssert extends GroupAssert<Map<?, ?>> {
 
   private void validate(String description, Object[] objects) {
     if (objects == null)
-      throw new IllegalArgumentException(concat("The given array of ", description, " should not be null"));
+      throw new NullPointerException(
+          formattedErrorMessage(concat("The given array of ", description, " should not be null")));
   }
 
   private void failIfFound(String description, Collection<?> found) {

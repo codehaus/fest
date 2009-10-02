@@ -33,24 +33,48 @@ class FileStub extends File {
   private boolean file;
   private long length;
 
-  public FileStub(String absolutePath) {
-    super("");
-    absolutePath(absolutePath);
+  public static FileStub newFile(String absolutePath) {
+    return new FileStub(absolutePath);
   }
 
-  void absolute(boolean val) { absolute = val; }
+  private FileStub(String absolutePath) {
+    super("");
+    withAbsolutePath(absolutePath);
+  }
 
-  void absolutePath(String val) { absolutePath = val; }
+  FileStub ensureIsFile() {
+    file = true;
+    return this;
+  }
 
-  void directory(boolean val) { directory = val; }
+  FileStub ensureIsDirectory() {
+    directory = true;
+    return this;
+  }
+
+  FileStub ensureExists() {
+    exists = true;
+    return this;
+  }
+
+  FileStub ensureIsAbsolute() {
+    absolute = true;
+    return this;
+  }
+
+  FileStub ensureIsRelative() {
+    absolute = false;
+    return this;
+  }
+
+  FileStub withAbsolutePath(String newAbsolutePath) {
+    absolutePath = newAbsolutePath;
+    return this;
+  }
 
   @Override public boolean exists() {
     return exists;
   }
-
-  void exists(boolean val) { exists = val; }
-
-  void file(boolean val) { file = val; }
 
   @Override public String getAbsolutePath() {
     return absolutePath;

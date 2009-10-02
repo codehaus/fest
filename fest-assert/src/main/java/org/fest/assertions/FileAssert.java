@@ -14,15 +14,15 @@
  */
 package org.fest.assertions;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.fest.assertions.FileContentComparator.LineDiff;
-
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Arrays.isEmpty;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Systems.LINE_SEPARATOR;
+
+import java.io.File;
+import java.io.IOException;
+
+import org.fest.assertions.FileContentComparator.LineDiff;
 
 /**
  * Understands assertion methods for <code>File</code>. To create a new instance of this class use the method <code>
@@ -271,13 +271,13 @@ public final class FileAssert extends GenericAssert<File> {
    * @param expected the given <code>File</code> to compare the actual <code>File</code> to.
    * @return this assertion object.
    * @throws AssertionError if the the actual <code>File</code> is <code>null</code>.
-   * @throws AssertionError if the content of the actual <code>File</code> is not equal to the content of the given
-   *          one.
+   * @throws AssertionError if the content of the actual <code>File</code> is not equal to the content of the given one.
    * @throws IllegalArgumentException if the file to compare to is <code>null</code>.
    */
   public FileAssert hasSameContentAs(File expected) {
     isNotNull();
-    if (expected == null) throw new IllegalArgumentException("File to compare to should not be null");
+    if (expected == null)
+      throw new IllegalArgumentException(formattedErrorMessage("File to compare to should not be null"));
     assertExists(actual).assertExists(expected);
     try {
       LineDiff[] diffs = comparator.compareContents(actual, expected);

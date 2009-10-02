@@ -81,7 +81,7 @@ public class ListAssert extends GroupAssert<List<?>> {
    */
   public ListAssert containsSequence(Object...sequence) {
     isNotNull();
-    failIfNull(sequence);
+    validateIsNotNull(sequence);
     int sequenceSize = sequence.length;
     if (sequenceSize == 0) return this;
     int indexOfFirst = actual.indexOf(sequence[0]);
@@ -113,7 +113,7 @@ public class ListAssert extends GroupAssert<List<?>> {
    */
   public ListAssert startsWith(Object...sequence) {
     isNotNull();
-    failIfNull(sequence);
+    validateIsNotNull(sequence);
     int sequenceSize = sequence.length;
     int listSize = actualGroupSize();
     if (sequenceSize == 0 && listSize == 0) return this;
@@ -142,7 +142,7 @@ public class ListAssert extends GroupAssert<List<?>> {
    */
   public ListAssert endsWith(Object...sequence) {
     isNotNull();
-    failIfNull(sequence);
+    validateIsNotNull(sequence);
     int sequenceSize = sequence.length;
     int listSize = actualGroupSize();
     if (sequenceSize == 0 && listSize == 0) return this;
@@ -165,12 +165,12 @@ public class ListAssert extends GroupAssert<List<?>> {
    * @param objects the objects to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>List</code> is <code>null</code>.
-   * @throws AssertionError if the given array is <code>null</code>.
+   * @throws NullPointerException if the given array is <code>null</code>.
    * @throws AssertionError if the actual <code>List</code> does not contain the given objects.
    */
   public ListAssert contains(Object...objects) {
     isNotNull();
-    failIfNull(objects);
+    validateIsNotNull(objects);
     Collection<Object> notFound = notFound(actual, objects);
     if (!notFound.isEmpty()) failIfElementsNotFound(notFound);
     return this;
@@ -181,13 +181,13 @@ public class ListAssert extends GroupAssert<List<?>> {
    * @param objects the objects to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>List</code> is <code>null</code>.
-   * @throws AssertionError if the given array is <code>null</code>.
+   * @throws NullPointerException if the given array is <code>null</code>.
    * @throws AssertionError if the actual <code>List</code> does not contain the given objects, or if the actual
    * <code>List</code> contains elements other than the ones specified.
    */
   public ListAssert containsOnly(Object...objects) {
     isNotNull();
-    failIfNull(objects);
+    validateIsNotNull(objects);
     List<Object> notFound = new ArrayList<Object>();
     List<Object> copy = new ArrayList<Object>(actual);
     for (Object o : objects) {
@@ -212,20 +212,21 @@ public class ListAssert extends GroupAssert<List<?>> {
    * @param objects the objects that the <code>List</code> should exclude.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>List</code> is <code>null</code>.
-   * @throws AssertionError if the given array is <code>null</code>.
+   * @throws NullPointerException if the given array is <code>null</code>.
    * @throws AssertionError if the actual <code>List</code> contains any of the given objects.
    */
   public ListAssert excludes(Object...objects) {
     isNotNull();
-    failIfNull(objects);
+    validateIsNotNull(objects);
     Collection<Object> found = found(actual, objects);
     if (!found.isEmpty())
       fail(concat("list:", inBrackets(actual), " does not exclude element(s):", inBrackets(found)));
     return this;
   }
 
-  private void failIfNull(Object[] objects) {
-    if (objects == null) fail("the given array of objects should not be null");
+  private void validateIsNotNull(Object[] objects) {
+    if (objects == null)
+      throw new NullPointerException(formattedErrorMessage("the given array of objects should not be null"));
   }
 
   /**
@@ -412,7 +413,7 @@ public class ListAssert extends GroupAssert<List<?>> {
    * @throws AssertionError if the actual <code>List</code> does not contain the given objects.
    */
   public ListAssert containsExactly(Object... objects) {
-    failIfNull(objects);
+    validateIsNotNull(objects);
     return isNotNull().isEqualTo(list(objects));
   }
 

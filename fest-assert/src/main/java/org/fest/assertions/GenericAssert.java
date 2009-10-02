@@ -16,7 +16,6 @@
 package org.fest.assertions;
 
 import static org.fest.assertions.Fail.*;
-import static org.fest.assertions.Formatting.format;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Strings.concat;
 
@@ -249,7 +248,7 @@ public abstract class GenericAssert<T> extends Assert {
    * @throws AssertionError using the given reason as the message.
    */
   protected final AssertionError fail(String reason) {
-    throw Fail.fail(formatted(reason));
+    throw Fail.fail(formattedErrorMessage(reason));
   }
 
   /**
@@ -258,10 +257,6 @@ public abstract class GenericAssert<T> extends Assert {
    * @param cause the root cause of the failure, included in the thrown exception.
    */
   protected final void fail(String reason, Throwable cause) {
-    Fail.fail(formatted(reason), cause);
-  }
-
-  private String formatted(String reason) {
-    return concat(format(description()), reason);
+    Fail.fail(formattedErrorMessage(reason), cause);
   }
 }

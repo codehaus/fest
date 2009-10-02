@@ -15,8 +15,8 @@
 package org.fest.assertions;
 
 import static java.lang.Math.abs;
-import static org.fest.assertions.Fail.errorMessageIfEqual;
-import static org.fest.assertions.Fail.errorMessageIfNotEqual;
+import static org.fest.assertions.ErrorMessages.messageForEqual;
+import static org.fest.assertions.ErrorMessages.messageForNotEqual;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Strings.concat;
 
@@ -117,10 +117,13 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * Verifies that the actual <code>double</code> array contains the given values.
    * @param values the values to look for.
    * @return this assertion object.
+   * @throws AssertionError if the actual <code>double</code> array is <code>null</code>.
+   * @throws NullPointerException if the given <code>double</code> array is <code>null</code>.
    * @throws AssertionError if the actual <code>double</code> array does not contain the given values.
    */
   public DoubleArrayAssert contains(double... values) {
     isNotNull();
+    validateIsNotNull(values);
     assertContains(list(values));
     return this;
   }
@@ -130,11 +133,13 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * @param values the values to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>double</code> array is <code>null</code>.
+   * @throws NullPointerException if the given <code>double</code> array is <code>null</code>.
    * @throws AssertionError if the actual <code>double</code> array does not contain the given objects, or if the actual
-   *           <code>double</code> array contains elements other than the ones specified.
+   * <code>double</code> array contains elements other than the ones specified.
    */
   public DoubleArrayAssert containsOnly(double... values) {
     isNotNull();
+    validateIsNotNull(values);
     assertContainsOnly(list(values));
     return this;
   }
@@ -144,12 +149,19 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * @param values the values the array should exclude.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>double</code> array is <code>null</code>.
+   * @throws NullPointerException if the given <code>double</code> array is <code>null</code>.
    * @throws AssertionError if the actual <code>double</code> array contains any of the given values.
    */
   public DoubleArrayAssert excludes(double... values) {
     isNotNull();
+    validateIsNotNull(values);
     assertExcludes(list(values));
     return this;
+  }
+
+  private void validateIsNotNull(double[] values) {
+    if (values == null)
+      throw new NullPointerException(formattedErrorMessage("the given array of doubles should not be null"));
   }
 
   List<Object> copyActual() {
@@ -216,7 +228,7 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * @throws AssertionError if the actual <code>double</code> array is not equal to the given one.
    */
   public DoubleArrayAssert isEqualTo(double[] expected) {
-    if (!Arrays.equals(actual, expected)) fail(errorMessageIfNotEqual(actual, expected));
+    if (!Arrays.equals(actual, expected)) fail(messageForNotEqual(actual, expected));
     return this;
   }
 
@@ -239,7 +251,7 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
   }
 
   private void failNotEquals(double[] expected, Delta delta) {
-    fail(concat(errorMessageIfNotEqual(actual, expected), " using delta:", inBrackets(delta.value())));
+    fail(concat(messageForNotEqual(actual, expected), " using delta:", inBrackets(delta.value())));
   }
 
   private boolean equals(double e, double a, Delta delta) {
@@ -255,7 +267,7 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * @throws AssertionError if the actual <code>double</code> array is equal to the given one.
    */
   public DoubleArrayAssert isNotEqualTo(double[] array) {
-    if (Arrays.equals(actual, array)) fail(errorMessageIfEqual(actual, array));
+    if (Arrays.equals(actual, array)) fail(messageForEqual(actual, array));
     return this;
   }
 
@@ -265,7 +277,7 @@ public final class DoubleArrayAssert extends ArrayAssert<double[]> {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>double</code> array is <code>null</code>.
    * @throws AssertionError if the number of elements in the actual <code>double</code> array is not equal to the given
-   *           one.
+   * one.
    */
   public DoubleArrayAssert hasSize(int expected) {
     assertHasSize(expected);

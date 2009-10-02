@@ -15,11 +15,10 @@
  */
 package org.fest.assertions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import static org.fest.assertions.ErrorMessages.messageForEqual;
+import static org.fest.assertions.ErrorMessages.messageForNotEqual;
 
-import static org.fest.assertions.Fail.*;
+import java.util.*;
 
 /**
  * Understands assertion methods for <code>float</code> arrays. To create a new instance of this class use the
@@ -110,10 +109,12 @@ public final class FloatArrayAssert extends ArrayAssert<float[]> {
    * @param values the values to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>float</code> array is <code>null</code>.
+   * @throws NullPointerException if the given <code>float</code> array is <code>null</code>.
    * @throws AssertionError if the actual <code>float</code> array does not contain the given values.
    */
   public FloatArrayAssert contains(float...values) {
     isNotNull();
+    validateIsNotNull(values);
     assertContains(list(values));
     return this;
   }
@@ -123,11 +124,13 @@ public final class FloatArrayAssert extends ArrayAssert<float[]> {
    * @param values the values to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>float</code> array is <code>null</code>.
-   * @throws AssertionError if the actual <code>float</code> array does not contain the given objects, or if the
-   *          actual <code>float</code> array contains elements other than the ones specified.
+   * @throws NullPointerException if the given <code>float</code> array is <code>null</code>.
+   * @throws AssertionError if the actual <code>float</code> array does not contain the given objects, or if the actual
+   * <code>float</code> array contains elements other than the ones specified.
    */
   public FloatArrayAssert containsOnly(float...values) {
     isNotNull();
+    validateIsNotNull(values);
     assertContainsOnly(list(values));
     return this;
   }
@@ -137,12 +140,19 @@ public final class FloatArrayAssert extends ArrayAssert<float[]> {
    * @param values the values the array should exclude.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>float</code> array is <code>null</code>.
+   * @throws NullPointerException if the given <code>float</code> array is <code>null</code>.
    * @throws AssertionError if the actual <code>Object</code> array contains any of the given values.
    */
   public FloatArrayAssert excludes(float...values) {
     isNotNull();
+    validateIsNotNull(values);
     assertExcludes(list(values));
     return this;
+  }
+
+  private void validateIsNotNull(float[] values) {
+    if (values == null)
+      throw new NullPointerException(formattedErrorMessage("the given array of floats should not be null"));
   }
 
   List<Object> copyActual() {
@@ -208,7 +218,7 @@ public final class FloatArrayAssert extends ArrayAssert<float[]> {
    * @throws AssertionError if the actual <code>float</code> array is not equal to the given one.
    */
   public FloatArrayAssert isEqualTo(float[] expected) {
-    if (!Arrays.equals(actual, expected)) fail(errorMessageIfNotEqual(actual, expected));
+    if (!Arrays.equals(actual, expected)) fail(messageForNotEqual(actual, expected));
     return this;
   }
 
@@ -220,7 +230,7 @@ public final class FloatArrayAssert extends ArrayAssert<float[]> {
    * @throws AssertionError if the actual <code>float</code> array is equal to the given one.
    */
   public FloatArrayAssert isNotEqualTo(float[] array) {
-    if (Arrays.equals(actual, array)) fail(errorMessageIfEqual(actual, array));
+    if (Arrays.equals(actual, array)) fail(messageForEqual(actual, array));
     return this;
   }
 
@@ -230,7 +240,7 @@ public final class FloatArrayAssert extends ArrayAssert<float[]> {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>float</code> array is <code>null</code>.
    * @throws AssertionError if the number of elements in the actual <code>float</code> array is not equal to the given
-   *          one.
+   * one.
    */
   public FloatArrayAssert hasSize(int expected) {
     assertHasSize(expected);

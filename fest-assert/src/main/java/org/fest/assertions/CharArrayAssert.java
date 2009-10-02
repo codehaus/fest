@@ -15,11 +15,10 @@
  */
 package org.fest.assertions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import static org.fest.assertions.ErrorMessages.messageForEqual;
+import static org.fest.assertions.ErrorMessages.messageForNotEqual;
 
-import static org.fest.assertions.Fail.*;
+import java.util.*;
 
 /**
  * Understands assertion methods for <code>char</code> arrays. To create a new instance of this class use the
@@ -109,10 +108,12 @@ public final class CharArrayAssert extends ArrayAssert<char[]> {
    * @param values the values to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>char</code> array is <code>null</code>.
+   * @throws NullPointerException if the given <code>char</code> array is <code>null</code>.
    * @throws AssertionError if the actual <code>char</code> array does not contain the given values.
    */
   public CharArrayAssert contains(char...values) {
     isNotNull();
+    validateIsNotNull(values);
     assertContains(list(values));
     return this;
   }
@@ -122,11 +123,13 @@ public final class CharArrayAssert extends ArrayAssert<char[]> {
    * @param values the values to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>char</code> array is <code>null</code>.
-   * @throws AssertionError if the actual <code>char</code> array does not contain the given objects, or if the
-   *          actual <code>char</code> array contains elements other than the ones specified.
+   * @throws NullPointerException if the given <code>char</code> array is <code>null</code>.
+   * @throws AssertionError if the actual <code>char</code> array does not contain the given objects, or if the actual
+   * <code>char</code> array contains elements other than the ones specified.
    */
   public CharArrayAssert containsOnly(char...values) {
     isNotNull();
+    validateIsNotNull(values);
     assertContainsOnly(list(values));
     return this;
   }
@@ -136,12 +139,19 @@ public final class CharArrayAssert extends ArrayAssert<char[]> {
    * @param values the values the array should exclude.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>char</code> array is <code>null</code>.
+   * @throws NullPointerException if the given <code>char</code> array is <code>null</code>.
    * @throws AssertionError if the actual <code>char</code> array contains any of the given values.
    */
   public CharArrayAssert excludes(char...values) {
     isNotNull();
+    validateIsNotNull(values);
     assertExcludes(list(values));
     return this;
+  }
+
+  private void validateIsNotNull(char[] values) {
+    if (values == null)
+      throw new NullPointerException(formattedErrorMessage("the given array of chars should not be null"));
   }
 
   List<Object> copyActual() {
@@ -207,7 +217,7 @@ public final class CharArrayAssert extends ArrayAssert<char[]> {
    * @throws AssertionError if the actual <code>char</code> array is not equal to the given one.
    */
   public CharArrayAssert isEqualTo(char[] expected) {
-    if (!Arrays.equals(actual, expected)) fail(errorMessageIfNotEqual(actual, expected));
+    if (!Arrays.equals(actual, expected)) fail(messageForNotEqual(actual, expected));
     return this;
   }
 
@@ -219,7 +229,7 @@ public final class CharArrayAssert extends ArrayAssert<char[]> {
    * @throws AssertionError if the actual <code>char</code> array is equal to the given one.
    */
   public CharArrayAssert isNotEqualTo(char[] array) {
-    if (Arrays.equals(actual, array)) fail(errorMessageIfEqual(actual, array));
+    if (Arrays.equals(actual, array)) fail(messageForEqual(actual, array));
     return this;
   }
 
@@ -229,7 +239,7 @@ public final class CharArrayAssert extends ArrayAssert<char[]> {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>char</code> array is <code>null</code>.
    * @throws AssertionError if the number of elements in the actual <code>char</code> array is not equal to the given
-   *          one.
+   * one.
    */
   public CharArrayAssert hasSize(int expected) {
     assertHasSize(expected);

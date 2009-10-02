@@ -15,11 +15,10 @@
  */
 package org.fest.assertions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import static org.fest.assertions.ErrorMessages.messageForEqual;
+import static org.fest.assertions.ErrorMessages.messageForNotEqual;
 
-import static org.fest.assertions.Fail.*;
+import java.util.*;
 
 /**
  * Understands assertion methods for <code>boolean</code> arrays. To create a new instance of this class use the
@@ -109,10 +108,12 @@ public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
    * @param values the values to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>boolean</code> array is <code>null</code>.
+   * @throws NullPointerException if the given <code>boolean</code> array is <code>null</code>.
    * @throws AssertionError if the actual <code>boolean</code> array does not contain the given values.
    */
   public BooleanArrayAssert contains(boolean...values) {
     isNotNull();
+    validateIsNotNull(values);
     assertContains(list(values));
     return this;
   }
@@ -122,11 +123,13 @@ public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
    * @param values the values to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>boolean</code> array is <code>null</code>.
+   * @throws NullPointerException if the given <code>boolean</code> array is <code>null</code>.
    * @throws AssertionError if the actual <code>boolean</code> array does not contain the given objects, or if the
-   *          actual <code>boolean</code> array contains elements other than the ones specified.
+   * actual <code>boolean</code> array contains elements other than the ones specified.
    */
   public BooleanArrayAssert containsOnly(boolean...values) {
     isNotNull();
+    validateIsNotNull(values);
     assertContainsOnly(list(values));
     return this;
   }
@@ -136,12 +139,19 @@ public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
    * @param values the values the array should exclude.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>boolean</code> array is <code>null</code>.
+   * @throws NullPointerException if the given <code>boolean</code> array is <code>null</code>.
    * @throws AssertionError if the actual <code>boolean</code> array contains any of the given values.
    */
   public BooleanArrayAssert excludes(boolean...values) {
     isNotNull();
+    validateIsNotNull(values);
     assertExcludes(list(values));
     return this;
+  }
+
+  private void validateIsNotNull(boolean[] values) {
+    if (values == null)
+      throw new NullPointerException(formattedErrorMessage("the given array of booleans should not be null"));
   }
 
   List<Object> copyActual() {
@@ -207,7 +217,7 @@ public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
    * @throws AssertionError if the actual <code>boolean</code> array is not equal to the given one.
    */
   public BooleanArrayAssert isEqualTo(boolean[] expected) {
-    if (!Arrays.equals(actual, expected)) fail(errorMessageIfNotEqual(actual, expected));
+    if (!Arrays.equals(actual, expected)) fail(messageForNotEqual(actual, expected));
     return this;
   }
 
@@ -219,7 +229,7 @@ public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
    * @throws AssertionError if the actual <code>boolean</code> array is equal to the given one.
    */
   public BooleanArrayAssert isNotEqualTo(boolean[] array) {
-    if (Arrays.equals(actual, array)) fail(errorMessageIfEqual(actual, array));
+    if (Arrays.equals(actual, array)) fail(messageForEqual(actual, array));
     return this;
   }
 
@@ -229,7 +239,7 @@ public final class BooleanArrayAssert extends ArrayAssert<boolean[]> {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>boolean</code> array is <code>null</code>.
    * @throws AssertionError if the number of elements in the actual <code>boolean</code> array is not equal to the given
-   *          one.
+   * one.
    */
   public BooleanArrayAssert hasSize(int expected) {
     assertHasSize(expected);

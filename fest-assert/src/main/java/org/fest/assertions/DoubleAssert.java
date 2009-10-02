@@ -1,7 +1,7 @@
 package org.fest.assertions;
 
 import static java.lang.Math.abs;
-import static org.fest.assertions.Fail.errorMessageIfNotEqual;
+import static org.fest.assertions.ErrorMessages.messageForNotEqual;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.assertions.PrimitiveFail.*;
 import static org.fest.util.Strings.concat;
@@ -194,10 +194,11 @@ public final class DoubleAssert extends PrimitiveAssert {
    * @deprecated use method <code>{@link #isEqualTo(double, org.fest.assertions.Delta)}</code> instead. This method will
    * be removed in version 2.0.
    */
+  @Deprecated
   public DoubleAssert isEqualTo(double expected, Delta delta) {
     if (Double.compare(expected, actual) == 0) return this;
     if (!(abs(expected - actual) <= delta.value))
-      fail(concat(errorMessageIfNotEqual(actual, expected), " using delta:", inBrackets(delta.value)));
+      fail(concat(messageForNotEqual(actual, expected), " using delta:", inBrackets(delta.value)));
     return this;
   }
 
@@ -212,7 +213,7 @@ public final class DoubleAssert extends PrimitiveAssert {
   public DoubleAssert isEqualTo(double expected, org.fest.assertions.Delta delta) {
     if (Double.compare(expected, actual) == 0) return this;
     if (!(abs(expected - actual) <= delta.value()))
-      fail(concat(errorMessageIfNotEqual(actual, expected), " using delta:", inBrackets(delta.value())));
+      fail(concat(messageForNotEqual(actual, expected), " using delta:", inBrackets(delta.value())));
     return this;
   }
 
@@ -224,6 +225,7 @@ public final class DoubleAssert extends PrimitiveAssert {
    * @deprecated use method <code>{@link org.fest.assertions.Delta#delta(double)}</code> instead. This method will be
    * removed in version 2.0.
    */
+  @Deprecated
   public static Delta delta(double d) {
     return new Delta(d);
   }
@@ -234,6 +236,7 @@ public final class DoubleAssert extends PrimitiveAssert {
    * @deprecated use top-level class <code>{@link org.fest.assertions.Delta}</code> instead. This class will be removed
    * in version 2.0.
    */
+  @Deprecated
   public static class Delta {
     final double value;
 

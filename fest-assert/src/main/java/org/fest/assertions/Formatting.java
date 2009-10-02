@@ -15,15 +15,15 @@
  */
 package org.fest.assertions;
 
-import org.fest.util.Arrays;
-import org.fest.util.Collections;
-import org.fest.util.Maps;
 import static org.fest.util.Strings.*;
 
-import java.awt.*;
+import java.awt.Dimension;
 import java.io.File;
 import java.util.Collection;
 import java.util.Map;
+
+import org.fest.util.*;
+import org.fest.util.Collections;
 
 /**
  * Provides utility methods related to formatting.
@@ -34,11 +34,45 @@ public final class Formatting {
 
   private static final String EMPTY_MESSAGE = "";
 
+  static String messageFrom(String description, Object[] message) {
+    return format(description, concat(message));
+  }
+
+  /**
+   * Returns the given message formatted as follows:
+   * <pre>
+   * [description] message.
+   * </pre>
+   * @param description the description of the error.
+   * @param message the message to format.
+   * @return the formatted message.
+   */
+  public static String format(String description, String message) {
+    return concat(format(description), message);
+  }
+
+  /**
+   * Formats the given message: <li>if it is <code>null</code> or empty, an empty <code>String</code> is returned,
+   * otherwise uses the following format:
+   * <pre>
+   * [message]{whitespace}
+   * </pre>
+   * @param message the message to format.
+   * @return the formatted message.
+   */
   public static String format(String message) {
     if (isEmpty(message)) return EMPTY_MESSAGE;
     return concat("[", message, "] ");
   }
 
+  /**
+   * Returns the <code>String</code> representation of the given object in between brackets ("<" and ">"). This method
+   * has special support for arrays, <code>Class<?></code>, <code>Collection</code>s, <code>Map</code>s,
+   * <code>File</code>s and <code>Dimension</code>s. For any other types, this method simply calls its
+   * <code>toString</code> implementation.
+   * @param o the given object.
+   * @return the <code>String</code> representation of the given object in between brackets.
+   */
   public static String inBrackets(Object o) {
     if (isOneDimensionalArray(o)) return doBracketAround(Arrays.format(o)); // TODO just check for array, since format supports multi-dimensional arrays now
     if (o instanceof Class<?>) return doBracketAround((Class<?>)o);
@@ -78,5 +112,4 @@ public final class Formatting {
   }
 
   private Formatting() {}
-
 }

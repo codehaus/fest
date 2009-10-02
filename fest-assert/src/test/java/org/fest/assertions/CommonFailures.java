@@ -15,7 +15,8 @@
  */
 package org.fest.assertions;
 
-import static org.fest.test.ExpectedFailure.*;
+import static org.fest.test.ExpectedFailure.expect;
+import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
 import org.fest.test.ExpectedFailure.Message;
@@ -36,6 +37,14 @@ public final class CommonFailures {
     expectAssertionError("[A Test] expecting a non-null object, but it was null").on(codeToTest);
   }
 
+  public static void expectAssertionErrorIfTypeIsNull(CodeToTest codeToTest) {
+    expectIllegalArgumentException("expecting a non-null type, but it was null").on(codeToTest);
+  }
+
+  public static void expectAssertionErrorWithDescriptionIfTypeIsNull(CodeToTest codeToTest) {
+    expectIllegalArgumentException("[A Test] expecting a non-null type, but it was null").on(codeToTest);
+  }
+
   public static void expectAssertionErrorIfArrayIsNull(CodeToTest codeToTest) {
     expectAssertionError("expecting a non-null array, but it was null").on(codeToTest);
   }
@@ -44,12 +53,40 @@ public final class CommonFailures {
     expectAssertionError("[A Test] expecting a non-null array, but it was null").on(codeToTest);
   }
 
+  public static void expectAssertionErrorIfCollectionIsNull(CodeToTest codeToTest) {
+    expectAssertionError("expecting a non-null collection, but it was null").on(codeToTest);
+  }
+
+  public static void expectAssertionErrorWithDescriptionIfCollectionIsNull(CodeToTest codeToTest) {
+    expectAssertionError("[A Test] expecting a non-null collection, but it was null").on(codeToTest);
+  }
+
+  public static void expectAssertionErrorIfListIsNull(CodeToTest codeToTest) {
+    expectAssertionError("expecting a non-null list, but it was null").on(codeToTest);
+  }
+
+  public static void expectAssertionErrorWithDescriptionIfListIsNull(CodeToTest codeToTest) {
+    expectAssertionError("[A Test] expecting a non-null list, but it was null").on(codeToTest);
+  }
+
+  public static void expectAssertionErrorIfMapIsNull(CodeToTest codeToTest) {
+    expectAssertionError("expecting a non-null map, but it was null").on(codeToTest);
+  }
+
+  public static void expectAssertionErrorWithDescriptionIfMapIsNull(CodeToTest codeToTest) {
+    expectAssertionError("[A Test] expecting a non-null map, but it was null").on(codeToTest);
+  }
+
   public static Message expectIllegalArgumentExceptionIfConditionIsNull() {
     return expectIllegalArgumentException("Condition to check should be null");
   }
 
   public static Message expectIllegalArgumentException(String message) {
     return expect(IllegalArgumentException.class).withMessage(message);
+  }
+
+  public static Message expectNullPointerException(String message) {
+    return expect(NullPointerException.class).withMessage(message);
   }
 
   private CommonFailures() {}

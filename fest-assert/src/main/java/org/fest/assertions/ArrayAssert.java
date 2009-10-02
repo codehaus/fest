@@ -52,8 +52,8 @@ abstract class ArrayAssert<T> extends GroupAssert<T> {
   /**
    * Verifies that the actual array contains the given values <strong>only</strong>.
    * @param values the values to look for.
-   * @throws AssertionError if the actual array does not contain the given objects, or if the
-   *          actual array contains elements other than the ones specified.
+   * @throws AssertionError if the actual array does not contain the given objects, or if the actual array contains
+   * elements other than the ones specified.
    */
   final void assertContainsOnly(List<Object> values) {
     List<Object> copyOfActual = copyActual();

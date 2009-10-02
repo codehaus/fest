@@ -15,11 +15,11 @@
  */
 package org.fest.assertions;
 
-import java.util.Arrays;
-
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Objects.namesOf;
 import static org.fest.util.Strings.concat;
+
+import java.util.Arrays;
 
 /**
  * Understands assertion methods for objects. To create a new instance of this class use the
@@ -63,7 +63,7 @@ public final class ObjectAssert extends GenericAssert<Object> {
   public ObjectAssert isInstanceOfAny(Class<?>...types) {
     isNotNull();
     if (types == null)
-      throw new IllegalArgumentException("The given array of types to check against should not be null");
+      throw new IllegalArgumentException(formattedErrorMessage("The given array of types should not be null"));
     if (!foundInstanceOfAny(types))
       fail(concat("expected instance of any:<", typeNames(types), "> but was instance of:", inBrackets(actual.getClass())));
     return this;
@@ -79,7 +79,8 @@ public final class ObjectAssert extends GenericAssert<Object> {
   }
 
   void validateNotNull(Class<?> type) {
-    if (type == null) throw new IllegalArgumentException("The given type to check against should not be null");
+    if (type == null)
+      throw new IllegalArgumentException(formattedErrorMessage("expecting a non-null type, but it was null"));
   }
 
   private String typeNames(Class<?>... types) {

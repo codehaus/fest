@@ -6,31 +6,36 @@
   </properties>
   <body>
     <release version="1.1" date="2009-04-20" description="Subsequent release">
-      <action dev="alruiz" type="remove">
+      <action dev="alexruiz" type="fix" issue="FEST-223">
+        Reorganized tests and migrated to JUnit.
+      </action>
+    </release>
+    <release version="1.1" date="2009-04-20" description="Subsequent release">
+      <action dev="alexruiz" type="remove">
         Removed method 'size' from GroupAssert. This method should have been removed before releasing 1.0.
       </action>
-      <action dev="alruiz" type="add" issue="FEST-59" due-to="Konstantin Scheglov, cbraid">
+      <action dev="alexruiz" type="add" issue="FEST-59" due-to="Konstantin Scheglov, cbraid">
         Added class ListAssert.
       </action>
-      <action dev="alruiz" type="add" issue="FEST-65" due-to="Stanislaw Osinski">
+      <action dev="alexruiz" type="add" issue="FEST-65" due-to="Stanislaw Osinski">
         Added method 'isEqualTo(double[], Delta)' to DoubleArrayAssert.
       </action>
-      <action dev="alruiz" type="remove" issue="FEST-65" due-to="Stanislaw Osinski">
+      <action dev="alexruiz" type="remove" issue="FEST-65" due-to="Stanislaw Osinski">
         Converted inner class Delta in DoubleArrayAssert to a top-level class. Inner class Delta has been deprecated and 
         it will be removed in v. 2.0. 
       </action>
-      <action dev="alruiz" type="fix" issue="FEST-66" due-to="Juhos Csaba-Zsolt">
+      <action dev="alexruiz" type="fix" issue="FEST-66" due-to="Juhos Csaba-Zsolt">
         Method 'isEqualTo(Object[])' in ObjectArrayAssert now uses java.util.Arrays.deepEquals(Object[], Object[])
         to compare two arrays. 
       </action>
-      <action dev="alruiz" type="add" issue="FEST-107" due-to="Jean-Francois Poilpret">
+      <action dev="alexruiz" type="add" issue="FEST-107" due-to="Jean-Francois Poilpret">
         Added method 'isEqualTo(BufferedImage, Threshold)' which tolerates a certain amount of color differences
         when comparing two images for equality.
       </action>
-      <action dev="alruiz" type="add" issue="FEST-108" due-to="Jacob Fahrenkrug, Timmo Gierke">
+      <action dev="alexruiz" type="add" issue="FEST-108" due-to="Jacob Fahrenkrug, Timmo Gierke">
         Package-protected classes Assert, GenericAssert and GroupAssert are now public.
       </action>
-      <action dev="alruiz" type="add" issue="FEST-108" due-to="Jacob Fahrenkrug, Timmo Gierke">
+      <action dev="alexruiz" type="add" issue="FEST-108" due-to="Jacob Fahrenkrug, Timmo Gierke">
         Package-protected methods in classes Assert, GenericAssert and GroupAssert are now protected.
       </action>
     </release>
@@ -38,65 +43,65 @@
       <action dev="wanghy" type="add" issue="112" due-to="Ted Young">
         Added method 'doesNotHaveDuplicates(Object...)' to ObjectArrayAssert.
       </action>
-      <action dev="alruiz" type="add">
+      <action dev="alexruiz" type="add">
         Renamed method 'contains(Entry...)' to 'includes(Entry...)' to MapAssert.
       </action>
-      <action dev="wanghy, alruiz" type="add" issue="114" due-to="Ted Young">
+      <action dev="wanghy, alexruiz" type="add" issue="114" due-to="Ted Young">
         Assertions for primitive values can also be created from primitive wrappers.
       </action>
-      <action dev="alruiz, wanghy" type="add" issue="227">
+      <action dev="alexruiz, wanghy" type="add" issue="227">
         Added interface org.fest.assertions.Description.
       </action>
-      <action dev="alruiz, wanghy" type="add" issue="227">
+      <action dev="alexruiz, wanghy" type="add" issue="227">
         Added methods 'as(Description)' and 'describedAs(Description)' to all assertions.
       </action>
-      <action dev="alruiz" type="remove" issue="256">
+      <action dev="alexruiz" type="remove" issue="256">
         Removed class ThrowableAssert.CauseHierarchyAssert.
       </action>
-      <action dev="alruiz" type="remove" issue="256">
+      <action dev="alexruiz" type="remove" issue="256">
         Removed methods 'message', 'causeHierarchy' and 'cause' from ThrowableAssert.
       </action>
-      <action dev="alruiz" type="remove" issue="256">
+      <action dev="alexruiz" type="remove" issue="256">
         Removed method 'size' from FileAssert.
       </action>
     </release>
     <release version="1.0a1" date="2008-02-18" description="Subsequent release">
-      <action dev="alruiz" type="add">
+      <action dev="alexruiz" type="add">
         Exceptions thrown by methods 'satisfies' and 'doesNotSatisfy' include the name of Condition class if the
         Condition's description is not specified.
       </action>
-      <action dev="wanghy, alruiz" type="add" issue="46" due-to="Mark Derricutt">
+      <action dev="wanghy, alexruiz" type="add" issue="46" due-to="Mark Derricutt">
         Added method 'doesNotSatisfy' to all assertions.
       </action>
-      <action dev="wanghy, alruiz" type="add" issue="107" due-to="Ted Young, David DIDIER">
+      <action dev="wanghy, alexruiz" type="add" issue="107" due-to="Ted Young, David DIDIER">
         Patch: Added support for BigDecimal.
       </action>
-      <action dev="alruiz, wanghy" type="add">
+      <action dev="alexruiz, wanghy" type="add">
         Added method 'isEmptyOrNull' to BooleanArrayAssert, ByteAssertArray, CharArrayAssert, CollectionAssert,
         DoubleArrayAssert, FloatArrayAssert, IntArrayAssert, LongArrayAssert, MapAssert, ShortArrayAssert and
         StringAssert.
       </action>
-      <action dev="alruiz, wanghy" type="add">
+      <action dev="alexruiz, wanghy" type="add">
         Added fest-mocks-0.1 and fest-test-0.1 as a 'test' scoped dependencies.
       </action>
-      <action dev="alruiz" type="add">
+      <action dev="alexruiz" type="add">
         Added method 'message' to ThrowableAssert. This method returns a StringAssert.
       </action>
-      <action dev="alruiz" type="add">
+      <action dev="alexruiz" type="add">
         Added method 'hasMessage(String)' to ThrowableAssert.
       </action>
-      <action dev="alruiz" type="add">
+      <action dev="alexruiz" type="add">
         Added method 'size' to FileAssert. This method returns a LongAssert.
       </action>
-      <action dev="alruiz, wanghy" type="fix">
+      <action dev="alexruiz, wanghy" type="fix">
         Fixed bug in FileContentComparator where EOF (end of file) was determined at the wrong time.
       </action>
-      <action dev="alruiz" type="add">
+      <action dev="alexruiz" type="add">
         Replaced methods 'hasCauseAsAncestor' and 'hasExactCauseAsAncestor' in ThrowableAssert with the methods
         'hasCauseOfType' and 'hasCauseOfExactType' in CauseHierarchyAssert. To get a CauseHierarchyAssert, users need to 
         call the method 'causeHierarchy' in ThrowableAssert.
       </action>
-      <action dev="alruiz" type="add">
+      <action dev="alexruiz" type="add">
         Replaced method 'hasCauseOfType' in ThrowableAssert with method 'cause', which returns another ThrowableAssert
         for the cause of the actual Throwable. Users can call 'isInstanceOf' in the returned ThrowableAssert.
       </action>
@@ -108,28 +113,28 @@
         Method 'isInstanceOfAny' in ObjectAssert throws IllegalArgumentException if the given Class array is null or if 
         any element in the given Class array is null.        
       </action>
-      <action dev="alruiz" type="fix" due-to="Ted Young">
+      <action dev="alexruiz" type="fix" due-to="Ted Young">
         Fixed typos in Javadocs for class PrimitiveFail.
       </action>
-      <action dev="alruiz" type="remove">
+      <action dev="alexruiz" type="remove">
         Removed dependency on Apache Velocity.
       </action>
-      <action dev="alruiz" type="remove">
+      <action dev="alexruiz" type="remove">
         Removed code generators for assertions for primitive arrays and failure methods for primitives.
       </action>
-      <action dev="alruiz, wanghy" type="fix">
+      <action dev="alexruiz, wanghy" type="fix">
         Added missing declaration of exceptions in Javadocs.
       </action>
-      <action dev="alruiz, wanghy" type="fix">
+      <action dev="alexruiz, wanghy" type="fix">
         Eliminated inconsistencies and typos in exception messages.
       </action>
     </release>
     <release version="0.9.1" date="2008-02-04" description="Subsequent release">
-      <action dev="alruiz" type="fix">
+      <action dev="alexruiz" type="fix">
         Error messages in ObjectArrayAssert and all the assertion objects dealing with array of primitives where
         including the description of the assertion object twice.
       </action>
-      <action dev="alruiz" type="fix">
+      <action dev="alexruiz" type="fix">
         Error messages in ObjectArrayAssert were using quotes around array of Strings.
       </action>
     </release>
@@ -143,7 +148,7 @@
       <action dev="wanghy" type="add" issue="101" due-to="Ted Young">
         Added method 'assertThat(Iterator)' to Assertions. This method returns a CollectionAssert.
       </action>
-      <action dev="alruiz, wanghy" type="add" issue="100" due-to="Ted Young">
+      <action dev="alexruiz, wanghy" type="add" issue="100" due-to="Ted Young">
         Added methods 'hasAllElementsOfType' and 'hasAtLeastOneElementOfType' to ObjectArrayAssert.
       </action>
       <action dev="wanghy" type="add">
@@ -167,7 +172,7 @@
       <action dev="wanghy" type="add" issue="90" due-to="David DIDIER">
         Patch: added class MapAssert.
       </action>
-      <action dev="wanghy, alruiz" type="add" issue="87" due-to="David DIDER">
+      <action dev="wanghy, alexruiz" type="add" issue="87" due-to="David DIDER">
         Patch: added methods 'greaterOrEqualTo' and 'lessOrEqualTo' to
         ByteAssert, CharAssert, DoubleAssert, FloatAssert, IntAssert, LongAssert and ShortAssert.
       </action>
@@ -180,7 +185,7 @@
       <action dev="wanghy" type="add" issue="84" due-to="David DIDIER">
         Patch: added class method 'hasSameContentAs' to FileAssert.
       </action>
-      <action dev="wanghy, alruiz" type="add" issue="35" due-to="Martin Ankerl">
+      <action dev="wanghy, alexruiz" type="add" issue="35" due-to="Martin Ankerl">
         Added method 'size()' to GroupAssert. This method returns an IntAssert.
       </action>
     </release>
@@ -191,13 +196,13 @@
       <action dev="wanghy" type="add" issue="79" due-to="David DIDIER">
         Patch: added class FileAssert.
       </action>
-      <action dev="alruiz" type="add" issue="77" due-to="David DIDIER">
+      <action dev="alexruiz" type="add" issue="77" due-to="David DIDIER">
 				Patch: added class ThrowableAssert.
       </action>
-      <action dev="wanghy, alruiz" type="fix" issue="72" due-to="Wim Deblauwe">
+      <action dev="wanghy, alexruiz" type="fix" issue="72" due-to="Wim Deblauwe">
 				Expected and actual values were in wrong order when creating a ComparisonFailure.
       </action>
-      <action dev="wanghy, alruiz" type="add" issue="47" due-to="Mark Derricutt">
+      <action dev="wanghy, alexruiz" type="add" issue="47" due-to="Mark Derricutt">
 				Added a generified overload of 'assertThat' to class Assertions.
       </action>
     </release>
@@ -205,10 +210,10 @@
       <action dev="wanghy" type="fix" issue="38" due-to="Martin Ankerl">
         Added a delta value for floating point equality in 'DoubleAssert' and 'FloatAssert'.
       </action>
-      <action dev="alruiz" type="add">
+      <action dev="alexruiz" type="add">
         Created Maven-generated site to replace Google Code's wiki pages.
       </action>
-      <action dev="alruiz" type="fix" issue="54">
+      <action dev="alexruiz" type="fix" issue="54">
         Fixed incorrect test for floating point equality in 'DoubleArrayAssert' and 'FloatArrayAssert'.
       </action>
       <action dev="wanghy" type="add">
@@ -228,7 +233,7 @@
         Added method 'excludes' to all assertion objects that handle arrays or collections. This 
         method is the opposite of 'contains'.
       </action>
-      <action dev="alruiz" type="fix" issue="39" due-to="Martin Ankerl">
+      <action dev="alexruiz" type="fix" issue="39" due-to="Martin Ankerl">
         All assertion objects override 'equals(Object)', which now throws 
         'UnsupportedOperationException' to prevent accidental calls.
       </action>
@@ -247,7 +252,7 @@
       <action dev="wanghy" type="add">
         Introduced method 'as' to describe the actual value in the assertion.
       </action>
-      <action dev="alruiz" type="fix" issue="29">
+      <action dev="alexruiz" type="fix" issue="29">
         Added support for extensibility using Conditions.
       </action>
     </release>
