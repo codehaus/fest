@@ -54,7 +54,7 @@ public class ThrowableAssert_hasMessage_Test {
 
   @Test
   public void should_fail_if_message_in_actual_is_not_equal_to_expected() {
-    expectAssertionError("expected:<'Hi'> but was:<'An exception'>").on(new CodeToTest() {
+    expectAssertionError("expected:<'[Hi]'> but was:<'[An exception]'>").on(new CodeToTest() {
       public void run() {
         new ThrowableAssert(new Exception("An exception")).hasMessage("Hi");
       }
@@ -63,7 +63,7 @@ public class ThrowableAssert_hasMessage_Test {
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_message_in_actual_is_not_equal_to_expected() {
-    expectAssertionError("[A Test] expected:<'Hi'> but was:<'An exception'>").on(new CodeToTest() {
+    expectAssertionError("[A Test] expected:<'[Hi]'> but was:<'[An exception]'>").on(new CodeToTest() {
       public void run() {
         new ThrowableAssert(new Exception("An exception")).as("A Test")
                                                           .hasMessage("Hi");

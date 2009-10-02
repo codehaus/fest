@@ -9,6 +9,9 @@
       <action dev="alexruiz" type="fix" issue="FEST-223">
         Reorganized tests and migrated to JUnit.
       </action>
+      <action dev="alexruiz" type="fix" issue="FEST-228">
+        Fixed error message displayed when two Strings are not equal and JUnit is in the classpath.
+      </action>
     </release>
     <release version="1.1" date="2009-04-20" description="Subsequent release">
       <action dev="alexruiz" type="remove">

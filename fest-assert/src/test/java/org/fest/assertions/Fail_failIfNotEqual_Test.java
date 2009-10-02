@@ -28,7 +28,7 @@ public class Fail_failIfNotEqual_Test {
 
   @Test
   public void should_fail_if_values_are_not_equal() {
-    String expectedMessage = "[A message] expected:<'Luke'> but was:<'Yoda'>";
+    String expectedMessage = "[A message] expected:<'[Luke]'> but was:<'[Yoda]'>";
     expectAssertionError(expectedMessage).on(new CodeToTest() {
       public void run() {
         Fail.failIfNotEqual("A message", "Yoda", "Luke");

@@ -40,7 +40,7 @@ public class StringAssert_isEqualTo_Test implements GenericAssert_isEqualTo_Test
 
   @Test
   public void should_fail_if_actual_and_expected_are_not_equal() {
-    expectAssertionError("expected:<'Yoda'> but was:<'Luke'>").on(new CodeToTest() {
+    expectAssertionError("expected:<'[Yoda]'> but was:<'[Luke]'>").on(new CodeToTest() {
       public void run() {
         new StringAssert("Luke").isEqualTo("Yoda");
       }
@@ -49,7 +49,7 @@ public class StringAssert_isEqualTo_Test implements GenericAssert_isEqualTo_Test
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_equal() {
-    expectAssertionError("[A Test] expected:<'Yoda'> but was:<'Luke'>").on(new CodeToTest() {
+    expectAssertionError("[A Test] expected:<'[Yoda]'> but was:<'[Luke]'>").on(new CodeToTest() {
       public void run() {
         new StringAssert("Luke").as("A Test").isEqualTo("Yoda");
       }

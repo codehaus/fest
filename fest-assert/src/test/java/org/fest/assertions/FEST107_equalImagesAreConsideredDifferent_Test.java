@@ -22,7 +22,7 @@ import static org.fest.assertions.Threshold.threshold;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -34,7 +34,7 @@ public class FEST107_equalImagesAreConsideredDifferent_Test {
 
   private ImageReader reader;
 
-  @BeforeClass public void setUpOnce() {
+  @Before public void setUp() {
     reader = new ImageReader();
   }
 

@@ -15,6 +15,8 @@
  */
 package org.fest.assertions;
 
+import static org.fest.util.Strings.*;
+
 /**
  * Understands creation of JUnit's <code>ComparisonFailure</code>.
  *
@@ -22,6 +24,8 @@ package org.fest.assertions;
  * @author Alex Ruiz
  */
 public final class ComparisonFailureFactory {
+
+  private static final String EMPTY_MESSAGE = "";
 
   private static ConstructorInvoker constructorInvoker = new ConstructorInvoker();
 
@@ -56,10 +60,15 @@ public final class ComparisonFailureFactory {
   private static AssertionError newComparisonFailure(String message, String expected, String actual) throws Exception {
     final String className = "org.junit.ComparisonFailure";
     Class<?>[] parameterTypes = new Class<?>[] { String.class, String.class, String.class };
-    Object[] parameterValues = new Object[] { message, expected, actual };
+    Object[] parameterValues = new Object[] { format(message), quote(expected), quote(actual) };
     Object o = constructorInvoker.newInstance(className, parameterTypes, parameterValues);
     if (o instanceof AssertionError) return (AssertionError)o;
     return null;
+  }
+
+  private static String format(String message) {
+    if (isEmpty(message)) return EMPTY_MESSAGE;
+    return concat("[", message, "]");
   }
 
   private ComparisonFailureFactory() {}
