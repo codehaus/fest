@@ -208,11 +208,11 @@ public abstract class GenericAssert<T> extends Assert {
 
   /**
    * Verifies that the actual value is not equal to the given one.
-   * @param obj the value to compare the actual value to.
+   * @param other the value to compare the actual value to.
    * @throws AssertionError if the actual value is equal to the given one.
    */
-  protected final void assertNotEqualTo(T obj) {
-    failIfEqual(description(), actual, obj);
+  protected final void assertNotEqualTo(T other) {
+    failIfEqual(description(), actual, other);
   }
 
   /**

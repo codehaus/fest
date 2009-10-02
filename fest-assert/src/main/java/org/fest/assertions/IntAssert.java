@@ -122,56 +122,56 @@ public class IntAssert extends PrimitiveAssert {
 
   /**
    * Verifies that the actual <code>int</code> value is not equal to the given one.
-   * @param value the value to compare the actual one to.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>int</code> value is equal to the given one.
    */
-  public IntAssert isNotEqualTo(int value) {
-    failIfEqual(description(), actual, value);
+  public IntAssert isNotEqualTo(int other) {
+    failIfEqual(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>int</code> value is greater than the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>int</code> value is not greater than the given one.
    */
-  public IntAssert isGreaterThan(int value) {
-    failIfNotGreaterThan(description(), actual, value);
+  public IntAssert isGreaterThan(int other) {
+    failIfNotGreaterThan(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>int</code> value is less than the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>int</code> value is not less than the given one.
    */
-  public IntAssert isLessThan(int value) {
-    failIfNotLessThan(description(), actual, value);
+  public IntAssert isLessThan(int other) {
+    failIfNotLessThan(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>int</code> value is greater or equal to the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>int</code> value is not greater than or equal to the given one.
    */
-  public IntAssert isGreaterThanOrEqualTo(int value) {
-    failIfNotGreaterThanOrEqualTo(description(), actual, value);
+  public IntAssert isGreaterThanOrEqualTo(int other) {
+    failIfNotGreaterThanOrEqualTo(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>int</code> value is less or equal to the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>int</code> value is not less than or equal to the given one.
    */
-  public IntAssert isLessThanOrEqualTo(int value) {
-    failIfNotLessThanOrEqualTo(description(), actual, value);
+  public IntAssert isLessThanOrEqualTo(int other) {
+    failIfNotLessThanOrEqualTo(description(), actual, other);
     return this;
   }
 

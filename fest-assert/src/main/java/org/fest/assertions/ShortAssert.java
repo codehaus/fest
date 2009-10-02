@@ -120,56 +120,56 @@ public class ShortAssert extends PrimitiveAssert {
 
   /**
    * Verifies that the actual <code>short</code> value is not equal to the given one.
-   * @param value the value to compare the actual one to.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>short</code> value is equal to the given one.
    */
-  public ShortAssert isNotEqualTo(short value) {
-    failIfEqual(description(), actual, value);
+  public ShortAssert isNotEqualTo(short other) {
+    failIfEqual(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>short</code> value is greater than the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>short</code> value is not greater than the given one.
    */
-  public ShortAssert isGreaterThan(short value) {
-    failIfNotGreaterThan(description(), actual, value);
+  public ShortAssert isGreaterThan(short other) {
+    failIfNotGreaterThan(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>short</code> value is less than the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>short</code> value is not less than the given one.
    */
-  public ShortAssert isLessThan(short value) {
-    failIfNotLessThan(description(), actual, value);
+  public ShortAssert isLessThan(short other) {
+    failIfNotLessThan(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>short</code> value is greater or equal to the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>short</code> value is not greater than or equal to the given one.
    */
-  public ShortAssert isGreaterThanOrEqualTo(short value) {
-    failIfNotGreaterThanOrEqualTo(description(), actual, value);
+  public ShortAssert isGreaterThanOrEqualTo(short other) {
+    failIfNotGreaterThanOrEqualTo(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>short</code> value is less or equal to the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>short</code> value is not less than or equal to the given one.
    */
-  public ShortAssert isLessThanOrEqualTo(short value) {
-    failIfNotLessThanOrEqualTo(description(), actual, value);
+  public ShortAssert isLessThanOrEqualTo(short other) {
+    failIfNotLessThanOrEqualTo(description(), actual, other);
     return this;
   }
 

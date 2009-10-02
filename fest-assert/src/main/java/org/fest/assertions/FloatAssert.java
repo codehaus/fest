@@ -137,56 +137,56 @@ public class FloatAssert extends PrimitiveAssert {
 
   /**
    * Verifies that the actual <code>float</code> value is not equal to the given one.
-   * @param value the value to compare the actual one to.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>float</code> value is equal to the given one.
    */
-  public FloatAssert isNotEqualTo(float value) {
-    failIfEqual(description(), actual, value);
+  public FloatAssert isNotEqualTo(float other) {
+    failIfEqual(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>float</code> value is greater than the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>float</code> value is not greater than the given one.
    */
-  public FloatAssert isGreaterThan(float value) {
-    failIfNotGreaterThan(description(), actual, value);
+  public FloatAssert isGreaterThan(float other) {
+    failIfNotGreaterThan(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>float</code> value is less than the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>float</code> value is not less than the given one.
    */
-  public FloatAssert isLessThan(float value) {
-    failIfNotLessThan(description(), actual, value);
+  public FloatAssert isLessThan(float other) {
+    failIfNotLessThan(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>float</code> value is greater or equal to the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>float</code> value is not greater than or equal to the given one.
    */
-  public FloatAssert isGreaterThanOrEqualTo(float value) {
-    failIfNotGreaterThanOrEqualTo(description(), actual, value);
+  public FloatAssert isGreaterThanOrEqualTo(float other) {
+    failIfNotGreaterThanOrEqualTo(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>float</code> value is less or equal to the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>float</code> value is not less than or equal to the given one.
    */
-  public FloatAssert isLessThanOrEqualTo(float value) {
-    failIfNotLessThanOrEqualTo(description(), actual, value);
+  public FloatAssert isLessThanOrEqualTo(float other) {
+    failIfNotLessThanOrEqualTo(description(), actual, other);
     return this;
   }
 

@@ -120,56 +120,56 @@ public class CharAssert extends PrimitiveAssert {
 
   /**
    * Verifies that the actual <code>char</code> value is not equal to the given one.
-   * @param value the value to compare the actual one to.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>char</code> value is equal to the given one.
    */
-  public CharAssert isNotEqualTo(char value) {
-    failIfEqual(description(), actual, value);
+  public CharAssert isNotEqualTo(char other) {
+    failIfEqual(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>char</code> value is greater than the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>char</code> value is not greater than the given one.
    */
-  public CharAssert isGreaterThan(char value) {
-    failIfNotGreaterThan(description(), actual, value);
+  public CharAssert isGreaterThan(char other) {
+    failIfNotGreaterThan(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>char</code> value is less than the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>char</code> value is not less than the given one.
    */
-  public CharAssert isLessThan(char value) {
-    failIfNotLessThan(description(), actual, value);
+  public CharAssert isLessThan(char other) {
+    failIfNotLessThan(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>char</code> value is greater or equal to the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>char</code> value is not greater than or equal to the given one.
    */
-  public CharAssert isGreaterThanOrEqualTo(char value) {
-    failIfNotGreaterThanOrEqualTo(description(), actual, value);
+  public CharAssert isGreaterThanOrEqualTo(char other) {
+    failIfNotGreaterThanOrEqualTo(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>char</code> value is less or equal to the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>char</code> value is not less than or equal to the given one.
    */
-  public CharAssert isLessThanOrEqualTo(char value) {
-    failIfNotLessThanOrEqualTo(description(), actual, value);
+  public CharAssert isLessThanOrEqualTo(char other) {
+    failIfNotLessThanOrEqualTo(description(), actual, other);
     return this;
   }
 

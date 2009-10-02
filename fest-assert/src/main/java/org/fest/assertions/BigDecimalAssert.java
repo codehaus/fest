@@ -260,53 +260,53 @@ public class BigDecimalAssert extends GenericAssert<BigDecimal> {
 
   /**
    * Verifies that the actual <code>{@link BigDecimal}</code> value is less than the given one.
-   * @param value the value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>BigDecimal</code> value is <code>null</code>.
    * @throws AssertionError if the actual <code>BigDecimal</code> value is not less than the given one.
    */
-  public BigDecimalAssert isLessThan(BigDecimal value) {
+  public BigDecimalAssert isLessThan(BigDecimal other) {
     isNotNull();
-    if (actual.compareTo(value) >= 0) fail(messageForNotLessThan(actual, value));
+    if (actual.compareTo(other) >= 0) fail(messageForNotLessThan(actual, other));
     return this;
   }
 
   /**
    * Verifies that the actual <code>{@link BigDecimal}</code> value is greater than the given one.
-   * @param value the value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>BigDecimal</code> value is <code>null</code>.
    * @throws AssertionError if the actual <code>BigDecimal</code> value is not greater than the given one.
    */
-  public BigDecimalAssert isGreaterThan(BigDecimal value) {
+  public BigDecimalAssert isGreaterThan(BigDecimal other) {
     isNotNull();
-    if (actual.compareTo(value) <= 0) fail(messageForNotGreaterThan(actual, value));
+    if (actual.compareTo(other) <= 0) fail(messageForNotGreaterThan(actual, other));
     return this;
   }
 
   /**
    * Verifies that the actual <code>{@link BigDecimal}</code> value is less than or equal to the given one.
-   * @param value the value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>BigDecimal</code> value is <code>null</code>.
    * @throws AssertionError if the actual <code>BigDecimal</code> value is not less than or equal to the given one.
    */
-  public BigDecimalAssert isLessThanOrEqualTo(BigDecimal value) {
+  public BigDecimalAssert isLessThanOrEqualTo(BigDecimal other) {
     isNotNull();
-    if (actual.compareTo(value) > 0) fail(messageForNotLessThanOrEqualTo(actual, value));
+    if (actual.compareTo(other) > 0) fail(messageForNotLessThanOrEqualTo(actual, other));
     return this;
   }
 
   /**
    * Verifies that the actual <code>{@link BigDecimal}</code> value is greater than or equal to the given one.
-   * @param value the value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>BigDecimal</code> value is <code>null</code>.
    * @throws AssertionError if the actual <code>BigDecimal</code> value is not greater than or equal to the given one.
    */
-  public BigDecimalAssert isGreaterThanOrEqualTo(BigDecimal value) {
+  public BigDecimalAssert isGreaterThanOrEqualTo(BigDecimal other) {
     isNotNull();
-    if (actual.compareTo(value) < 0) fail(messageForNotGreaterThanOrEqualTo(actual, value));
+    if (actual.compareTo(other) < 0) fail(messageForNotGreaterThanOrEqualTo(actual, other));
     return this;
   }
 }

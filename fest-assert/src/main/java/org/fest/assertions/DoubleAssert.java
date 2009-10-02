@@ -110,56 +110,56 @@ public class DoubleAssert extends PrimitiveAssert {
 
   /**
    * Verifies that the actual <code>double</code> value is not equal to the given one.
-   * @param value the value to compare the actual one to.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>double</code> value is equal to the given one.
    */
-  public DoubleAssert isNotEqualTo(double value) {
-    failIfEqual(description(), actual, value);
+  public DoubleAssert isNotEqualTo(double other) {
+    failIfEqual(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>double</code> value is greater than the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>double</code> value is not greater than the given one.
    */
-  public DoubleAssert isGreaterThan(double value) {
-    failIfNotGreaterThan(description(), actual, value);
+  public DoubleAssert isGreaterThan(double other) {
+    failIfNotGreaterThan(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>double</code> value is less than the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>double</code> value is not less than the given one.
    */
-  public DoubleAssert isLessThan(double value) {
-    failIfNotLessThan(description(), actual, value);
+  public DoubleAssert isLessThan(double other) {
+    failIfNotLessThan(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>double</code> value is greater or equal to the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>double</code> value is not greater than or equal to the given one.
    */
-  public DoubleAssert isGreaterThanOrEqualTo(double value) {
-    failIfNotGreaterThanOrEqualTo(description(), actual, value);
+  public DoubleAssert isGreaterThanOrEqualTo(double other) {
+    failIfNotGreaterThanOrEqualTo(description(), actual, other);
     return this;
   }
 
   /**
    * Verifies that the actual <code>double</code> value is less or equal to the given one.
-   * @param value the given value.
+   * @param other the given value.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>double</code> value is not less than or equal to the given one.
    */
-  public DoubleAssert isLessThanOrEqualTo(double value) {
-    failIfNotLessThanOrEqualTo(description(), actual, value);
+  public DoubleAssert isLessThanOrEqualTo(double other) {
+    failIfNotLessThanOrEqualTo(description(), actual, other);
     return this;
   }
 
