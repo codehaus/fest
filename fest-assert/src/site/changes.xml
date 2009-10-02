@@ -9,6 +9,9 @@
       <action dev="konermann, alexruiz" type="fix" issue="FEST-165">
         Assertion classes are no longer final. Constructors are now protected, instead of package-protected.
       </action>
+      <action dev="konermann, alexruiz" type="fix" issue="FEST-165">
+        Class org.fest.assertions.Assertions are no longer final. Constructor is now protected, instead of private.
+      </action>
       <action dev="konermann" type="fix" issue="FEST-198">
         ImageAssert no longer uses the constructor IOException(String, Throwable) from JDK 1.6
       </action>

@@ -39,7 +39,7 @@ import java.util.*;
  * @author David DIDIER
  * @author Ted Young
  */
-public final class Assertions {
+public class Assertions {
 
   private static <T> Collection<T> asCollection(Iterator<T> iterator) {
     List<T> list = new ArrayList<T>();
@@ -401,5 +401,5 @@ public final class Assertions {
     return new ThrowableAssert(actual);
   }
 
-  private Assertions() {}
+  protected Assertions() {}
 }
