@@ -22,6 +22,8 @@ import static org.fest.assertions.ByteFail.*;
  *
  * @author Yvonne Wang
  * @author David DIDIER
+ *
+ * @since 1.2
  */
 public class ByteAssert extends PrimitiveAssert {
 
