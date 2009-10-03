@@ -14,7 +14,7 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.PrimitiveFail.*;
+import static org.fest.assertions.ByteFail.*;
 
 /**
  * Understands assertion methods for <code>byte</code>s. To create a new instance of this class use the
@@ -26,8 +26,6 @@ import static org.fest.assertions.PrimitiveFail.*;
 public class ByteAssert extends PrimitiveAssert {
 
   private final byte actual;
-
-  private static final byte ZERO = (byte)0;
 
   /**
    * Creates a new </code>{@link ByteAssert}</code>.
@@ -114,7 +112,7 @@ public class ByteAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>byte</code> value is not equal to the given one.
    */
   public ByteAssert isEqualTo(byte expected) {
-    failIfNotEqual(description(), actual, expected);
+    failIfNotEqual(rawDescription(), actual, expected);
     return this;
   }
 
@@ -125,7 +123,7 @@ public class ByteAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>byte</code> value is equal to the given one.
    */
   public ByteAssert isNotEqualTo(byte other) {
-    failIfEqual(description(), actual, other);
+    failIfEqual(rawDescription(), actual, other);
     return this;
   }
 
@@ -136,7 +134,7 @@ public class ByteAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>byte</code> value is not greater than the given one.
    */
   public ByteAssert isGreaterThan(byte other) {
-    failIfNotGreaterThan(description(), actual, other);
+    failIfNotGreaterThan(rawDescription(), actual, other);
     return this;
   }
 
@@ -147,7 +145,7 @@ public class ByteAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>byte</code> value is not less than the given one.
    */
   public ByteAssert isLessThan(byte other) {
-    failIfNotLessThan(description(), actual, other);
+    failIfNotLessThan(rawDescription(), actual, other);
     return this;
   }
 
@@ -158,7 +156,7 @@ public class ByteAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>byte</code> value is not greater than or equal to the given one.
    */
   public ByteAssert isGreaterThanOrEqualTo(byte other) {
-    failIfNotGreaterThanOrEqualTo(description(), actual, other);
+    failIfNotGreaterThanOrEqualTo(rawDescription(), actual, other);
     return this;
   }
 
@@ -169,7 +167,7 @@ public class ByteAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>byte</code> value is not less than or equal to the given one.
    */
   public ByteAssert isLessThanOrEqualTo(byte other) {
-    failIfNotLessThanOrEqualTo(description(), actual, other);
+    failIfNotLessThanOrEqualTo(rawDescription(), actual, other);
     return this;
   }
 
@@ -178,19 +176,28 @@ public class ByteAssert extends PrimitiveAssert {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>byte</code> value is not positive.
    */
-  public ByteAssert isPositive() { return isGreaterThan(ZERO); }
+  public ByteAssert isPositive() {
+    failIfNotPositive(rawDescription(), actual);
+    return this;
+  }
 
   /**
    * Verifies that the actual <code>byte</code> value is negative.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>byte</code> value is not negative.
    */
-  public ByteAssert isNegative() { return isLessThan(ZERO); }
+  public ByteAssert isNegative() {
+    failIfNotNegative(rawDescription(), actual);
+    return this;
+  }
 
   /**
    * Verifies that the actual <code>byte</code> value is equal to zero.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>byte</code> value is not equal to zero.
    */
-  public ByteAssert isZero() { return isEqualTo(ZERO); }
+  public ByteAssert isZero() {
+    failIfNotZero(rawDescription(), actual);
+    return this;
+  }
 }

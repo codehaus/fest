@@ -20,7 +20,7 @@ import org.fest.test.CodeToTest;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link Fail#failIfNotNull(String, Object)}</code>.
+ * Tests for <code>{@link Fail#failIfNotNull(Description, Object)}</code>.
  *
  * @author Yvonne Wang
  * @author Alex Ruiz
@@ -32,13 +32,13 @@ public class Fail_failIfNotNull_Test {
     String expectedMessage = "[A message] <'Leia'> should be null";
     expectAssertionError(expectedMessage).on(new CodeToTest() {
       public void run() {
-        Fail.failIfNotNull("A message", "Leia");
+        Fail.failIfNotNull(new BasicDescription("A message"), "Leia");
       }
     });
   }
 
   @Test
   public void should_pass_if_value_is_not_null() {
-    Fail.failIfNotNull("", null);
+    Fail.failIfNotNull(new BasicDescription(""), null);
   }
 }

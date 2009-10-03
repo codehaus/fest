@@ -43,7 +43,7 @@ public abstract class GenericAssert<T> extends Assert {
    * @throws AssertionError if the actual value is not <code>null</code>.
    */
   public final void isNull() {
-    failIfNotNull(description(), actual);
+    failIfNotNull(rawDescription(), actual);
   }
 
   /**
@@ -203,7 +203,7 @@ public abstract class GenericAssert<T> extends Assert {
    * @throws AssertionError if the actual value is not equal to the given one.
    */
   protected final void assertEqualTo(T expected) {
-    failIfNotEqual(description(), actual, expected);
+    failIfNotEqual(rawDescription(), actual, expected);
   }
 
   /**
@@ -212,7 +212,7 @@ public abstract class GenericAssert<T> extends Assert {
    * @throws AssertionError if the actual value is equal to the given one.
    */
   protected final void assertNotEqualTo(T other) {
-    failIfEqual(description(), actual, other);
+    failIfEqual(rawDescription(), actual, other);
   }
 
   /**
@@ -220,7 +220,7 @@ public abstract class GenericAssert<T> extends Assert {
    * @throws AssertionError if the actual value is <code>null</code>.
    */
   protected final void assertNotNull() {
-    failIfNull(description(), actual);
+    failIfNull(rawDescription(), actual);
   }
 
   /**
@@ -229,7 +229,7 @@ public abstract class GenericAssert<T> extends Assert {
    * @throws AssertionError if the actual value is not the same as the given one.
    */
   protected final void assertSameAs(T expected) {
-    failIfNotSame(description(), actual, expected);
+    failIfNotSame(rawDescription(), actual, expected);
   }
 
   /**
@@ -238,7 +238,7 @@ public abstract class GenericAssert<T> extends Assert {
    * @throws AssertionError if the actual value is the same as the given one.
    */
   protected final void assertNotSameAs(T expected) {
-    failIfSame(description(), actual, expected);
+    failIfSame(rawDescription(), actual, expected);
   }
 
   /**

@@ -34,7 +34,7 @@ public final class Formatting {
 
   private static final String EMPTY_MESSAGE = "";
 
-  static String messageFrom(String description, Object[] message) {
+  static String messageFrom(Description description, Object[] message) {
     return format(description, concat(message));
   }
 
@@ -43,12 +43,24 @@ public final class Formatting {
    * <pre>
    * [description] message.
    * </pre>
-   * @param description the description of the error.
+   * @param description the description of the actual value in the failed assertion. It can be <code>null</code>.
    * @param message the message to format.
    * @return the formatted message.
+   * @since 1.2
    */
-  public static String format(String description, String message) {
-    return concat(format(description), message);
+  public static String format(Description description, String message) {
+    String s = valueOf(description);
+    return concat(format(s), message);
+  }
+
+  /**
+   * Returns the value of the given <code>{@link Description}</code>.
+   * @param description the given <code>Description</code>.
+   * @return the value of the given <code>Description</code>, or <code>null</code> if the given <code>Description</code>
+   * is <code>null</code>.
+   */
+  public static String valueOf(Description description) {
+    return description == null ? null : description.value();
   }
 
   /**

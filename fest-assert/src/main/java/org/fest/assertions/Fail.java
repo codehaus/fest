@@ -17,8 +17,7 @@ package org.fest.assertions;
 
 import static org.fest.assertions.ComparisonFailureFactory.comparisonFailure;
 import static org.fest.assertions.ErrorMessages.*;
-import static org.fest.assertions.Formatting.inBrackets;
-import static org.fest.assertions.Formatting.messageFrom;
+import static org.fest.assertions.Formatting.*;
 import static org.fest.util.Arrays.array;
 import static org.fest.util.Objects.areEqual;
 
@@ -41,7 +40,7 @@ public final class Fail {
   /**
    * Throws an {@link AssertionError} with the given message an with the <code>{@link Throwable}</code> that caused the
    * failure.
-   * @param description error description.
+   * @param description the description of the failed assertion. It can be <code>null</code>.
    * @param realCause cause of the error.
    */
   public static void fail(String description, Throwable realCause) {
@@ -50,38 +49,38 @@ public final class Fail {
     throw error;
   }
 
-  static void failIfEqual(String description, Object first, Object second) {
+  static void failIfEqual(Description description, Object first, Object second) {
     if (areEqual(first, second)) fail(messageForEqual(description, first, second));
   }
 
-  static void failIfNotEqual(String description, Object actual, Object expected) {
+  static void failIfNotEqual(Description description, Object actual, Object expected) {
     if (areEqual(actual, expected)) return;
-    AssertionError comparisonFailure = comparisonFailure(description, expected, actual);
+    AssertionError comparisonFailure = comparisonFailure(valueOf(description), expected, actual);
     if (comparisonFailure != null) throw comparisonFailure;
     fail(messageForNotEqual(description, actual, expected));
   }
 
-  static void failIfNull(String description, Object o) {
+  static void failIfNull(Description description, Object o) {
     if (o != null) return;
     fail(description, array("expecting a non-null object, but it was null"));
   }
 
-  static void failIfNotNull(String description, Object o) {
+  static void failIfNotNull(Description description, Object o) {
     if (o == null) return;
     fail(description, array(inBrackets(o), " should be null"));
   }
 
-  static void failIfSame(String description, Object first, Object second) {
+  static void failIfSame(Description description, Object first, Object second) {
     if (first != second) return;
     fail(description, array("given objects are same:", inBrackets(first)));
   }
 
-  static void failIfNotSame(String description, Object first, Object second) {
+  static void failIfNotSame(Description description, Object first, Object second) {
     if (first == second) return;
     fail(description, array("expected same instance but found:", inBrackets(first), " and:", inBrackets(second)));
   }
 
-  private static AssertionError fail(String description, Object[] message) {
+  private static AssertionError fail(Description description, Object[] message) {
     return fail(messageFrom(description, message));
   }
 

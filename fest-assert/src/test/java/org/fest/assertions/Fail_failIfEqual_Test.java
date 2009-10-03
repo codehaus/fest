@@ -15,11 +15,12 @@
 package org.fest.assertions;
 
 import static org.fest.test.ExpectedFailure.expectAssertionError;
+
 import org.fest.test.CodeToTest;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link Fail#failIfEqual(String, Object, Object)}</code>.
+ * Tests for <code>{@link Fail#failIfEqual(Description, Object, Object)}</code>.
  *
  * @author Yvonne Wang
  * @author Alex Ruiz
@@ -31,13 +32,13 @@ public class Fail_failIfEqual_Test {
     String expectedMessage = "[A message] actual value:<'Yoda'> should not be equal to:<'Yoda'>";
     expectAssertionError(expectedMessage).on(new CodeToTest() {
       public void run() {
-        Fail.failIfEqual("A message", "Yoda", "Yoda");
+        Fail.failIfEqual(new BasicDescription("A message"), "Yoda", "Yoda");
       }
     });
   }
 
   @Test
   public void should_pass_if_values_are_not_equal() {
-    Fail.failIfEqual("", "Yoda", "Ben");
+    Fail.failIfEqual(new BasicDescription(""), "Yoda", "Ben");
   }
 }

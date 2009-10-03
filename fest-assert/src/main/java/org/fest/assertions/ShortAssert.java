@@ -114,7 +114,7 @@ public class ShortAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>short</code> value is not equal to the given one.
    */
   public ShortAssert isEqualTo(short expected) {
-    failIfNotEqual(description(), actual, expected);
+    failIfNotEqual(rawDescription(), actual, expected);
     return this;
   }
 
@@ -125,7 +125,7 @@ public class ShortAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>short</code> value is equal to the given one.
    */
   public ShortAssert isNotEqualTo(short other) {
-    failIfEqual(description(), actual, other);
+    failIfEqual(rawDescription(), actual, other);
     return this;
   }
 
@@ -136,7 +136,7 @@ public class ShortAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>short</code> value is not greater than the given one.
    */
   public ShortAssert isGreaterThan(short other) {
-    failIfNotGreaterThan(description(), actual, other);
+    failIfNotGreaterThan(rawDescription(), actual, other);
     return this;
   }
 
@@ -147,7 +147,7 @@ public class ShortAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>short</code> value is not less than the given one.
    */
   public ShortAssert isLessThan(short other) {
-    failIfNotLessThan(description(), actual, other);
+    failIfNotLessThan(rawDescription(), actual, other);
     return this;
   }
 
@@ -158,7 +158,7 @@ public class ShortAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>short</code> value is not greater than or equal to the given one.
    */
   public ShortAssert isGreaterThanOrEqualTo(short other) {
-    failIfNotGreaterThanOrEqualTo(description(), actual, other);
+    failIfNotGreaterThanOrEqualTo(rawDescription(), actual, other);
     return this;
   }
 
@@ -169,7 +169,7 @@ public class ShortAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>short</code> value is not less than or equal to the given one.
    */
   public ShortAssert isLessThanOrEqualTo(short other) {
-    failIfNotLessThanOrEqualTo(description(), actual, other);
+    failIfNotLessThanOrEqualTo(rawDescription(), actual, other);
     return this;
   }
 

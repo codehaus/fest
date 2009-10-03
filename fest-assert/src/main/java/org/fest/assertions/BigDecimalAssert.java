@@ -236,7 +236,7 @@ public class BigDecimalAssert extends GenericAssert<BigDecimal> {
    */
   public BigDecimalAssert isEqualByComparingTo(BigDecimal expected) {
     isNotNull();
-    failIfNull(description(), expected);
+    failIfNull(rawDescription(), expected);
     if (actual.compareTo(expected) != 0) fail(messageForNotEqual(actual, expected));
     return this;
   }
@@ -253,7 +253,7 @@ public class BigDecimalAssert extends GenericAssert<BigDecimal> {
    */
   public BigDecimalAssert isNotEqualByComparingTo(BigDecimal expected) {
     isNotNull();
-    failIfNull(description(), expected);
+    failIfNull(rawDescription(), expected);
     if (actual.compareTo(expected) == 0) fail(messageForEqual(actual, expected));
     return this;
   }

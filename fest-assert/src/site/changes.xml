@@ -5,27 +5,33 @@
     <author email="alex.ruiz.05@gmail.com">Alex Ruiz</author>
   </properties>
   <body>
-    <release version="1.1" date="2009-04-20" description="Subsequent release">
-      <action dev="alexruiz" type="fix" issue="FEST-218">
-        Fixed inconsistency in parameter naming.
-      </action>
+    <release version="1.2" date="TBD" description="Subsequent release">
       <action dev="tedyoung" type="fix" issue="FEST-147">
         Class Formatting and its methods are now public.
+      </action>
+      <action dev="tedyoung" type="fix" issue="FEST-157">
+        Added method 'isNotEqualByComparingTo' to BigDecimalAssert.
       </action>
       <action dev="konermann, alexruiz" type="fix" issue="FEST-165">
         Assertion classes are no longer final. Constructors are now protected, instead of package-protected.
       </action>
-      <action dev="konermann, alexruiz" type="fix" issue="FEST-165">
+      <action dev="konermann, alexruiz" type="fix" issue="FEST-166">
         Class org.fest.assertions.Assertions are no longer final. Constructor is now protected, instead of private.
       </action>
       <action dev="konermann" type="fix" issue="FEST-198">
-        ImageAssert no longer uses the constructor IOException(String, Throwable) from JDK 1.6
+        ImageAssert no longer uses the constructor IOException(String, Throwable) from JDK 1.6.
+      </action>
+      <action dev="alexruiz" type="fix" issue="FEST-218">
+        Fixed inconsistency in parameter naming.
       </action>
       <action dev="alexruiz" type="fix" issue="FEST-223">
         Reorganized tests and migrated to JUnit.
       </action>
       <action dev="alexruiz" type="fix" issue="FEST-228">
         Fixed error message displayed when two Strings are not equal and JUnit is in the classpath.
+      </action>
+      <action dev="alexruiz" type="fix" issue="FEST-229">
+        Descriptions of actual values are evaluated only if an assertion fails.
       </action>
     </release>
     <release version="1.1" date="2009-04-20" description="Subsequent release">

@@ -16,6 +16,7 @@
 package org.fest.assertions;
 
 import static org.fest.assertions.Formatting.format;
+import static org.fest.assertions.Formatting.valueOf;
 
 /**
  * Understands the base class for all assertion methods for objects and primitives.
@@ -28,11 +29,11 @@ public abstract class Assert {
   private Description description;
 
   /**
-   * Returns the description of the actual <code>boolean</code> value in this assertion.
-   * @return the description of the actual <code>boolean</code> value in this assertion.
+   * Returns the description of the actual value in this assertion.
+   * @return the description of the actual value in this assertion.
    */
   public final String description() {
-    return description != null ? description.value() : null;
+    return valueOf(description);
   }
 
   /**
@@ -54,6 +55,15 @@ public abstract class Assert {
   }
 
   /**
+   * Returns the description of the actual value in this assertion.
+   * @return the description of the actual value in this assertion.
+   * @since 1.2
+   */
+  protected final Description rawDescription() {
+    return description;
+  }
+
+  /**
    * Returns the given message formatted as follows:
    * <pre>
    * [assertion description] given message.
@@ -62,7 +72,7 @@ public abstract class Assert {
    * @return the formatted message.
    */
   protected final String formattedErrorMessage(String message) {
-    return format(description(), message);
+    return format(description, message);
   }
 
   /**

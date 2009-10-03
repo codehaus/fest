@@ -294,7 +294,7 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
     if (expected == null)
       throw new IllegalArgumentException(formattedErrorMessage("The size to compare to should not be null"));
     Dimension actualDimension = new Dimension(actual.getWidth(), actual.getHeight());
-    Fail.failIfNotEqual(description(), actualDimension, expected);
+    Fail.failIfNotEqual(rawDescription(), actualDimension, expected);
     return this;
   }
 

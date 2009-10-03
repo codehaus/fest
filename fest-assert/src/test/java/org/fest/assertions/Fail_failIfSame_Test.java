@@ -20,7 +20,7 @@ import org.fest.test.CodeToTest;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link Fail#failIfSame(String, Object, Object)}</code>.
+ * Tests for <code>{@link Fail#failIfSame(Description, Object, Object)}</code>.
  *
  * @author Yvonne Wang
  * @author Alex Ruiz
@@ -33,13 +33,13 @@ public class Fail_failIfSame_Test {
     String expectedMessage = concat("[A message] given objects are same:<", o, ">");
     expectAssertionError(expectedMessage).on(new CodeToTest() {
       public void run() {
-        Fail.failIfSame("A message", o, o);
+        Fail.failIfSame(new BasicDescription("A message"), o, o);
       }
     });
   }
 
   @Test
   public void should_pass_if_values_are_not_same() {
-    Fail.failIfSame("", "Luke", "Anakin");
+    Fail.failIfSame(new BasicDescription(""), "Luke", "Anakin");
   }
 }
