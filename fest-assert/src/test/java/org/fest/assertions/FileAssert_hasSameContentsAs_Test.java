@@ -136,7 +136,7 @@ public class FileAssert_hasSameContentsAs_Test extends FileAssert_TestCase {
 
   @Test
   public void should_fail_if_expected_is_null() {
-    expectIllegalArgumentException("File to compare to should not be null").on(new CodeToTest() {
+    expectNullPointerException("File to compare to should not be null").on(new CodeToTest() {
       public void run() {
         new FileAssert(file).hasSameContentAs(null);
       }
@@ -145,7 +145,7 @@ public class FileAssert_hasSameContentsAs_Test extends FileAssert_TestCase {
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_expected_is_null() {
-    expectIllegalArgumentException("[A Test] File to compare to should not be null").on(new CodeToTest() {
+    expectNullPointerException("[A Test] File to compare to should not be null").on(new CodeToTest() {
       public void run() {
         new FileAssert(file).as("A Test")
                             .hasSameContentAs(null);

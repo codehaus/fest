@@ -259,7 +259,6 @@ public class FileAssert extends GenericAssert<File> {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>File</code> satisfies the given condition.
    * @throws NullPointerException if the given condition is <code>null</code>.
-   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public FileAssert doesNotSatisfy(Condition<File> condition) {
     assertDoesNotSatisfy(condition);
@@ -272,14 +271,14 @@ public class FileAssert extends GenericAssert<File> {
    * <a href="http://sourceforge.net/projects/junit-addons">JUnit-addons</a>.)
    * @param expected the given <code>File</code> to compare the actual <code>File</code> to.
    * @return this assertion object.
+   * @throws NullPointerException if the file to compare to is <code>null</code>.
    * @throws AssertionError if the the actual <code>File</code> is <code>null</code>.
    * @throws AssertionError if the content of the actual <code>File</code> is not equal to the content of the given one.
-   * @throws IllegalArgumentException if the file to compare to is <code>null</code>.
    */
   public FileAssert hasSameContentAs(File expected) {
-    isNotNull();
     if (expected == null)
-      throw new IllegalArgumentException(formattedErrorMessage("File to compare to should not be null"));
+      throw new NullPointerException(formattedErrorMessage("File to compare to should not be null"));
+    isNotNull();
     assertExists(actual).assertExists(expected);
     try {
       LineDiff[] diffs = comparator.compareContents(actual, expected);
