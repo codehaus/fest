@@ -224,8 +224,9 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
    */
   public DoubleAssert isEqualTo(double expected, org.fest.assertions.Delta delta) {
     if (compareTo(expected) == 0) return this;
-    if (!(abs(expected - actual) <= delta.value()))
-      fail(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(delta.value())));
+    double deltaValue = delta.doubleValue();
+    if (!(abs(expected - actual) <= deltaValue))
+      fail(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(deltaValue)));
     return this;
   }
 

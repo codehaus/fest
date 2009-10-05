@@ -32,7 +32,16 @@ public final class Delta {
     return new Delta(value);
   }
 
-  private final double value;
+  /**
+   * Creates a new <code>{@link Delta}</code>.
+   * @param value the value of the delta.
+   * @return the created <code>Delta</code>.
+   */
+  public static Delta delta(float value) {
+    return new Delta(value);
+  }
+
+  private final Double value;
 
   private Delta(double value) {
     this.value = value;
@@ -41,6 +50,28 @@ public final class Delta {
   /**
    * Returns the value of this delta.
    * @return the value of this delta.
+   * @deprecated use <code>{@link #doubleValue()}</code> instead.
    */
-  public double value() { return value; }
+  @Deprecated
+  public double value() {
+    return doubleValue();
+  }
+
+  /**
+   * Returns the value of this delta as a <code>double</code>.
+   * @return the value of this delta as a <code>double</code>.
+   * @since 1.2
+   */
+  public double doubleValue() {
+    return value.doubleValue();
+  }
+
+  /**
+   * Returns the value of this delta as a <code>float</code>.
+   * @return the value of this delta as a <code>float</code>.
+   * @since 1.2
+   */
+  public float floatValue() {
+    return value.floatValue();
+  }
 }

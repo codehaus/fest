@@ -245,12 +245,12 @@ public class DoubleArrayAssert extends ArrayAssert<double[]> {
   }
 
   private void failNotEquals(double[] expected, Delta delta) {
-    fail(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(delta.value())));
+    fail(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(delta.doubleValue())));
   }
 
   private boolean equals(double e, double a, Delta delta) {
     if (Double.compare(e, a) == 0) return true;
-    return abs(e - a) <= delta.value();
+    return abs(e - a) <= delta.doubleValue();
   }
 
   /**
