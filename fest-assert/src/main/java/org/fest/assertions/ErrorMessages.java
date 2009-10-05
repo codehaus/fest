@@ -26,60 +26,36 @@ import static org.fest.util.Strings.concat;
  */
 final class ErrorMessages {
 
-  static String messageForNotEqual(Description description, Object actual, Object expected) {
-    return format(description, messageForNotEqual(actual, expected));
-  }
-
-  static String messageForNotEqual(Object actual, Object expected) {
+  static String unexpectedNotEqual(Object actual, Object expected) {
     return concat("expected:", inBrackets(expected), " but was:", inBrackets(actual));
   }
 
-  static String messageForEqual(Description description, Object actual, Object o) {
-    return format(description, messageForEqual(actual, o));
+  static String unexpectedEqual(Object actual, Object o) {
+    return assertionFailed(actual, " should not be equal to:", o);
   }
 
-  static String messageForEqual(Object actual, Object o) {
-    return comparisonFailed(actual, " should not be equal to:", o);
+  static String unexpectedLessThanOrEqualTo(Object actual, Object value) {
+    return assertionFailed(actual, " should be greater than:", value);
   }
 
-  static String messageForNotGreaterThan(Description description, Object actual, Object value) {
-    return format(description, messageForNotGreaterThan(actual, value));
+  static String unexpectedLessThan(Object actual, Object value) {
+    return assertionFailed(actual, " should be greater than or equal to:", value);
   }
 
-  static String messageForNotGreaterThan(Object actual, Object value) {
-    return comparisonFailed(actual, " should be greater than:", value);
+  static String unexpectedGreaterThanOrEqualTo(Object actual, Object value) {
+    return assertionFailed(actual, " should be less than:", value);
   }
 
-  static String messageForNotGreaterThanOrEqualTo(Description description, Object actual, Object value) {
-    return format(description, messageForNotGreaterThanOrEqualTo(actual, value));
+  static String unexpectedGreaterThan(Object actual, Object value) {
+    return assertionFailed(actual, " should be less than or equal to:", value);
   }
 
-  static String messageForNotGreaterThanOrEqualTo(Object actual, Object value) {
-    return comparisonFailed(actual, " should be greater than or equal to:", value);
+  private static String assertionFailed(Object actual, String reason, Object expected) {
+    return assertionFailed(null, actual, reason, expected);
   }
 
-  static String messageForNotLessThan(Description description, Object actual, Object value) {
-    return format(description, messageForNotLessThan(actual, value));
-  }
-
-  static String messageForNotLessThan(Object actual, Object value) {
-    return comparisonFailed(actual, " should be less than:", value);
-  }
-
-  static String messageForNotLessThanOrEqualTo(Description description, Object actual, Object value) {
-    return format(description, messageForNotLessThanOrEqualTo(actual, value));
-  }
-
-  static String messageForNotLessThanOrEqualTo(Object actual, Object value) {
-    return comparisonFailed(actual, " should be less than or equal to:", value);
-  }
-
-  private static String comparisonFailed(Object actual, String reason, Object expected) {
-    return comparisonFailed(null, actual, reason, expected);
-  }
-
-  private static String comparisonFailed(Description description, Object actual, String reason, Object expected) {
-    return messageFrom(description, array("actual value:", inBrackets(actual), reason, inBrackets(expected)));
+  private static String assertionFailed(Description description, Object actual, String reason, Object expected) {
+    return createMessageFrom(description, array("actual value:", inBrackets(actual), reason, inBrackets(expected)));
   }
 
   private ErrorMessages() {}

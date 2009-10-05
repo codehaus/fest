@@ -34,7 +34,7 @@ public final class Formatting {
 
   private static final String EMPTY_MESSAGE = "";
 
-  static String messageFrom(Description description, Object[] message) {
+  static String createMessageFrom(Description description, Object[] message) {
     return format(description, concat(message));
   }
 

@@ -50,14 +50,14 @@ public final class Fail {
   }
 
   static void failIfEqual(Description description, Object first, Object second) {
-    if (areEqual(first, second)) fail(messageForEqual(description, first, second));
+    if (areEqual(first, second)) fail(format(description, unexpectedEqual(first, second)));
   }
 
   static void failIfNotEqual(Description description, Object actual, Object expected) {
     if (areEqual(actual, expected)) return;
     AssertionError comparisonFailure = comparisonFailure(valueOf(description), expected, actual);
     if (comparisonFailure != null) throw comparisonFailure;
-    fail(messageForNotEqual(description, actual, expected));
+    fail(format(description, unexpectedNotEqual(actual, expected)));
   }
 
   static void failIfNull(Description description, Object o) {
@@ -81,7 +81,7 @@ public final class Fail {
   }
 
   private static AssertionError fail(Description description, Object[] message) {
-    return fail(messageFrom(description, message));
+    return fail(createMessageFrom(description, message));
   }
 
   /**

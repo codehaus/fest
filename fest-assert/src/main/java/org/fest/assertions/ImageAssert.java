@@ -15,8 +15,8 @@
 package org.fest.assertions;
 
 import static java.lang.String.valueOf;
-import static org.fest.assertions.ErrorMessages.messageForEqual;
-import static org.fest.assertions.ErrorMessages.messageForNotEqual;
+import static org.fest.assertions.ErrorMessages.unexpectedEqual;
+import static org.fest.assertions.ErrorMessages.unexpectedNotEqual;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.assertions.Threshold.threshold;
 import static org.fest.util.Objects.areEqual;
@@ -202,7 +202,7 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
 
   private void failIfNull(BufferedImage expected) {
     if (expected != null) return;
-    fail(messageForNotEqual(actual, null));
+    fail(unexpectedNotEqual(actual, null));
   }
 
   private void failIfNotEqual(Dimension a, Dimension e) {
@@ -230,7 +230,7 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
    * @throws AssertionError if the actual image is equal to the given one.
    */
   public ImageAssert isNotEqualTo(BufferedImage image) {
-    if (areEqual(actual, image)) fail(messageForEqual(actual, image));
+    if (areEqual(actual, image)) fail(unexpectedEqual(actual, image));
     if (image == null) return this;
     if (areEqual(sizeOf(actual), sizeOf(image)) && hasEqualColor(image)) fail("images are equal");
     return this;

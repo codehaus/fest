@@ -15,8 +15,8 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.ErrorMessages.messageForEqual;
-import static org.fest.assertions.ErrorMessages.messageForNotEqual;
+import static org.fest.assertions.ErrorMessages.unexpectedEqual;
+import static org.fest.assertions.ErrorMessages.unexpectedNotEqual;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Collections.duplicatesFrom;
 import static org.fest.util.Collections.list;
@@ -273,7 +273,7 @@ public class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * @throws AssertionError if the actual <code>Object</code> array is not equal to the given one.
    */
   public ObjectArrayAssert isEqualTo(Object[] expected) {
-    if (!Arrays.deepEquals(actual, expected)) fail(messageForNotEqual(actual, expected));
+    if (!Arrays.deepEquals(actual, expected)) fail(unexpectedNotEqual(actual, expected));
     return this;
   }
 
@@ -285,7 +285,7 @@ public class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * @throws AssertionError if the actual <code>Object</code> array is equal to the given one.
    */
   public ObjectArrayAssert isNotEqualTo(Object[] array) {
-    if (Arrays.deepEquals(actual, array)) fail(messageForEqual(actual, array));
+    if (Arrays.deepEquals(actual, array)) fail(unexpectedEqual(actual, array));
     return this;
   }
 

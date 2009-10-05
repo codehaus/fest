@@ -15,7 +15,7 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.PrimitiveFail.*;
+import static org.fest.assertions.ErrorMessages.*;
 
 /**
  * Understands assert method for <code>int</code>s. To create a new instance of this class use the
@@ -116,7 +116,7 @@ public class IntAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>int</code> value is not equal to the given one.
    */
   public IntAssert isEqualTo(int expected) {
-    failIfNotEqual(rawDescription(), actual, expected);
+    if (actual != expected) fail(unexpectedNotEqual(actual, expected));
     return this;
   }
 
@@ -127,7 +127,7 @@ public class IntAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>int</code> value is equal to the given one.
    */
   public IntAssert isNotEqualTo(int other) {
-    failIfEqual(rawDescription(), actual, other);
+    if (actual == other) fail(unexpectedEqual(actual, other));
     return this;
   }
 
@@ -138,7 +138,7 @@ public class IntAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>int</code> value is not greater than the given one.
    */
   public IntAssert isGreaterThan(int other) {
-    failIfNotGreaterThan(rawDescription(), actual, other);
+    if (actual <= other) fail(unexpectedLessThanOrEqualTo(actual, other));
     return this;
   }
 
@@ -149,7 +149,7 @@ public class IntAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>int</code> value is not less than the given one.
    */
   public IntAssert isLessThan(int other) {
-    failIfNotLessThan(rawDescription(), actual, other);
+    if (actual >= other) fail(unexpectedGreaterThanOrEqualTo(actual, other));
     return this;
   }
 
@@ -160,7 +160,7 @@ public class IntAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>int</code> value is not greater than or equal to the given one.
    */
   public IntAssert isGreaterThanOrEqualTo(int other) {
-    failIfNotGreaterThanOrEqualTo(rawDescription(), actual, other);
+    if (actual < other) fail(unexpectedLessThan(actual, other));
     return this;
   }
 
@@ -171,8 +171,17 @@ public class IntAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>int</code> value is not less than or equal to the given one.
    */
   public IntAssert isLessThanOrEqualTo(int other) {
-    failIfNotLessThanOrEqualTo(rawDescription(), actual, other);
+    if (actual > other) fail(unexpectedGreaterThan(actual, other));
     return this;
+  }
+
+  /**
+   * Verifies that the actual <code>int</code> value is equal to zero.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>int</code> value is not equal to zero.
+   */
+  public IntAssert isZero() {
+    return isEqualTo(ZERO);
   }
 
   /**
@@ -180,19 +189,16 @@ public class IntAssert extends PrimitiveAssert {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>int</code> value is not positive.
    */
-  public IntAssert isPositive() { return isGreaterThan(ZERO); }
+  public IntAssert isPositive() {
+    return isGreaterThan(ZERO);
+  }
 
   /**
    * Verifies that the actual <code>int</code> value is negative.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>int</code> value is not negative.
    */
-  public IntAssert isNegative() { return isLessThan(ZERO); }
-
-  /**
-   * Verifies that the actual <code>int</code> value is equal to zero.
-   * @return this assertion object.
-   * @throws AssertionError if the actual <code>int</code> value is not equal to zero.
-   */
-  public IntAssert isZero() { return isEqualTo(ZERO); }
+  public IntAssert isNegative() {
+    return isLessThan(ZERO);
+  }
 }

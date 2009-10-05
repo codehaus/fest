@@ -16,8 +16,8 @@ package org.fest.assertions;
 
 import static java.lang.Math.abs;
 import static org.fest.assertions.ArrayInspection.copy;
-import static org.fest.assertions.ErrorMessages.messageForEqual;
-import static org.fest.assertions.ErrorMessages.messageForNotEqual;
+import static org.fest.assertions.ErrorMessages.unexpectedEqual;
+import static org.fest.assertions.ErrorMessages.unexpectedNotEqual;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Strings.concat;
 
@@ -222,7 +222,7 @@ public class DoubleArrayAssert extends ArrayAssert<double[]> {
    * @throws AssertionError if the actual <code>double</code> array is not equal to the given one.
    */
   public DoubleArrayAssert isEqualTo(double[] expected) {
-    if (!Arrays.equals(actual, expected)) fail(messageForNotEqual(actual, expected));
+    if (!Arrays.equals(actual, expected)) fail(unexpectedNotEqual(actual, expected));
     return this;
   }
 
@@ -245,7 +245,7 @@ public class DoubleArrayAssert extends ArrayAssert<double[]> {
   }
 
   private void failNotEquals(double[] expected, Delta delta) {
-    fail(concat(messageForNotEqual(actual, expected), " using delta:", inBrackets(delta.value())));
+    fail(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(delta.value())));
   }
 
   private boolean equals(double e, double a, Delta delta) {
@@ -261,7 +261,7 @@ public class DoubleArrayAssert extends ArrayAssert<double[]> {
    * @throws AssertionError if the actual <code>double</code> array is equal to the given one.
    */
   public DoubleArrayAssert isNotEqualTo(double[] array) {
-    if (Arrays.equals(actual, array)) fail(messageForEqual(actual, array));
+    if (Arrays.equals(actual, array)) fail(unexpectedEqual(actual, array));
     return this;
   }
 

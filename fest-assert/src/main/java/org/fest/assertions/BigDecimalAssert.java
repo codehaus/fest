@@ -16,9 +16,6 @@
 package org.fest.assertions;
 
 import static java.math.BigDecimal.ZERO;
-import static org.fest.assertions.ErrorMessages.*;
-import static org.fest.assertions.Fail.failIfNull;
-
 import java.math.BigDecimal;
 
 /**
@@ -30,7 +27,7 @@ import java.math.BigDecimal;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class BigDecimalAssert extends GenericAssert<BigDecimal> {
+public class BigDecimalAssert extends ComparableAssert<BigDecimal> {
 
   /**
    * Creates a new </code>{@link BigDecimalAssert}</code>.
@@ -235,9 +232,7 @@ public class BigDecimalAssert extends GenericAssert<BigDecimal> {
    * @see BigDecimal#compareTo(BigDecimal)
    */
   public BigDecimalAssert isEqualByComparingTo(BigDecimal expected) {
-    isNotNull();
-    failIfNull(rawDescription(), expected);
-    if (actual.compareTo(expected) != 0) fail(messageForNotEqual(actual, expected));
+    assertEqualByComparingTo(expected);
     return this;
   }
 
@@ -252,9 +247,7 @@ public class BigDecimalAssert extends GenericAssert<BigDecimal> {
    * @see BigDecimal#compareTo(BigDecimal)
    */
   public BigDecimalAssert isNotEqualByComparingTo(BigDecimal expected) {
-    isNotNull();
-    failIfNull(rawDescription(), expected);
-    if (actual.compareTo(expected) == 0) fail(messageForEqual(actual, expected));
+    assertNotEqualByComparingTo(expected);
     return this;
   }
 
@@ -266,8 +259,7 @@ public class BigDecimalAssert extends GenericAssert<BigDecimal> {
    * @throws AssertionError if the actual <code>BigDecimal</code> value is not less than the given one.
    */
   public BigDecimalAssert isLessThan(BigDecimal other) {
-    isNotNull();
-    if (actual.compareTo(other) >= 0) fail(messageForNotLessThan(actual, other));
+    assertIsLessThan(other);
     return this;
   }
 
@@ -279,8 +271,7 @@ public class BigDecimalAssert extends GenericAssert<BigDecimal> {
    * @throws AssertionError if the actual <code>BigDecimal</code> value is not greater than the given one.
    */
   public BigDecimalAssert isGreaterThan(BigDecimal other) {
-    isNotNull();
-    if (actual.compareTo(other) <= 0) fail(messageForNotGreaterThan(actual, other));
+    assertIsGreaterThan(other);
     return this;
   }
 
@@ -292,8 +283,7 @@ public class BigDecimalAssert extends GenericAssert<BigDecimal> {
    * @throws AssertionError if the actual <code>BigDecimal</code> value is not less than or equal to the given one.
    */
   public BigDecimalAssert isLessThanOrEqualTo(BigDecimal other) {
-    isNotNull();
-    if (actual.compareTo(other) > 0) fail(messageForNotLessThanOrEqualTo(actual, other));
+    assertIsLessThanOrEqualTo(other);
     return this;
   }
 
@@ -305,8 +295,7 @@ public class BigDecimalAssert extends GenericAssert<BigDecimal> {
    * @throws AssertionError if the actual <code>BigDecimal</code> value is not greater than or equal to the given one.
    */
   public BigDecimalAssert isGreaterThanOrEqualTo(BigDecimal other) {
-    isNotNull();
-    if (actual.compareTo(other) < 0) fail(messageForNotGreaterThanOrEqualTo(actual, other));
+    assertIsGreaterThanOrEqualTo(other);
     return this;
   }
 }

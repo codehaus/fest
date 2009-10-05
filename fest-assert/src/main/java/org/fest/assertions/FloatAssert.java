@@ -14,10 +14,10 @@
  */
 package org.fest.assertions;
 
+import static java.lang.Float.compare;
 import static java.lang.Math.abs;
-import static org.fest.assertions.ErrorMessages.messageForNotEqual;
+import static org.fest.assertions.ErrorMessages.*;
 import static org.fest.assertions.Formatting.inBrackets;
-import static org.fest.assertions.PrimitiveFail.*;
 import static org.fest.util.Strings.concat;
 
 /**
@@ -117,7 +117,7 @@ public class FloatAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>float</code> value is not equal to the given one.
    */
   public FloatAssert isEqualTo(float expected) {
-    failIfNotEqual(rawDescription(), actual, expected);
+    if (compareTo(expected) != 0) fail(unexpectedNotEqual(actual, expected));
     return this;
   }
 
@@ -129,9 +129,9 @@ public class FloatAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>float</code> value is not equal to the given one.
    */
   public FloatAssert isEqualTo(float expected, Delta delta) {
-    if (Float.compare(expected, actual) == 0) return this;
+    if (compareTo(expected) == 0) return this;
     if (!(abs(expected - actual) <= delta.value))
-      fail(concat(messageForNotEqual(actual, expected), " using delta:", inBrackets(delta.value)));
+      fail(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(delta.value)));
     return this;
   }
 
@@ -142,7 +142,7 @@ public class FloatAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>float</code> value is equal to the given one.
    */
   public FloatAssert isNotEqualTo(float other) {
-    failIfEqual(rawDescription(), actual, other);
+    if (compareTo(other) == 0) fail(unexpectedEqual(actual, other));
     return this;
   }
 
@@ -153,7 +153,7 @@ public class FloatAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>float</code> value is not greater than the given one.
    */
   public FloatAssert isGreaterThan(float other) {
-    failIfNotGreaterThan(rawDescription(), actual, other);
+    if (compareTo(other) <= 0) fail(unexpectedLessThanOrEqualTo(actual, other));
     return this;
   }
 
@@ -164,7 +164,7 @@ public class FloatAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>float</code> value is not less than the given one.
    */
   public FloatAssert isLessThan(float other) {
-    failIfNotLessThan(rawDescription(), actual, other);
+    if (compareTo(other) >= 0) fail(unexpectedGreaterThanOrEqualTo(actual, other));
     return this;
   }
 
@@ -175,7 +175,7 @@ public class FloatAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>float</code> value is not greater than or equal to the given one.
    */
   public FloatAssert isGreaterThanOrEqualTo(float other) {
-    failIfNotGreaterThanOrEqualTo(rawDescription(), actual, other);
+    if (compareTo(other) < 0) fail(unexpectedLessThan(actual, other));
     return this;
   }
 
@@ -186,8 +186,12 @@ public class FloatAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>float</code> value is not less than or equal to the given one.
    */
   public FloatAssert isLessThanOrEqualTo(float other) {
-    failIfNotLessThanOrEqualTo(rawDescription(), actual, other);
+    if (compareTo(other) > 0) fail(unexpectedGreaterThan(actual, other));
     return this;
+  }
+
+  private int compareTo(float other) {
+    return compare(actual, other);
   }
 
   /**
@@ -195,28 +199,36 @@ public class FloatAssert extends PrimitiveAssert {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>float</code> value is not equal to <code>NaN</code>.
    */
-  public FloatAssert isNaN() { return isEqualTo(Float.NaN); }
-
-  /**
-   * Verifies that the actual <code>float</code> value is positive.
-   * @return this assertion object.
-   * @throws AssertionError if the actual <code>float</code> value is not positive.
-   */
-  public FloatAssert isPositive() { return isGreaterThan(ZERO); }
-
-  /**
-   * Verifies that the actual <code>float</code> value is negative.
-   * @return this assertion object.
-   * @throws AssertionError if the actual <code>float</code> value is not negative.
-   */
-  public FloatAssert isNegative() { return isLessThan(ZERO); }
+  public FloatAssert isNaN() {
+    return isEqualTo(Float.NaN);
+  }
 
   /**
    * Verifies that the actual <code>float</code> value is equal to zero.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>float</code> value is not equal to zero.
    */
-  public FloatAssert isZero() { return isEqualTo(ZERO); }
+  public FloatAssert isZero() {
+    return isEqualTo(ZERO);
+  }
+
+  /**
+   * Verifies that the actual <code>float</code> value is positive.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>float</code> value is not positive.
+   */
+  public FloatAssert isPositive() {
+    return isGreaterThan(ZERO);
+  }
+
+  /**
+   * Verifies that the actual <code>float</code> value is negative.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>float</code> value is not negative.
+   */
+  public FloatAssert isNegative() {
+    return isLessThan(ZERO);
+  }
 
   /**
    * Creates a new holder for a delta value to be used in

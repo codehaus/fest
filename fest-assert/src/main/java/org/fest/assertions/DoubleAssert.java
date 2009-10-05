@@ -1,9 +1,9 @@
 package org.fest.assertions;
 
+import static java.lang.Double.compare;
 import static java.lang.Math.abs;
-import static org.fest.assertions.ErrorMessages.messageForNotEqual;
+import static org.fest.assertions.ErrorMessages.*;
 import static org.fest.assertions.Formatting.inBrackets;
-import static org.fest.assertions.PrimitiveFail.*;
 import static org.fest.util.Strings.concat;
 
 /**
@@ -104,7 +104,7 @@ public class DoubleAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>double</code> value is not equal to the given one.
    */
   public DoubleAssert isEqualTo(double expected) {
-    failIfNotEqual(rawDescription(), actual, expected);
+    if (compareTo(expected) != 0) fail(unexpectedNotEqual(actual, expected));
     return this;
   }
 
@@ -115,7 +115,7 @@ public class DoubleAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>double</code> value is equal to the given one.
    */
   public DoubleAssert isNotEqualTo(double other) {
-    failIfEqual(rawDescription(), actual, other);
+    if (compareTo(other) == 0) fail(unexpectedEqual(actual, other));
     return this;
   }
 
@@ -126,7 +126,7 @@ public class DoubleAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>double</code> value is not greater than the given one.
    */
   public DoubleAssert isGreaterThan(double other) {
-    failIfNotGreaterThan(rawDescription(), actual, other);
+    if (compareTo(other) <= 0) fail(unexpectedLessThanOrEqualTo(actual, other));
     return this;
   }
 
@@ -137,7 +137,7 @@ public class DoubleAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>double</code> value is not less than the given one.
    */
   public DoubleAssert isLessThan(double other) {
-    failIfNotLessThan(rawDescription(), actual, other);
+    if (compareTo(other) >= 0) fail(unexpectedGreaterThanOrEqualTo(actual, other));
     return this;
   }
 
@@ -148,7 +148,7 @@ public class DoubleAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>double</code> value is not greater than or equal to the given one.
    */
   public DoubleAssert isGreaterThanOrEqualTo(double other) {
-    failIfNotGreaterThanOrEqualTo(rawDescription(), actual, other);
+    if (compareTo(other) < 0) fail(unexpectedLessThan(actual, other));
     return this;
   }
 
@@ -159,8 +159,17 @@ public class DoubleAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>double</code> value is not less than or equal to the given one.
    */
   public DoubleAssert isLessThanOrEqualTo(double other) {
-    failIfNotLessThanOrEqualTo(rawDescription(), actual, other);
+    if (compareTo(other) > 0) fail(unexpectedGreaterThan(actual, other));
     return this;
+  }
+
+  /**
+   * Verifies that the actual <code>double</code> value is equal to zero.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>double</code> value is not equal to zero.
+   */
+  public DoubleAssert isZero() {
+    return isEqualTo(ZERO);
   }
 
   /**
@@ -168,21 +177,18 @@ public class DoubleAssert extends PrimitiveAssert {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>double</code> value is not positive.
    */
-  public DoubleAssert isPositive() { return isGreaterThan(ZERO); }
+  public DoubleAssert isPositive() {
+    return isGreaterThan(ZERO);
+  }
 
   /**
    * Verifies that the actual <code>double</code> value is negative.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>double</code> value is not negative.
    */
-  public DoubleAssert isNegative() { return isLessThan(ZERO); }
-
-  /**
-   * Verifies that the actual <code>double</code> value is equal to zero.
-   * @return this assertion object.
-   * @throws AssertionError if the actual <code>double</code> value is not equal to zero.
-   */
-  public DoubleAssert isZero() { return isEqualTo(ZERO); }
+  public DoubleAssert isNegative() {
+    return isLessThan(ZERO);
+  }
 
   /**
    * Verifies that the actual <code>double</code> value is equal to <code>{@link Double#NaN}</code>.
@@ -202,9 +208,9 @@ public class DoubleAssert extends PrimitiveAssert {
    */
   @Deprecated
   public DoubleAssert isEqualTo(double expected, Delta delta) {
-    if (Double.compare(expected, actual) == 0) return this;
+    if (compareTo(expected) == 0) return this;
     if (!(abs(expected - actual) <= delta.value))
-      fail(concat(messageForNotEqual(actual, expected), " using delta:", inBrackets(delta.value)));
+      fail(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(delta.value)));
     return this;
   }
 
@@ -217,10 +223,14 @@ public class DoubleAssert extends PrimitiveAssert {
    * @since 1.1
    */
   public DoubleAssert isEqualTo(double expected, org.fest.assertions.Delta delta) {
-    if (Double.compare(expected, actual) == 0) return this;
+    if (compareTo(expected) == 0) return this;
     if (!(abs(expected - actual) <= delta.value()))
-      fail(concat(messageForNotEqual(actual, expected), " using delta:", inBrackets(delta.value())));
+      fail(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(delta.value())));
     return this;
+  }
+
+  private int compareTo(double other) {
+    return compare(actual, other);
   }
 
   /**

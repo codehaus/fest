@@ -76,6 +76,25 @@ public abstract class Assert {
   }
 
   /**
+   * Fails by throwing an <code>{@link AssertionError}</code>.
+   * @param reason the reason for the failure, used as the message for the thrown exception.
+   * @return the thrown <code>AssertionError</code>.
+   * @throws AssertionError using the given reason as the message.
+   */
+  protected final AssertionError fail(String reason) {
+    throw Fail.fail(formattedErrorMessage(reason));
+  }
+
+  /**
+   * Fails by throwing an <code>{@link AssertionError}</code>.
+   * @param reason the reason for the failure, used as the message for the thrown exception.
+   * @param cause the root cause of the failure, included in the thrown exception.
+   */
+  protected final void fail(String reason, Throwable cause) {
+    Fail.fail(formattedErrorMessage(reason), cause);
+  }
+
+  /**
    * Throws <code>{@link UnsupportedOperationException}</code> if called. It is easy to accidentally call
    * <code>{@link #equals(Object)}</code> instead of <code>isEqualTo</code>.
    * @throws UnsupportedOperationException if this method is called.

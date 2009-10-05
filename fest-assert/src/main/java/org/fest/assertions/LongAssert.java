@@ -14,7 +14,7 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.PrimitiveFail.*;
+import static org.fest.assertions.ErrorMessages.*;
 
 /**
  * Understands assertion methods for <code>long</code>s. To create a new instance of this class use the
@@ -114,7 +114,7 @@ public class LongAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>long</code> value is not equal to the given one.
    */
   public LongAssert isEqualTo(long expected) {
-    failIfNotEqual(rawDescription(), actual, expected);
+    if (actual != expected) fail(unexpectedNotEqual(actual, expected));
     return this;
   }
 
@@ -125,7 +125,7 @@ public class LongAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>long</code> value is equal to the given one.
    */
   public LongAssert isNotEqualTo(long other) {
-    failIfEqual(rawDescription(), actual, other);
+    if (actual == other) fail(unexpectedEqual(actual, other));
     return this;
   }
 
@@ -136,7 +136,7 @@ public class LongAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>long</code> value is not greater than the given one.
    */
   public LongAssert isGreaterThan(long other) {
-    failIfNotGreaterThan(rawDescription(), actual, other);
+    if (actual <= other) fail(unexpectedLessThanOrEqualTo(actual, other));
     return this;
   }
 
@@ -147,7 +147,7 @@ public class LongAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>long</code> value is not less than the given one.
    */
   public LongAssert isLessThan(long other) {
-    failIfNotLessThan(rawDescription(), actual, other);
+    if (actual >= other) fail(unexpectedGreaterThanOrEqualTo(actual, other));
     return this;
   }
 
@@ -158,7 +158,7 @@ public class LongAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>long</code> value is not greater than or equal to the given one.
    */
   public LongAssert isGreaterThanOrEqualTo(long other) {
-    failIfNotGreaterThanOrEqualTo(rawDescription(), actual, other);
+    if (actual < other) fail(unexpectedLessThan(actual, other));
     return this;
   }
 
@@ -169,8 +169,17 @@ public class LongAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>long</code> value is not less than or equal to the given one.
    */
   public LongAssert isLessThanOrEqualTo(long other) {
-    failIfNotLessThanOrEqualTo(rawDescription(), actual, other);
+    if (actual > other) fail(unexpectedGreaterThan(actual, other));
     return this;
+  }
+
+  /**
+   * Verifies that the actual <code>long</code> value is equal to zero.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>long</code> value is not equal to zero.
+   */
+  public LongAssert isZero() {
+    return isEqualTo(ZERO);
   }
 
   /**
@@ -178,20 +187,16 @@ public class LongAssert extends PrimitiveAssert {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>long</code> value is not positive.
    */
-  public LongAssert isPositive() { return isGreaterThan(ZERO); }
+  public LongAssert isPositive() {
+    return isGreaterThan(ZERO);
+  }
 
   /**
    * Verifies that the actual <code>long</code> value is negative.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>long</code> value is not negative.
    */
-  public LongAssert isNegative() { return isLessThan(ZERO); }
-
-  /**
-   * Verifies that the actual <code>long</code> value is equal to zero.
-   * @return this assertion object.
-   * @throws AssertionError if the actual <code>long</code> value is not equal to zero.
-   */
-  public LongAssert isZero() { return isEqualTo(ZERO); }
-
+  public LongAssert isNegative() {
+    return isLessThan(ZERO);
+  }
 }

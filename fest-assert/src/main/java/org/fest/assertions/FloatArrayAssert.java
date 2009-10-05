@@ -16,8 +16,8 @@
 package org.fest.assertions;
 
 import static org.fest.assertions.ArrayInspection.copy;
-import static org.fest.assertions.ErrorMessages.messageForEqual;
-import static org.fest.assertions.ErrorMessages.messageForNotEqual;
+import static org.fest.assertions.ErrorMessages.unexpectedEqual;
+import static org.fest.assertions.ErrorMessages.unexpectedNotEqual;
 
 import java.util.*;
 
@@ -213,7 +213,7 @@ public class FloatArrayAssert extends ArrayAssert<float[]> {
    * @throws AssertionError if the actual <code>float</code> array is not equal to the given one.
    */
   public FloatArrayAssert isEqualTo(float[] expected) {
-    if (!Arrays.equals(actual, expected)) fail(messageForNotEqual(actual, expected));
+    if (!Arrays.equals(actual, expected)) fail(unexpectedNotEqual(actual, expected));
     return this;
   }
 
@@ -225,7 +225,7 @@ public class FloatArrayAssert extends ArrayAssert<float[]> {
    * @throws AssertionError if the actual <code>float</code> array is equal to the given one.
    */
   public FloatArrayAssert isNotEqualTo(float[] array) {
-    if (Arrays.equals(actual, array)) fail(messageForEqual(actual, array));
+    if (Arrays.equals(actual, array)) fail(unexpectedEqual(actual, array));
     return this;
   }
 

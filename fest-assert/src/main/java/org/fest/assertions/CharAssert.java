@@ -14,8 +14,8 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ErrorMessages.*;
 import static org.fest.assertions.Formatting.inBrackets;
-import static org.fest.assertions.PrimitiveFail.*;
 import static org.fest.util.Strings.concat;
 
 /**
@@ -114,7 +114,7 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is not equal to the given one.
    */
   public CharAssert isEqualTo(char expected) {
-    failIfNotEqual(rawDescription(), actual, expected);
+    if (actual != expected) fail(unexpectedNotEqual(actual, expected));
     return this;
   }
 
@@ -125,7 +125,7 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is equal to the given one.
    */
   public CharAssert isNotEqualTo(char other) {
-    failIfEqual(rawDescription(), actual, other);
+    if (actual == other) fail(unexpectedEqual(actual, other));
     return this;
   }
 
@@ -136,7 +136,7 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is not greater than the given one.
    */
   public CharAssert isGreaterThan(char other) {
-    failIfNotGreaterThan(rawDescription(), actual, other);
+    if (actual <= other) fail(unexpectedLessThanOrEqualTo(actual, other));
     return this;
   }
 
@@ -147,7 +147,7 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is not less than the given one.
    */
   public CharAssert isLessThan(char other) {
-    failIfNotLessThan(rawDescription(), actual, other);
+    if (actual >= other) fail(unexpectedGreaterThanOrEqualTo(actual, other));
     return this;
   }
 
@@ -158,7 +158,7 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is not greater than or equal to the given one.
    */
   public CharAssert isGreaterThanOrEqualTo(char other) {
-    failIfNotGreaterThanOrEqualTo(rawDescription(), actual, other);
+    if (actual < other) fail(unexpectedLessThan(actual, other));
     return this;
   }
 
@@ -169,7 +169,7 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is not less than or equal to the given one.
    */
   public CharAssert isLessThanOrEqualTo(char other) {
-    failIfNotLessThanOrEqualTo(rawDescription(), actual, other);
+    if (actual > other) fail(unexpectedGreaterThan(actual, other));
     return this;
   }
 

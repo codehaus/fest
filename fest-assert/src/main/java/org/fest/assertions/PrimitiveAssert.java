@@ -81,8 +81,4 @@ public abstract class PrimitiveAssert extends Assert {
    * @return this assertion object.
    */
   protected abstract PrimitiveAssert describedAs(Description description);
-
-  protected final void fail(String reason) {
-    Fail.fail(formattedErrorMessage(reason));
-  }
 }
