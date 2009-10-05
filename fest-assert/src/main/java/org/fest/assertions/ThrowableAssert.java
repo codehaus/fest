@@ -116,7 +116,7 @@ public class ThrowableAssert extends GenericAssert<Throwable> {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>Throwable</code> is <code>null</code>.
    * @throws AssertionError if the actual <code>Throwable</code> is not an instance of the given type.
-   * @throws IllegalArgumentException if the given type is <code>null</code>.
+   * @throws NullPointerException if the given type is <code>null</code>.
    */
   public ThrowableAssert isInstanceOf(Class<? extends Throwable> type) {
     objectAssert.isInstanceOf(type);
@@ -130,7 +130,7 @@ public class ThrowableAssert extends GenericAssert<Throwable> {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>Throwable</code> is <code>null</code>.
    * @throws AssertionError if the actual <code>Throwable</code> is not an instance of the given type.
-   * @throws IllegalArgumentException if the given type is <code>null</code>.
+   * @throws NullPointerException if the given type is <code>null</code>.
    */
   public ThrowableAssert isExactlyInstanceOf(Class<?> type) {
     isNotNull();

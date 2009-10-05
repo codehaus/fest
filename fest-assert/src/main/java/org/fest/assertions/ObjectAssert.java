@@ -44,7 +44,7 @@ public class ObjectAssert extends GenericAssert<Object> {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>Object</code> is <code>null</code>.
    * @throws AssertionError if the actual <code>Object</code> is not an instance of the given type.
-   * @throws IllegalArgumentException if the given type is <code>null</code>.
+   * @throws NullPointerException if the given type is <code>null</code>.
    */
   public ObjectAssert isInstanceOf(Class<?> type) {
     isNotNull();
@@ -61,13 +61,13 @@ public class ObjectAssert extends GenericAssert<Object> {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>Object</code> is <code>null</code>.
    * @throws AssertionError if the actual <code>Object</code> is not an instance of any of the given types.
-   * @throws IllegalArgumentException if the given array of types is <code>null</code>.
-   * @throws IllegalArgumentException if the given array of types contains <code>null</code>s.
+   * @throws NullPointerException if the given array of types is <code>null</code>.
+   * @throws NullPointerException if the given array of types contains <code>null</code>s.
    */
   public ObjectAssert isInstanceOfAny(Class<?>...types) {
     isNotNull();
     if (types == null)
-      throw new IllegalArgumentException(formattedErrorMessage("The given array of types should not be null"));
+      throw new NullPointerException(formattedErrorMessage("The given array of types should not be null"));
     if (!foundInstanceOfAny(types))
       fail(concat("expected instance of any:<", typeNames(types), "> but was instance of:", inBrackets(actual.getClass())));
     return this;
@@ -84,7 +84,7 @@ public class ObjectAssert extends GenericAssert<Object> {
 
   void validateNotNull(Class<?> type) {
     if (type == null)
-      throw new IllegalArgumentException(formattedErrorMessage("expecting a non-null type, but it was null"));
+      throw new NullPointerException(formattedErrorMessage("expecting a non-null type, but it was null"));
   }
 
   private String typeNames(Class<?>... types) {

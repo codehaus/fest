@@ -38,11 +38,11 @@ public final class CommonFailures {
   }
 
   public static void expectErrorIfTypeIsNull(CodeToTest codeToTest) {
-    expectIllegalArgumentException("expecting a non-null type, but it was null").on(codeToTest);
+    expectNullPointerException("expecting a non-null type, but it was null").on(codeToTest);
   }
 
   public static void expectErrorWithDescriptionIfTypeIsNull(CodeToTest codeToTest) {
-    expectIllegalArgumentException("[A Test] expecting a non-null type, but it was null").on(codeToTest);
+    expectNullPointerException("[A Test] expecting a non-null type, but it was null").on(codeToTest);
   }
 
   public static void expectErrorIfArrayIsNull(CodeToTest codeToTest) {
@@ -79,6 +79,10 @@ public final class CommonFailures {
 
   public static Message expectIllegalArgumentException(String message) {
     return expect(IllegalArgumentException.class).withMessage(message);
+  }
+
+  public static Message expectIndexOutOfBoundsException(String message) {
+    return expect(IndexOutOfBoundsException.class).withMessage(message);
   }
 
   public static Message expectErrorIfConditionIsNull() {

@@ -49,13 +49,13 @@ public class ListAssert extends GroupAssert<List<?>> {
    * @param o the object to look for.
    * @param index the index where the object should be stored in the actual <code>List</code>.
    * @return this assertion object.
-   * @throws AssertionError if the given <code>Index</code> is <code>null</code>.
-   * @throws AssertionError if the value of the given <code>Index</code> is negative, or equal to or greater than the
-   * size of the actual <code>List</code>.
+   * @throws NullPointerException if the given <code>Index</code> is <code>null</code>.
+   * @throws IndexOutOfBoundsException if the value of the given <code>Index</code> is negative, or equal to or greater
+   * than the size of the actual <code>List</code>.
    * @throws AssertionError if the given <code>List</code> does not contain the given object at the given index.
    */
   public ListAssert contains(Object o, Index index) {
-    if (index == null) throw fail("The given index should not be null");
+    if (index == null) throw new NullPointerException(formattedErrorMessage("The given index should not be null"));
     isNotNull().isNotEmpty();
     int indexValue = index.value();
     int listSize = actualGroupSize();
@@ -70,8 +70,9 @@ public class ListAssert extends GroupAssert<List<?>> {
   }
 
   private void failIndexOutOfBounds(int index) {
-    fail(concat(
-        "The index ", inBrackets(index), " should be greater than or equal to zero and less than ", actualGroupSize()));
+    throw new IndexOutOfBoundsException(
+        formattedErrorMessage(concat(
+        "The index ", inBrackets(index), " should be greater than or equal to zero and less than ", actualGroupSize())));
   }
 
   /**

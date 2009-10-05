@@ -58,7 +58,7 @@ public class ImageAssert_hasSize_Test {
 
   @Test
   public void should_throw_error_if_given_size_is_null() {
-    expectIllegalArgumentException("The size to compare to should not be null").on(new CodeToTest() {
+    expectNullPointerException("The size to compare to should not be null").on(new CodeToTest() {
       public void run() {
         new ImageAssert(fivePixelBlueImage()).hasSize(null);
       }
@@ -67,7 +67,7 @@ public class ImageAssert_hasSize_Test {
 
   @Test
   public void should_throw_error_and_display_description_of_assertion_if_given_size_is_null() {
-    expectIllegalArgumentException("[A Test] The size to compare to should not be null").on(new CodeToTest() {
+    expectNullPointerException("[A Test] The size to compare to should not be null").on(new CodeToTest() {
       public void run() {
         new ImageAssert(fivePixelBlueImage()).as("A Test")
                                              .hasSize(null);

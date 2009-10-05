@@ -34,8 +34,7 @@ public class ObjectAssert_isInstanceOfAny_Test {
 
   @Test
   public void should_throw_error_if_expected_is_null() {
-    // TODO should be NullPointerException
-    expectIllegalArgumentException("The given array of types should not be null").on(new CodeToTest() {
+    expectNullPointerException("The given array of types should not be null").on(new CodeToTest() {
       public void run() {
         new ObjectAssert(6).isInstanceOfAny((Class<?>[]) null);
       }
@@ -44,7 +43,7 @@ public class ObjectAssert_isInstanceOfAny_Test {
 
   @Test
   public void should_throw_error_and_display_description_of_assertion_if_expected_is_null() {
-    expectIllegalArgumentException("[A Test] The given array of types should not be null").on(new CodeToTest() {
+    expectNullPointerException("[A Test] The given array of types should not be null").on(new CodeToTest() {
       public void run() {
         new ObjectAssert(6).as("A Test")
                            .isInstanceOfAny((Class<?>[]) null);

@@ -287,13 +287,13 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
    * @param expected the expected size of the actual image.
    * @return this assertion object.
    * @throws AssertionError if the actual image is <code>null</code>.
-   * @throws IllegalArgumentException if the given size is <code>null</code>.
+   * @throws NullPointerException if the given size is <code>null</code>.
    * @throws AssertionError if the size of the actual image is not equal to the given one.
    */
   public ImageAssert hasSize(Dimension expected) {
     isNotNull();
     if (expected == null)
-      throw new IllegalArgumentException(formattedErrorMessage("The size to compare to should not be null"));
+      throw new NullPointerException(formattedErrorMessage("The size to compare to should not be null"));
     Dimension actualDimension = new Dimension(actual.getWidth(), actual.getHeight());
     Fail.failIfNotEqual(rawDescription(), actualDimension, expected);
     return this;

@@ -18,7 +18,7 @@ package org.fest.assertions;
 import static java.util.Collections.emptyList;
 import static org.fest.assertions.CommonFailures.*;
 import static org.fest.assertions.Index.atIndex;
-import static org.fest.test.ExpectedFailure.expectAssertionError;
+import static org.fest.test.ExpectedFailure.*;
 import static org.fest.util.Collections.list;
 
 import org.fest.test.CodeToTest;
@@ -40,8 +40,7 @@ public class ListAssert_contains_withIndex_Test {
   @Test
   public void should_throw_error_if_expected_Index_is_null() {
     final Index index = null;
-    // TODO should be NullPointerException
-    expectAssertionError("The given index should not be null").on(new CodeToTest() {
+    expectNullPointerException("The given index should not be null").on(new CodeToTest() {
       public void run() {
         new ListAssert(list("Anakin", "Leia")).contains("Anakin", index);
       }
@@ -51,7 +50,7 @@ public class ListAssert_contains_withIndex_Test {
   @Test
   public void should_throw_error_and_display_description_of_assertion_if_expected_Index_is_null() {
     final Index index = null;
-    expectAssertionError("[A Test] The given index should not be null").on(new CodeToTest() {
+    expectNullPointerException("[A Test] The given index should not be null").on(new CodeToTest() {
       public void run() {
         new ListAssert(list("Anakin", "Leia")).as("A Test")
                                               .contains("Anakin", index);
@@ -61,8 +60,8 @@ public class ListAssert_contains_withIndex_Test {
 
   @Test
   public void should_throw_error_if_index_is_negative() {
-    // TODO should be IllegalArgumentException
-    expectAssertionError("The index <-1> should be greater than or equal to zero and less than 2").on(new CodeToTest() {
+    String message = "The index <-1> should be greater than or equal to zero and less than 2";
+    expectIndexOutOfBoundsException(message).on(new CodeToTest() {
       public void run() {
         new ListAssert(list("Anakin", "Leia")).contains("Anakin", atIndex(-1));
       }
@@ -71,8 +70,8 @@ public class ListAssert_contains_withIndex_Test {
 
   @Test
   public void should_throw_error_and_display_description_of_assertion_if_index_is_negative() {
-    // TODO should be IllegalArgumentException
-    expectAssertionError("[A Test] The index <-1> should be greater than or equal to zero and less than 2").on(new CodeToTest() {
+    String message = "[A Test] The index <-1> should be greater than or equal to zero and less than 2";
+    expectIndexOutOfBoundsException(message).on(new CodeToTest() {
       public void run() {
         new ListAssert(list("Anakin", "Leia")).as("A Test")
                                               .contains("Anakin", atIndex(-1));
@@ -121,8 +120,8 @@ public class ListAssert_contains_withIndex_Test {
 
   @Test
   public void should_throw_error_if_Index_value_is_equal_to_size_of_actual() {
-    // TODO should be IndexOutOfBoundsException
-    expectAssertionError("The index <2> should be greater than or equal to zero and less than 2").on(new CodeToTest() {
+    String message = "The index <2> should be greater than or equal to zero and less than 2";
+    expectIndexOutOfBoundsException(message).on(new CodeToTest() {
       public void run() {
         new ListAssert(list("Anakin", "Leia")).contains("Anakin", atIndex(2));
       }
@@ -131,8 +130,8 @@ public class ListAssert_contains_withIndex_Test {
 
   @Test
   public void should_throw_error_and_display_description_of_assertion_if_Index_value_is_equal_to_size_of_actual() {
-    String msg = "[A Test] The index <2> should be greater than or equal to zero and less than 2";
-    expectAssertionError(msg).on(new CodeToTest() {
+    String message = "[A Test] The index <2> should be greater than or equal to zero and less than 2";
+    expectIndexOutOfBoundsException(message).on(new CodeToTest() {
       public void run() {
         new ListAssert(list("Anakin", "Leia")).as("A Test").contains("Anakin", atIndex(2));
       }
@@ -141,8 +140,8 @@ public class ListAssert_contains_withIndex_Test {
 
   @Test
   public void should_throw_error_if_Index_value_is_greater_than_size_of_actual() {
-    // TODO should be IndexOutOfBoundsException
-    expectAssertionError("The index <3> should be greater than or equal to zero and less than 2").on(new CodeToTest() {
+    String message = "The index <3> should be greater than or equal to zero and less than 2";
+    expectIndexOutOfBoundsException(message).on(new CodeToTest() {
       public void run() {
         new ListAssert(list("Anakin", "Leia")).contains("Anakin", atIndex(3));
       }
@@ -151,8 +150,8 @@ public class ListAssert_contains_withIndex_Test {
 
   @Test
   public void should_throw_error_and_display_description_of_assertion_if_Index_value_is_greater_than_size_of_actual() {
-    String msg = "[A Test] The index <3> should be greater than or equal to zero and less than 2";
-    expectAssertionError(msg).on(new CodeToTest() {
+    String message = "[A Test] The index <3> should be greater than or equal to zero and less than 2";
+    expectIndexOutOfBoundsException(message).on(new CodeToTest() {
       public void run() {
         new ListAssert(list("Anakin", "Leia")).as("A Test")
                                               .contains("Anakin", atIndex(3));
