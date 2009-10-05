@@ -46,11 +46,12 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
    * Reads the image in the specified path.
    * @param imageFilePath the path of the image to read.
    * @return the read image.
+   * @throws NullPointerException if the given path is <code>null</code>.
    * @throws IllegalArgumentException if the given path does not belong to a file.
    * @throws IOException if any I/O error occurred while reading the image.
    */
   public static BufferedImage read(String imageFilePath) throws IOException {
-    // TODO throw NPE if imageFilePath is null.
+    if (imageFilePath == null) throw new NullPointerException("The path of the image to read should not be null");
     File imageFile = new File(imageFilePath);
     if (!imageFile.isFile())
       throw new IllegalArgumentException(concat("The path ", quote(imageFilePath), " does not belong to a file"));

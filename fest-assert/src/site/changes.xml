@@ -50,6 +50,9 @@
         if the given Dimension is null.
       </action>
       <action dev="alexruiz" type="fix" issue="FEST-230">
+        Method 'read(String)' in ImageAssert now throws NullPointerException if the given path is null.
+      </action>
+      <action dev="alexruiz" type="fix" issue="FEST-230">
         Method 'isInstanceOf(Class)' in ObjectAssert now throws NullPointerException instead of IllegalArgumentException 
         if the given type is null.
       </action>

@@ -53,7 +53,6 @@ public class ObjectAssert_isInstanceOfAny_Test {
 
   @Test
   public void should_throw_error_if_an_element_in_expected_is_null() {
-    // TODO should be NullPointerException
     expectErrorIfTypeIsNull(new CodeToTest() {
       public void run() {
         new ObjectAssert(6).isInstanceOfAny(new Class<?>[] { null });

@@ -48,7 +48,6 @@ public class MapAssert_includes_Test {
 
   @Test
   public void should_throw_error_if_entry_is_null() {
-    // TODO should be NullPointerException
     expectNullPointerException("Entries to check should not contain null").on(new CodeToTest() {
       public void run() {
         Map<Object, Object> map = map(entry("key1", 1), entry("key2", 2));

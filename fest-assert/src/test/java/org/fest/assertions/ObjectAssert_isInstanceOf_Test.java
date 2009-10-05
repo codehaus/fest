@@ -34,7 +34,6 @@ public class ObjectAssert_isInstanceOf_Test implements Assert_isInstanceOf_TestC
 
   @Test
   public void should_throw_error_if_expected_is_null() {
-    // TODO should be NullPointerException
     expectErrorIfTypeIsNull(new CodeToTest() {
       public void run() {
         new ObjectAssert("Yoda").isInstanceOf(null);

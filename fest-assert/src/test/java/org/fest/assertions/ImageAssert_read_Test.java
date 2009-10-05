@@ -14,7 +14,7 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.CommonFailures.expectIllegalArgumentException;
+import static org.fest.assertions.CommonFailures.*;
 import static org.fest.assertions.Images.fivePixelBlueImage;
 import static org.fest.assertions.Resources.file;
 import static org.junit.Assert.assertSame;
@@ -71,10 +71,19 @@ public class ImageAssert_read_Test {
   }
 
   @Test
-  public void should_fail_if_path_of_image_to_read_does_not_belong_to_a_file() {
+  public void should_throw_error_if_path_of_image_to_read_does_not_belong_to_a_file() {
     expectIllegalArgumentException("The path 'blah' does not belong to a file").on(new CodeToTest() {
       public void run() throws IOException {
         ImageAssert.read("blah");
+      }
+    });
+  }
+
+  @Test
+  public void should_throw_error_if_path_is_null() {
+    expectNullPointerException("The path of the image to read should not be null").on(new CodeToTest() {
+      public void run() throws IOException {
+        ImageAssert.read(null);
       }
     });
   }

@@ -34,7 +34,6 @@ public class ThrowableAssert_isInstanceOf_Test implements Assert_isInstanceOf_Te
 
   @Test
   public void should_throw_error_if_expected_is_null() {
-    // TODO should be NullPointerException
     expectErrorIfTypeIsNull(new CodeToTest() {
       public void run() {
         new ThrowableAssert(new Exception()).isInstanceOf(null);
