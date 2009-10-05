@@ -41,6 +41,10 @@
         Method 'hasSameContentAs(File)' in FileAssert now throws NullPointerException instead of 
         IllegalArgumentException if the given File is null.
       </action>
+      <action dev="alexruiz" type="fix" issue="FEST-230">
+        Methods 'includes(Entry...)' and 'excludes(Entry...)' in MapAssert now throws NullPointerException instead of 
+        IllegalArgumentException if any of the values in the given Entry array is null.
+      </action>
       <action dev="alexruiz" type="remove">
         Deprecated method 'value' in class Delta. Replaced with method 'doubleValue'.
       </action>

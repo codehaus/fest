@@ -97,7 +97,7 @@ public class ComparisonFailureFactory_comparisonFailure_withMocks_Test {
       return invoker.newInstance(
           eq("org.junit.ComparisonFailure"),
           aryEq(array(String.class, String.class, String.class)),
-          aryEq(array("message", "expected", "actual")));
+          aryEq(array("[message]", "'expected'", "'actual'")));
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

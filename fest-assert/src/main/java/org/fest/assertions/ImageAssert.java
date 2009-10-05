@@ -50,6 +50,7 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
    * @throws IOException if any I/O error occurred while reading the image.
    */
   public static BufferedImage read(String imageFilePath) throws IOException {
+    // TODO throw NPE if imageFilePath is null.
     File imageFile = new File(imageFilePath);
     if (!imageFile.isFile())
       throw new IllegalArgumentException(concat("The path ", quote(imageFilePath), " does not belong to a file"));

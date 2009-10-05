@@ -49,7 +49,7 @@ public class MapAssert_includes_Test {
   @Test
   public void should_throw_error_if_entry_is_null() {
     // TODO should be NullPointerException
-    expectIllegalArgumentException("Entries to check should not contain null").on(new CodeToTest() {
+    expectNullPointerException("Entries to check should not contain null").on(new CodeToTest() {
       public void run() {
         Map<Object, Object> map = map(entry("key1", 1), entry("key2", 2));
         Entry[] entries = { entry("key6", 6), null };
@@ -60,7 +60,7 @@ public class MapAssert_includes_Test {
 
   @Test
   public void should_throw_error_and_display_description_of_assertion_if_entry_is_null() {
-    expectIllegalArgumentException("[A Test] Entries to check should not contain null").on(new CodeToTest() {
+    expectNullPointerException("[A Test] Entries to check should not contain null").on(new CodeToTest() {
       public void run() {
         Map<Object, Object> map = map(entry("key1", 1), entry("key2", 2));
         Entry[] entries = { entry("key6", 6), null };

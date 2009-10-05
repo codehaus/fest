@@ -130,7 +130,7 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
    * @throws AssertionError if the actual map is <code>null</code>.
    * @throws AssertionError if the actual <code>Map</code> does not contain any of the given entries.
    * @throws NullPointerException if the given array of entries is <code>null</code>.
-   * @throws IllegalArgumentException if any of the entries in the given array is <code>null</code>.
+   * @throws NullPointerException if any of the entries in the given array is <code>null</code>.
    */
   public MapAssert includes(Entry...entries) {
     isNotNull();
@@ -157,7 +157,7 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
    * @throws AssertionError if the actual map is <code>null</code>.
    * @throws AssertionError if the actual <code>Map</code> contains any of the given entries.
    * @throws NullPointerException if the given array of entries is <code>null</code>.
-   * @throws IllegalArgumentException if any of the entries in the given array is <code>null</code>.
+   * @throws NullPointerException if any of the entries in the given array is <code>null</code>.
    */
   public MapAssert excludes(Entry...entries) {
     isNotNull();
@@ -170,7 +170,7 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
 
   private boolean containsEntry(Entry e) {
     if (e == null)
-      throw new IllegalArgumentException(formattedErrorMessage("Entries to check should not contain null"));
+      throw new NullPointerException(formattedErrorMessage("Entries to check should not contain null"));
     if (!actual.containsKey(e.key)) return false;
     return actual.containsValue(e.value);
   }
