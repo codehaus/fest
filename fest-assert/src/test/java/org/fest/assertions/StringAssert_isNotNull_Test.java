@@ -14,8 +14,8 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.CommonFailures.expectAssertionErrorIfObjectIsNull;
-import static org.fest.assertions.CommonFailures.expectAssertionErrorWithDescriptionIfObjectIsNull;
+import static org.fest.assertions.CommonFailures.expectErrorIfObjectIsNull;
+import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfObjectIsNull;
 
 import org.fest.test.CodeToTest;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class StringAssert_isNotNull_Test implements GenericAssert_isNotNull_Test
 
   @Test
   public void should_fail_if_actual_is_null() {
-    expectAssertionErrorIfObjectIsNull(new CodeToTest() {
+    expectErrorIfObjectIsNull(new CodeToTest() {
       public void run() {
         new StringAssert(null).isNotNull();
       }
@@ -45,7 +45,7 @@ public class StringAssert_isNotNull_Test implements GenericAssert_isNotNull_Test
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectAssertionErrorWithDescriptionIfObjectIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfObjectIsNull(new CodeToTest() {
       public void run() {
         new StringAssert(null).as("A Test")
                               .isNotNull();

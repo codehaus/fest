@@ -36,7 +36,7 @@ public class IntArrayAssert_isEmpty_Test implements GroupAssert_isEmpty_TestCase
 
   @Test
   public void should_fail_if_actual_is_null() {
-    expectAssertionErrorIfArrayIsNull(new CodeToTest() {
+    expectErrorIfArrayIsNull(new CodeToTest() {
       public void run() {
         new IntArrayAssert(null).isEmpty();
       }
@@ -45,7 +45,7 @@ public class IntArrayAssert_isEmpty_Test implements GroupAssert_isEmpty_TestCase
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectAssertionErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
       public void run() {
         new IntArrayAssert(null).as("A Test")
                                 .isEmpty();

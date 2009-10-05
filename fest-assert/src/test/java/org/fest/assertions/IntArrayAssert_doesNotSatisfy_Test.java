@@ -37,7 +37,7 @@ public class IntArrayAssert_doesNotSatisfy_Test implements GenericAssert_doesNot
 
   @Test
   public void should_throw_error_if_condition_is_null() {
-    expectIllegalArgumentExceptionIfConditionIsNull().on(new CodeToTest() {
+    expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
         new IntArrayAssert(emptyIntArray()).doesNotSatisfy(null);
       }

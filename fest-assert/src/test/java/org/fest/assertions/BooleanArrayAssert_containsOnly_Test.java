@@ -61,7 +61,7 @@ public class BooleanArrayAssert_containsOnly_Test implements GroupAssert_contain
 
   @Test
   public void should_fail_if_actual_is_null() {
-    expectAssertionErrorIfArrayIsNull(new CodeToTest() {
+    expectErrorIfArrayIsNull(new CodeToTest() {
       public void run() {
         new BooleanArrayAssert(null).containsOnly(booleanArray(false));
       }
@@ -70,7 +70,7 @@ public class BooleanArrayAssert_containsOnly_Test implements GroupAssert_contain
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectAssertionErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
       public void run() {
         new BooleanArrayAssert(null).as("A Test").containsOnly(booleanArray(false));
       }

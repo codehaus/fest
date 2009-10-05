@@ -35,7 +35,7 @@ public class ThrowableAssert_isInstanceOf_Test implements Assert_isInstanceOf_Te
   @Test
   public void should_throw_error_if_expected_is_null() {
     // TODO should be NullPointerException
-    expectAssertionErrorIfTypeIsNull(new CodeToTest() {
+    expectErrorIfTypeIsNull(new CodeToTest() {
       public void run() {
         new ThrowableAssert(new Exception()).isInstanceOf(null);
       }
@@ -44,7 +44,7 @@ public class ThrowableAssert_isInstanceOf_Test implements Assert_isInstanceOf_Te
 
   @Test
   public void should_throw_error_and_display_description_of_assertion_if_expected_is_null() {
-    expectAssertionErrorWithDescriptionIfTypeIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfTypeIsNull(new CodeToTest() {
       public void run() {
         new ThrowableAssert(new Exception()).as("A Test")
                                             .isInstanceOf(null);
@@ -75,7 +75,7 @@ public class ThrowableAssert_isInstanceOf_Test implements Assert_isInstanceOf_Te
 
   @Test
   public void should_fail_if_actual_is_null() {
-    expectAssertionErrorIfObjectIsNull(new CodeToTest() {
+    expectErrorIfObjectIsNull(new CodeToTest() {
       public void run() {
         new ThrowableAssert(null).isInstanceOf(NullPointerException.class);
       }
@@ -84,7 +84,7 @@ public class ThrowableAssert_isInstanceOf_Test implements Assert_isInstanceOf_Te
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectAssertionErrorWithDescriptionIfObjectIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfObjectIsNull(new CodeToTest() {
       public void run() {
         new ThrowableAssert(null).as("A Test")
                                  .isInstanceOf(NullPointerException.class);

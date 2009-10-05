@@ -245,8 +245,8 @@ public class FileAssert extends GenericAssert<File> {
    * Verifies that the actual <code>File</code> satisfies the given condition.
    * @param condition the given condition.
    * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>File</code> does not satisfy the given condition.
-   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public FileAssert satisfies(Condition<File> condition) {
     assertSatisfies(condition);
@@ -258,6 +258,7 @@ public class FileAssert extends GenericAssert<File> {
    * @param condition the given condition.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>File</code> satisfies the given condition.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public FileAssert doesNotSatisfy(Condition<File> condition) {

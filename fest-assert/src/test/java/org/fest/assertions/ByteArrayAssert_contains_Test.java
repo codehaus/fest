@@ -42,7 +42,7 @@ public class ByteArrayAssert_contains_Test implements GroupAssert_contains_TestC
 
   @Test
   public void should_fail_if_actual_is_null() {
-    expectAssertionErrorIfArrayIsNull(new CodeToTest() {
+    expectErrorIfArrayIsNull(new CodeToTest() {
       public void run() {
         new ByteArrayAssert(null).contains(asByte(8), asByte(6));
       }
@@ -51,7 +51,7 @@ public class ByteArrayAssert_contains_Test implements GroupAssert_contains_TestC
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectAssertionErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
       public void run() {
         new ByteArrayAssert(null).as("A Test")
                                  .contains(asByte(8), asByte(6));

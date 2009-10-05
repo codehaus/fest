@@ -61,7 +61,7 @@ public class IntArrayAssert_containsOnly_Test implements GroupAssert_containsOnl
 
   @Test
   public void should_fail_if_actual_is_null() {
-    expectAssertionErrorIfArrayIsNull(new CodeToTest() {
+    expectErrorIfArrayIsNull(new CodeToTest() {
       public void run() {
         new IntArrayAssert(null).containsOnly(intArray(10, 2));
       }
@@ -70,7 +70,7 @@ public class IntArrayAssert_containsOnly_Test implements GroupAssert_containsOnl
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectAssertionErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
       public void run() {
         new IntArrayAssert(null).as("A Test")
                                 .containsOnly(intArray(10, 2));

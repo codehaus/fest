@@ -36,7 +36,7 @@ public class FileAssert_doesNotSatisfy_Test extends FileAssert_TestCase implemen
 
   @Test
   public void should_throw_error_if_condition_is_null() {
-    expectIllegalArgumentExceptionIfConditionIsNull().on(new CodeToTest() {
+    expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
         new FileAssert(file).doesNotSatisfy(null);
       }

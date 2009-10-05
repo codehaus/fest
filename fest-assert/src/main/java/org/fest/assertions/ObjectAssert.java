@@ -165,8 +165,8 @@ public class ObjectAssert extends GenericAssert<Object> {
    * Verifies that the actual <code>Object</code> satisfies the given condition.
    * @param condition the given condition.
    * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>Object</code> does not satisfy the given condition.
-   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public ObjectAssert satisfies(Condition<Object> condition) {
     assertSatisfies(condition);
@@ -177,8 +177,8 @@ public class ObjectAssert extends GenericAssert<Object> {
    * Verifies that the actual <code>Object</code> does not satisfy the given condition.
    * @param condition the given condition.
    * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>Object</code> satisfies the given condition.
-   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public ObjectAssert doesNotSatisfy(Condition<Object> condition) {
     assertDoesNotSatisfy(condition);

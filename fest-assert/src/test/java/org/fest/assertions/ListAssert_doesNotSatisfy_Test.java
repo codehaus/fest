@@ -15,7 +15,7 @@
 package org.fest.assertions;
 
 import static java.util.Collections.emptyList;
-import static org.fest.assertions.CommonFailures.expectIllegalArgumentExceptionIfConditionIsNull;
+import static org.fest.assertions.CommonFailures.expectErrorIfConditionIsNull;
 import static org.fest.assertions.NotNull.notNullList;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import org.fest.test.CodeToTest;
@@ -35,7 +35,7 @@ public class ListAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSati
 
   @Test
   public void should_throw_error_if_condition_is_null() {
-    expectIllegalArgumentExceptionIfConditionIsNull().on(new CodeToTest() {
+    expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
         new ListAssert(emptyList()).doesNotSatisfy(null);
       }

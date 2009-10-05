@@ -112,7 +112,7 @@ public class ListAssert_endsWith_Test {
   }
   @Test
   public void should_fail_if_actual_is_null() {
-    expectAssertionErrorIfListIsNull(new CodeToTest() {
+    expectErrorIfListIsNull(new CodeToTest() {
       public void run() {
         new ListAssert(null).endsWith("Gandalf", "Frodo", "Sam");
       }
@@ -121,7 +121,7 @@ public class ListAssert_endsWith_Test {
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectAssertionErrorWithDescriptionIfListIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfListIsNull(new CodeToTest() {
       public void run() {
         new ListAssert(null).as("A Test")
                             .endsWith("Gandalf", "Frodo", "Sam");

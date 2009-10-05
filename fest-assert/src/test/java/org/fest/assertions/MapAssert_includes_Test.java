@@ -72,7 +72,7 @@ public class MapAssert_includes_Test {
 
   @Test
   public void should_fail_if_actual_is_null() {
-    expectAssertionErrorIfMapIsNull(new CodeToTest() {
+    expectErrorIfMapIsNull(new CodeToTest() {
       public void run() {
         new MapAssert(null).includes(entry("key6", 6));
       }
@@ -81,7 +81,7 @@ public class MapAssert_includes_Test {
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectAssertionErrorWithDescriptionIfMapIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfMapIsNull(new CodeToTest() {
       public void run() {
         new MapAssert(null).as("A Test")
                            .includes(entry("key6", 6));

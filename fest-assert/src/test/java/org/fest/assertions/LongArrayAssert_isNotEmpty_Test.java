@@ -55,7 +55,7 @@ public class LongArrayAssert_isNotEmpty_Test implements GroupAssert_isNotEmpty_T
 
   @Test
   public void should_fail_if_actual_is_null() {
-    expectAssertionErrorIfArrayIsNull(new CodeToTest() {
+    expectErrorIfArrayIsNull(new CodeToTest() {
       public void run() {
         new LongArrayAssert(null).isNotEmpty();
       }
@@ -64,7 +64,7 @@ public class LongArrayAssert_isNotEmpty_Test implements GroupAssert_isNotEmpty_T
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectAssertionErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
       public void run() {
         new LongArrayAssert(null).as("A Test")
                                  .isNotEmpty();

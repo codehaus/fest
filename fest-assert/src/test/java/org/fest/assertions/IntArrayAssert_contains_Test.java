@@ -41,7 +41,7 @@ public class IntArrayAssert_contains_Test implements GroupAssert_contains_TestCa
 
   @Test
   public void should_fail_if_actual_is_null() {
-    expectAssertionErrorIfArrayIsNull(new CodeToTest() {
+    expectErrorIfArrayIsNull(new CodeToTest() {
       public void run() {
         new IntArrayAssert(null).contains(6, 8);
       }
@@ -50,7 +50,7 @@ public class IntArrayAssert_contains_Test implements GroupAssert_contains_TestCa
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectAssertionErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
       public void run() {
         new IntArrayAssert(null).as("A Test")
                                 .contains(6, 8);

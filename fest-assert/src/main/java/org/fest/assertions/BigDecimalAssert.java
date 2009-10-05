@@ -111,8 +111,8 @@ public class BigDecimalAssert extends ComparableAssert<BigDecimal> implements Nu
    * Verifies that the actual <code>{@link BigDecimal}</code> satisfies the given condition.
    * @param condition the given condition.
    * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>BigDecimal</code> does not satisfy the given condition.
-   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public BigDecimalAssert satisfies(Condition<BigDecimal> condition) {
     assertSatisfies(condition);
@@ -123,6 +123,7 @@ public class BigDecimalAssert extends ComparableAssert<BigDecimal> implements Nu
    * Verifies that the actual <code>{@link BigDecimal}</code> does not satisfy the given condition.
    * @param condition the given condition.
    * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual value does satisfies the given condition.
    */
   public BigDecimalAssert doesNotSatisfy(Condition<BigDecimal> condition) {

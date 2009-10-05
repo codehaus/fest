@@ -16,8 +16,8 @@
 package org.fest.assertions;
 
 import static java.util.Collections.emptyList;
-import static org.fest.assertions.CommonFailures.expectAssertionErrorIfCollectionIsNull;
-import static org.fest.assertions.CommonFailures.expectAssertionErrorWithDescriptionIfCollectionIsNull;
+import static org.fest.assertions.CommonFailures.expectErrorIfCollectionIsNull;
+import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfCollectionIsNull;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import static org.fest.util.Collections.list;
 
@@ -44,7 +44,7 @@ public class CollectionAssert_doesNotHaveDuplicates_Test implements GroupAssert_
 
   @Test
   public void should_fail_if_actual_is_null() {
-    expectAssertionErrorIfCollectionIsNull(new CodeToTest() {
+    expectErrorIfCollectionIsNull(new CodeToTest() {
       public void run() {
         new CollectionAssert(null).doesNotHaveDuplicates();
       }
@@ -53,7 +53,7 @@ public class CollectionAssert_doesNotHaveDuplicates_Test implements GroupAssert_
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectAssertionErrorWithDescriptionIfCollectionIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfCollectionIsNull(new CodeToTest() {
       public void run() {
         new CollectionAssert(null).as("A Test")
                                   .doesNotHaveDuplicates();

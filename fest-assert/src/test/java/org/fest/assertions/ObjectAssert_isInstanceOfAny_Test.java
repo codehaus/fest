@@ -55,7 +55,7 @@ public class ObjectAssert_isInstanceOfAny_Test {
   @Test
   public void should_throw_error_if_an_element_in_expected_is_null() {
     // TODO should be NullPointerException
-    expectAssertionErrorIfTypeIsNull(new CodeToTest() {
+    expectErrorIfTypeIsNull(new CodeToTest() {
       public void run() {
         new ObjectAssert(6).isInstanceOfAny(new Class<?>[] { null });
       }
@@ -64,7 +64,7 @@ public class ObjectAssert_isInstanceOfAny_Test {
 
   @Test
   public void should_throw_error_and_display_description_of_assertion_if_an_element_in_expected_is_null() {
-    expectAssertionErrorWithDescriptionIfTypeIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfTypeIsNull(new CodeToTest() {
       public void run() {
         new ObjectAssert(6).as("A Test")
                            .isInstanceOfAny(new Class<?>[] { null });
@@ -94,7 +94,7 @@ public class ObjectAssert_isInstanceOfAny_Test {
 
   @Test
   public void should_fail_if_actual_is_null() {
-    expectAssertionErrorIfObjectIsNull(new CodeToTest() {
+    expectErrorIfObjectIsNull(new CodeToTest() {
       public void run() {
         new ObjectAssert(null).isInstanceOfAny(String.class, Integer.class);
       }
@@ -103,7 +103,7 @@ public class ObjectAssert_isInstanceOfAny_Test {
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectAssertionErrorWithDescriptionIfObjectIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfObjectIsNull(new CodeToTest() {
       public void run() {
         new ObjectAssert(null).as("A Test")
                               .isInstanceOfAny(String.class, Integer.class);

@@ -14,8 +14,8 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.CommonFailures.expectAssertionErrorIfArrayIsNull;
-import static org.fest.assertions.CommonFailures.expectAssertionErrorWithDescriptionIfArrayIsNull;
+import static org.fest.assertions.CommonFailures.expectErrorIfArrayIsNull;
+import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfArrayIsNull;
 import static org.fest.assertions.EmptyArrays.emptyBooleanArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
@@ -37,7 +37,7 @@ public class BooleanArrayAssert_isEmpty_Test implements GroupAssert_isEmpty_Test
 
   @Test
   public void should_fail_if_actual_is_null() {
-    expectAssertionErrorIfArrayIsNull(new CodeToTest() {
+    expectErrorIfArrayIsNull(new CodeToTest() {
       public void run() {
         new BooleanArrayAssert(null).isEmpty();
       }
@@ -46,7 +46,7 @@ public class BooleanArrayAssert_isEmpty_Test implements GroupAssert_isEmpty_Test
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectAssertionErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
       public void run() {
         new BooleanArrayAssert(null).as("A Test")
                                     .isEmpty();

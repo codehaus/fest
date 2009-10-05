@@ -15,7 +15,7 @@
 package org.fest.assertions;
 
 import static java.math.BigDecimal.ZERO;
-import static org.fest.assertions.CommonFailures.expectIllegalArgumentExceptionIfConditionIsNull;
+import static org.fest.assertions.CommonFailures.expectErrorIfConditionIsNull;
 import static org.fest.assertions.NotNull.notNullBigDecimal;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
@@ -39,7 +39,7 @@ public class BigDecimalAssert_doesNotSatisfy_Test implements GenericAssert_doesN
 
   @Test
   public void should_throw_error_if_condition_is_null() {
-    expectIllegalArgumentExceptionIfConditionIsNull().on(new CodeToTest() {
+    expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
         new BigDecimalAssert(ZERO).doesNotSatisfy(null);
       }

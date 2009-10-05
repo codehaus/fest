@@ -39,7 +39,7 @@ public class ImageAssert_hasSize_Test {
 
   @Test
   public void should_fail_if_actual_is_null() {
-    expectAssertionErrorIfObjectIsNull(new CodeToTest() {
+    expectErrorIfObjectIsNull(new CodeToTest() {
       public void run() {
         new ImageAssert(null).hasSize(new Dimension(5, 5));
       }
@@ -48,7 +48,7 @@ public class ImageAssert_hasSize_Test {
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectAssertionErrorWithDescriptionIfObjectIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfObjectIsNull(new CodeToTest() {
       public void run() {
         new ImageAssert(null).as("A Test")
                              .hasSize(new Dimension(5, 5));

@@ -36,7 +36,7 @@ public class FileAssert_satisfies_Test extends FileAssert_TestCase implements Ge
 
   @Test
   public void should_throw_error_if_condition_is_null() {
-    expectIllegalArgumentExceptionIfConditionIsNull().on(new CodeToTest() {
+    expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
         new FileAssert(file).satisfies(null);
       }

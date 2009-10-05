@@ -14,7 +14,7 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.CommonFailures.expectIllegalArgumentExceptionIfConditionIsNull;
+import static org.fest.assertions.CommonFailures.expectErrorIfConditionIsNull;
 import static org.fest.assertions.EmptyArrays.emptyShortArray;
 import static org.fest.assertions.NotNull.notNullShortArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
@@ -37,7 +37,7 @@ public class ShortArrayAssert_satisfies_Test implements GenericAssert_satisfies_
 
   @Test
   public void should_throw_error_if_condition_is_null() {
-    expectIllegalArgumentExceptionIfConditionIsNull().on(new CodeToTest() {
+    expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
         new ShortArrayAssert(emptyShortArray()).satisfies(null);
       }

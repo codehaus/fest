@@ -54,7 +54,7 @@ public class FileAssert_hasSameContentsAs_Test extends FileAssert_TestCase {
 
   @Test
   public void should_fail_if_actual_is_null() {
-    expectAssertionErrorIfObjectIsNull(new CodeToTest() {
+    expectErrorIfObjectIsNull(new CodeToTest() {
       public void run() {
         new FileAssert(null).hasSameContentAs(file);
       }
@@ -63,7 +63,7 @@ public class FileAssert_hasSameContentsAs_Test extends FileAssert_TestCase {
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectAssertionErrorWithDescriptionIfObjectIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfObjectIsNull(new CodeToTest() {
       public void run() {
         new FileAssert(null).as("A Test").hasSameContentAs(file);
       }

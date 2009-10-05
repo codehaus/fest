@@ -38,7 +38,7 @@ public class ObjectArrayAssert_doesNotSatisfy_Test implements GenericAssert_does
 
   @Test
   public void should_throw_error_if_condition_is_null() {
-    expectIllegalArgumentExceptionIfConditionIsNull().on(new CodeToTest() {
+    expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
         new ObjectArrayAssert(emptyObjectArray()).doesNotSatisfy(null);
       }

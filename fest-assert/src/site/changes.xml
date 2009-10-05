@@ -33,6 +33,10 @@
       <action dev="alexruiz" type="fix" issue="FEST-229">
         Descriptions of actual values are evaluated only if an assertion fails.
       </action>
+      <action dev="alexruiz" type="fix" issue="FEST-230">
+        Methods 'satisfies(Condition)' and 'doesNotSatisfy(Condition)' in all assertions now throw NullPointerException
+        instead of IllegalArgumentException if the given condition is null.
+      </action>
       <action dev="alexruiz" type="remove">
         Deprecated method 'value' in class Delta. Replaced with method 'doubleValue'.
       </action>

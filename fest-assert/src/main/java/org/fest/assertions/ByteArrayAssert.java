@@ -163,8 +163,8 @@ public class ByteArrayAssert extends ArrayAssert<byte[]> {
    * Verifies that the actual <code>byte</code> array satisfies the given condition.
    * @param condition the given condition.
    * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>byte</code> array does not satisfy the given condition.
-   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public ByteArrayAssert satisfies(Condition<byte[]> condition) {
     assertSatisfies(condition);
@@ -175,8 +175,8 @@ public class ByteArrayAssert extends ArrayAssert<byte[]> {
    * Verifies that the actual <code>byte</code> array does not satisfy the given condition.
    * @param condition the given condition.
    * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>byte</code> array satisfies the given condition.
-   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public ByteArrayAssert doesNotSatisfy(Condition<byte[]> condition) {
     assertDoesNotSatisfy(condition);

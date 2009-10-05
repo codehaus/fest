@@ -228,8 +228,8 @@ public class ThrowableAssert extends GenericAssert<Throwable> {
    * Verifies that the actual <code>Throwable</code> satisfies the given condition.
    * @param condition the given condition.
    * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>Throwable</code> does not satisfy the given condition.
-   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public ThrowableAssert satisfies(Condition<Throwable> condition) {
     assertSatisfies(condition);
@@ -240,8 +240,8 @@ public class ThrowableAssert extends GenericAssert<Throwable> {
    * Verifies that the actual <code>Throwable</code> does not satisfy the given condition.
    * @param condition the given condition.
    * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>Throwable</code> satisfies the given condition.
-   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public ThrowableAssert doesNotSatisfy(Condition<Throwable> condition) {
     assertDoesNotSatisfy(condition);

@@ -203,8 +203,8 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
    * Verifies that the actual collection satisfies the given condition.
    * @param condition the given condition.
    * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual collection does not satisfy the given condition.
-   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public CollectionAssert satisfies(Condition<Collection<?>> condition) {
     assertSatisfies(condition);
@@ -215,8 +215,8 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
    * Verifies that the actual collection does not satisfy the given condition.
    * @param condition the given condition.
    * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual collection satisfies the given condition.
-   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public CollectionAssert doesNotSatisfy(Condition<Collection<?>> condition) {
     assertDoesNotSatisfy(condition);

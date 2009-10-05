@@ -15,8 +15,8 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.CommonFailures.expectAssertionErrorIfCollectionIsNull;
-import static org.fest.assertions.CommonFailures.expectAssertionErrorWithDescriptionIfCollectionIsNull;
+import static org.fest.assertions.CommonFailures.expectErrorIfCollectionIsNull;
+import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfCollectionIsNull;
 
 import java.util.ArrayList;
 
@@ -38,7 +38,7 @@ public class CollectionAssert_isNotNull_Test implements GenericAssert_isNotNull_
 
   @Test
   public void should_fail_if_actual_is_null() {
-    expectAssertionErrorIfCollectionIsNull(new CodeToTest() {
+    expectErrorIfCollectionIsNull(new CodeToTest() {
       public void run() {
         new CollectionAssert(null).isNotNull();
       }
@@ -47,7 +47,7 @@ public class CollectionAssert_isNotNull_Test implements GenericAssert_isNotNull_
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectAssertionErrorWithDescriptionIfCollectionIsNull(new CodeToTest() {
+    expectErrorWithDescriptionIfCollectionIsNull(new CodeToTest() {
       public void run() {
         new CollectionAssert(null).as("A Test").isNotNull();
       }

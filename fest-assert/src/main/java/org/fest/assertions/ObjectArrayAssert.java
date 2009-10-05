@@ -224,8 +224,8 @@ public class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * Verifies that the actual <code>Object</code> array satisfies the given condition.
    * @param condition the given condition.
    * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>Object</code> array does not satisfy the given condition.
-   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public ObjectArrayAssert satisfies(Condition<Object[]> condition) {
     assertSatisfies(condition);
@@ -236,8 +236,8 @@ public class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * Verifies that the actual <code>Object</code> array does not satisfy the given condition.
    * @param condition the given condition.
    * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>Object</code> array satisfies the given condition.
-   * @throws IllegalArgumentException if the given condition is <code>null</code>.
    */
   public ObjectArrayAssert doesNotSatisfy(Condition<Object[]> condition) {
     assertDoesNotSatisfy(condition);

@@ -50,6 +50,7 @@ public abstract class GenericAssert<T> extends Assert {
    * Verifies that the actual value satisfies the given condition.
    * @param condition the given condition.
    * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual value does not satisfy the given condition.
    */
   protected abstract GenericAssert<T> satisfies(Condition<T> condition);
@@ -58,6 +59,7 @@ public abstract class GenericAssert<T> extends Assert {
    * Verifies that the actual value does not satisfy the given condition.
    * @param condition the given condition.
    * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual value does satisfies the given condition.
    */
   protected abstract GenericAssert<T> doesNotSatisfy(Condition<T> condition);
@@ -164,10 +166,11 @@ public abstract class GenericAssert<T> extends Assert {
   /**
    * Verifies that the actual value satisfies the given condition.
    * @param condition the condition to check.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual value does not satisfy the given condition.
    */
   protected final void assertSatisfies(Condition<T> condition) {
-    validate(condition);
+    validateIsNotNull(condition);
     if (condition.matches(actual)) return;
     fail(errorMessageIfConditionNotSatisfied(condition));
   }
@@ -180,21 +183,22 @@ public abstract class GenericAssert<T> extends Assert {
   /**
    * Verifies that the actual value does not satisfy the given condition.
    * @param condition the condition to check.
+   * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual value satisfies the given condition.
    */
   protected final void assertDoesNotSatisfy(Condition<T> condition) {
-    validate(condition);
+    validateIsNotNull(condition);
     if (!condition.matches(actual)) return;
     fail(errorMessageIfConditionSatisfied(condition));
+  }
+
+  private void validateIsNotNull(Condition<T> condition) {
+    if (condition == null) throw new NullPointerException("Condition to check should be null");
   }
 
   private String errorMessageIfConditionSatisfied(Condition<T> condition) {
     String message = concat("actual value:", inBrackets(actual), " should not satisfy condition");
     return condition.addDescriptionTo(message);
-  }
-
-  private void validate(Condition<T> condition) {
-    if (condition == null) throw new IllegalArgumentException("Condition to check should be null");
   }
 
   /**
