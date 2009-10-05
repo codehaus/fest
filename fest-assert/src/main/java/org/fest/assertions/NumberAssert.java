@@ -43,5 +43,4 @@ public interface NumberAssert {
    * @throws AssertionError if the actual number is not negative.
    */
   NumberAssert isNegative();
-
 }

@@ -28,7 +28,7 @@ public abstract class ComparableAssert<T extends Comparable<T>> extends GenericA
    * Creates a new </code>{@link ComparableAssert}</code>.
    * @param actual the target to verify.
    */
-  public ComparableAssert(T actual) {
+  protected ComparableAssert(T actual) {
     super(actual);
   }
 
@@ -86,32 +86,67 @@ public abstract class ComparableAssert<T extends Comparable<T>> extends GenericA
    */
   protected abstract ComparableAssert<T> isGreaterThanOrEqualTo(T other);
 
-
-  protected final void assertEqualByComparingTo(T expected) {
+  /**
+   * Verifies that the actual <code>{@link Comparable}</code> is equal to the given one.
+   * @param expected the given <code>Comparable</code> to compare the actual <code>Comparable</code> to.
+   * @throws AssertionError if the actual <code>Comparable</code> value is <code>null</code>.
+   * @throws AssertionError if the actual <code>Comparable</code> value is not equal to the given one.
+   */
+  protected final void assertIsEqualByComparingTo(T expected) {
     isNotNull();
     if (actual.compareTo(expected) != 0) fail(unexpectedNotEqual(actual, expected));
   }
 
-  protected final void assertNotEqualByComparingTo(T expected) {
+  /**
+   * Verifies that the actual <code>{@link Comparable}</code> is <b>not</b> equal to the given one.
+   * @param expected the given <code>Comparable</code> to use to compare to the actual <code>Comparable</code>.
+   * @throws AssertionError if the actual <code>Comparable</code> is <code>null</code>.
+   * @throws AssertionError if the actual <code>Comparable</code> is equal to the given one.
+   */
+  protected final void assertIsNotEqualByComparingTo(T expected) {
     isNotNull();
     if (actual.compareTo(expected) == 0) fail(unexpectedEqual(actual, expected));
   }
 
+  /**
+   * Verifies that the actual <code>{@link Comparable}</code> is less than the given one.
+   * @param other the given value.
+   * @throws AssertionError if the actual <code>Comparable</code> is <code>null</code>.
+   * @throws AssertionError if the actual <code>Comparable</code> is not less than the given one.
+   */
   protected final void assertIsLessThan(T other) {
     isNotNull();
     if (actual.compareTo(other) >= 0) fail(unexpectedGreaterThanOrEqualTo(actual, other));
   }
 
+  /**
+   * Verifies that the actual <code>{@link Comparable}</code> is greater than the given one.
+   * @param other the given value.
+   * @throws AssertionError if the actual <code>Comparable</code> is <code>null</code>.
+   * @throws AssertionError if the actual <code>Comparable</code> is not greater than the given one.
+   */
   protected final void assertIsGreaterThan(T other) {
     isNotNull();
     if (actual.compareTo(other) <= 0) fail(unexpectedLessThanOrEqualTo(actual, other));
   }
 
+  /**
+   * Verifies that the actual <code>{@link Comparable}</code> is less than or equal to the given one.
+   * @param other the given value.
+   * @throws AssertionError if the actual <code>Comparable</code> is <code>null</code>.
+   * @throws AssertionError if the actual <code>Comparable</code> is not less than or equal to the given one.
+   */
   protected final void assertIsLessThanOrEqualTo(T other) {
     isNotNull();
     if (actual.compareTo(other) > 0) fail(unexpectedGreaterThan(actual, other));
   }
 
+  /**
+   * Verifies that the actual <code>{@link Comparable}</code> is greater than or equal to the given one.
+   * @param other the given value.
+   * @throws AssertionError if the actual <code>Comparable</code> is <code>null</code>.
+   * @throws AssertionError if the actual <code>Comparable</code> is not greater than or equal to the given one.
+   */
   protected final void assertIsGreaterThanOrEqualTo(T other) {
     isNotNull();
     if (actual.compareTo(other) < 0) fail(unexpectedLessThan(actual, other));

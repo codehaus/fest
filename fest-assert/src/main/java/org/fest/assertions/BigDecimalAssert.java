@@ -232,7 +232,7 @@ public class BigDecimalAssert extends ComparableAssert<BigDecimal> implements Nu
    * @see BigDecimal#compareTo(BigDecimal)
    */
   public BigDecimalAssert isEqualByComparingTo(BigDecimal expected) {
-    assertEqualByComparingTo(expected);
+    assertIsEqualByComparingTo(expected);
     return this;
   }
 
@@ -247,7 +247,7 @@ public class BigDecimalAssert extends ComparableAssert<BigDecimal> implements Nu
    * @see BigDecimal#compareTo(BigDecimal)
    */
   public BigDecimalAssert isNotEqualByComparingTo(BigDecimal expected) {
-    assertNotEqualByComparingTo(expected);
+    assertIsNotEqualByComparingTo(expected);
     return this;
   }
 
