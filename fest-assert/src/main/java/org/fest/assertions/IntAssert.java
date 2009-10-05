@@ -24,7 +24,7 @@ import static org.fest.assertions.ErrorMessages.*;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public class IntAssert extends PrimitiveAssert {
+public class IntAssert extends PrimitiveAssert implements NumberAssert {
 
   private static final int ZERO = 0;
 

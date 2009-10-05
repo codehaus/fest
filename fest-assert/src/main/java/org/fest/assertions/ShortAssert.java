@@ -23,7 +23,7 @@ import static org.fest.assertions.ErrorMessages.*;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public class ShortAssert extends PrimitiveAssert {
+public class ShortAssert extends PrimitiveAssert implements NumberAssert {
 
   private static final short ZERO = (short)0;
 

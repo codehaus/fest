@@ -26,7 +26,7 @@ import static org.fest.util.Strings.concat;
  *
  * @author Yvonne Wang
  */
-public class FloatAssert extends PrimitiveAssert {
+public class FloatAssert extends PrimitiveAssert implements NumberAssert {
 
   private static final float ZERO = 0f;
 

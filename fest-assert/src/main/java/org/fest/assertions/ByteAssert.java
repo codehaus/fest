@@ -25,7 +25,7 @@ import static org.fest.assertions.ErrorMessages.*;
  *
  * @since 1.2
  */
-public class ByteAssert extends PrimitiveAssert {
+public class ByteAssert extends PrimitiveAssert implements NumberAssert {
 
   private static final byte ZERO = (byte)0;
 

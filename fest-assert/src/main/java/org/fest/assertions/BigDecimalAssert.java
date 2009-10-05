@@ -27,7 +27,7 @@ import java.math.BigDecimal;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class BigDecimalAssert extends ComparableAssert<BigDecimal> {
+public class BigDecimalAssert extends ComparableAssert<BigDecimal> implements NumberAssert {
 
   /**
    * Creates a new </code>{@link BigDecimalAssert}</code>.

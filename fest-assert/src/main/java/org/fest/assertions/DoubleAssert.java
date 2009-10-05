@@ -13,7 +13,7 @@ import static org.fest.util.Strings.concat;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public class DoubleAssert extends PrimitiveAssert {
+public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
 
   private static final double ZERO = 0.0;
 
