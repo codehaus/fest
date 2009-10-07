@@ -56,7 +56,7 @@ public class StringAssert extends GroupAssert<String> {
   }
 
   /**
-   * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in
+   * Alias for <code>{@link #as(String)}</code>, since "as" is a keyword in
    * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
@@ -91,7 +91,7 @@ public class StringAssert extends GroupAssert<String> {
   }
 
   /**
-   * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in
+   * Alias for <code>{@link #as(Description)}</code>, since "as" is a keyword in
    * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
@@ -113,6 +113,7 @@ public class StringAssert extends GroupAssert<String> {
    * @return this assertion object.
    * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>String</code> does not satisfy the given condition.
+   * @see #is(Condition)
    */
   public StringAssert satisfies(Condition<String> condition) {
     assertSatisfies(condition);
@@ -125,9 +126,36 @@ public class StringAssert extends GroupAssert<String> {
    * @return this assertion object.
    * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>String</code> satisfies the given condition.
+   * @see #isNot(Condition)
    */
   public StringAssert doesNotSatisfy(Condition<String> condition) {
     assertDoesNotSatisfy(condition);
+    return this;
+  }
+
+  /**
+   * Alias for <code>{@link #satisfies(Condition)}</code>.
+   * @param condition the given condition.
+   * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
+   * @throws AssertionError if the actual <code>String</code> does not satisfy the given condition.
+   * @since 1.2
+   */
+  public StringAssert is(Condition<String> condition) {
+    assertIs(condition);
+    return this;
+  }
+
+  /**
+   * Alias for <code>{@link #doesNotSatisfy(Condition)}</code>.
+   * @param condition the given condition.
+   * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
+   * @throws AssertionError if the actual <code>String</code> satisfies the given condition.
+   * @since 1.2
+   */
+  public StringAssert isNot(Condition<String> condition) {
+    assertIsNot(condition);
     return this;
   }
 

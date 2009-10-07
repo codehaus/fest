@@ -59,7 +59,7 @@ public class ObjectArrayAssert_doesNotSatisfy_Test implements GenericAssert_does
     expectAssertionError("[A Test] actual value:<[]> should not satisfy condition:<NotNull>").on(new CodeToTest() {
       public void run() {
         new ObjectArrayAssert(emptyObjectArray()).as("A Test")
-                                                .doesNotSatisfy(notNullObjectArray());
+                                                 .doesNotSatisfy(notNullObjectArray());
       }
     });
   }

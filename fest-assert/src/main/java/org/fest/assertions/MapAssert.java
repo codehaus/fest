@@ -23,7 +23,7 @@ import java.util.*;
 import org.fest.util.Maps;
 
 /**
- * Understands assertions for <code>{@link Map}</code>. To create a new instance of this class use the method
+ * Understands assertions for <code>{@link Map}</code>s. To create a new instance of this class use the method
  * <code>{@link Assertions#assertThat(Map)}</code>.
  *
  * @author David DIDIER
@@ -62,7 +62,7 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
   }
 
   /**
-   * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in <a
+   * Alias for <code>{@link #as(String)}</code>, since "as" is a keyword in <a
    * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
@@ -97,7 +97,7 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
   }
 
   /**
-   * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in <a
+   * Alias for <code>{@link #as(Description)}</code>, since "as" is a keyword in <a
    * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
@@ -336,6 +336,7 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
    * @return this assertion object.
    * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>Map</code> does not satisfy the given condition.
+   * @see #is(Condition)
    */
   public MapAssert satisfies(Condition<Map<?, ?>> condition) {
     assertSatisfies(condition);
@@ -348,9 +349,36 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
    * @return this assertion object.
    * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>Map</code> satisfies the given condition.
+   * @see #isNot(Condition)
    */
   public MapAssert doesNotSatisfy(Condition<Map<?, ?>> condition) {
     assertDoesNotSatisfy(condition);
+    return this;
+  }
+
+  /**
+   * Alias for <code>{@link #satisfies(Condition)}</code>.
+   * @param condition the given condition.
+   * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
+   * @throws AssertionError if the actual <code>Map</code> does not satisfy the given condition.
+   * @since 1.2
+   */
+  public MapAssert is(Condition<Map<?, ?>> condition) {
+    assertIs(condition);
+    return this;
+  }
+
+  /**
+   * Alias for <code>{@link #doesNotSatisfy(Condition)}</code>.
+   * @param condition the given condition.
+   * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
+   * @throws AssertionError if the actual <code>Map</code> satisfies the given condition.
+   * @since 1.2
+   */
+  public MapAssert isNot(Condition<Map<?, ?>> condition) {
+    assertIsNot(condition);
     return this;
   }
 

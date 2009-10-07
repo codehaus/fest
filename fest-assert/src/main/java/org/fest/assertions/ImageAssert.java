@@ -87,7 +87,7 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
   }
 
   /**
-   * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in <a href="http://groovy.codehaus.org/"
+   * Alias for <code>{@link #as(String)}</code>, since "as" is a keyword in <a href="http://groovy.codehaus.org/"
    * target="_blank">Groovy</a>. This method should be called before any assertion method, otherwise any assertion
    * failure will not show the provided description.
    * <p>
@@ -126,7 +126,7 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
   }
 
   /**
-   * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in <a
+   * Alias for <code>{@link #as(Description)}</code>, since "as" is a keyword in <a
    * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
@@ -150,6 +150,7 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
    * @return this assertion object.
    * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual image does not satisfy the given condition.
+   * @see #is(Condition)
    */
   public ImageAssert satisfies(Condition<BufferedImage> condition) {
     assertSatisfies(condition);
@@ -162,9 +163,36 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
    * @return this assertion object.
    * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual image satisfies the given condition.
+   * @see #isNot(Condition)
    */
   public ImageAssert doesNotSatisfy(Condition<BufferedImage> condition) {
     assertDoesNotSatisfy(condition);
+    return this;
+  }
+
+  /**
+   * Alias for <code>{@link #satisfies(Condition)}</code>.
+   * @param condition the given condition.
+   * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
+   * @throws AssertionError if the actual image does not satisfy the given condition.
+   * @since 1.2
+   */
+  public ImageAssert is(Condition<BufferedImage> condition) {
+    assertIs(condition);
+    return this;
+  }
+
+  /**
+   * Alias for <code>{@link #doesNotSatisfy(Condition)}</code>.
+   * @param condition the given condition.
+   * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
+   * @throws AssertionError if the actual image satisfies the given condition.
+   * @since 1.2
+   */
+  public ImageAssert isNot(Condition<BufferedImage> condition) {
+    assertIsNot(condition);
     return this;
   }
 

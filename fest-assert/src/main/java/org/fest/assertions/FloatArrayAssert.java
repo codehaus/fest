@@ -57,7 +57,7 @@ public class FloatArrayAssert extends ArrayAssert<float[]> {
   }
 
   /**
-   * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in
+   * Alias for <code>{@link #as(String)}</code>, since "as" is a keyword in
    * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
@@ -93,7 +93,7 @@ public class FloatArrayAssert extends ArrayAssert<float[]> {
   }
 
   /**
-   * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in
+   * Alias for <code>{@link #as(Description)}</code>, since "as" is a keyword in
    * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
@@ -166,6 +166,7 @@ public class FloatArrayAssert extends ArrayAssert<float[]> {
    * @return this assertion object.
    * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>float</code> array does not satisfy the given condition.
+   * @see #is(Condition)
    */
   public FloatArrayAssert satisfies(Condition<float[]> condition) {
     assertSatisfies(condition);
@@ -178,9 +179,37 @@ public class FloatArrayAssert extends ArrayAssert<float[]> {
    * @return this assertion object.
    * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>float</code> array satisfies the given condition.
+   * @see #isNot(Condition)
    */
   public FloatArrayAssert doesNotSatisfy(Condition<float[]> condition) {
     assertDoesNotSatisfy(condition);
+    return this;
+  }
+
+
+  /**
+   * Alias for <code>{@link #satisfies(Condition)}</code>.
+   * @param condition the given condition.
+   * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
+   * @throws AssertionError if the actual <code>float</code> array does not satisfy the given condition.
+   * @since 1.2
+   */
+  public FloatArrayAssert is(Condition<float[]> condition) {
+    assertIs(condition);
+    return this;
+  }
+
+  /**
+   * Alias for <code>{@link #doesNotSatisfy(Condition)}</code>.
+   * @param condition the given condition.
+   * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
+   * @throws AssertionError if the actual <code>float</code> array satisfies the given condition.
+   * @since 1.2
+   */
+  public FloatArrayAssert isNot(Condition<float[]> condition) {
+    assertIsNot(condition);
     return this;
   }
 

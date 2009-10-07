@@ -23,7 +23,7 @@ import org.fest.test.CodeToTest;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link ShortArrayAssert}</code>.
+ * Tests for <code>{@link ShortArrayAssert#satisfies(Condition)}</code>.
  *
  * @author Yvonne Wang
  * @author Alex Ruiz

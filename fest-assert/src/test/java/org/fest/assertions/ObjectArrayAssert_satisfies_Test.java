@@ -60,7 +60,7 @@ public class ObjectArrayAssert_satisfies_Test implements GenericAssert_satisfies
       public void run() {
         Object[] actual = null;
         new ObjectArrayAssert(actual).as("A Test")
-                                   .satisfies(notNullObjectArray());
+                                     .satisfies(notNullObjectArray());
       }
     });
   }
@@ -81,7 +81,7 @@ public class ObjectArrayAssert_satisfies_Test implements GenericAssert_satisfies
       public void run() {
         Object[] actual = null;
         new ObjectArrayAssert(actual).as("A Test")
-                                    .satisfies(notNullObjectArray().as("Not Null"));
+                                     .satisfies(notNullObjectArray().as("Not Null"));
       }
     });
   }

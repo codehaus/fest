@@ -64,7 +64,8 @@ public class ImageAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSat
     String message = concat("[A Test] actual value:<", image, "> should not satisfy condition:<NotNull>");
     expectAssertionError(message).on(new CodeToTest() {
       public void run() {
-        new ImageAssert(image).as("A Test").doesNotSatisfy(notNullImage());
+        new ImageAssert(image).as("A Test")
+                              .doesNotSatisfy(notNullImage());
       }
     });
   }
@@ -86,7 +87,8 @@ public class ImageAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSat
     String message = concat("[A Test] actual value:<", image, "> should not satisfy condition:<Not Null>");
     expectAssertionError(message).on(new CodeToTest() {
       public void run() {
-        new ImageAssert(image).as("A Test").doesNotSatisfy(notNullImage().as("Not Null"));
+        new ImageAssert(image).as("A Test")
+                              .doesNotSatisfy(notNullImage().as("Not Null"));
       }
     });
   }

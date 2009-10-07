@@ -56,7 +56,7 @@ public class ListAssert_satisfies_Test implements GenericAssert_satisfies_TestCa
     expectAssertionError("[A Test] actual value:<null> should satisfy condition:<NotNull>").on(new CodeToTest() {
       public void run() {
         new ListAssert(null).as("A Test")
-                                    .satisfies(notNullList());
+                            .satisfies(notNullList());
       }
     });
   }
@@ -75,7 +75,7 @@ public class ListAssert_satisfies_Test implements GenericAssert_satisfies_TestCa
     expectAssertionError("[A Test] actual value:<null> should satisfy condition:<Not Null>").on(new CodeToTest() {
       public void run() {
         new ListAssert(null).as("A Test")
-                                    .satisfies(notNullList().as("Not Null"));
+                            .satisfies(notNullList().as("Not Null"));
       }
     });
   }

@@ -148,7 +148,7 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
   }
 
   /**
-   * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in <a
+   * Alias for <code>{@link #as(String)}</code>, since "as" is a keyword in <a
    * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
@@ -183,7 +183,7 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
   }
 
   /**
-   * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in
+   * Alias for <code>{@link #as(Description)}</code>, since "as" is a keyword in
    * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
@@ -205,6 +205,7 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
    * @return this assertion object.
    * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual collection does not satisfy the given condition.
+   * @see #is(Condition)
    */
   public CollectionAssert satisfies(Condition<Collection<?>> condition) {
     assertSatisfies(condition);
@@ -217,9 +218,36 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
    * @return this assertion object.
    * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual collection satisfies the given condition.
+   * @see #isNot(Condition)
    */
   public CollectionAssert doesNotSatisfy(Condition<Collection<?>> condition) {
     assertDoesNotSatisfy(condition);
+    return this;
+  }
+
+  /**
+   * Alias for <code>{@link #satisfies(Condition)}</code>.
+   * @param condition the given condition.
+   * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
+   * @throws AssertionError if the actual collection does not satisfy the given condition.
+   * @since 1.2
+   */
+  public CollectionAssert is(Condition<Collection<?>> condition) {
+    assertIs(condition);
+    return this;
+  }
+
+  /**
+   * Alias for <code>{@link #doesNotSatisfy(Condition)}</code>.
+   * @param condition the given condition.
+   * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
+   * @throws AssertionError if the actual collection satisfies the given condition.
+   * @since 1.2
+   */
+  public CollectionAssert isNot(Condition<Collection<?>> condition) {
+    assertIsNot(condition);
     return this;
   }
 

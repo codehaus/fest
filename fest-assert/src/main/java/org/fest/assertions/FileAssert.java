@@ -69,7 +69,7 @@ public class FileAssert extends GenericAssert<File> {
   }
 
   /**
-   * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in <a
+   * Alias for <code>{@link #as(String)}</code>, since "as" is a keyword in <a
    * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
@@ -104,7 +104,7 @@ public class FileAssert extends GenericAssert<File> {
   }
 
   /**
-   * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in <a
+   * Alias for <code>{@link #as(Description)}</code>, since "as" is a keyword in <a
    * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
@@ -247,6 +247,7 @@ public class FileAssert extends GenericAssert<File> {
    * @return this assertion object.
    * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>File</code> does not satisfy the given condition.
+   * @see #is(Condition)
    */
   public FileAssert satisfies(Condition<File> condition) {
     assertSatisfies(condition);
@@ -259,9 +260,35 @@ public class FileAssert extends GenericAssert<File> {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>File</code> satisfies the given condition.
    * @throws NullPointerException if the given condition is <code>null</code>.
+   * @see #isNot(Condition)
    */
   public FileAssert doesNotSatisfy(Condition<File> condition) {
     assertDoesNotSatisfy(condition);
+    return this;
+  }
+
+
+  /**
+   * Verifies that the actual <code>File</code> satisfies the given condition.
+   * @param condition the given condition.
+   * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
+   * @throws AssertionError if the actual <code>File</code> does not satisfy the given condition.
+   */
+  public FileAssert is(Condition<File> condition) {
+    assertIs(condition);
+    return this;
+  }
+
+  /**
+   * Verifies that the actual <code>File</code> does not satisfy the given condition.
+   * @param condition the given condition.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>File</code> satisfies the given condition.
+   * @throws NullPointerException if the given condition is <code>null</code>.
+   */
+  public FileAssert isNot(Condition<File> condition) {
+    assertIsNot(condition);
     return this;
   }
 

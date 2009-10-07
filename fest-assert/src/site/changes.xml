@@ -12,11 +12,15 @@
       <action dev="tedyoung" type="fix" issue="FEST-157">
         Added method 'isNotEqualByComparingTo' to BigDecimalAssert.
       </action>
-      <action dev="konermann, alexruiz" type="fix" issue="FEST-165">
+      <action dev="konermann" type="fix" issue="FEST-165">
         Assertion classes are no longer final. Constructors are now protected, instead of package-protected.
       </action>
-      <action dev="konermann, alexruiz" type="fix" issue="FEST-166">
+      <action dev="konermann" type="fix" issue="FEST-166">
         Class org.fest.assertions.Assertions are no longer final. Constructor is now protected, instead of private.
+      </action>
+      <action dev="alexruiz" type="fix" issue="FEST-168">
+        Added methods 'is(Condition)' and 'isNot(Condition)' to all assertion classes. These methods are aliases for
+        'satisfies(Condition)' and 'doesNotSatisfy(Condition)' respectively.
       </action>
       <action dev="konermann" type="fix" issue="FEST-198">
         ImageAssert no longer uses the constructor IOException(String, Throwable) from JDK 1.6.

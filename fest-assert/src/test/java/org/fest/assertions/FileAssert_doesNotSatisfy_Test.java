@@ -21,13 +21,14 @@ import org.fest.test.CodeToTest;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link FileAssert#satisfies(Condition)}</code>.
+ * Tests for <code>{@link FileAssert#doesNotSatisfy(Condition)}</code>.
  *
  * @author David DIDIER
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class FileAssert_doesNotSatisfy_Test extends FileAssert_TestCase implements GenericAssert_doesNotSatisfy_TestCase {
+public class FileAssert_doesNotSatisfy_Test extends FileAssert_TestCase
+    implements GenericAssert_doesNotSatisfy_TestCase {
 
   @Test
   public void should_pass_if_condition_is_not_satisfied() {

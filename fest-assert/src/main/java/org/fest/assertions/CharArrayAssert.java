@@ -57,7 +57,7 @@ public class CharArrayAssert extends ArrayAssert<char[]> {
   }
 
   /**
-   * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in
+   * Alias for <code>{@link #as(String)}</code>, since "as" is a keyword in
    * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
@@ -92,7 +92,7 @@ public class CharArrayAssert extends ArrayAssert<char[]> {
   }
 
   /**
-   * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in
+   * Alias for <code>{@link #as(Description)}</code>, since "as" is a keyword in
    * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
@@ -165,6 +165,7 @@ public class CharArrayAssert extends ArrayAssert<char[]> {
    * @return this assertion object.
    * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>char</code> array does not satisfy the given condition.
+   * @see #is(Condition)
    */
   public CharArrayAssert satisfies(Condition<char[]> condition) {
     assertSatisfies(condition);
@@ -177,9 +178,36 @@ public class CharArrayAssert extends ArrayAssert<char[]> {
    * @return this assertion object.
    * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>char</code> array satisfies the given condition.
+   * @see #isNot(Condition)
    */
   public CharArrayAssert doesNotSatisfy(Condition<char[]> condition) {
     assertDoesNotSatisfy(condition);
+    return this;
+  }
+
+  /**
+   * Alias for <code>{@link #satisfies(Condition)}</code>.
+   * @param condition the given condition.
+   * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
+   * @throws AssertionError if the actual <code>char</code> array does not satisfy the given condition.
+   * @since 1.2
+   */
+  public CharArrayAssert is(Condition<char[]> condition) {
+    assertIs(condition);
+    return this;
+  }
+
+  /**
+   * Alias for <code>{@link #doesNotSatisfy(Condition)}</code>.
+   * @param condition the given condition.
+   * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
+   * @throws AssertionError if the actual <code>char</code> array satisfies the given condition.
+   * @since 1.2
+   */
+  public CharArrayAssert isNot(Condition<char[]> condition) {
+    assertIsNot(condition);
     return this;
   }
 

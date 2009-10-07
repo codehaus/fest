@@ -78,7 +78,7 @@ public class MapAssert_satisfies_Test implements GenericAssert_satisfies_TestCas
     expectAssertionError("[A Test] actual value:<null> should satisfy condition:<Not Null>").on(new CodeToTest() {
       public void run() {
         new MapAssert(null).as("A Test")
-                                 .satisfies(notNullMap().as("Not Null"));
+                           .satisfies(notNullMap().as("Not Null"));
       }
     });
   }

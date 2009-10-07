@@ -110,7 +110,7 @@ public class ObjectAssert extends GenericAssert<Object> {
   }
 
   /**
-   * Alternative to <code>{@link #as(String)}</code>, since "as" is a keyword in
+   * Alias for <code>{@link #as(String)}</code>, since "as" is a keyword in
    * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
@@ -145,7 +145,7 @@ public class ObjectAssert extends GenericAssert<Object> {
   }
 
   /**
-   * Alternative to <code>{@link #as(Description)}</code>, since "as" is a keyword in
+   * Alias for <code>{@link #as(Description)}</code>, since "as" is a keyword in
    * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
    * method, otherwise any assertion failure will not show the provided description.
    * <p>
@@ -167,6 +167,7 @@ public class ObjectAssert extends GenericAssert<Object> {
    * @return this assertion object.
    * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>Object</code> does not satisfy the given condition.
+   * @see #is(Condition)
    */
   public ObjectAssert satisfies(Condition<Object> condition) {
     assertSatisfies(condition);
@@ -179,9 +180,36 @@ public class ObjectAssert extends GenericAssert<Object> {
    * @return this assertion object.
    * @throws NullPointerException if the given condition is <code>null</code>.
    * @throws AssertionError if the actual <code>Object</code> satisfies the given condition.
+   * @see #isNot(Condition)
    */
   public ObjectAssert doesNotSatisfy(Condition<Object> condition) {
     assertDoesNotSatisfy(condition);
+    return this;
+  }
+
+  /**
+   * Alias for <code>{@link #satisfies(Condition)}</code>.
+   * @param condition the given condition.
+   * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
+   * @throws AssertionError if the actual <code>Object</code> does not satisfy the given condition.
+   * @since 1.2
+   */
+  public ObjectAssert is(Condition<Object> condition) {
+    assertIs(condition);
+    return this;
+  }
+
+  /**
+   * Alias for <code>{@link #doesNotSatisfy(Condition)}</code>.
+   * @param condition the given condition.
+   * @return this assertion object.
+   * @throws NullPointerException if the given condition is <code>null</code>.
+   * @throws AssertionError if the actual <code>Object</code> satisfies the given condition.
+   * @since 1.2
+   */
+  public ObjectAssert isNot(Condition<Object> condition) {
+    assertIsNot(condition);
     return this;
   }
 
