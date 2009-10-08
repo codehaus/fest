@@ -31,7 +31,7 @@ public class FEST228_inconsistentErrorMessage_Test {
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_equal() {
     expectAssertionError("[A Test] expected:<'L[eia]'> but was:<'L[uke]'>").on(new CodeToTest() {
       public void run() {
-        Fail.failIfNotEqual(new BasicDescription("A Test"), "Luke", "Leia");
+        Fail.failIfNotEqual(new StringAssert("Luke").as("A Test"), "Luke", "Leia");
       }
     });
   }

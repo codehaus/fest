@@ -82,7 +82,16 @@ public abstract class Assert {
    * @throws AssertionError using the given reason as the message.
    */
   protected final AssertionError fail(String reason) {
-    throw Fail.fail(formattedErrorMessage(reason));
+    throw failure(reason);
+  }
+
+  /**
+   * Creates an <code>{@link AssertionError}</code>, adding the description of the actual value to the given message.
+   * @param reason the reason for the failure, used as the message for the thrown exception.
+   * @return the thrown <code>AssertionError</code>.
+   */
+  protected final AssertionError failure(String reason) {
+    return Fail.fail(formattedErrorMessage(reason));
   }
 
   /**

@@ -262,7 +262,7 @@ public abstract class GenericAssert<T> extends Assert {
    * @throws AssertionError if the actual value is not equal to the given one.
    */
   protected final void assertEqualTo(T expected) {
-    failIfNotEqual(overridingErrorMessage(), rawDescription(), actual, expected);
+    failIfNotEqual(this, actual, expected);
   }
 
   /**
@@ -301,18 +301,42 @@ public abstract class GenericAssert<T> extends Assert {
   }
 
   /**
-   * Specifies the message to use in case of a failure, replacing the default one.
-   * @param newErrorMessage the new error message.
+   * Replaces the default message displayed in case of a failure with the given one.
+   * <p>
+   * For example, the following assertion:
+   * <pre>
+   * assertThat("Hello").isEqualTo("Bye");
+   * </pre>
+   * will fail with the default message "<em>expected:<'[Bye]'> but was:<'[Hello]'></em>."
+   * </p>
+   * <p>
+   * We can replace this message with our own:
+   * <pre>
+   * assertThat("Hello").overridingErrorMessage("'Hello' should be equal to 'Bye'").isEqualTo("Bye");
+   * </pre>
+   * in this case, the assertion will fail showing the message "<em>'Hello' should be equal to 'Bye'</em>".
+   * </p>
+   * @param message the given error message, which will replace the default one.
+   * @return this assertion.
    */
-  protected final void overrideErrorMessageWith(String newErrorMessage) {
-    errorMessage = newErrorMessage;
+  protected GenericAssert<T> overridingErrorMessage(String message) {
+    // TODO make this method protected
+    return this;
+  }
+
+  /**
+   * Specifies the message to use in case of a failure, replacing the default one.
+   * @param message the new error message.
+   */
+  protected final void replaceDefaultErrorMessagesWith(String message) {
+    errorMessage = message;
   }
 
   /**
    * Returns the message to use when a failure occurs, if one has been specified.
    * @return the message to use when a failure occurs, or <code>null</code> if none has been specified.
    */
-  protected final String overridingErrorMessage() {
+  protected final String customErrorMessage() {
     return errorMessage;
   }
 }

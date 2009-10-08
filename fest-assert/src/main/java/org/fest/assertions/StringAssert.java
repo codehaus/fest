@@ -37,72 +37,24 @@ public class StringAssert extends GroupAssert<String> {
     super(actual);
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(name).<strong>as</strong>(&quot;Hobbit&quot;).isEqualTo(&quot;Frodo&quot;);
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public StringAssert as(String description) {
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(String)}</code>, since "as" is a keyword in
-   * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(name).<strong>describedAs</strong>(&quot;Hobbit&quot;).isEqualTo(&quot;Frodo&quot;);
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public StringAssert describedAs(String description) {
     return as(description);
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(name).<strong>as</strong>(new BasicDescription(&quot;Hobbit&quot;)).isEqualTo(&quot;Frodo&quot;);
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public StringAssert as(Description description) {
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(Description)}</code>, since "as" is a keyword in
-   * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(name).<strong>describedAs</strong>(new BasicDescription(&quot;Hobbit&quot;)).isEqualTo(&quot;Frodo&quot;);
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public StringAssert describedAs(Description description) {
     return as(description);
   }
@@ -353,28 +305,9 @@ public class StringAssert extends GroupAssert<String> {
     return inBrackets(actual);
   }
 
-  /**
-   * Replaces the message displayed in case of a failure with the given one.
-   * <p>
-   * For example, the following assertion:
-   * <pre>
-   * assertThat("Hello").isEqualTo("Bye");
-   * </pre>
-   * will fail with the default message "<em>expected:<'[Bye]'> but was:<'[Hello]'></em>."
-   * </p>
-   * <p>
-   * We can replace this message with our own:
-   * <pre>
-   * assertThat("Hello").overridingErrorMessage("'Hello' should be equal to 'Bye'").isEqualTo("Bye");
-   * </pre>
-   * in this case, the assertion will fail showing the message "<em>'Hello' should be equal to 'Bye'</em>".
-   * </p>
-   * @param errorMessage the given error message, which will replace the default one.
-   * @return this assertion.
-   */
-  public StringAssert overridingErrorMessage(String errorMessage) {
-    // TODO: Make this method an abstract method in GenericAssert.
-    overrideErrorMessageWith(errorMessage);
+  /** {@inheritDoc} */
+  public StringAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
     return this;
   }
 }

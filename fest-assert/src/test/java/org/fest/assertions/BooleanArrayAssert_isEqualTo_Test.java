@@ -57,4 +57,25 @@ public class BooleanArrayAssert_isEqualTo_Test implements GenericAssert_isEqualT
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BooleanArrayAssert(true).overridingErrorMessage("My custom message")
+                                    .isEqualTo(booleanArray(false));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BooleanArrayAssert(true).as("A Test")
+                                    .overridingErrorMessage("My custom message")
+                                    .isEqualTo(booleanArray(false));
+      }
+    });
+  }
 }

@@ -53,16 +53,36 @@ public final class Fail {
     if (areEqual(first, second)) fail(format(description, unexpectedEqual(first, second)));
   }
 
-  static void failIfNotEqual(Description description, Object actual, Object expected) {
-    failIfNotEqual(null, description, actual, expected);
+  /**
+   * Throws an <code>{@link AssertionError}</code> if 'actual' is not equal to 'expected'.
+   * @param assertion the assertion object, usually the caller of this method. It is needed in case of a comparison
+   * failure, to obtain the description of the actual object (to be added to the default error message) or any custom
+   * error message (replaces the default one.)
+   * @param actual the actual object.
+   * @param expected the expected object.
+   * @throws AssertionError if the given objects are not equal.
+   */
+  static void failIfNotEqual(GenericAssert<?> assertion, Object actual, Object expected) {
+    if (areEqual(actual, expected)) return;
+    failWithCustomErrorMessageIfAny(assertion);
+    failWhenNotEqual(assertion.rawDescription(), actual, expected);
   }
 
-  static void failIfNotEqual(String overridingErrorMessage, Description description, Object actual, Object expected) {
-    if (areEqual(actual, expected)) return;
-    if (overridingErrorMessage != null) throw failure(overridingErrorMessage);
+  private static void failWhenNotEqual(Description description, Object actual, Object expected) {
     AssertionError comparisonFailure = comparisonFailure(valueOf(description), expected, actual);
     if (comparisonFailure != null) throw comparisonFailure;
     fail(format(description, unexpectedNotEqual(actual, expected)));
+  }
+
+  /**
+   * Throws an <code>{@link AssertionError}</code> using the custom error message specified in the given assertion. If
+   * the assertion does not have a custom error message, this method will not throw any exceptions.
+   * @param assertion the assertion object, that may contain a custom error message.
+   * @throws AssertionError if the given assertion has a custom error message.
+   */
+  static void failWithCustomErrorMessageIfAny(GenericAssert<?> assertion) {
+    String message = assertion.customErrorMessage();
+    if (message != null) fail(message);
   }
 
   static void failIfNull(Description description, Object o) {
