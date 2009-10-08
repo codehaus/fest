@@ -40,7 +40,7 @@ public class FileAssert_isEqualTo_Test extends FileAssert_TestCase implements Ge
 
   @Test
   public void should_fail_if_actual_and_expected_are_not_equal() {
-    expectAssertionError("expected:<c:\\> but was:<c:\\f.txt>").on(new CodeToTest() {
+    expectAssertionError("expected:<c:\\[]> but was:<c:\\[f.txt]>").on(new CodeToTest() {
       public void run() {
         new FileAssert(file).isEqualTo(newFile("c:\\"));
       }
@@ -49,7 +49,7 @@ public class FileAssert_isEqualTo_Test extends FileAssert_TestCase implements Ge
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_equal() {
-    expectAssertionError("[A Test] expected:<c:\\> but was:<c:\\f.txt>").on(new CodeToTest() {
+    expectAssertionError("[A Test] expected:<c:\\[]> but was:<c:\\[f.txt]>").on(new CodeToTest() {
       public void run() {
         new FileAssert(file).as("A Test").isEqualTo(newFile("c:\\"));
       }

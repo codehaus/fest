@@ -14,8 +14,10 @@
  */
 package org.fest.assertions;
 
-import static org.junit.Assert.assertNull;
+import static org.fest.util.Strings.concat;
+import static org.junit.Assert.*;
 
+import org.junit.ComparisonFailure;
 import org.junit.Test;
 
 /**
@@ -26,14 +28,28 @@ import org.junit.Test;
 public class ComparisonFailureFactory_comparisonFailure_Test {
 
   @Test
-  public void should_not_create_exception_if_actual_is_not_String() {
-    AssertionError error = ComparisonFailureFactory.comparisonFailure("message", "expected", 3);
-    assertNull(error);
+  public void should_create_exception_if_actual_or_expected_are_not_String() {
+    AssertionError failure = ComparisonFailureFactory.comparisonFailure("message", new Jedi("Luke"), new Jedi("Ben"));
+    assertTrue(failure instanceof ComparisonFailure);
+    assertEquals("[message] expected:<Jedi [name=[Luke]]> but was:<Jedi [name=[Ben]]>", failure.getMessage());
   }
 
   @Test
-  public void should_not_create_exception_if_expected_is_not_String() {
-    AssertionError error = ComparisonFailureFactory.comparisonFailure("message", 6, "actual");
-    assertNull(error);
+  public void should_create_exception_if_actual_and_expected_are_String() {
+    AssertionError failure = ComparisonFailureFactory.comparisonFailure("message", "expected", "actual");
+    assertTrue(failure instanceof ComparisonFailure);
+    assertEquals("[message] expected:<'[expected]'> but was:<'[actual]'>", failure.getMessage());
+  }
+
+  private static class Jedi {
+    final String name;
+
+    Jedi(String name) {
+      this.name = name;
+    }
+
+    @Override public String toString() {
+      return concat("Jedi [name=", name, "]");
+    }
   }
 }

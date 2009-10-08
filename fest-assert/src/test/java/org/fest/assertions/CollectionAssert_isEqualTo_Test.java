@@ -41,7 +41,7 @@ public class CollectionAssert_isEqualTo_Test implements GenericAssert_isEqualTo_
 
   @Test
   public void should_fail_if_actual_and_expected_are_not_equal() {
-    expectAssertionError("expected:<['Anakin']> but was:<['Luke', 'Leia']>").on(new CodeToTest() {
+    expectAssertionError("expected:<['[Anakin]']> but was:<['[Luke', 'Leia]']>").on(new CodeToTest() {
       public void run() {
         new CollectionAssert(list("Luke", "Leia")).isEqualTo(list("Anakin"));
       }
@@ -50,7 +50,7 @@ public class CollectionAssert_isEqualTo_Test implements GenericAssert_isEqualTo_
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_equal() {
-    expectAssertionError("[A Test] expected:<['Anakin']> but was:<['Luke', 'Leia']>").on(new CodeToTest() {
+    expectAssertionError("[A Test] expected:<['[Anakin]']> but was:<['[Luke', 'Leia]']>").on(new CodeToTest() {
       public void run() {
         new CollectionAssert(list("Luke", "Leia")).as("A Test")
                                                   .isEqualTo(list("Anakin"));

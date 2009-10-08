@@ -77,7 +77,7 @@ public class ListAssert_containsExactly_Test {
 
   @Test
   public void should_fail_if_actual_does_not_contain_exactly_the_expected_Objects() {
-    expectAssertionError("expected:<['Anakin']> but was:<['Luke', 'Leia']>").on(new CodeToTest() {
+    expectAssertionError("expected:<['[Anakin]']> but was:<['[Luke', 'Leia]']>").on(new CodeToTest() {
       public void run() {
         new ListAssert(list("Luke", "Leia")).containsExactly("Anakin");
       }
@@ -86,7 +86,7 @@ public class ListAssert_containsExactly_Test {
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_does_not_contain_exactly_the_expected_Objects() {
-    expectAssertionError("[A Test] expected:<['Anakin']> but was:<['Luke', 'Leia']>").on(new CodeToTest() {
+    expectAssertionError("[A Test] expected:<['[Anakin]']> but was:<['[Luke', 'Leia]']>").on(new CodeToTest() {
       public void run() {
         new ListAssert(list("Luke", "Leia")).as("A Test")
                                             .containsExactly("Anakin");

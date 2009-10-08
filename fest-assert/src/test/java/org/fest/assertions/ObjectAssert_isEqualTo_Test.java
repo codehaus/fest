@@ -39,7 +39,7 @@ public class ObjectAssert_isEqualTo_Test implements GenericAssert_isEqualTo_Test
 
   @Test
   public void should_fail_if_actual_and_expected_are_not_equal() {
-    expectAssertionError("expected:<8> but was:<6>").on(new CodeToTest() {
+    expectAssertionError("expected:<[8]> but was:<[6]>").on(new CodeToTest() {
       public void run() {
         new ObjectAssert(6).isEqualTo(8);
       }
@@ -48,7 +48,7 @@ public class ObjectAssert_isEqualTo_Test implements GenericAssert_isEqualTo_Test
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_equal() {
-    expectAssertionError("[A Test] expected:<8> but was:<6>").on(new CodeToTest() {
+    expectAssertionError("[A Test] expected:<[8]> but was:<[6]>").on(new CodeToTest() {
       public void run() {
         new ObjectAssert(6).as("A Test")
                            .isEqualTo(8);

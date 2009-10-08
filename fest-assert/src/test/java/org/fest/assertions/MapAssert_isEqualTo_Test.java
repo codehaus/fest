@@ -46,7 +46,7 @@ public class MapAssert_isEqualTo_Test implements GenericAssert_isEqualTo_TestCas
 
   @Test
   public void should_fail_if_actual_and_expected_are_not_equal() {
-    expectAssertionError("expected:<{'key6'=6, 'key8'=8}> but was:<{'key1'=1, 'key2'=2}>").on(new CodeToTest() {
+    expectAssertionError("expected:<{'key[6'=6, 'key8'=8]}> but was:<{'key[1'=1, 'key2'=2]}>").on(new CodeToTest() {
       public void run() {
         Map<Object, Object> a = map(entry("key1", 1), entry("key2", 2));
         Map<Object, Object> e = map(entry("key6", 6), entry("key8", 8));
@@ -57,7 +57,7 @@ public class MapAssert_isEqualTo_Test implements GenericAssert_isEqualTo_TestCas
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_equal() {
-    expectAssertionError("[A Test] expected:<{'key6'=6, 'key8'=8}> but was:<{'key1'=1, 'key2'=2}>").on(
+    expectAssertionError("[A Test] expected:<{'key[6'=6, 'key8'=8]}> but was:<{'key[1'=1, 'key2'=2]}>").on(
       new CodeToTest() {
         public void run() {
           Map<Object, Object> a = map(entry("key1", 1), entry("key2", 2));

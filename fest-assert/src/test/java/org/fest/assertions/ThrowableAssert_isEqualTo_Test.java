@@ -40,7 +40,7 @@ public class ThrowableAssert_isEqualTo_Test implements GenericAssert_isEqualTo_T
 
   @Test
   public void should_fail_if_actual_and_expected_are_not_equal() {
-    String message = "expected:<java.lang.IllegalArgumentException> but was:<java.lang.Exception>";
+    String message = "expected:<java.lang.[IllegalArgument]Exception> but was:<java.lang.[]Exception>";
     expectAssertionError(message).on(new CodeToTest() {
       public void run() {
         new ThrowableAssert(new Exception()).isEqualTo(new IllegalArgumentException());
@@ -50,7 +50,7 @@ public class ThrowableAssert_isEqualTo_Test implements GenericAssert_isEqualTo_T
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_equal() {
-    String message = "[A Test] expected:<java.lang.IllegalArgumentException> but was:<java.lang.Exception>";
+    String message = "[A Test] expected:<java.lang.[IllegalArgument]Exception> but was:<java.lang.[]Exception>";
     expectAssertionError(message).on(new CodeToTest() {
       public void run() {
         new ThrowableAssert(new Exception()).as("A Test")

@@ -15,15 +15,8 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ToString.toStringOf;
 import static org.fest.util.Strings.*;
-
-import java.awt.Dimension;
-import java.io.File;
-import java.util.Collection;
-import java.util.Map;
-
-import org.fest.util.*;
-import org.fest.util.Collections;
 
 /**
  * Provides utility methods related to formatting.
@@ -86,37 +79,7 @@ public final class Formatting {
    * @return the <code>String</code> representation of the given object in between brackets.
    */
   public static String inBrackets(Object o) {
-    if (isOneDimensionalArray(o)) return doBracketAround(Arrays.format(o)); // TODO just check for array, since format supports multi-dimensional arrays now
-    if (o instanceof Class<?>) return doBracketAround((Class<?>)o);
-    if (o instanceof Collection<?>) return doBracketAround((Collection<?>)o);
-    if (o instanceof Map<?, ?>) return doBracketAround((Map<?, ?>)o);
-    if (o instanceof File) return doBracketAround((File)o);
-    if (o instanceof Dimension) return doBracketAround((Dimension)o);
-    return doBracketAround(quote(o));
-  }
-
-  private static boolean isOneDimensionalArray(Object o) {
-    return o != null && o.getClass().isArray() && !o.getClass().getComponentType().isArray();
-  }
-
-  private static String doBracketAround(Class<?> c) {
-    return doBracketAround(c.getName());
-  }
-
-  private static String doBracketAround(Collection<?> c) {
-    return doBracketAround(Collections.format(c));
-  }
-
-  private static String doBracketAround(Map<?, ?> m) {
-    return doBracketAround(Maps.format(m));
-  }
-
-  private static String doBracketAround(File f) {
-    return doBracketAround(f.getAbsolutePath());
-  }
-
-  private static String doBracketAround(Dimension d) {
-    return doBracketAround(concat("(", d.width, ", ", d.height, ")"));
+    return doBracketAround(toStringOf(o));
   }
 
   private static String doBracketAround(Object o) {

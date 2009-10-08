@@ -15,6 +15,7 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ToString.toStringOf;
 import static org.fest.util.Strings.*;
 
 /**
@@ -34,18 +35,15 @@ public final class ComparisonFailureFactory {
   }
 
   /**
-   * Creates a new instance of JUnit's <code>ComparisonFailure</code> only if JUnit 4+ is in the classpath and both the
-   * expected and actual values are <code>String</code>s.
+   * Creates a new instance of JUnit's <code>ComparisonFailure</code> only if JUnit 4+ is in the classpath.
    * @param message the identifying message or <code>null</code>.
    * @param expected the expected value.
    * @param actual the actual value.
-   * @return the created <code>ComparisonFailure</code>, or <code>null</code> if JUnit 4+ is not in the classpath or if
-   * either the expected or actual values is not a <code>String</code>.
+   * @return the created <code>ComparisonFailure</code>, or <code>null</code> if JUnit 4+ is not in the classpath.
    */
   public static AssertionError comparisonFailure(String message, Object expected, Object actual) {
-    if (isNotString(expected) || isNotString(actual)) return null;
     try {
-      return newComparisonFailure(clean(message), (String)expected, (String)actual);
+      return newComparisonFailure(clean(message), expected, actual);
     } catch (Exception e) {
       return null;
     }
@@ -55,15 +53,19 @@ public final class ComparisonFailureFactory {
     return message == null ? "" : message;
   }
 
-  private static boolean isNotString(Object o) { return !(o instanceof String); }
-
-  private static AssertionError newComparisonFailure(String message, String expected, String actual) throws Exception {
+  private static AssertionError newComparisonFailure(String message, Object expected, Object actual) throws Exception {
     final String className = "org.junit.ComparisonFailure";
     Class<?>[] parameterTypes = new Class<?>[] { String.class, String.class, String.class };
-    Object[] parameterValues = new Object[] { format(message), quote(expected), quote(actual) };
+    Object[] parameterValues = new Object[] { format(message), asString(expected), asString(actual) };
     Object o = constructorInvoker.newInstance(className, parameterTypes, parameterValues);
     if (o instanceof AssertionError) return (AssertionError)o;
     return null;
+  }
+
+  private static String asString(Object o) {
+    if (o instanceof String) return quote((String)o);
+    if (o == null) return null;
+    return toStringOf(o);
   }
 
   private static String format(String message) {

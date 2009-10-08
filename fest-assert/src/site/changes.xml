@@ -22,6 +22,9 @@
         Added methods 'is(Condition)' and 'isNot(Condition)' to all assertion classes. These methods are aliases for
         'satisfies(Condition)' and 'doesNotSatisfy(Condition)' respectively.
       </action>
+      <action dev="alexruiz" type="fix" issue="FEST-168">
+        All assertions now throw ComparisonFailure if comparison of two objects fail and JUnit is in the classpath.
+      </action>
       <action dev="konermann" type="fix" issue="FEST-198">
         ImageAssert no longer uses the constructor IOException(String, Throwable) from JDK 1.6.
       </action>

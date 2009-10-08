@@ -18,8 +18,6 @@ import static org.easymock.EasyMock.*;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.util.Arrays.array;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-
 import org.fest.mocks.EasyMockTemplate;
 import org.junit.*;
 
@@ -40,23 +38,6 @@ public class ComparisonFailureFactory_comparisonFailure_withMocks_Test {
   @AfterClass
   public static void tearDown() {
     ComparisonFailureFactory.constructorInvoker(new ConstructorInvoker());
-  }
-
-  @Test
-  public void should_create_exception_if_actual_and_expected_are_String() {
-    final AssertionError toReturn = new AssertionError();
-    ComparisonFailureFactory.constructorInvoker(invoker);
-    new EasyMockTemplate(invoker) {
-
-      protected void expectations() {
-        expect(createComparisonFailure()).andReturn(toReturn);
-      }
-
-      protected void codeToTest() {
-        AssertionError created = ComparisonFailureFactory.comparisonFailure("message", "expected", "actual");
-        assertSame(toReturn, created);
-      }
-    }.run();
   }
 
   @Test
