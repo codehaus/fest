@@ -38,74 +38,26 @@ public class ThrowableAssert extends GenericAssert<Throwable> {
     objectAssert = new ObjectAssert(actual);
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>.
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(error).<strong>as</strong>(&quot;Number Formatting&quot;).isInstanceOf(NumberFormatException.class);
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public ThrowableAssert as(String description) {
     objectAssert.as(description);
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(String)}</code>, since "as" is a keyword in <a
-   * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(error).<strong>describedAs</strong>(&quot;Number Formatting&quot;).isInstanceOf(NumberFormatException.class);
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public ThrowableAssert describedAs(String description) {
     return as(description);
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>.
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(error).<strong>as</strong>(new BasicDescription(&quot;Number Formatting&quot;)).isInstanceOf(NumberFormatException.class);
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public ThrowableAssert as(Description description) {
     objectAssert.as(description);
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(Description)}</code>, since "as" is a keyword in <a
-   * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(error).<strong>describedAs</strong>(new BasicDescription(&quot;Number Formatting&quot;)).isInstanceOf(NumberFormatException.class);
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public ThrowableAssert describedAs(Description description) {
     return as(description);
   }
@@ -274,6 +226,12 @@ public class ThrowableAssert extends GenericAssert<Throwable> {
    */
   public ThrowableAssert isNot(Condition<Throwable> condition) {
     assertIsNot(condition);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  public ThrowableAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
     return this;
   }
 }

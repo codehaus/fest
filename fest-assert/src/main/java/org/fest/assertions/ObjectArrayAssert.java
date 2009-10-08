@@ -17,6 +17,7 @@ package org.fest.assertions;
 
 import static org.fest.assertions.ErrorMessages.unexpectedEqual;
 import static org.fest.assertions.ErrorMessages.unexpectedNotEqual;
+import static org.fest.assertions.Fail.failWithCustomErrorMessageIfAny;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Collections.duplicatesFrom;
 import static org.fest.util.Collections.list;
@@ -41,72 +42,24 @@ public class ObjectArrayAssert extends ArrayAssert<Object[]> {
     super(actual);
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(names).<strong>as</strong>(&quot;Jedi Knights&quot;).contains(&quot;Yoda&quot;);
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public ObjectArrayAssert as(String description) {
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(String)}</code>, since "as" is a keyword in
-   * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(names).<strong>describedAs</strong>(&quot;Jedi Knights&quot;).contains(&quot;Yoda&quot;);
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public ObjectArrayAssert describedAs(String description) {
     return as(description);
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(names).<strong>as</strong>(new BasicDescription(&quot;Jedi Knights&quot;)).contains(&quot;Yoda&quot;);
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public ObjectArrayAssert as(Description description) {
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(Description)}</code>, since "as" is a keyword in
-   * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(names).<strong>describedAs</strong>(new BasicDescription(&quot;Jedi Knights&quot;)).contains(&quot;Yoda&quot;);
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public ObjectArrayAssert describedAs(Description description) {
     return as(description);
   }
@@ -301,8 +254,9 @@ public class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * @throws AssertionError if the actual <code>Object</code> array is not equal to the given one.
    */
   public ObjectArrayAssert isEqualTo(Object[] expected) {
-    if (!Arrays.deepEquals(actual, expected)) fail(unexpectedNotEqual(actual, expected));
-    return this;
+    if (Arrays.deepEquals(actual, expected)) return this;
+    failWithCustomErrorMessageIfAny(this);
+    throw failure(unexpectedNotEqual(actual, expected));
   }
 
   /**
@@ -349,6 +303,12 @@ public class ObjectArrayAssert extends ArrayAssert<Object[]> {
    */
   public ObjectArrayAssert isNotSameAs(Object[] expected) {
     assertNotSameAs(expected);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  public ObjectArrayAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
     return this;
   }
 }

@@ -18,6 +18,7 @@ package org.fest.assertions;
 import static org.fest.assertions.ArrayInspection.copy;
 import static org.fest.assertions.ErrorMessages.unexpectedEqual;
 import static org.fest.assertions.ErrorMessages.unexpectedNotEqual;
+import static org.fest.assertions.Fail.failWithCustomErrorMessageIfAny;
 
 import java.util.*;
 
@@ -38,72 +39,24 @@ public class ShortArrayAssert extends ArrayAssert<short[]> {
     super(actual);
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(values).<strong>as</strong>(&quot;Some values&quot;).isNotEmpty();
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public ShortArrayAssert as(String description) {
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(String)}</code>, since "as" is a keyword in
-   * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(values).<strong>describedAs</strong>(&quot;Some values&quot;).isNotEmpty();
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public ShortArrayAssert describedAs(String description) {
     return as(description);
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(values).<strong>as</strong>(new BasicDescription(&quot;Some values&quot;)).isNotEmpty();
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public ShortArrayAssert as(Description description) {
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(Description)}</code>, since "as" is a keyword in
-   * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(values).<strong>describedAs</strong>(new BasicDescription(&quot;Some values&quot;)).isNotEmpty();
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public ShortArrayAssert describedAs(Description description) {
     return as(description);
   }
@@ -240,8 +193,9 @@ public class ShortArrayAssert extends ArrayAssert<short[]> {
    * @throws AssertionError if the actual <code>short</code> array is not equal to the given one.
    */
   public ShortArrayAssert isEqualTo(short[] expected) {
-    if (!Arrays.equals(actual, expected)) fail(unexpectedNotEqual(actual, expected));
-    return this;
+    if (Arrays.equals(actual, expected)) return this;
+    failWithCustomErrorMessageIfAny(this);
+    throw failure(unexpectedNotEqual(actual, expected));
   }
 
   /**
@@ -288,6 +242,12 @@ public class ShortArrayAssert extends ArrayAssert<short[]> {
    */
   public ShortArrayAssert isNotSameAs(short[] expected) {
     assertNotSameAs(expected);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  public ShortArrayAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
     return this;
   }
 }

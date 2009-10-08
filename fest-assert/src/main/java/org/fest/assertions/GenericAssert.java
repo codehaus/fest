@@ -318,11 +318,9 @@ public abstract class GenericAssert<T> extends Assert {
    * </p>
    * @param message the given error message, which will replace the default one.
    * @return this assertion.
+   * @since 1.2
    */
-  protected GenericAssert<T> overridingErrorMessage(String message) {
-    // TODO make this method protected
-    return this;
-  }
+  protected abstract GenericAssert<T> overridingErrorMessage(String message);
 
   /**
    * Specifies the message to use in case of a failure, replacing the default one.

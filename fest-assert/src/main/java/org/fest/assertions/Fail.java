@@ -57,7 +57,8 @@ public final class Fail {
    * Throws an <code>{@link AssertionError}</code> if 'actual' is not equal to 'expected'.
    * @param assertion the assertion object, usually the caller of this method. It is needed in case of a comparison
    * failure, to obtain the description of the actual object (to be added to the default error message) or any custom
-   * error message (replaces the default one.)
+   * error message (replaces the default one.) Note that the given actual object and the assertion's actual object are
+   * not always the same.
    * @param actual the actual object.
    * @param expected the expected object.
    * @throws AssertionError if the given objects are not equal.
@@ -106,7 +107,7 @@ public final class Fail {
   }
 
   private static AssertionError fail(Description description, Object[] message) {
-    return fail(createMessageFrom(description, message));
+    throw failure(createMessageFrom(description, message));
   }
 
   /**
