@@ -116,10 +116,17 @@ public final class Fail {
    * @throws AssertionError with the given message.
    */
   public static AssertionError fail(String message) {
+    // TODO change return type to 'void'
     throw failure(message);
   }
 
-  private static AssertionError failure(String message) {
+  /**
+   * Creates a <code>{@link AssertionError}</code> with the given message.
+   * @param message the message of the exception to create.
+   * @return the created exception.
+   * @since 1.2
+   */
+  public static AssertionError failure(String message) {
     return new AssertionError(message);
   }
 
