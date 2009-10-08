@@ -352,4 +352,29 @@ public class StringAssert extends GroupAssert<String> {
   private String actual() {
     return inBrackets(actual);
   }
+
+  /**
+   * Replaces the message displayed in case of a failure with the given one.
+   * <p>
+   * For example, the following assertion:
+   * <pre>
+   * assertThat("Hello").isEqualTo("Bye");
+   * </pre>
+   * will fail with the default message "<em>expected:<'[Bye]'> but was:<'[Hello]'></em>."
+   * </p>
+   * <p>
+   * We can replace this message with our own:
+   * <pre>
+   * assertThat("Hello").overridingErrorMessage("'Hello' should be equal to 'Bye'").isEqualTo("Bye");
+   * </pre>
+   * in this case, the assertion will fail showing the message "<em>'Hello' should be equal to 'Bye'</em>".
+   * </p>
+   * @param errorMessage the given error message, which will replace the default one.
+   * @return this assertion.
+   */
+  public StringAssert overridingErrorMessage(String errorMessage) {
+    // TODO: Make this method an abstract method in GenericAssert.
+    overrideErrorMessageWith(errorMessage);
+    return this;
+  }
 }

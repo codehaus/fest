@@ -30,6 +30,8 @@ public abstract class GenericAssert<T> extends Assert {
 
   protected final T actual;
 
+  private String errorMessage;
+
   /**
    * Creates a new <code>{@link GenericAssert}</code>.
    * @param actual the actual target to verify.
@@ -260,7 +262,7 @@ public abstract class GenericAssert<T> extends Assert {
    * @throws AssertionError if the actual value is not equal to the given one.
    */
   protected final void assertEqualTo(T expected) {
-    failIfNotEqual(rawDescription(), actual, expected);
+    failIfNotEqual(overridingErrorMessage(), rawDescription(), actual, expected);
   }
 
   /**
@@ -296,5 +298,21 @@ public abstract class GenericAssert<T> extends Assert {
    */
   protected final void assertNotSameAs(T expected) {
     failIfSame(rawDescription(), actual, expected);
+  }
+
+  /**
+   * Specifies the message to use in case of a failure, replacing the default one.
+   * @param newErrorMessage the new error message.
+   */
+  protected final void overrideErrorMessageWith(String newErrorMessage) {
+    errorMessage = newErrorMessage;
+  }
+
+  /**
+   * Returns the message to use when a failure occurs, if one has been specified.
+   * @return the message to use when a failure occurs, or <code>null</code> if none has been specified.
+   */
+  protected final String overridingErrorMessage() {
+    return errorMessage;
   }
 }

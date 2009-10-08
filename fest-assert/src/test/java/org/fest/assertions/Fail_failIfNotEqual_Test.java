@@ -19,7 +19,7 @@ import org.fest.test.CodeToTest;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link Fail#failIfNotEqual(Description, Object, Object)}</code>.
+ * Tests for <code>{@link Fail#failIfNotEqual(String, Description, Object, Object)}</code>.
  *
  * @author Yvonne Wang
  * @author Alex Ruiz

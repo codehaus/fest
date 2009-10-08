@@ -38,13 +38,13 @@ public final class Fail {
   }
 
   /**
-   * Throws an {@link AssertionError} with the given message an with the <code>{@link Throwable}</code> that caused the
-   * failure.
+   * Throws an <code>{@link AssertionError}</code> with the given message an with the <code>{@link Throwable}</code>
+   * that caused the failure.
    * @param description the description of the failed assertion. It can be <code>null</code>.
    * @param realCause cause of the error.
    */
   public static void fail(String description, Throwable realCause) {
-    AssertionError error = new AssertionError(description);
+    AssertionError error = failure(description);
     error.initCause(realCause);
     throw error;
   }
@@ -54,7 +54,12 @@ public final class Fail {
   }
 
   static void failIfNotEqual(Description description, Object actual, Object expected) {
+    failIfNotEqual(null, description, actual, expected);
+  }
+
+  static void failIfNotEqual(String overridingErrorMessage, Description description, Object actual, Object expected) {
     if (areEqual(actual, expected)) return;
+    if (overridingErrorMessage != null) throw failure(overridingErrorMessage);
     AssertionError comparisonFailure = comparisonFailure(valueOf(description), expected, actual);
     if (comparisonFailure != null) throw comparisonFailure;
     fail(format(description, unexpectedNotEqual(actual, expected)));
@@ -91,7 +96,11 @@ public final class Fail {
    * @throws AssertionError with the given message.
    */
   public static AssertionError fail(String message) {
-    throw new AssertionError(message);
+    throw failure(message);
+  }
+
+  private static AssertionError failure(String message) {
+    return new AssertionError(message);
   }
 
   private Fail() {}
