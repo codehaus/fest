@@ -17,13 +17,13 @@ package org.fest.assertions;
 
 import static org.fest.assertions.ErrorMessages.unexpectedEqual;
 import static org.fest.assertions.ErrorMessages.unexpectedNotEqual;
-import static org.fest.assertions.Fail.failWithCustomErrorMessageIfAny;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Collections.duplicatesFrom;
 import static org.fest.util.Collections.list;
 import static org.fest.util.Strings.concat;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Understands assertions for <code>Object</code> arrays.  To create a new instance of this class use the
@@ -255,7 +255,7 @@ public class ObjectArrayAssert extends ArrayAssert<Object[]> {
    */
   public ObjectArrayAssert isEqualTo(Object[] expected) {
     if (Arrays.deepEquals(actual, expected)) return this;
-    failWithCustomErrorMessageIfAny(this);
+    failWithCustomErrorMessage();
     throw failure(unexpectedNotEqual(actual, expected));
   }
 

@@ -18,9 +18,8 @@ package org.fest.assertions;
 import static org.fest.assertions.ArrayInspection.copy;
 import static org.fest.assertions.ErrorMessages.unexpectedEqual;
 import static org.fest.assertions.ErrorMessages.unexpectedNotEqual;
-import static org.fest.assertions.Fail.failWithCustomErrorMessageIfAny;
 
-import java.util.*;
+import java.util.Arrays;
 
 /**
  * Understands assertion methods for <code>long</code> arrays. To create a new instance of this class use the
@@ -194,7 +193,7 @@ public class LongArrayAssert extends ArrayAssert<long[]> {
    */
   public LongArrayAssert isEqualTo(long[] expected) {
     if (Arrays.equals(actual, expected)) return this;
-    failWithCustomErrorMessageIfAny(this);
+    failWithCustomErrorMessage();
     throw failure(unexpectedNotEqual(actual, expected));
   }
 

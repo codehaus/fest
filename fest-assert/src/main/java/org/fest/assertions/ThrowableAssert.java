@@ -102,7 +102,7 @@ public class ThrowableAssert extends GenericAssert<Throwable> {
    */
   public ThrowableAssert hasMessage(String message) {
     isNotNull();
-    failIfNotEqual(this, actual.getMessage(), message);
+    failIfNotEqual(customErrorMessage(), rawDescription(), actual.getMessage(), message);
     return this;
   }
 

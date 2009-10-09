@@ -16,6 +16,7 @@
 package org.fest.assertions;
 
 import static java.math.BigDecimal.ZERO;
+
 import java.math.BigDecimal;
 
 /**

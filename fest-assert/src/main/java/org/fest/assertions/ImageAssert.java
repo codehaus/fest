@@ -17,7 +17,6 @@ package org.fest.assertions;
 import static java.lang.String.valueOf;
 import static org.fest.assertions.ErrorMessages.unexpectedEqual;
 import static org.fest.assertions.ErrorMessages.unexpectedNotEqual;
-import static org.fest.assertions.Fail.failWithCustomErrorMessageIfAny;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.assertions.Threshold.threshold;
 import static org.fest.util.Objects.areEqual;
@@ -177,12 +176,13 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
 
   private void failIfNull(BufferedImage expected) {
     if (expected != null) return;
+    failWithCustomErrorMessage();
     fail(unexpectedNotEqual(actual, null));
   }
 
   private void failIfNotEqual(Dimension a, Dimension e) {
     if (areEqual(a, e)) return;
-    failWithCustomErrorMessageIfAny(this);
+    failWithCustomErrorMessage();
     fail(concat("image size, expected:", inBrackets(e), " but was:", inBrackets(a)));
   }
 
@@ -196,7 +196,7 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
 
   private void failIfNotEqual(RGBColor a, RGBColor e, Threshold threshold, int x, int y) {
     if (a.isEqualTo(e, threshold.value())) return;
-    failWithCustomErrorMessageIfAny(this);
+    failWithCustomErrorMessage();
     fail(concat("expected:", inBrackets(a), " but was:", inBrackets(e), " at pixel [", valueOf(x), ",", valueOf(y), "]"));
   }
 
@@ -272,7 +272,7 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
     if (expected == null)
       throw new NullPointerException(formattedErrorMessage("The size to compare to should not be null"));
     Dimension actualDimension = new Dimension(actual.getWidth(), actual.getHeight());
-    Fail.failIfNotEqual(this, actualDimension, expected);
+    Fail.failIfNotEqual(customErrorMessage(), rawDescription(), actualDimension, expected);
     return this;
   }
 

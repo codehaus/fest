@@ -18,7 +18,8 @@ package org.fest.assertions;
 import static java.lang.reflect.Array.get;
 import static java.lang.reflect.Array.getLength;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Understands utility methods for arrays.

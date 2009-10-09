@@ -18,11 +18,10 @@ import static java.lang.Math.abs;
 import static org.fest.assertions.ArrayInspection.copy;
 import static org.fest.assertions.ErrorMessages.unexpectedEqual;
 import static org.fest.assertions.ErrorMessages.unexpectedNotEqual;
-import static org.fest.assertions.Fail.failWithCustomErrorMessageIfAny;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Strings.concat;
 
-import java.util.*;
+import java.util.Arrays;
 
 /**
  * Understands assertion methods for <code>double</code> arrays. To create a new instance of this class use the method
@@ -196,7 +195,7 @@ public class DoubleArrayAssert extends ArrayAssert<double[]> {
    */
   public DoubleArrayAssert isEqualTo(double[] expected) {
     if (Arrays.equals(actual, expected)) return this;
-    failWithCustomErrorMessageIfAny(this);
+    failWithCustomErrorMessage();
     throw failure(unexpectedNotEqual(actual, expected));
   }
 
