@@ -79,7 +79,7 @@ public final class Fail {
    * Throws an <code>{@link AssertionError}</code> if the given object is <code>null</code>.
    * @param customErrorMessage any custom error message. This message will replace the default one only if it (the
    * custom message) is not <code>null</code>.
-   * @param descriptionOfActual the description of the given object.
+   * @param description the description of the given object.
    * @param o the given object.
    * @throws AssertionError if the given object is <code>null</code>.
    */
@@ -94,9 +94,19 @@ public final class Fail {
     fail(description, array(inBrackets(o), " should be null"));
   }
 
-  static void failIfSame(Description description, Object first, Object second) {
-    if (first != second) return;
-    fail(description, array("given objects are same:", inBrackets(first)));
+  /**
+   * Throws an <code>{@link AssertionError}</code> if the given objects are the same.
+   * @param customErrorMessage any custom error message. This message will replace the default one only if it (the
+   * custom message) is not <code>null</code>.
+   * @param descriptionOfActual the description of the actual value.
+   * @param actual the actual object.
+   * @param other the object to compare to.
+   * @throws AssertionError if the given objects are the same.
+   */
+  static void failIfSame(String customErrorMessage, Description descriptionOfActual, Object actual, Object other) {
+    if (actual != other) return;
+    failWithMessage(customErrorMessage);
+    fail(descriptionOfActual, array("given objects are same:", inBrackets(actual)));
   }
 
   static void failIfNotSame(Description description, Object first, Object second) {
@@ -124,7 +134,7 @@ public final class Fail {
    * <strong>Note:</strong> This method appears to return <code>{@link AssertionError}</code>, but it is really not the
    * case, since the exception is thrown and not returned. In version 2.0 the return type of this method will change
    * to <code>void</code>. Since we cannot create an overloaded version with return type <code>void</code>, we cannot
-   * deprecate this method. Just assume this method does not return anything.
+   * deprecate this method. Please pretend this method does not return anything :)
    * </p>
    * @param message error message.
    * @return the thrown <code>AssertionError</code>.

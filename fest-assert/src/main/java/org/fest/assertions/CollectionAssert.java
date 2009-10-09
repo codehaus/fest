@@ -218,8 +218,9 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
    * @throws AssertionError if the actual collection is <code>null</code>.
    */
   public CollectionAssert isNotNull() {
-    if (actual == null) fail("expecting a non-null collection, but it was null");
-    return this;
+    if (actual != null) return this;
+    failWithCustomErrorMessage();
+    throw failure("expecting a non-null collection, but it was null");
   }
 
   /**
