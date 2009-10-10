@@ -196,7 +196,7 @@ public class BigDecimalAssert extends ComparableAssert<BigDecimal> implements Nu
    * @return this assertion object.
    * @throws AssertionError if the actual <code>BigDecimal</code> value is <code>null</code>.
    */
-  public BigDecimalAssert isNotNull() {
+  public BigDecimalAssert isNotNull()  {
     assertNotNull();
     return this;
   }

@@ -16,6 +16,9 @@ package org.fest.assertions;
 
 import static org.fest.assertions.CommonFailures.*;
 import static org.fest.assertions.Images.fivePixelBlueImage;
+
+import java.awt.image.BufferedImage;
+
 import org.fest.test.CodeToTest;
 import org.junit.Test;
 
@@ -25,7 +28,7 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class ImageAssert_isNotNull_Test implements GenericAssert_isNotNull_TestCase {
+public class ImageAssert_isNotNull_Test implements NullableAssert_isNotNull_TestCase {
 
   @Test
   public void should_pass_if_actual_is_not_null() {
@@ -48,5 +51,12 @@ public class ImageAssert_isNotNull_Test implements GenericAssert_isNotNull_TestC
         new ImageAssert(null).as("A Test").isNotNull();
       }
     });
+  }
+
+  @Test
+  public void should_have_leaf_assertion_class_as_return_type() {
+    ImageAssert initialInstance = new ImageAssert(new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB));
+    @SuppressWarnings("unused")
+    ImageAssert returnValue = initialInstance.isNotNull();
   }
 }

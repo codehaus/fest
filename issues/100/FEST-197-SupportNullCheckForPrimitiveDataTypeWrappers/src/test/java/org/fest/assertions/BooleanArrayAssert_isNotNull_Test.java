@@ -27,7 +27,7 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class BooleanArrayAssert_isNotNull_Test implements GenericAssert_isNotNull_TestCase {
+public class BooleanArrayAssert_isNotNull_Test implements NullableAssert_isNotNull_TestCase {
 
   @Test
   public void should_pass_if_actual_is_not_null() {
@@ -51,5 +51,12 @@ public class BooleanArrayAssert_isNotNull_Test implements GenericAssert_isNotNul
                                     .isNotNull();
       }
     });
+  }
+
+  @Test
+  public void should_have_leaf_assertion_class_as_return_type() {
+    BooleanArrayAssert initialInstance = new BooleanArrayAssert(true, true, true);
+    @SuppressWarnings("unused")
+    BooleanArrayAssert returnValue = initialInstance.isNotNull();
   }
 }

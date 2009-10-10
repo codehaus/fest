@@ -17,6 +17,9 @@ package org.fest.assertions;
 import static java.util.Collections.emptyList;
 import static org.fest.assertions.CommonFailures.expectErrorIfListIsNull;
 import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfListIsNull;
+
+import java.util.ArrayList;
+
 import org.fest.test.CodeToTest;
 import org.junit.Test;
 
@@ -25,7 +28,7 @@ import org.junit.Test;
  *
  * @author Alex Ruiz
  */
-public class ListAssert_isNotNull_Test implements GenericAssert_isNotNull_TestCase {
+public class ListAssert_isNotNull_Test implements NullableAssert_isNotNull_TestCase {
 
   @Test
   public void should_pass_if_actual_is_not_null() {
@@ -49,5 +52,12 @@ public class ListAssert_isNotNull_Test implements GenericAssert_isNotNull_TestCa
                             .isNotNull();
       }
     });
+  }
+
+  @Test
+  public void should_have_leaf_assertion_class_as_return_type() {
+    ListAssert initialInstance = new ListAssert(new ArrayList<Integer>());
+    @SuppressWarnings("unused")
+    ListAssert returnValue = initialInstance.isNotNull();
   }
 }

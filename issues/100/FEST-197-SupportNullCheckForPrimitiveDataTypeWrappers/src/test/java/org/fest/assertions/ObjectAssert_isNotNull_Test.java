@@ -26,7 +26,7 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class ObjectAssert_isNotNull_Test implements GenericAssert_isNotNull_TestCase {
+public class ObjectAssert_isNotNull_Test implements NullableAssert_isNotNull_TestCase {
 
   @Test
   public void should_pass_if_actual_is_not_null() {
@@ -50,5 +50,12 @@ public class ObjectAssert_isNotNull_Test implements GenericAssert_isNotNull_Test
                               .isNotNull();
       }
     });
+  }
+
+  @Test
+  public void should_have_leaf_assertion_class_as_return_type() {
+    ObjectAssert initialInstance = new ObjectAssert(new Object());
+    @SuppressWarnings("unused")
+    ObjectAssert returnValue = initialInstance.isNotNull();
   }
 }

@@ -26,7 +26,7 @@ import org.junit.Test;
  * @author David DIDIER
  * @author Alex Ruiz
  */
-public class ThrowableAssert_isNotNull_Test implements GenericAssert_isNotNull_TestCase {
+public class ThrowableAssert_isNotNull_Test implements NullableAssert_isNotNull_TestCase {
 
   @Test
   public void should_pass_if_actual_is_not_null() {
@@ -50,5 +50,12 @@ public class ThrowableAssert_isNotNull_Test implements GenericAssert_isNotNull_T
                                  .isNotNull();
       }
     });
+  }
+
+  @Test
+  public void should_have_leaf_assertion_class_as_return_type() {
+    ThrowableAssert initialInstance = new ThrowableAssert(new RuntimeException());
+    @SuppressWarnings("unused")
+    ThrowableAssert returnValue = initialInstance.isNotNull();
   }
 }

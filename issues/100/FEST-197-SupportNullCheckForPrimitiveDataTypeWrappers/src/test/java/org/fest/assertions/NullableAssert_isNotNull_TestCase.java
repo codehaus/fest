@@ -15,15 +15,17 @@
 package org.fest.assertions;
 
 /**
- * Test case for <code>{@link GenericAssert#isNull()}</code>.
+ * Test case for implementations of <code>{@link GenericAssert#isNotNull()}</code>.
  *
  * @author Alex Ruiz
  */
-public interface GenericAssert_isNull_TestCase {
+public interface NullableAssert_isNotNull_TestCase {
 
-  void should_pass_if_actual_is_null();
+  void should_pass_if_actual_is_not_null();
 
-  void should_fail_if_actual_is_not_null();
+  void should_fail_if_actual_is_null();
 
-  void should_fail_and_display_description_of_assertion_if_actual_is_not_null();
+  void should_fail_and_display_description_of_assertion_if_actual_is_null();
+  
+  void should_have_leaf_assertion_class_as_return_type();
 }
