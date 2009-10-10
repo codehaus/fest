@@ -16,36 +16,38 @@ package org.fest.assertions;
 
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import org.fest.test.CodeToTest;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link Fail#failIfNotEqual(GenericAssert, Object, Object)}</code>.
+ * Tests for <code>{@link Fail#failIfNotEqual(String, Description, Object, Object)}</code>.
  *
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
 public class Fail_failIfNotEqual_Test {
 
-  private StringAssert assertion;
-
-  @Before
-  public void setUp() {
-    assertion = new StringAssert("Hello");
-  }
-
   @Test
   public void should_fail_if_values_are_not_equal() {
     String expectedMessage = "[A message] expected:<'[Luke]'> but was:<'[Yoda]'>";
     expectAssertionError(expectedMessage).on(new CodeToTest() {
       public void run() {
-        Fail.failIfNotEqual(assertion.as("A message"), "Yoda", "Luke");
+        Fail.failIfNotEqual(null, new BasicDescription("A message"), "Yoda", "Luke");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_values_are_not_equal() {
+    String expectedMessage = "My custom message";
+    expectAssertionError(expectedMessage).on(new CodeToTest() {
+      public void run() {
+        Fail.failIfNotEqual("My custom message", null, "Yoda", "Luke");
       }
     });
   }
 
   @Test
   public void should_pass_if_values_are_equal() {
-    Fail.failIfNotEqual(assertion, "Yoda", "Yoda");
+    Fail.failIfNotEqual(null, null, "Yoda", "Yoda");
   }
 }
