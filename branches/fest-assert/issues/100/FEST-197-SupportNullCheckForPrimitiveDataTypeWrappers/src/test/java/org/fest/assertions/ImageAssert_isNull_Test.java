@@ -29,7 +29,7 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class ImageAssert_isNull_Test implements GenericAssert_isNull_TestCase {
+public class ImageAssert_isNull_Test implements NullableAssert_isNull_TestCase {
 
   @Test
   public void should_pass_if_actual_is_null() {

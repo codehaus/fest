@@ -18,6 +18,8 @@ import static java.math.BigDecimal.ZERO;
 import static org.fest.assertions.CommonFailures.expectErrorIfObjectIsNull;
 import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfObjectIsNull;
 
+import java.math.BigDecimal;
+
 import org.fest.test.CodeToTest;
 import org.junit.Test;
 
@@ -29,7 +31,7 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class BigDecimalAssert_isNotNull_Test implements GenericAssert_isNotNull_TestCase {
+public class BigDecimalAssert_isNotNull_Test implements NullableAssert_isNotNull_TestCase {
 
   @Test
   public void should_pass_if_actual_is_not_null() {
@@ -53,4 +55,13 @@ public class BigDecimalAssert_isNotNull_Test implements GenericAssert_isNotNull_
       }
     });
   }
+
+  @Test
+  public void should_have_leaf_assertion_class_as_return_type() {
+    BigDecimalAssert initialInstance = new BigDecimalAssert(BigDecimal.ZERO);
+    @SuppressWarnings("unused")
+    BigDecimalAssert returnValue = initialInstance.isNotNull();
+  }
+  
+  
 }
