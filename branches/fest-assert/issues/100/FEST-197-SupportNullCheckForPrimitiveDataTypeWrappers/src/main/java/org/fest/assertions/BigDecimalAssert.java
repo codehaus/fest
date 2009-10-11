@@ -16,6 +16,7 @@
 package org.fest.assertions;
 
 import static java.math.BigDecimal.ZERO;
+
 import java.math.BigDecimal;
 
 /**
@@ -37,72 +38,24 @@ public class BigDecimalAssert extends ComparableAssert<BigDecimal> implements Nu
     super(actual);
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(value).<strong>as</strong>(&quot;Result&quot;).isNotNull();
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public BigDecimalAssert as(String description) {
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(String)}</code>, since "as" is a keyword in
-   * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(value).<strong>describedAs</strong>(&quot;Result&quot;).isNotNull();
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public BigDecimalAssert describedAs(String description) {
     return as(description);
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(value).<strong>as</strong>(new BasicDescription(&quot;Result&quot;)).isNotNull();
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public BigDecimalAssert as(Description description) {
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(Description)}</code>, since "as" is a keyword in
-   * <a href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(value).<strong>describedAs</strong>(new BasicDescription(&quot;Result&quot;)).isNotNull();
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public BigDecimalAssert describedAs(Description description) {
     return as(description);
   }
@@ -325,6 +278,12 @@ public class BigDecimalAssert extends ComparableAssert<BigDecimal> implements Nu
    */
   public BigDecimalAssert isGreaterThanOrEqualTo(BigDecimal other) {
     assertIsGreaterThanOrEqualTo(other);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  public BigDecimalAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
     return this;
   }
 }

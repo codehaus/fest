@@ -19,7 +19,7 @@ import org.fest.test.CodeToTest;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link Fail#failIfNull(Description, Object)}</code>.
+ * Tests for <code>{@link Fail#failIfNull(String, Description, Object)}</code>.
  *
  * @author Yvonne Wang
  * @author Alex Ruiz
@@ -31,13 +31,23 @@ public class Fail_failIfNull_Test {
     String expectedMessage = "[A message] expecting a non-null object, but it was null";
     expectAssertionError(expectedMessage).on(new CodeToTest() {
       public void run() {
-        Fail.failIfNull(new BasicDescription("A message"), null);
+        Fail.failIfNull(null, new BasicDescription("A message"), null);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_value_is_null() {
+    String expectedMessage = "My custom message";
+    expectAssertionError(expectedMessage).on(new CodeToTest() {
+      public void run() {
+        Fail.failIfNull("My custom message", null, null);
       }
     });
   }
 
   @Test
   public void should_pass_if_value_is_not_null() {
-    Fail.failIfNull(new BasicDescription(""), "Luke");
+    Fail.failIfNull(null, null, "Luke");
   }
 }

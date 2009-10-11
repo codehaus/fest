@@ -21,7 +21,7 @@ import static org.fest.assertions.ErrorMessages.unexpectedNotEqual;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Strings.concat;
 
-import java.util.*;
+import java.util.Arrays;
 
 /**
  * Understands assertion methods for <code>double</code> arrays. To create a new instance of this class use the method
@@ -40,80 +40,24 @@ public class DoubleArrayAssert extends ArrayAssert<double[]> {
     super(actual);
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   *
-   * <pre>
-   * assertThat(values).&lt;strong&gt;as&lt;/strong&gt;(&quot;Some values&quot;).isNotEmpty();
-   * </pre>
-   *
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public DoubleArrayAssert as(String description) {
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(String)}</code>, since "as" is a keyword in <a href="http://groovy.codehaus.org/"
-   * target="_blank">Groovy</a>. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   *
-   * <pre>
-   * assertThat(values).&lt;strong&gt;describedAs&lt;/strong&gt;(&quot;Some values&quot;).isNotEmpty();
-   * </pre>
-   *
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public DoubleArrayAssert describedAs(String description) {
     return as(description);
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   *
-   * <pre>
-   * assertThat(values).&lt;strong&gt;as&lt;/strong&gt;(new BasicDescription(&quot;Some values&quot;)).isNotEmpty();
-   * </pre>
-   *
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public DoubleArrayAssert as(Description description) {
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(Description)}</code>, since "as" is a keyword in <a
-   * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
-   * <p>
-   * For example:
-   *
-   * <pre>
-   * assertThat(values).&lt;strong&gt;describedAs&lt;/strong&gt;(new BasicDescription(&quot;Some values&quot;)).isNotEmpty();
-   * </pre>
-   *
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public DoubleArrayAssert describedAs(Description description) {
     return as(description);
   }
@@ -250,8 +194,9 @@ public class DoubleArrayAssert extends ArrayAssert<double[]> {
    * @throws AssertionError if the actual <code>double</code> array is not equal to the given one.
    */
   public DoubleArrayAssert isEqualTo(double[] expected) {
-    if (!Arrays.equals(actual, expected)) fail(unexpectedNotEqual(actual, expected));
-    return this;
+    if (Arrays.equals(actual, expected)) return this;
+    failWithCustomErrorMessage();
+    throw failure(unexpectedNotEqual(actual, expected));
   }
 
   /**
@@ -325,6 +270,12 @@ public class DoubleArrayAssert extends ArrayAssert<double[]> {
    */
   public DoubleArrayAssert isNotSameAs(double[] expected) {
     assertNotSameAs(expected);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  public DoubleArrayAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
     return this;
   }
 }

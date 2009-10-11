@@ -50,73 +50,25 @@ public class FileAssert extends GenericAssert<File> {
     this.comparator = comparator;
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>.
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(folder).<strong>as</strong>(&quot;Temp Folder&quot;).exists();
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
-  @Override public FileAssert as(String description) {
+  /** {@inheritDoc} */
+  public FileAssert as(String description) {
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(String)}</code>, since "as" is a keyword in <a
-   * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(folder).<strong>describedAs</strong>(&quot;Temp Folder&quot;).exists();
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
-  @Override public FileAssert describedAs(String description) {
+  /** {@inheritDoc} */
+  public FileAssert describedAs(String description) {
     return as(description);
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>.
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(folder).<strong>as</strong>(new BasicDescription(&quot;Temp Folder&quot;)).exists();
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
-  @Override public FileAssert as(Description description) {
+  /** {@inheritDoc} */
+  public FileAssert as(Description description) {
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(Description)}</code>, since "as" is a keyword in <a
-   * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(folder).<strong>describedAs</strong>(new BasicDescription(&quot;Temp Folder&quot;)).exists();
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
-  @Override public FileAssert describedAs(Description description) {
+  /** {@inheritDoc} */
+  public FileAssert describedAs(Description description) {
     return as(description);
   }
 
@@ -214,7 +166,7 @@ public class FileAssert extends GenericAssert<File> {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>File</code> is <code>null</code>.
    */
-  @Override public FileAssert isNotNull() {
+  public FileAssert isNotNull() {
     assertNotNull();
     return this;
   }
@@ -357,6 +309,12 @@ public class FileAssert extends GenericAssert<File> {
   public FileAssert isAbsolute() {
     isNotNull();
     if (!actual.isAbsolute()) fail(concat("file:", inBrackets(actual), " should be an absolute path"));
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  public FileAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
     return this;
   }
 }

@@ -19,7 +19,7 @@ import static org.fest.assertions.ArrayInspection.copy;
 import static org.fest.assertions.ErrorMessages.unexpectedEqual;
 import static org.fest.assertions.ErrorMessages.unexpectedNotEqual;
 
-import java.util.*;
+import java.util.Arrays;
 
 /**
  * Understands assertion methods for <code>char</code> arrays. To create a new instance of this class use the
@@ -240,8 +240,9 @@ public class CharArrayAssert extends ArrayAssert<char[]> {
    * @throws AssertionError if the actual <code>char</code> array is not equal to the given one.
    */
   public CharArrayAssert isEqualTo(char[] expected) {
-    if (!Arrays.equals(actual, expected)) fail(unexpectedNotEqual(actual, expected));
-    return this;
+    if (Arrays.equals(actual, expected)) return this;
+    failWithCustomErrorMessage();
+    throw failure(unexpectedNotEqual(actual, expected));
   }
 
   /**
@@ -288,6 +289,12 @@ public class CharArrayAssert extends ArrayAssert<char[]> {
    */
   public CharArrayAssert isNotSameAs(char[] expected) {
     assertNotSameAs(expected);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  public CharArrayAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
     return this;
   }
 }

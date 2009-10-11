@@ -60,4 +60,25 @@ public class BigDecimalAssert_isEqualTo_Test implements GenericAssert_isEqualTo_
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(eight()).overridingErrorMessage("My custom message")
+                                     .isEqualTo(new BigDecimal("8.00"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(eight()).as("A Test")
+                                     .overridingErrorMessage("My custom message")
+                                     .isEqualTo(new BigDecimal("8.00"));
+      }
+    });
+  }
 }
