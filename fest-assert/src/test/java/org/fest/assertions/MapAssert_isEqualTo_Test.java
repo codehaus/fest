@@ -62,8 +62,34 @@ public class MapAssert_isEqualTo_Test implements GenericAssert_isEqualTo_TestCas
         public void run() {
           Map<Object, Object> a = map(entry("key1", 1), entry("key2", 2));
           Map<Object, Object> e = map(entry("key6", 6), entry("key8", 8));
-          new MapAssert(a).as("A Test").isEqualTo(e);
+          new MapAssert(a).as("A Test")
+                          .isEqualTo(e);
         }
       });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        Map<Object, Object> a = map(entry("key1", 1), entry("key2", 2));
+        Map<Object, Object> e = map(entry("key6", 6), entry("key8", 8));
+        new MapAssert(a).overridingErrorMessage("My custom message")
+                        .isEqualTo(e);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        Map<Object, Object> a = map(entry("key1", 1), entry("key2", 2));
+        Map<Object, Object> e = map(entry("key6", 6), entry("key8", 8));
+        new MapAssert(a).as("A Test")
+                        .overridingErrorMessage("My custom message")
+                        .isEqualTo(e);
+      }
+    });
   }
 }

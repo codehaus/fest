@@ -17,6 +17,7 @@ package org.fest.assertions;
 import static org.fest.assertions.CommonFailures.expectErrorIfArrayIsNull;
 import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfArrayIsNull;
 import static org.fest.assertions.EmptyArrays.emptyObjectArray;
+import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
 import org.junit.Test;
@@ -50,6 +51,29 @@ public class ObjectArrayAssert_isNotNull_Test implements GenericAssert_isNotNull
       public void run() {
         Object[] actual = null;
         new ObjectArrayAssert(actual).as("A Test")
+                                     .isNotNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        Object[] actual = null;
+        new ObjectArrayAssert(actual).overridingErrorMessage("My custom message")
+                                     .isNotNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        Object[] actual = null;
+        new ObjectArrayAssert(actual).as("A Test")
+                                     .overridingErrorMessage("My custom message")
                                      .isNotNull();
       }
     });

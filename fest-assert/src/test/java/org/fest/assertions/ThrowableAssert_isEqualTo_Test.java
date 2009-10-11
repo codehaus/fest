@@ -58,4 +58,25 @@ public class ThrowableAssert_isEqualTo_Test implements GenericAssert_isEqualTo_T
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ThrowableAssert(new Exception()).overridingErrorMessage("My custom message")
+                                            .isEqualTo(new IllegalArgumentException());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ThrowableAssert(new Exception()).as("A Test")
+                                            .overridingErrorMessage("My custom message")
+                                            .isEqualTo(new IllegalArgumentException());
+      }
+    });
+  }
 }

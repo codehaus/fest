@@ -19,6 +19,7 @@ import static org.fest.assertions.ArrayFactory.objectArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -29,16 +30,22 @@ import org.junit.Test;
  */
 public class ObjectArrayAssert_isNotSameAs_Test implements GenericAssert_isNotSameAs_TestCase {
 
+  private static Object[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = objectArray(6, 8);
+  }
+
   @Test
   public void should_pass_if_actual_and_expected_are_not_same() {
-    new ObjectArrayAssert(6).isNotSameAs(emptyObjectArray());
+    new ObjectArrayAssert(array).isNotSameAs(emptyObjectArray());
   }
 
   @Test
   public void should_fail_if_actual_and_expected_are_same() {
     expectAssertionError("given objects are same:<[6, 8]>").on(new CodeToTest() {
       public void run() {
-        Object[] array = objectArray(6, 8);
         new ObjectArrayAssert(array).isNotSameAs(array);
       }
     });
@@ -48,9 +55,29 @@ public class ObjectArrayAssert_isNotSameAs_Test implements GenericAssert_isNotSa
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_same() {
     expectAssertionError("[A Test] given objects are same:<[6, 8]>").on(new CodeToTest() {
       public void run() {
-        Object[] array = objectArray(6, 8);
         new ObjectArrayAssert(array).as("A Test")
-                                    .isNotSameAs(array);
+                                     .isNotSameAs(array);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectArrayAssert(array).overridingErrorMessage("My custom message")
+                                     .isNotSameAs(array);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectArrayAssert(array).as("A Test")
+                                     .overridingErrorMessage("My custom message")
+                                     .isNotSameAs(array);
       }
     });
   }

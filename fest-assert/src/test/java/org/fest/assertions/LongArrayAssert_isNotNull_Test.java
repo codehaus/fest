@@ -17,6 +17,7 @@ package org.fest.assertions;
 import static org.fest.assertions.CommonFailures.expectErrorIfArrayIsNull;
 import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfArrayIsNull;
 import static org.fest.assertions.EmptyArrays.emptyLongArray;
+import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
 import org.junit.Test;
@@ -48,6 +49,27 @@ public class LongArrayAssert_isNotNull_Test implements GenericAssert_isNotNull_T
     expectErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
       public void run() {
         new LongArrayAssert(null).as("A Test")
+                                 .isNotNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new LongArrayAssert(null).overridingErrorMessage("My custom message")
+                                 .isNotNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new LongArrayAssert(null).as("A Test")
+                                 .overridingErrorMessage("My custom message")
                                  .isNotNull();
       }
     });
