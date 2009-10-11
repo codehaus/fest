@@ -66,80 +66,24 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
     super(actual);
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   *
-   * <pre>
-   * assertThat(picture).&lt;strong&gt;as&lt;/strong&gt;(&quot;Vacation Picture&quot;).hasSize(new Dimension(800, 600));
-   * </pre>
-   *
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public ImageAssert as(String description) {
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(String)}</code>, since "as" is a keyword in <a href="http://groovy.codehaus.org/"
-   * target="_blank">Groovy</a>. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   *
-   * <pre>
-   * assertThat(picture).&lt;strong&gt;describedAs&lt;/strong&gt;(&quot;Vacation Picture&quot;).hasSize(new Dimension(800, 600));
-   * </pre>
-   *
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public ImageAssert describedAs(String description) {
     return as(description);
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   *
-   * <pre>
-   * assertThat(picture).&lt;strong&gt;as&lt;/strong&gt;(new BasicDescription(&quot;Vacation Picture&quot;)).hasSize(new Dimension(800, 600));
-   * </pre>
-   *
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public ImageAssert as(Description description) {
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(Description)}</code>, since "as" is a keyword in <a
-   * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
-   * <p>
-   * For example:
-   *
-   * <pre>
-   * assertThat(picture).&lt;strong&gt;describedAs&lt;/strong&gt;(new BasicDescription(&quot;Vacation Picture&quot;)).hasSize(new Dimension(800, 600));
-   * </pre>
-   *
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public ImageAssert describedAs(Description description) {
     return as(description);
   }
@@ -232,11 +176,14 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
 
   private void failIfNull(BufferedImage expected) {
     if (expected != null) return;
+    failWithCustomErrorMessage();
     fail(unexpectedNotEqual(actual, null));
   }
 
   private void failIfNotEqual(Dimension a, Dimension e) {
-    if (!areEqual(a, e)) fail(concat("image size, expected:", inBrackets(e), " but was:", inBrackets(a)));
+    if (areEqual(a, e)) return;
+    failWithCustomErrorMessage();
+    fail(concat("image size, expected:", inBrackets(e), " but was:", inBrackets(a)));
   }
 
   private void failIfNotEqualColor(BufferedImage expected, Threshold threshold) {
@@ -249,6 +196,7 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
 
   private void failIfNotEqual(RGBColor a, RGBColor e, Threshold threshold, int x, int y) {
     if (a.isEqualTo(e, threshold.value())) return;
+    failWithCustomErrorMessage();
     fail(concat("expected:", inBrackets(a), " but was:", inBrackets(e), " at pixel [", valueOf(x), ",", valueOf(y), "]"));
   }
 
@@ -324,7 +272,13 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
     if (expected == null)
       throw new NullPointerException(formattedErrorMessage("The size to compare to should not be null"));
     Dimension actualDimension = new Dimension(actual.getWidth(), actual.getHeight());
-    Fail.failIfNotEqual(rawDescription(), actualDimension, expected);
+    Fail.failIfNotEqual(customErrorMessage(), rawDescription(), actualDimension, expected);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  public ImageAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
     return this;
   }
 

@@ -16,7 +16,8 @@
 package org.fest.assertions;
 
 import static org.fest.assertions.ComparisonFailureFactory.comparisonFailure;
-import static org.fest.assertions.ErrorMessages.*;
+import static org.fest.assertions.ErrorMessages.unexpectedEqual;
+import static org.fest.assertions.ErrorMessages.unexpectedNotEqual;
 import static org.fest.assertions.Formatting.*;
 import static org.fest.util.Arrays.array;
 import static org.fest.util.Objects.areEqual;
@@ -38,13 +39,13 @@ public final class Fail {
   }
 
   /**
-   * Throws an {@link AssertionError} with the given message an with the <code>{@link Throwable}</code> that caused the
-   * failure.
+   * Throws an <code>{@link AssertionError}</code> with the given message an with the <code>{@link Throwable}</code>
+   * that caused the failure.
    * @param description the description of the failed assertion. It can be <code>null</code>.
    * @param realCause cause of the error.
    */
   public static void fail(String description, Throwable realCause) {
-    AssertionError error = new AssertionError(description);
+    AssertionError error = failure(description);
     error.initCause(realCause);
     throw error;
   }
@@ -53,15 +54,38 @@ public final class Fail {
     if (areEqual(first, second)) fail(format(description, unexpectedEqual(first, second)));
   }
 
-  static void failIfNotEqual(Description description, Object actual, Object expected) {
+  /**
+   * Throws an <code>{@link AssertionError}</code> if 'actual' is not equal to 'expected'.
+   * @param customErrorMessage any custom error message. This message will replace the default one only if it (the
+   * custom message) is not <code>null</code>.
+   * @param descriptionOfActual the description of the actual value.
+   * @param actual the actual object.
+   * @param expected the expected object.
+   * @throws AssertionError if the given objects are not equal.
+   */
+  static void failIfNotEqual(String customErrorMessage, Description descriptionOfActual, Object actual, Object expected) {
     if (areEqual(actual, expected)) return;
+    failWithMessage(customErrorMessage);
+    failWhenNotEqual(descriptionOfActual, actual, expected);
+  }
+
+  private static void failWhenNotEqual(Description description, Object actual, Object expected) {
     AssertionError comparisonFailure = comparisonFailure(valueOf(description), expected, actual);
     if (comparisonFailure != null) throw comparisonFailure;
     fail(format(description, unexpectedNotEqual(actual, expected)));
   }
 
-  static void failIfNull(Description description, Object o) {
+  /**
+   * Throws an <code>{@link AssertionError}</code> if the given object is <code>null</code>.
+   * @param customErrorMessage any custom error message. This message will replace the default one only if it (the
+   * custom message) is not <code>null</code>.
+   * @param description the description of the given object.
+   * @param o the given object.
+   * @throws AssertionError if the given object is <code>null</code>.
+   */
+  static void failIfNull(String customErrorMessage, Description description, Object o) {
     if (o != null) return;
+    failWithMessage(customErrorMessage);
     fail(description, array("expecting a non-null object, but it was null"));
   }
 
@@ -70,9 +94,19 @@ public final class Fail {
     fail(description, array(inBrackets(o), " should be null"));
   }
 
-  static void failIfSame(Description description, Object first, Object second) {
-    if (first != second) return;
-    fail(description, array("given objects are same:", inBrackets(first)));
+  /**
+   * Throws an <code>{@link AssertionError}</code> if the given objects are the same.
+   * @param customErrorMessage any custom error message. This message will replace the default one only if it (the
+   * custom message) is not <code>null</code>.
+   * @param descriptionOfActual the description of the actual value.
+   * @param actual the actual object.
+   * @param other the object to compare to.
+   * @throws AssertionError if the given objects are the same.
+   */
+  static void failIfSame(String customErrorMessage, Description descriptionOfActual, Object actual, Object other) {
+    if (actual != other) return;
+    failWithMessage(customErrorMessage);
+    fail(descriptionOfActual, array("given objects are same:", inBrackets(actual)));
   }
 
   static void failIfNotSame(Description description, Object first, Object second) {
@@ -80,18 +114,45 @@ public final class Fail {
     fail(description, array("expected same instance but found:", inBrackets(first), " and:", inBrackets(second)));
   }
 
+  /**
+   * Throws an <code>{@link AssertionError}</code> using the custom error message specified in the given assertion. If
+   * the assertion does not have a custom error message, this method will not throw any exceptions.
+   * @param assertion the assertion object, that may contain a custom error message.
+   * @throws AssertionError if the given assertion has a custom error message.
+   */
+  static void failWithMessage(String customErrorMessage) {
+    if (customErrorMessage != null) fail(customErrorMessage);
+  }
+
   private static AssertionError fail(Description description, Object[] message) {
-    return fail(createMessageFrom(description, message));
+    throw failure(createMessageFrom(description, message));
   }
 
   /**
    * Fails with the given message.
+   * <p>
+   * <strong>Note:</strong> This method appears to return <code>{@link AssertionError}</code>, but it is really not the
+   * case, since the exception is thrown and not returned. In version 2.0 the return type of this method will change
+   * to <code>void</code>. Since we cannot create an overloaded version with return type <code>void</code>, we cannot
+   * deprecate this method. Please pretend this method does not return anything :)
+   * </p>
    * @param message error message.
    * @return the thrown <code>AssertionError</code>.
    * @throws AssertionError with the given message.
    */
   public static AssertionError fail(String message) {
-    throw new AssertionError(message);
+    // TODO change return type to 'void'
+    throw failure(message);
+  }
+
+  /**
+   * Creates a <code>{@link AssertionError}</code> with the given message.
+   * @param message the message of the exception to create.
+   * @return the created exception.
+   * @since 1.2
+   */
+  public static AssertionError failure(String message) {
+    return new AssertionError(message);
   }
 
   private Fail() {}

@@ -16,7 +16,8 @@
 package org.fest.assertions;
 
 import static org.fest.assertions.ToString.toStringOf;
-import static org.fest.util.Strings.*;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.isEmpty;
 
 /**
  * Provides utility methods related to formatting.

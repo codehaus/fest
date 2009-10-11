@@ -30,6 +30,8 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
 
   protected final T actual;
 
+  private String errorMessage;
+
   /**
    * Creates a new <code>{@link GenericAssert}</code>.
    * @param actual the actual target to verify.
@@ -261,7 +263,7 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    * @throws AssertionError if the actual value is not equal to the given one.
    */
   protected final void assertEqualTo(T expected) {
-    failIfNotEqual(rawDescription(), actual, expected);
+    failIfNotEqual(customErrorMessage(), rawDescription(), actual, expected);
   }
 
   /**
@@ -278,7 +280,7 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    * @throws AssertionError if the actual value is <code>null</code>.
    */
   protected final void assertNotNull() {
-    failIfNull(rawDescription(), actual);
+    failIfNull(customErrorMessage(), rawDescription(), actual);
   }
 
   /**
@@ -296,6 +298,48 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    * @throws AssertionError if the actual value is the same as the given one.
    */
   protected final void assertNotSameAs(T expected) {
-    failIfSame(rawDescription(), actual, expected);
+    failIfSame(customErrorMessage(), rawDescription(), actual, expected);
+  }
+
+  void failWithCustomErrorMessage() {
+    failWithMessage(customErrorMessage());
+  }
+
+  /**
+   * Replaces the default message displayed in case of a failure with the given one.
+   * <p>
+   * For example, the following assertion:
+   * <pre>
+   * assertThat("Hello").isEqualTo("Bye");
+   * </pre>
+   * will fail with the default message "<em>expected:<'[Bye]'> but was:<'[Hello]'></em>."
+   * </p>
+   * <p>
+   * We can replace this message with our own:
+   * <pre>
+   * assertThat("Hello").overridingErrorMessage("'Hello' should be equal to 'Bye'").isEqualTo("Bye");
+   * </pre>
+   * in this case, the assertion will fail showing the message "<em>'Hello' should be equal to 'Bye'</em>".
+   * </p>
+   * @param message the given error message, which will replace the default one.
+   * @return this assertion.
+   * @since 1.2
+   */
+  protected abstract GenericAssert<T> overridingErrorMessage(String message);
+
+  /**
+   * Specifies the message to use in case of a failure, replacing the default one.
+   * @param message the new error message.
+   */
+  protected final void replaceDefaultErrorMessagesWith(String message) {
+    errorMessage = message;
+  }
+
+  /**
+   * Returns the message to use when a failure occurs, if one has been specified.
+   * @return the message to use when a failure occurs, or <code>null</code> if none has been specified.
+   */
+  protected final String customErrorMessage() {
+    return errorMessage;
   }
 }

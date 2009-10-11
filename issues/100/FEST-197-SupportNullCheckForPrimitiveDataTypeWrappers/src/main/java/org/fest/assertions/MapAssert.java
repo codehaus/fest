@@ -43,72 +43,24 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
     super(actual);
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(cache).<strong>as</strong>(&quot;Cached Results&quot;).keySetIncludes(&quot;430-094&quot;, &quot;5094-8&quot;);
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public MapAssert as(String description) {
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(String)}</code>, since "as" is a keyword in <a
-   * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(cache).<strong>describedAs</strong>(&quot;Cached Results&quot;).keySetIncludes(&quot;430-094&quot;, &quot;5094-8&quot;);
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public MapAssert describedAs(String description) {
     return as(description);
   }
 
-  /**
-   * Sets the description of the actual value, to be used in as message of any <code>{@link AssertionError}</code>
-   * thrown when an assertion fails. This method should be called before any assertion method, otherwise any assertion
-   * failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(cache).<strong>as</strong>(new BasicDescription(&quot;Cached Results&quot;)).keySetIncludes(&quot;430-094&quot;, &quot;5094-8&quot;);
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public MapAssert as(Description description) {
     description(description);
     return this;
   }
 
-  /**
-   * Alias for <code>{@link #as(Description)}</code>, since "as" is a keyword in <a
-   * href="http://groovy.codehaus.org/" target="_blank">Groovy</a>. This method should be called before any assertion
-   * method, otherwise any assertion failure will not show the provided description.
-   * <p>
-   * For example:
-   * <pre>
-   * assertThat(cache).<strong>describedAs</strong>(new BasicDescription(&quot;Cached Results&quot;)).keySetIncludes(&quot;430-094&quot;, &quot;5094-8&quot;);
-   * </pre>
-   * </p>
-   * @param description the description of the actual value.
-   * @return this assertion object.
-   */
+  /** {@inheritDoc} */
   public MapAssert describedAs(Description description) {
     return as(description);
   }
@@ -389,5 +341,11 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
   protected int actualGroupSize() {
     isNotNull();
     return actual.size();
+  }
+
+  /** {@inheritDoc} */
+  public MapAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
+    return this;
   }
 }

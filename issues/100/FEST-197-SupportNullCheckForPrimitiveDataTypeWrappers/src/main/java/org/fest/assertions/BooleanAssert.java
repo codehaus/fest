@@ -15,8 +15,8 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ErrorMessages.unexpectedNotEqual;
 import static org.fest.assertions.Fail.failIfEqual;
-import static org.fest.assertions.Fail.failIfNotEqual;
 
 /**
  * Understands assertion methods for <code>boolean</code> values. To create a new instance of this class use the method
@@ -131,7 +131,7 @@ public class BooleanAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>boolean</code> is not equal to the given one.
    */
   public BooleanAssert isEqualTo(boolean expected) {
-    failIfNotEqual(rawDescription(), actual, expected);
+    if (actual != expected) fail(unexpectedNotEqual(actual, expected));
     return this;
   }
 

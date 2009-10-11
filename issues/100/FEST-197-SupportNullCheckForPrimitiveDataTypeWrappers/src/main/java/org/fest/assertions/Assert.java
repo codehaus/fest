@@ -77,12 +77,28 @@ public abstract class Assert {
 
   /**
    * Fails by throwing an <code>{@link AssertionError}</code>.
+   * <p>
+   * <strong>Note:</strong> This method appears to return <code>{@link AssertionError}</code>, but it is really not the
+   * case, since the exception is thrown and not returned. In version 2.0 the return type of this method will change
+   * to <code>void</code>. Since we cannot create an overloaded version with return type <code>void</code>, we cannot
+   * deprecate this method. Please pretend this method does not return anything :)
+   * </p>
    * @param reason the reason for the failure, used as the message for the thrown exception.
    * @return the thrown <code>AssertionError</code>.
    * @throws AssertionError using the given reason as the message.
    */
   protected final AssertionError fail(String reason) {
-    throw Fail.fail(formattedErrorMessage(reason));
+    // TODO change return type to 'void'
+    throw failure(reason);
+  }
+
+  /**
+   * Creates an <code>{@link AssertionError}</code>, adding the description of the actual value to the given message.
+   * @param reason the reason for the failure, used as the message for the thrown exception.
+   * @return the created exception.
+   */
+  protected final AssertionError failure(String reason) {
+    return Fail.failure(formattedErrorMessage(reason));
   }
 
   /**

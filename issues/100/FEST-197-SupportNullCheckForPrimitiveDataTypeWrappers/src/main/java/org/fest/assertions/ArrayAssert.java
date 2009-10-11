@@ -111,7 +111,9 @@ public abstract class ArrayAssert<T> extends GroupAssert<T> {
    * @throws AssertionError if the actual array is <code>null</code>.
    */
   protected final void assertThatActualIsNotNull() {
-    if (actual == null) fail("expecting a non-null array, but it was null");
+    if (actual != null) return;
+    failWithCustomErrorMessage();
+    fail("expecting a non-null array, but it was null");
   }
 
   /**

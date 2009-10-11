@@ -19,7 +19,7 @@ import org.fest.test.CodeToTest;
 import org.junit.Test;
 
 /**
- * Tests for <code>{@link Fail#failIfNotEqual(Description, Object, Object)}</code>.
+ * Tests for <code>{@link Fail#failIfNotEqual(String, Description, Object, Object)}</code>.
  *
  * @author Yvonne Wang
  * @author Alex Ruiz
@@ -31,13 +31,23 @@ public class Fail_failIfNotEqual_Test {
     String expectedMessage = "[A message] expected:<'[Luke]'> but was:<'[Yoda]'>";
     expectAssertionError(expectedMessage).on(new CodeToTest() {
       public void run() {
-        Fail.failIfNotEqual(new BasicDescription("A message"), "Yoda", "Luke");
+        Fail.failIfNotEqual(null, new BasicDescription("A message"), "Yoda", "Luke");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_values_are_not_equal() {
+    String expectedMessage = "My custom message";
+    expectAssertionError(expectedMessage).on(new CodeToTest() {
+      public void run() {
+        Fail.failIfNotEqual("My custom message", null, "Yoda", "Luke");
       }
     });
   }
 
   @Test
   public void should_pass_if_values_are_equal() {
-    Fail.failIfNotEqual(new BasicDescription(""), "Yoda", "Yoda");
+    Fail.failIfNotEqual(null, null, "Yoda", "Yoda");
   }
 }
