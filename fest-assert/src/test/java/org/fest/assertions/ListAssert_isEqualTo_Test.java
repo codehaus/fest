@@ -18,7 +18,10 @@ package org.fest.assertions;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import static org.fest.util.Collections.list;
 
+import java.util.List;
+
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,9 +31,16 @@ import org.junit.Test;
  */
 public class ListAssert_isEqualTo_Test implements GenericAssert_isEqualTo_TestCase {
 
+  private static List<String> list;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    list = list("Luke", "Leia");
+  }
+
   @Test
   public void should_pass_if_actual_and_expected_are_equal() {
-    new ListAssert(list("Luke", "Leia")).isEqualTo(list("Luke", "Leia"));
+    new ListAssert(list).isEqualTo(list("Luke", "Leia"));
   }
 
   @Test
