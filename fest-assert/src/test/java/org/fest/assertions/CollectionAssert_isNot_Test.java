@@ -19,7 +19,11 @@ import static java.util.Collections.emptyList;
 import static org.fest.assertions.CommonFailures.expectErrorIfConditionIsNull;
 import static org.fest.assertions.NotNull.notNullCollection;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
+
+import java.util.List;
+
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,6 +32,13 @@ import org.junit.Test;
  * @author Alex Ruiz
  */
 public class CollectionAssert_isNot_Test implements GenericAssert_doesNotSatisfy_TestCase {
+
+  private static List<Object> collection;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    collection = emptyList();
+  }
 
   @Test
   public void should_pass_if_condition_is_not_satisfied() {
@@ -38,7 +49,7 @@ public class CollectionAssert_isNot_Test implements GenericAssert_doesNotSatisfy
   public void should_throw_error_if_condition_is_null() {
     expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(emptyList()).isNot(null);
+        new CollectionAssert(collection).isNot(null);
       }
     });
   }
@@ -47,18 +58,17 @@ public class CollectionAssert_isNot_Test implements GenericAssert_doesNotSatisfy
   public void should_fail_if_condition_is_satisfied() {
     expectAssertionError("actual value:<[]> should not be:<NotNull>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(emptyList()).isNot(notNullCollection());
+        new CollectionAssert(collection).isNot(notNullCollection());
       }
     });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_condition_is_satisfied() {
-    String message = "[A Test] actual value:<[]> should not be:<NotNull>";
-    expectAssertionError(message).on(new CodeToTest() {
+    expectAssertionError("[A Test] actual value:<[]> should not be:<NotNull>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(emptyList()).as("A Test")
-                                         .isNot(notNullCollection());
+        new CollectionAssert(collection).as("A Test")
+                                        .isNot(notNullCollection());
       }
     });
   }
@@ -67,7 +77,7 @@ public class CollectionAssert_isNot_Test implements GenericAssert_doesNotSatisfy
   public void should_fail_and_display_description_of_condition_if_condition_is_satisfied() {
     expectAssertionError("actual value:<[]> should not be:<Not Null>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(emptyList()).isNot(notNullCollection().as("Not Null"));
+        new CollectionAssert(collection).isNot(notNullCollection().as("Not Null"));
       }
     });
   }
@@ -76,8 +86,39 @@ public class CollectionAssert_isNot_Test implements GenericAssert_doesNotSatisfy
   public void should_fail_and_display_descriptions_of_assertion_and_condition_if_condition_is_satisfied() {
     expectAssertionError("[A Test] actual value:<[]> should not be:<Not Null>").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(emptyList()).as("A Test")
-                                         .isNot(notNullCollection().as("Not Null"));
+        new CollectionAssert(collection).as("A Test")
+                                        .isNot(notNullCollection().as("Not Null"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CollectionAssert(collection).overridingErrorMessage("My custom message")
+                                        .isNot(notNullCollection());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CollectionAssert(collection).as("A Test")
+                                        .overridingErrorMessage("My custom message")
+                                        .isNot(notNullCollection());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CollectionAssert(collection).overridingErrorMessage("My custom message")
+                                        .isNot(notNullCollection().as("Not Null"));
       }
     });
   }

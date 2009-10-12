@@ -193,7 +193,7 @@ public class ByteArrayAssert extends ArrayAssert<byte[]> {
    */
   public ByteArrayAssert isEqualTo(byte[] expected) {
     if (Arrays.equals(actual, expected)) return this;
-    failWithCustomErrorMessage();
+    failIfCustomMessageIsSet();
     throw failure(unexpectedNotEqual(actual, expected));
   }
 

@@ -37,7 +37,7 @@ public class StringAssert_isNot_Test implements GenericAssert_doesNotSatisfy_Tes
   public void should_throw_error_if_condition_is_null() {
     expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
-        new StringAssert("").isNot(null);
+        new StringAssert("a").isNot(null);
       }
     });
   }
@@ -75,6 +75,37 @@ public class StringAssert_isNot_Test implements GenericAssert_doesNotSatisfy_Tes
     expectAssertionError("[Test] actual value:<'A'> should not be:<uppercase>").on(new CodeToTest() {
       public void run() {
         new StringAssert("A").as("Test")
+                             .isNot(upperCase().as("uppercase"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("A").overridingErrorMessage("My custom message")
+                             .isNot(upperCase());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("A").as("Test")
+                             .overridingErrorMessage("My custom message")
+                             .isNot(upperCase());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("A").overridingErrorMessage("My custom message")
                              .isNot(upperCase().as("uppercase"));
       }
     });

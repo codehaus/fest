@@ -193,7 +193,7 @@ public class LongArrayAssert extends ArrayAssert<long[]> {
    */
   public LongArrayAssert isEqualTo(long[] expected) {
     if (Arrays.equals(actual, expected)) return this;
-    failWithCustomErrorMessage();
+    failIfCustomMessageIsSet();
     throw failure(unexpectedNotEqual(actual, expected));
   }
 

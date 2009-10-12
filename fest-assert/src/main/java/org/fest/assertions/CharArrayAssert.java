@@ -241,7 +241,7 @@ public class CharArrayAssert extends ArrayAssert<char[]> {
    */
   public CharArrayAssert isEqualTo(char[] expected) {
     if (Arrays.equals(actual, expected)) return this;
-    failWithCustomErrorMessage();
+    failIfCustomMessageIsSet();
     throw failure(unexpectedNotEqual(actual, expected));
   }
 
