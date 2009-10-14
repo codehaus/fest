@@ -112,7 +112,7 @@ public abstract class ArrayAssert<T> extends GroupAssert<T> {
    */
   protected final void assertThatActualIsNotNull() {
     if (actual != null) return;
-    failWithCustomErrorMessage();
+    failIfCustomMessageIsSet();
     fail("expecting a non-null array, but it was null");
   }
 

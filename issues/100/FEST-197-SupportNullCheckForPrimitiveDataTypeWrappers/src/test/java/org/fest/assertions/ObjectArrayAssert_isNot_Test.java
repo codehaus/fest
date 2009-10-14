@@ -20,6 +20,7 @@ import static org.fest.assertions.NotNull.notNullObjectArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,6 +29,13 @@ import org.junit.Test;
  * @author Alex Ruiz
  */
 public class ObjectArrayAssert_isNot_Test implements GenericAssert_doesNotSatisfy_TestCase {
+
+  private static Object[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = emptyObjectArray();
+  }
 
   @Test
   public void should_pass_if_condition_is_not_satisfied() {
@@ -39,7 +47,7 @@ public class ObjectArrayAssert_isNot_Test implements GenericAssert_doesNotSatisf
   public void should_throw_error_if_condition_is_null() {
     expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
-        new ObjectArrayAssert(emptyObjectArray()).isNot(null);
+        new ObjectArrayAssert(array).isNot(null);
       }
     });
   }
@@ -48,7 +56,7 @@ public class ObjectArrayAssert_isNot_Test implements GenericAssert_doesNotSatisf
   public void should_fail_if_condition_is_satisfied() {
     expectAssertionError("actual value:<[]> should not be:<NotNull>").on(new CodeToTest() {
       public void run() {
-        new ObjectArrayAssert(emptyObjectArray()).isNot(notNullObjectArray());
+        new ObjectArrayAssert(array).isNot(notNullObjectArray());
       }
     });
   }
@@ -57,8 +65,8 @@ public class ObjectArrayAssert_isNot_Test implements GenericAssert_doesNotSatisf
   public void should_fail_and_display_description_of_assertion_if_condition_is_satisfied() {
     expectAssertionError("[A Test] actual value:<[]> should not be:<NotNull>").on(new CodeToTest() {
       public void run() {
-        new ObjectArrayAssert(emptyObjectArray()).as("A Test")
-                                                 .isNot(notNullObjectArray());
+        new ObjectArrayAssert(array).as("A Test")
+                                    .isNot(notNullObjectArray());
       }
     });
   }
@@ -67,7 +75,7 @@ public class ObjectArrayAssert_isNot_Test implements GenericAssert_doesNotSatisf
   public void should_fail_and_display_description_of_condition_if_condition_is_satisfied() {
     expectAssertionError("actual value:<[]> should not be:<Not Null>").on(new CodeToTest() {
       public void run() {
-        new ObjectArrayAssert(emptyObjectArray()).isNot(notNullObjectArray().as("Not Null"));
+        new ObjectArrayAssert(array).isNot(notNullObjectArray().as("Not Null"));
       }
     });
   }
@@ -76,8 +84,39 @@ public class ObjectArrayAssert_isNot_Test implements GenericAssert_doesNotSatisf
   public void should_fail_and_display_descriptions_of_assertion_and_condition_if_condition_is_satisfied() {
     expectAssertionError("[A Test] actual value:<[]> should not be:<Not Null>").on(new CodeToTest() {
       public void run() {
-        new ObjectArrayAssert(emptyObjectArray()).as("A Test")
-                                                 .isNot(notNullObjectArray().as("Not Null"));
+        new ObjectArrayAssert(array).as("A Test")
+                                    .isNot(notNullObjectArray().as("Not Null"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectArrayAssert(array).overridingErrorMessage("My custom message")
+                                    .isNot(notNullObjectArray());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectArrayAssert(array).as("A Test")
+                                    .overridingErrorMessage("My custom message")
+                                    .isNot(notNullObjectArray());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectArrayAssert(array).overridingErrorMessage("My custom message")
+                                    .isNot(notNullObjectArray().as("Not Null"));
       }
     });
   }

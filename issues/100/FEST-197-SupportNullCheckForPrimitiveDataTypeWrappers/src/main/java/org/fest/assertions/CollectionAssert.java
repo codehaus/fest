@@ -219,7 +219,7 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
    */
   public CollectionAssert isNotNull() {
     if (actual != null) return this;
-    failWithCustomErrorMessage();
+    failIfCustomMessageIsSet();
     throw failure("expecting a non-null collection, but it was null");
   }
 

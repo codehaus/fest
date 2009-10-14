@@ -45,7 +45,7 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    * @throws AssertionError if the actual value is not <code>null</code>.
    */
   public final void isNull() {
-    failIfNotNull(rawDescription(), actual);
+    failIfNotNull(customErrorMessage(), rawDescription(), actual);
   }
   
   /**
@@ -225,7 +225,9 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    * @throws AssertionError if the actual value satisfies the given condition.
    */
   protected final void assertDoesNotSatisfy(Condition<T> condition) {
-    if (matches(condition)) fail(errorMessageIfConditionSatisfied(condition));
+    if (!matches(condition)) return;
+    failIfCustomMessageIsSet();
+    fail(errorMessageIfConditionSatisfied(condition));
   }
 
   private String errorMessageIfConditionSatisfied(Condition<T> condition) {
@@ -240,7 +242,9 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    * @throws AssertionError if the actual value satisfies the given condition.
    */
   protected final void assertIsNot(Condition<T> condition) {
-    if (matches(condition)) fail(errorMessageIfIs(condition));
+    if (!matches(condition)) return;
+    failIfCustomMessageIsSet();
+    fail(errorMessageIfIs(condition));
   }
 
   private boolean matches(Condition<T> condition) {
@@ -301,7 +305,7 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
     failIfSame(customErrorMessage(), rawDescription(), actual, expected);
   }
 
-  void failWithCustomErrorMessage() {
+  void failIfCustomMessageIsSet() {
     failWithMessage(customErrorMessage());
   }
 

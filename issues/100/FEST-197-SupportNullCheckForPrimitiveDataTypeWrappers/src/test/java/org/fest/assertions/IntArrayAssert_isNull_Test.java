@@ -18,6 +18,7 @@ import static org.fest.assertions.EmptyArrays.emptyIntArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,6 +29,13 @@ import org.junit.Test;
  */
 public class IntArrayAssert_isNull_Test implements NullableAssert_isNull_TestCase {
 
+  private static int[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = emptyIntArray();
+  }
+
   @Test
   public void should_pass_if_actual_is_null() {
     new IntArrayAssert(null).isNull();
@@ -37,7 +45,7 @@ public class IntArrayAssert_isNull_Test implements NullableAssert_isNull_TestCas
   public void should_fail_if_actual_is_not_null() {
     expectAssertionError("<[]> should be null").on(new CodeToTest() {
       public void run() {
-        new IntArrayAssert(emptyIntArray()).isNull();
+        new IntArrayAssert(array).isNull();
       }
     });
   }
@@ -46,8 +54,29 @@ public class IntArrayAssert_isNull_Test implements NullableAssert_isNull_TestCas
   public void should_fail_and_display_description_of_assertion_if_actual_is_not_null() {
     expectAssertionError("[A Test] <[]> should be null").on(new CodeToTest() {
       public void run() {
-        new IntArrayAssert(emptyIntArray()).as("A Test")
-                                           .isNull();
+        new IntArrayAssert(array).as("A Test")
+                                 .isNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new IntArrayAssert(array).overridingErrorMessage("My custom message")
+                                 .isNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new IntArrayAssert(array).as("A Test")
+                                 .overridingErrorMessage("My custom message")
+                                 .isNull();
       }
     });
   }

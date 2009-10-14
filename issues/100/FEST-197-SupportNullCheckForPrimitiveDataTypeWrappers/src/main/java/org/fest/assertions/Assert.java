@@ -86,9 +86,10 @@ public abstract class Assert {
    * @param reason the reason for the failure, used as the message for the thrown exception.
    * @return the thrown <code>AssertionError</code>.
    * @throws AssertionError using the given reason as the message.
+   * @see #failure(String)
    */
   protected final AssertionError fail(String reason) {
-    // TODO change return type to 'void'
+    // TODO in 2.0: change return type to 'void'
     throw failure(reason);
   }
 

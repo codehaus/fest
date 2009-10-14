@@ -46,7 +46,29 @@ public class FileAssert_isNotSameAs_Test extends FileAssert_TestCase implements 
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_same() {
     expectAssertionError("[A Test] given objects are same:<c:\\f.txt>").on(new CodeToTest() {
       public void run() {
-        new FileAssert(file).as("A Test").isNotSameAs(file);
+        new FileAssert(file).as("A Test")
+                            .isNotSameAs(file);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(file).overridingErrorMessage("My custom message")
+                            .isNotSameAs(file);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(file).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .isNotSameAs(file);
       }
     });
   }

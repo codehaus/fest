@@ -18,6 +18,7 @@ import static org.fest.assertions.ArrayFactory.charArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,9 +29,16 @@ import org.junit.Test;
  */
 public class CharArrayAssert_isEqualTo_Test implements GenericAssert_isEqualTo_TestCase {
 
+  private static char[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = charArray('a', 'b');
+  }
+
   @Test
   public void should_pass_if_actual_and_expected_are_equal() {
-    new CharArrayAssert('a', 'b').isEqualTo(charArray('a', 'b'));
+    new CharArrayAssert(array).isEqualTo(charArray('a', 'b'));
   }
 
   @Test
@@ -42,7 +50,7 @@ public class CharArrayAssert_isEqualTo_Test implements GenericAssert_isEqualTo_T
   public void should_fail_if_actual_and_expected_are_not_equal() {
     expectAssertionError("expected:<[c, d]> but was:<[a, b]>").on(new CodeToTest() {
       public void run() {
-        new CharArrayAssert('a', 'b').isEqualTo(charArray('c', 'd'));
+        new CharArrayAssert(array).isEqualTo(charArray('c', 'd'));
       }
     });
   }
@@ -51,8 +59,29 @@ public class CharArrayAssert_isEqualTo_Test implements GenericAssert_isEqualTo_T
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_equal() {
     expectAssertionError("[A Test] expected:<[c, d]> but was:<[a, b]>").on(new CodeToTest() {
       public void run() {
-        new CharArrayAssert('a', 'b').as("A Test")
-                                     .isEqualTo(charArray('c', 'd'));
+        new CharArrayAssert(array).as("A Test")
+                                  .isEqualTo(charArray('c', 'd'));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharArrayAssert(array).overridingErrorMessage("My custom message")
+                                  .isEqualTo(charArray('c', 'd'));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharArrayAssert(array).as("A Test")
+                                  .overridingErrorMessage("My custom message")
+                                  .isEqualTo(charArray('c', 'd'));
       }
     });
   }

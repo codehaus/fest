@@ -65,7 +65,7 @@ public class ImageAssert_isEqualTo_Test {
   }
 
   @Test
-  public void should_fail_if_width_is_different() {
+  public void should_fail_if_width_is_not_equal() {
     expectAssertionError("image size, expected:<(3, 5)> but was:<(5, 5)>").on(new CodeToTest() {
       public void run() {
         BufferedImage a = fivePixelBlueImage();
@@ -76,7 +76,7 @@ public class ImageAssert_isEqualTo_Test {
   }
 
   @Test
-  public void should_fail_and_display_description_of_assertion_if_width_is_different() {
+  public void should_fail_and_display_description_of_assertion_if_width_is_not_equal() {
     expectAssertionError("[A Test] image size, expected:<(3, 5)> but was:<(5, 5)>").on(new CodeToTest() {
       public void run() {
         BufferedImage a = fivePixelBlueImage();
@@ -88,7 +88,7 @@ public class ImageAssert_isEqualTo_Test {
   }
 
   @Test
-  public void should_fail_if_height_is_different() {
+  public void should_fail_if_height_is_not_equal() {
     expectAssertionError("image size, expected:<(5, 2)> but was:<(5, 5)>").on(new CodeToTest() {
       public void run() {
         BufferedImage a = fivePixelBlueImage();
@@ -99,7 +99,7 @@ public class ImageAssert_isEqualTo_Test {
   }
 
   @Test
-  public void should_fail_and_display_description_of_assertion_if_height_is_different() {
+  public void should_fail_and_display_description_of_assertion_if_height_is_not_equal() {
     expectAssertionError("[A Test] image size, expected:<(5, 2)> but was:<(5, 5)>").on(new CodeToTest() {
       public void run() {
         BufferedImage a = fivePixelBlueImage();
@@ -130,6 +130,83 @@ public class ImageAssert_isEqualTo_Test {
           BufferedImage a = fivePixelBlueImage();
           BufferedImage e = image(5, 5, YELLOW);
           new ImageAssert(a).as("A Test")
+                            .isEqualTo(e);
+        }
+      });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_width_is_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        BufferedImage a = fivePixelBlueImage();
+        BufferedImage e = image(3, 5, BLUE);
+        new ImageAssert(a).overridingErrorMessage("My custom message")
+                          .isEqualTo(e);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_width_is_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        BufferedImage a = fivePixelBlueImage();
+        BufferedImage e = image(3, 5, BLUE);
+        new ImageAssert(a).as("A Test")
+                          .overridingErrorMessage("My custom message")
+                          .isEqualTo(e);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_height_is_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        BufferedImage a = fivePixelBlueImage();
+        BufferedImage e = image(5, 2, BLUE);
+        new ImageAssert(a).overridingErrorMessage("My custom message")
+                          .isEqualTo(e);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_height_is_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        BufferedImage a = fivePixelBlueImage();
+        BufferedImage e = image(5, 2, BLUE);
+        new ImageAssert(a).as("A Test")
+                          .overridingErrorMessage("My custom message")
+                          .isEqualTo(e);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_color_is_not_equal() {
+    expectAssertionError("My custom message").on(
+      new CodeToTest() {
+        public void run() {
+          BufferedImage a = fivePixelBlueImage();
+          BufferedImage e = image(5, 5, YELLOW);
+          new ImageAssert(a).overridingErrorMessage("My custom message")
+                            .isEqualTo(e);
+        }
+      });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_color_is_not_equal() {
+    expectAssertionError("My custom message").on(
+      new CodeToTest() {
+        public void run() {
+          BufferedImage a = fivePixelBlueImage();
+          BufferedImage e = image(5, 5, YELLOW);
+          new ImageAssert(a).as("A Test")
+                            .overridingErrorMessage("My custom message")
                             .isEqualTo(e);
         }
       });

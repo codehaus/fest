@@ -195,7 +195,7 @@ public class DoubleArrayAssert extends ArrayAssert<double[]> {
    */
   public DoubleArrayAssert isEqualTo(double[] expected) {
     if (Arrays.equals(actual, expected)) return this;
-    failWithCustomErrorMessage();
+    failIfCustomMessageIsSet();
     throw failure(unexpectedNotEqual(actual, expected));
   }
 

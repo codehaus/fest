@@ -17,6 +17,7 @@ package org.fest.assertions;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,9 +29,16 @@ import org.junit.Test;
  */
 public class StringAssert_isEqualTo_Test implements GenericAssert_isEqualTo_TestCase {
 
+  private static String jedi;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    jedi = "Luke";
+  }
+
   @Test
   public void should_pass_if_actual_and_expected_are_equal() {
-    new StringAssert("Anakin").isEqualTo("Anakin");
+    new StringAssert(jedi).isEqualTo("Luke");
   }
 
   @Test
@@ -42,7 +50,7 @@ public class StringAssert_isEqualTo_Test implements GenericAssert_isEqualTo_Test
   public void should_fail_if_actual_and_expected_are_not_equal() {
     expectAssertionError("expected:<'[Yoda]'> but was:<'[Luke]'>").on(new CodeToTest() {
       public void run() {
-        new StringAssert("Luke").isEqualTo("Yoda");
+        new StringAssert(jedi).isEqualTo("Yoda");
       }
     });
   }
@@ -51,7 +59,29 @@ public class StringAssert_isEqualTo_Test implements GenericAssert_isEqualTo_Test
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_equal() {
     expectAssertionError("[A Test] expected:<'[Yoda]'> but was:<'[Luke]'>").on(new CodeToTest() {
       public void run() {
-        new StringAssert("Luke").as("A Test").isEqualTo("Yoda");
+        new StringAssert(jedi).as("A Test")
+                              .isEqualTo("Yoda");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert(jedi).overridingErrorMessage("My custom message")
+                              .isEqualTo("Yoda");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert(jedi).as("A Test")
+                              .overridingErrorMessage("My custom message")
+                              .isEqualTo("Yoda");
       }
     });
   }

@@ -67,19 +67,50 @@ public class BigDecimalAssert_doesNotSatisfy_Test implements GenericAssert_doesN
 
   @Test
   public void should_fail_and_display_description_of_condition_if_condition_is_satisfied() {
-    expectAssertionError("actual value:<0> should not satisfy condition:<non-null>").on(new CodeToTest() {
+    expectAssertionError("actual value:<0> should not satisfy condition:<Not Null>").on(new CodeToTest() {
       public void run() {
-        new BigDecimalAssert(ZERO).doesNotSatisfy(notNullBigDecimal().as("non-null"));
+        new BigDecimalAssert(ZERO).doesNotSatisfy(notNullBigDecimal().as("Not Null"));
       }
     });
   }
 
   @Test
   public void should_fail_and_display_descriptions_of_assertion_and_condition_if_condition_is_satisfied() {
-    expectAssertionError("[A Test] actual value:<0> should not satisfy condition:<non-null>").on(new CodeToTest() {
+    expectAssertionError("[A Test] actual value:<0> should not satisfy condition:<Not Null>").on(new CodeToTest() {
       public void run() {
         new BigDecimalAssert(ZERO).as("A Test")
-                                  .doesNotSatisfy(notNullBigDecimal().as("non-null"));
+                                  .doesNotSatisfy(notNullBigDecimal().as("Not Null"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(ZERO).overridingErrorMessage("My custom message")
+                                  .doesNotSatisfy(notNullBigDecimal());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(ZERO).as("A Test")
+                                  .overridingErrorMessage("My custom message")
+                                  .doesNotSatisfy(notNullBigDecimal());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(ZERO).overridingErrorMessage("My custom message")
+                                  .doesNotSatisfy(notNullBigDecimal().as("Not Null"));
       }
     });
   }

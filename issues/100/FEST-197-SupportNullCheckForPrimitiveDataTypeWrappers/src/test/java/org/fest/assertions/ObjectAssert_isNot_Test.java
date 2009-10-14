@@ -19,6 +19,7 @@ import static org.fest.assertions.NotNull.notNullObject;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -27,6 +28,13 @@ import org.junit.Test;
  * @author Alex Ruiz
  */
 public class ObjectAssert_isNot_Test implements GenericAssert_doesNotSatisfy_TestCase {
+
+  private static Object six;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    six = 6;
+  }
 
   @Test
   public void should_pass_if_condition_is_not_satisfied() {
@@ -37,7 +45,7 @@ public class ObjectAssert_isNot_Test implements GenericAssert_doesNotSatisfy_Tes
   public void should_throw_error_if_condition_is_null() {
     expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
-        new ObjectAssert(6).isNot(null);
+        new ObjectAssert(six).isNot(null);
       }
     });
   }
@@ -46,7 +54,7 @@ public class ObjectAssert_isNot_Test implements GenericAssert_doesNotSatisfy_Tes
   public void should_fail_if_condition_is_satisfied() {
     expectAssertionError("actual value:<6> should not be:<NotNull>").on(new CodeToTest() {
       public void run() {
-        new ObjectAssert(6).isNot(notNullObject());
+        new ObjectAssert(six).isNot(notNullObject());
       }
     });
   }
@@ -55,8 +63,8 @@ public class ObjectAssert_isNot_Test implements GenericAssert_doesNotSatisfy_Tes
   public void should_fail_and_display_description_of_assertion_if_condition_is_satisfied() {
     expectAssertionError("[A Test] actual value:<6> should not be:<NotNull>").on(new CodeToTest() {
       public void run() {
-        new ObjectAssert(6).as("A Test")
-                           .isNot(notNullObject());
+        new ObjectAssert(six).as("A Test")
+                             .isNot(notNullObject());
       }
     });
   }
@@ -65,7 +73,7 @@ public class ObjectAssert_isNot_Test implements GenericAssert_doesNotSatisfy_Tes
   public void should_fail_and_display_description_of_condition_if_condition_is_satisfied() {
     expectAssertionError("actual value:<6> should not be:<Not Null>").on(new CodeToTest() {
       public void run() {
-        new ObjectAssert(6).isNot(notNullObject().as("Not Null"));
+        new ObjectAssert(six).isNot(notNullObject().as("Not Null"));
       }
     });
   }
@@ -74,8 +82,39 @@ public class ObjectAssert_isNot_Test implements GenericAssert_doesNotSatisfy_Tes
   public void should_fail_and_display_descriptions_of_assertion_and_condition_if_condition_is_satisfied() {
     expectAssertionError("[A Test] actual value:<6> should not be:<Not Null>").on(new CodeToTest() {
       public void run() {
-        new ObjectAssert(6).as("A Test")
-                           .isNot(notNullObject().as("Not Null"));
+        new ObjectAssert(six).as("A Test")
+                             .isNot(notNullObject().as("Not Null"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(six).overridingErrorMessage("My custom message")
+                             .isNot(notNullObject());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(six).as("A Test")
+                             .overridingErrorMessage("My custom message")
+                             .isNot(notNullObject());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(six).overridingErrorMessage("My custom message")
+                             .isNot(notNullObject().as("Not Null"));
       }
     });
   }

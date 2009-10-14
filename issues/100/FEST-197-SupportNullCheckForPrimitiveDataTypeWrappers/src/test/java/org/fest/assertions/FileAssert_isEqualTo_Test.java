@@ -51,7 +51,29 @@ public class FileAssert_isEqualTo_Test extends FileAssert_TestCase implements Ge
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_equal() {
     expectAssertionError("[A Test] expected:<c:\\[]> but was:<c:\\[f.txt]>").on(new CodeToTest() {
       public void run() {
-        new FileAssert(file).as("A Test").isEqualTo(newFile("c:\\"));
+        new FileAssert(file).as("A Test")
+                            .isEqualTo(newFile("c:\\"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(file).overridingErrorMessage("My custom message")
+                            .isEqualTo(newFile("c:\\"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(file).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .isEqualTo(newFile("c:\\"));
       }
     });
   }

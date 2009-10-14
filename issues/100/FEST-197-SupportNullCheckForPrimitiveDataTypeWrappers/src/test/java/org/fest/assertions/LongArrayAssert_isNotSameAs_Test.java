@@ -19,6 +19,7 @@ import static org.fest.assertions.ArrayFactory.longArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -29,16 +30,22 @@ import org.junit.Test;
  */
 public class LongArrayAssert_isNotSameAs_Test implements GenericAssert_isNotSameAs_TestCase {
 
+  private static long[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = longArray(6, 8);
+  }
+
   @Test
   public void should_pass_if_actual_and_expected_are_not_same() {
-    new LongArrayAssert(6).isNotSameAs(emptyLongArray());
+    new LongArrayAssert(array).isNotSameAs(emptyLongArray());
   }
 
   @Test
   public void should_fail_if_actual_and_expected_are_same() {
     expectAssertionError("given objects are same:<[6, 8]>").on(new CodeToTest() {
       public void run() {
-        long[] array = longArray(6, 8);
         new LongArrayAssert(array).isNotSameAs(array);
       }
     });
@@ -48,8 +55,28 @@ public class LongArrayAssert_isNotSameAs_Test implements GenericAssert_isNotSame
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_same() {
     expectAssertionError("[A Test] given objects are same:<[6, 8]>").on(new CodeToTest() {
       public void run() {
-        long[] array = longArray(6, 8);
         new LongArrayAssert(array).as("A Test")
+                                  .isNotSameAs(array);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new LongArrayAssert(array).overridingErrorMessage("My custom message")
+                                  .isNotSameAs(array);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new LongArrayAssert(array).as("A Test")
+                                  .overridingErrorMessage("My custom message")
                                   .isNotSameAs(array);
       }
     });

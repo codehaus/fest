@@ -20,7 +20,7 @@ import static org.fest.test.ExpectedFailure.expectAssertionError;
 import java.math.BigDecimal;
 
 import org.fest.test.CodeToTest;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * Tests for <code>{@link BigDecimalAssert#isNotSameAs(BigDecimal)}</code>.
@@ -32,16 +32,22 @@ import org.junit.Test;
  */
 public class BigDecimalAssert_isNotSameAs_Test implements GenericAssert_isNotSameAs_TestCase {
 
+  private static BigDecimal eight;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    eight = eight();
+  }
+
   @Test
   public void should_pass_if_actual_and_expected_are_not_same() {
-    new BigDecimalAssert(eight()).isNotSameAs(eight());
+    new BigDecimalAssert(eight).isNotSameAs(eight());
   }
 
   @Test
   public void should_fail_if_actual_and_expected_are_same() {
     expectAssertionError("given objects are same:<8.0>").on(new CodeToTest() {
       public void run() {
-        BigDecimal eight = eight();
         new BigDecimalAssert(eight).isNotSameAs(eight);
       }
     });
@@ -51,10 +57,31 @@ public class BigDecimalAssert_isNotSameAs_Test implements GenericAssert_isNotSam
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_same() {
     expectAssertionError("[A Test] given objects are same:<8.0>").on(new CodeToTest() {
       public void run() {
-        BigDecimal eight = eight();
         new BigDecimalAssert(eight).as("A Test")
                                    .isNotSameAs(eight);
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(eight).overridingErrorMessage("My custom message")
+                                   .isNotSameAs(eight);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(eight).as("A Test")
+                                   .overridingErrorMessage("My custom message")
+                                   .isNotSameAs(eight);
+      }
+    });
+  }
+
 }

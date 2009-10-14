@@ -17,6 +17,7 @@ package org.fest.assertions;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -27,6 +28,13 @@ import org.junit.Test;
  */
 public class ObjectAssert_isNull_Test implements NullableAssert_isNull_TestCase {
 
+  private static Object six;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    six = 6;
+  }
+
   @Test
   public void should_pass_if_actual_is_null() {
     new ObjectAssert(null).isNull();
@@ -36,7 +44,7 @@ public class ObjectAssert_isNull_Test implements NullableAssert_isNull_TestCase 
   public void should_fail_if_actual_is_not_null() {
     expectAssertionError("<6> should be null").on(new CodeToTest() {
       public void run() {
-        new ObjectAssert(6).isNull();
+        new ObjectAssert(six).isNull();
       }
     });
   }
@@ -45,8 +53,29 @@ public class ObjectAssert_isNull_Test implements NullableAssert_isNull_TestCase 
   public void should_fail_and_display_description_of_assertion_if_actual_is_not_null() {
     expectAssertionError("[A Test] <6> should be null").on(new CodeToTest() {
       public void run() {
-        new ObjectAssert(6).as("A Test")
-                           .isNull();
+        new ObjectAssert(six).as("A Test")
+                             .isNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(six).overridingErrorMessage("My custom message")
+                             .isNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(six).as("A Test")
+                             .overridingErrorMessage("My custom message")
+                             .isNull();
       }
     });
   }

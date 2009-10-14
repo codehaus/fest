@@ -23,6 +23,7 @@ import static org.fest.util.Strings.concat;
 import java.awt.image.BufferedImage;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -33,6 +34,13 @@ import org.junit.Test;
  */
 public class ImageAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSatisfy_TestCase {
 
+  private static BufferedImage image;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    image = fivePixelBlueImage();
+  }
+
   @Test
   public void should_pass_if_condition_is_not_satisfied() {
     new ImageAssert(null).doesNotSatisfy(notNullImage());
@@ -42,14 +50,13 @@ public class ImageAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSat
   public void should_throw_error_if_condition_is_null() {
     expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
-        new ImageAssert(fivePixelBlueImage()).doesNotSatisfy(null);
+        new ImageAssert(image).doesNotSatisfy(null);
       }
     });
   }
 
   @Test
   public void should_fail_if_condition_is_satisfied() {
-    final BufferedImage image = fivePixelBlueImage();
     String message = concat("actual value:<", image, "> should not satisfy condition:<NotNull>");
     expectAssertionError(message).on(new CodeToTest() {
       public void run() {
@@ -60,7 +67,6 @@ public class ImageAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSat
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_condition_is_satisfied() {
-    final BufferedImage image = fivePixelBlueImage();
     String message = concat("[A Test] actual value:<", image, "> should not satisfy condition:<NotNull>");
     expectAssertionError(message).on(new CodeToTest() {
       public void run() {
@@ -72,7 +78,6 @@ public class ImageAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSat
 
   @Test
   public void should_fail_and_display_description_of_condition_if_condition_is_satisfied() {
-    final BufferedImage image = fivePixelBlueImage();
     String message = concat("actual value:<", image, "> should not satisfy condition:<Not Null>");
     expectAssertionError(message).on(new CodeToTest() {
       public void run() {
@@ -83,11 +88,41 @@ public class ImageAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSat
 
   @Test
   public void should_fail_and_display_descriptions_of_assertion_and_condition_if_condition_is_satisfied() {
-    final BufferedImage image = fivePixelBlueImage();
     String message = concat("[A Test] actual value:<", image, "> should not satisfy condition:<Not Null>");
     expectAssertionError(message).on(new CodeToTest() {
       public void run() {
         new ImageAssert(image).as("A Test")
+                              .doesNotSatisfy(notNullImage().as("Not Null"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ImageAssert(image).overridingErrorMessage("My custom message")
+                              .doesNotSatisfy(notNullImage());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ImageAssert(image).as("A Test")
+                              .overridingErrorMessage("My custom message")
+                              .doesNotSatisfy(notNullImage());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ImageAssert(image).overridingErrorMessage("My custom message")
                               .doesNotSatisfy(notNullImage().as("Not Null"));
       }
     });

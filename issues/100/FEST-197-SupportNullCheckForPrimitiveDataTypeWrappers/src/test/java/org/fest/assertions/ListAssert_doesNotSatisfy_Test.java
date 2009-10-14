@@ -18,7 +18,11 @@ import static java.util.Collections.emptyList;
 import static org.fest.assertions.CommonFailures.expectErrorIfConditionIsNull;
 import static org.fest.assertions.NotNull.notNullList;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
+
+import java.util.List;
+
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -27,6 +31,13 @@ import org.junit.Test;
  * @author Alex Ruiz
  */
 public class ListAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSatisfy_TestCase {
+
+  private static List<Object> list;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    list = emptyList();
+  }
 
   @Test
   public void should_pass_if_condition_is_not_satisfied() {
@@ -37,7 +48,7 @@ public class ListAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSati
   public void should_throw_error_if_condition_is_null() {
     expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
-        new ListAssert(emptyList()).doesNotSatisfy(null);
+        new ListAssert(list).doesNotSatisfy(null);
       }
     });
   }
@@ -46,7 +57,7 @@ public class ListAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSati
   public void should_fail_if_condition_is_satisfied() {
     expectAssertionError("actual value:<[]> should not satisfy condition:<NotNull>").on(new CodeToTest() {
       public void run() {
-        new ListAssert(emptyList()).doesNotSatisfy(notNullList());
+        new ListAssert(list).doesNotSatisfy(notNullList());
       }
     });
   }
@@ -55,8 +66,8 @@ public class ListAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSati
   public void should_fail_and_display_description_of_assertion_if_condition_is_satisfied() {
     expectAssertionError("[A Test] actual value:<[]> should not satisfy condition:<NotNull>").on(new CodeToTest() {
       public void run() {
-        new ListAssert(emptyList()).as("A Test")
-                                   .doesNotSatisfy(notNullList());
+        new ListAssert(list).as("A Test")
+                            .doesNotSatisfy(notNullList());
       }
     });
   }
@@ -65,7 +76,7 @@ public class ListAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSati
   public void should_fail_and_display_description_of_condition_if_condition_is_satisfied() {
     expectAssertionError("actual value:<[]> should not satisfy condition:<Not Null>").on(new CodeToTest() {
       public void run() {
-        new ListAssert(emptyList()).doesNotSatisfy(notNullList().as("Not Null"));
+        new ListAssert(list).doesNotSatisfy(notNullList().as("Not Null"));
       }
     });
   }
@@ -74,8 +85,39 @@ public class ListAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSati
   public void should_fail_and_display_descriptions_of_assertion_and_condition_if_condition_is_satisfied() {
     expectAssertionError("[A Test] actual value:<[]> should not satisfy condition:<Not Null>").on(new CodeToTest() {
       public void run() {
-        new ListAssert(emptyList()).as("A Test")
-                                   .doesNotSatisfy(notNullList().as("Not Null"));
+        new ListAssert(list).as("A Test")
+                            .doesNotSatisfy(notNullList().as("Not Null"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).overridingErrorMessage("My custom message")
+                            .doesNotSatisfy(notNullList());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .doesNotSatisfy(notNullList());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).overridingErrorMessage("My custom message")
+                            .doesNotSatisfy(notNullList().as("Not Null"));
       }
     });
   }

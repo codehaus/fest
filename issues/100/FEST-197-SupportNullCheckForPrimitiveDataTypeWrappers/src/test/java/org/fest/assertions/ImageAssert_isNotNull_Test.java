@@ -16,6 +16,7 @@ package org.fest.assertions;
 
 import static org.fest.assertions.CommonFailures.*;
 import static org.fest.assertions.Images.fivePixelBlueImage;
+import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import java.awt.image.BufferedImage;
 
@@ -49,6 +50,27 @@ public class ImageAssert_isNotNull_Test implements NullableAssert_isNotNull_Test
     expectErrorWithDescriptionIfObjectIsNull(new CodeToTest() {
       public void run() {
         new ImageAssert(null).as("A Test").isNotNull();
+      }
+    });
+  }
+  
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ImageAssert(null).overridingErrorMessage("My custom message")
+                             .isNotNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ImageAssert(null).as("A Test")
+                             .overridingErrorMessage("My custom message")
+                             .isNotNull();
       }
     });
   }

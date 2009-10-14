@@ -193,7 +193,7 @@ public class IntArrayAssert extends ArrayAssert<int[]> {
    */
   public IntArrayAssert isEqualTo(int[] expected) {
     if (Arrays.equals(actual, expected)) return this;
-    failWithCustomErrorMessage();
+    failIfCustomMessageIsSet();
     throw failure(unexpectedNotEqual(actual, expected));
   }
 

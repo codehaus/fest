@@ -19,6 +19,7 @@ import static org.fest.assertions.NotNull.notNullThrowable;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -27,6 +28,13 @@ import org.junit.Test;
  * @author Alex Ruiz
  */
 public class ThrowableAssert_isNot_Test implements GenericAssert_doesNotSatisfy_TestCase {
+
+  private static Exception exception;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    exception = new Exception();
+  }
 
   @Test
   public void should_pass_if_condition_is_not_satisfied() {
@@ -37,7 +45,7 @@ public class ThrowableAssert_isNot_Test implements GenericAssert_doesNotSatisfy_
   public void should_throw_error_if_condition_is_null() {
     expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
-        new ThrowableAssert(new Exception()).isNot(null);
+        new ThrowableAssert(exception).isNot(null);
       }
     });
   }
@@ -46,7 +54,7 @@ public class ThrowableAssert_isNot_Test implements GenericAssert_doesNotSatisfy_
   public void should_fail_if_condition_is_satisfied() {
     expectAssertionError("actual value:<java.lang.Exception> should not be:<NotNull>").on(new CodeToTest() {
       public void run() {
-        new ThrowableAssert(new Exception()).isNot(notNullThrowable());
+        new ThrowableAssert(exception).isNot(notNullThrowable());
       }
     });
   }
@@ -55,8 +63,8 @@ public class ThrowableAssert_isNot_Test implements GenericAssert_doesNotSatisfy_
   public void should_fail_and_display_description_of_assertion_if_condition_is_satisfied() {
     expectAssertionError("[A Test] actual value:<java.lang.Exception> should not be:<NotNull>").on(new CodeToTest() {
       public void run() {
-        new ThrowableAssert(new Exception()).as("A Test")
-                                            .isNot(notNullThrowable());
+        new ThrowableAssert(exception).as("A Test")
+                                      .isNot(notNullThrowable());
       }
     });
   }
@@ -66,7 +74,7 @@ public class ThrowableAssert_isNot_Test implements GenericAssert_doesNotSatisfy_
     String message = "actual value:<java.lang.Exception> should not be:<Not Null>";
     expectAssertionError(message).on(new CodeToTest() {
       public void run() {
-        new ThrowableAssert(new Exception()).isNot(notNullThrowable().as("Not Null"));
+        new ThrowableAssert(exception).isNot(notNullThrowable().as("Not Null"));
       }
     });
   }
@@ -76,8 +84,39 @@ public class ThrowableAssert_isNot_Test implements GenericAssert_doesNotSatisfy_
     String message = "[A Test] actual value:<java.lang.Exception> should not be:<Not Null>";
     expectAssertionError(message).on(new CodeToTest() {
       public void run() {
-        new ThrowableAssert(new Exception()).as("A Test")
-                                            .isNot(notNullThrowable().as("Not Null"));
+        new ThrowableAssert(exception).as("A Test")
+                                      .isNot(notNullThrowable().as("Not Null"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ThrowableAssert(exception).overridingErrorMessage("My custom message")
+                                      .isNot(notNullThrowable());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ThrowableAssert(exception).as("A Test")
+                                      .overridingErrorMessage("My custom message")
+                                      .isNot(notNullThrowable());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ThrowableAssert(exception).overridingErrorMessage("My custom message")
+                                      .isNot(notNullThrowable().as("Not Null"));
       }
     });
   }
