@@ -18,7 +18,10 @@ package org.fest.assertions;
 import static java.util.Collections.emptyList;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
+import java.util.List;
+
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -27,6 +30,13 @@ import org.junit.Test;
  * @author Alex Ruiz
  */
 public class ListAssert_isNull_Test implements GenericAssert_isNull_TestCase {
+
+  private static List<Object> list;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    list = emptyList();
+  }
 
   @Test
   public void should_pass_if_actual_is_null() {
@@ -37,7 +47,7 @@ public class ListAssert_isNull_Test implements GenericAssert_isNull_TestCase {
   public void should_fail_if_actual_is_not_null() {
     expectAssertionError("<[]> should be null").on(new CodeToTest() {
       public void run() {
-        new ListAssert(emptyList()).isNull();
+        new ListAssert(list).isNull();
       }
     });
   }
@@ -46,7 +56,29 @@ public class ListAssert_isNull_Test implements GenericAssert_isNull_TestCase {
   public void should_fail_and_display_description_of_assertion_if_actual_is_not_null() {
     expectAssertionError("[A Test] <[]> should be null").on(new CodeToTest() {
       public void run() {
-        new ListAssert(emptyList()).as("A Test").isNull();
+        new ListAssert(list).as("A Test")
+                            .isNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).overridingErrorMessage("My custom message")
+                            .isNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .isNull();
       }
     });
   }

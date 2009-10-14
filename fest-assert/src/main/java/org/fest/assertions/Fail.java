@@ -89,8 +89,17 @@ public final class Fail {
     fail(description, array("expecting a non-null object, but it was null"));
   }
 
-  static void failIfNotNull(Description description, Object o) {
+  /**
+   * Throws an <code>{@link AssertionError}</code> if the given object is not <code>null</code>.
+   * @param customErrorMessage any custom error message. This message will replace the default one only if it (the
+   * custom message) is not <code>null</code>.
+   * @param description the description of the given object.
+   * @param o the given object.
+   * @throws AssertionError if the given object is not <code>null</code>.
+   */
+  static void failIfNotNull(String customErrorMessage, Description description, Object o) {
     if (o == null) return;
+    failWithMessage(customErrorMessage);
     fail(description, array(inBrackets(o), " should be null"));
   }
 
@@ -139,9 +148,10 @@ public final class Fail {
    * @param message error message.
    * @return the thrown <code>AssertionError</code>.
    * @throws AssertionError with the given message.
+   * @see #failure(String)
    */
   public static AssertionError fail(String message) {
-    // TODO change return type to 'void'
+    // TODO in 2.0: change return type to 'void'
     throw failure(message);
   }
 

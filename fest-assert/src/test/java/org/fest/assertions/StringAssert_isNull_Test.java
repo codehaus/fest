@@ -51,4 +51,25 @@ public class StringAssert_isNull_Test implements GenericAssert_isNull_TestCase {
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("").overridingErrorMessage("My custom message")
+                            .isNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("").as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .isNull();
+      }
+    });
+  }
 }

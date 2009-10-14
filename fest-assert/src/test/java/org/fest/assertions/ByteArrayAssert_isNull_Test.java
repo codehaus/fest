@@ -18,6 +18,7 @@ import static org.fest.assertions.EmptyArrays.emptyByteArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,6 +29,13 @@ import org.junit.Test;
  */
 public class ByteArrayAssert_isNull_Test implements GenericAssert_isNull_TestCase {
 
+  private static byte[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = emptyByteArray();
+  }
+
   @Test
   public void should_pass_if_actual_is_null() {
     new ByteArrayAssert(null).isNull();
@@ -37,7 +45,7 @@ public class ByteArrayAssert_isNull_Test implements GenericAssert_isNull_TestCas
   public void should_fail_if_actual_is_not_null() {
     expectAssertionError("<[]> should be null").on(new CodeToTest() {
       public void run() {
-        new ByteArrayAssert(emptyByteArray()).isNull();
+        new ByteArrayAssert(array).isNull();
       }
     });
   }
@@ -46,8 +54,29 @@ public class ByteArrayAssert_isNull_Test implements GenericAssert_isNull_TestCas
   public void should_fail_and_display_description_of_assertion_if_actual_is_not_null() {
     expectAssertionError("[A Test] <[]> should be null").on(new CodeToTest() {
       public void run() {
-        new ByteArrayAssert(emptyByteArray()).as("A Test")
-                                             .isNull();
+        new ByteArrayAssert(array).as("A Test")
+                                  .isNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteArrayAssert(array).overridingErrorMessage("My custom message")
+                                  .isNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteArrayAssert(array).as("A Test")
+                                  .overridingErrorMessage("My custom message")
+                                  .isNull();
       }
     });
   }

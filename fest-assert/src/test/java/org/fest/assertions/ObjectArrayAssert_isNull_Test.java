@@ -18,6 +18,7 @@ import static org.fest.assertions.EmptyArrays.emptyObjectArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,6 +29,13 @@ import org.junit.Test;
  */
 public class ObjectArrayAssert_isNull_Test implements GenericAssert_isNull_TestCase {
 
+  private static Object[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = emptyObjectArray();
+  }
+
   @Test
   public void should_pass_if_actual_is_null() {
     Object[] actual = null;
@@ -36,9 +44,10 @@ public class ObjectArrayAssert_isNull_Test implements GenericAssert_isNull_TestC
 
   @Test
   public void should_fail_if_actual_is_not_null() {
+    array = emptyObjectArray();
     expectAssertionError("<[]> should be null").on(new CodeToTest() {
       public void run() {
-        new ObjectArrayAssert(emptyObjectArray()).isNull();
+        new ObjectArrayAssert(array).isNull();
       }
     });
   }
@@ -47,8 +56,29 @@ public class ObjectArrayAssert_isNull_Test implements GenericAssert_isNull_TestC
   public void should_fail_and_display_description_of_assertion_if_actual_is_not_null() {
     expectAssertionError("[A Test] <[]> should be null").on(new CodeToTest() {
       public void run() {
-        new ObjectArrayAssert(emptyObjectArray()).as("A Test")
-                                                .isNull();
+        new ObjectArrayAssert(array).as("A Test")
+                                    .isNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectArrayAssert(array).as("A Test")
+                                    .overridingErrorMessage("My custom message")
+                                    .isNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectArrayAssert(array).overridingErrorMessage("My custom message")
+                                    .isNull();
       }
     });
   }
