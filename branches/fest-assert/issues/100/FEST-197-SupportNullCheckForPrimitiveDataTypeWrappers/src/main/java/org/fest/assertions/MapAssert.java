@@ -256,9 +256,19 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
    * @throws AssertionError if the actual <code>Map</code> is <code>null</code>.
    */
   public MapAssert isNotNull() {
-    if (actual == null) fail("expecting a non-null map, but it was null");
+    assertThatActualIsNotNull();    
     return this;
   }
+  
+  /**
+   * Verifies that the actual map is not <code>null</code>.
+   * @throws AssertionError if the actual map is <code>null</code>.
+   */
+  private final void assertThatActualIsNotNull() {
+    if (actual != null) return;
+    failIfCustomMessageIsSet();
+    fail("expecting a non-null map, but it was null");
+  }  
 
   /**
    * Verifies that the actual <code>{@link Map}</code> is not the same as the given one.
