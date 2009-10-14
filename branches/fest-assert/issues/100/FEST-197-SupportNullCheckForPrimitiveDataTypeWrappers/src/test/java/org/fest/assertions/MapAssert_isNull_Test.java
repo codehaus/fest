@@ -17,7 +17,10 @@ package org.fest.assertions;
 import static java.util.Collections.emptyMap;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
+import java.util.Map;
+
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -29,6 +32,13 @@ import org.junit.Test;
  */
 public class MapAssert_isNull_Test implements NullableAssert_isNull_TestCase {
 
+  private static Map<Object, Object> map;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    map = emptyMap();
+  }
+
   @Test
   public void should_pass_if_actual_is_null() {
     new MapAssert(null).isNull();
@@ -38,7 +48,7 @@ public class MapAssert_isNull_Test implements NullableAssert_isNull_TestCase {
   public void should_fail_if_actual_is_not_null() {
     expectAssertionError("<{}> should be null").on(new CodeToTest() {
       public void run() {
-        new MapAssert(emptyMap()).isNull();
+        new MapAssert(map).isNull();
       }
     });
   }
@@ -47,8 +57,29 @@ public class MapAssert_isNull_Test implements NullableAssert_isNull_TestCase {
   public void should_fail_and_display_description_of_assertion_if_actual_is_not_null() {
     expectAssertionError("[A Test] <{}> should be null").on(new CodeToTest() {
       public void run() {
-        new MapAssert(emptyMap()).as("A Test")
-                                 .isNull();
+        new MapAssert(map).as("A Test")
+                          .isNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new MapAssert(map).overridingErrorMessage("My custom message")
+                          .isNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new MapAssert(map).as("A Test")
+                          .overridingErrorMessage("My custom message")
+                          .isNull();
       }
     });
   }

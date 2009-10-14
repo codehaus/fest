@@ -193,7 +193,7 @@ public class BooleanArrayAssert extends ArrayAssert<boolean[]> {
    */
   public BooleanArrayAssert isEqualTo(boolean[] expected) {
     if (Arrays.equals(actual, expected)) return this;
-    failWithCustomErrorMessage();
+    failIfCustomMessageIsSet();
     throw failure(unexpectedNotEqual(actual, expected));
   }
 

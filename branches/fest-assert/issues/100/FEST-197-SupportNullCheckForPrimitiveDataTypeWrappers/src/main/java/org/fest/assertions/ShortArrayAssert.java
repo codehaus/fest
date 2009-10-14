@@ -193,7 +193,7 @@ public class ShortArrayAssert extends ArrayAssert<short[]> {
    */
   public ShortArrayAssert isEqualTo(short[] expected) {
     if (Arrays.equals(actual, expected)) return this;
-    failWithCustomErrorMessage();
+    failIfCustomMessageIsSet();
     throw failure(unexpectedNotEqual(actual, expected));
   }
 

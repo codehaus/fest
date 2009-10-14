@@ -176,13 +176,13 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
 
   private void failIfNull(BufferedImage expected) {
     if (expected != null) return;
-    failWithCustomErrorMessage();
+    failIfCustomMessageIsSet();
     fail(unexpectedNotEqual(actual, null));
   }
 
   private void failIfNotEqual(Dimension a, Dimension e) {
     if (areEqual(a, e)) return;
-    failWithCustomErrorMessage();
+    failIfCustomMessageIsSet();
     fail(concat("image size, expected:", inBrackets(e), " but was:", inBrackets(a)));
   }
 
@@ -196,7 +196,7 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
 
   private void failIfNotEqual(RGBColor a, RGBColor e, Threshold threshold, int x, int y) {
     if (a.isEqualTo(e, threshold.value())) return;
-    failWithCustomErrorMessage();
+    failIfCustomMessageIsSet();
     fail(concat("expected:", inBrackets(a), " but was:", inBrackets(e), " at pixel [", valueOf(x), ",", valueOf(y), "]"));
   }
 

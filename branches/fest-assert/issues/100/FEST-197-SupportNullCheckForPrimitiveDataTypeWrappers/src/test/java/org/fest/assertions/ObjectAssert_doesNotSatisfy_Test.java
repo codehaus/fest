@@ -14,11 +14,12 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.CommonFailures.*;
+import static org.fest.assertions.CommonFailures.expectErrorIfConditionIsNull;
 import static org.fest.assertions.NotNull.notNullObject;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -29,6 +30,13 @@ import org.junit.Test;
  */
 public class ObjectAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSatisfy_TestCase {
 
+  private static Object six;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    six = 6;
+  }
+
   @Test
   public void should_pass_if_condition_is_not_satisfied() {
     new ObjectAssert(null).doesNotSatisfy(notNullObject());
@@ -38,7 +46,7 @@ public class ObjectAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSa
   public void should_throw_error_if_condition_is_null() {
     expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
-        new ObjectAssert(6).doesNotSatisfy(null);
+        new ObjectAssert(six).doesNotSatisfy(null);
       }
     });
   }
@@ -47,7 +55,7 @@ public class ObjectAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSa
   public void should_fail_if_condition_is_satisfied() {
     expectAssertionError("actual value:<6> should not satisfy condition:<NotNull>").on(new CodeToTest() {
       public void run() {
-        new ObjectAssert(6).doesNotSatisfy(notNullObject());
+        new ObjectAssert(six).doesNotSatisfy(notNullObject());
       }
     });
   }
@@ -56,8 +64,8 @@ public class ObjectAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSa
   public void should_fail_and_display_description_of_assertion_if_condition_is_satisfied() {
     expectAssertionError("[A Test] actual value:<6> should not satisfy condition:<NotNull>").on(new CodeToTest() {
       public void run() {
-        new ObjectAssert(6).as("A Test")
-                           .doesNotSatisfy(notNullObject());
+        new ObjectAssert(six).as("A Test")
+                             .doesNotSatisfy(notNullObject());
       }
     });
   }
@@ -66,7 +74,7 @@ public class ObjectAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSa
   public void should_fail_and_display_description_of_condition_if_condition_is_satisfied() {
     expectAssertionError("actual value:<6> should not satisfy condition:<Not Null>").on(new CodeToTest() {
       public void run() {
-        new ObjectAssert(6).doesNotSatisfy(notNullObject().as("Not Null"));
+        new ObjectAssert(six).doesNotSatisfy(notNullObject().as("Not Null"));
       }
     });
   }
@@ -75,8 +83,39 @@ public class ObjectAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSa
   public void should_fail_and_display_descriptions_of_assertion_and_condition_if_condition_is_satisfied() {
     expectAssertionError("[A Test] actual value:<6> should not satisfy condition:<Not Null>").on(new CodeToTest() {
       public void run() {
-        new ObjectAssert(6).as("A Test")
-                           .doesNotSatisfy(notNullObject().as("Not Null"));
+        new ObjectAssert(six).as("A Test")
+                             .doesNotSatisfy(notNullObject().as("Not Null"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(six).overridingErrorMessage("My custom message")
+                             .doesNotSatisfy(notNullObject());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(six).as("A Test")
+                             .overridingErrorMessage("My custom message")
+                             .doesNotSatisfy(notNullObject());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(six).overridingErrorMessage("My custom message")
+                             .doesNotSatisfy(notNullObject().as("Not Null"));
       }
     });
   }

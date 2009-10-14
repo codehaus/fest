@@ -50,4 +50,28 @@ public class FileAssert_isNull_Test implements NullableAssert_isNull_TestCase {
     });
   }
 
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() throws Throwable {
+        new FileAssert(FileStub.newFile("some-absolute-path"))
+        .overridingErrorMessage("My custom message")
+        .isNull();
+      }
+    });
+  }
+
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() throws Throwable {
+        new FileAssert(FileStub.newFile("some-absolute-path"))
+        .as("A Test")
+        .overridingErrorMessage("My custom message")
+        .isNull();
+      }
+    });
+  }
+
 }

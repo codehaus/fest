@@ -49,6 +49,25 @@ public class FileAssert_isNotNull_Test implements NullableAssert_isNotNull_TestC
       }
     });
   }
+  
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() throws Throwable {
+        new FileAssert(null).overridingErrorMessage("My custom message").isNotNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() throws Throwable {
+        new FileAssert(null).as("A Test").overridingErrorMessage("My custom message").isNotNull();
+      }
+    });
+  }
+  
 
   @Test
   public void should_have_leaf_assertion_class_as_return_type() {
@@ -56,6 +75,7 @@ public class FileAssert_isNotNull_Test implements NullableAssert_isNotNull_TestC
     @SuppressWarnings("unused")
     FileAssert returnValue = initialInstance.isNotNull();
   }
+
 
 
 }

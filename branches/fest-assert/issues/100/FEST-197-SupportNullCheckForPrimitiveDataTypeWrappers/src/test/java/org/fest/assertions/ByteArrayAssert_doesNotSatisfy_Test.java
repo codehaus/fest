@@ -20,6 +20,7 @@ import static org.fest.assertions.NotNull.notNullByteArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -30,6 +31,13 @@ import org.junit.Test;
  */
 public class ByteArrayAssert_doesNotSatisfy_Test implements GenericAssert_doesNotSatisfy_TestCase {
 
+  private static byte[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = emptyByteArray();
+  }
+
   @Test
   public void should_pass_if_condition_is_not_satisfied() {
     new ByteArrayAssert(null).doesNotSatisfy(notNullByteArray());
@@ -39,7 +47,7 @@ public class ByteArrayAssert_doesNotSatisfy_Test implements GenericAssert_doesNo
   public void should_throw_error_if_condition_is_null() {
     expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
-        new ByteArrayAssert(emptyByteArray()).doesNotSatisfy(null);
+        new ByteArrayAssert(array).doesNotSatisfy(null);
       }
     });
   }
@@ -48,7 +56,7 @@ public class ByteArrayAssert_doesNotSatisfy_Test implements GenericAssert_doesNo
   public void should_fail_if_condition_is_satisfied() {
     expectAssertionError("actual value:<[]> should not satisfy condition:<NotNull>").on(new CodeToTest() {
       public void run() {
-        new ByteArrayAssert(emptyByteArray()).doesNotSatisfy(notNullByteArray());
+        new ByteArrayAssert(array).doesNotSatisfy(notNullByteArray());
       }
     });
   }
@@ -57,8 +65,8 @@ public class ByteArrayAssert_doesNotSatisfy_Test implements GenericAssert_doesNo
   public void should_fail_and_display_description_of_assertion_if_condition_is_satisfied() {
     expectAssertionError("[A Test] actual value:<[]> should not satisfy condition:<NotNull>").on(new CodeToTest() {
       public void run() {
-        new ByteArrayAssert(emptyByteArray()).as("A Test")
-                                             .doesNotSatisfy(notNullByteArray());
+        new ByteArrayAssert(array).as("A Test")
+                                  .doesNotSatisfy(notNullByteArray());
       }
     });
   }
@@ -67,7 +75,7 @@ public class ByteArrayAssert_doesNotSatisfy_Test implements GenericAssert_doesNo
   public void should_fail_and_display_description_of_condition_if_condition_is_satisfied() {
     expectAssertionError("actual value:<[]> should not satisfy condition:<Not Null>").on(new CodeToTest() {
       public void run() {
-        new ByteArrayAssert(emptyByteArray()).doesNotSatisfy(notNullByteArray().as("Not Null"));
+        new ByteArrayAssert(array).doesNotSatisfy(notNullByteArray().as("Not Null"));
       }
     });
   }
@@ -76,8 +84,39 @@ public class ByteArrayAssert_doesNotSatisfy_Test implements GenericAssert_doesNo
   public void should_fail_and_display_descriptions_of_assertion_and_condition_if_condition_is_satisfied() {
     expectAssertionError("[A Test] actual value:<[]> should not satisfy condition:<Not Null>").on(new CodeToTest() {
       public void run() {
-        new ByteArrayAssert(emptyByteArray()).as("A Test")
-                                             .doesNotSatisfy(notNullByteArray().as("Not Null"));
+        new ByteArrayAssert(array).as("A Test")
+                                  .doesNotSatisfy(notNullByteArray().as("Not Null"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteArrayAssert(array).overridingErrorMessage("My custom message")
+                                  .doesNotSatisfy(notNullByteArray());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteArrayAssert(array).as("A Test")
+                                  .overridingErrorMessage("My custom message")
+                                  .doesNotSatisfy(notNullByteArray());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteArrayAssert(array).overridingErrorMessage("My custom message")
+                                  .doesNotSatisfy(notNullByteArray().as("Not Null"));
       }
     });
   }

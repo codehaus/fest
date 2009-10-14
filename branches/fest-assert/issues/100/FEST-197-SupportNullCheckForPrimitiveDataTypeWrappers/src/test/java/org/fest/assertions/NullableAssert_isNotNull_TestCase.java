@@ -18,6 +18,7 @@ package org.fest.assertions;
  * Test case for implementations of <code>{@link GenericAssert#isNotNull()}</code>.
  *
  * @author Alex Ruiz
+ * @author Ansgar Konermann
  */
 public interface NullableAssert_isNotNull_TestCase {
 
@@ -26,6 +27,10 @@ public interface NullableAssert_isNotNull_TestCase {
   void should_fail_if_actual_is_null();
 
   void should_fail_and_display_description_of_assertion_if_actual_is_null();
+  
+  void should_fail_with_custom_message_if_actual_is_null();
+
+  void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_null();
   
   void should_have_leaf_assertion_class_as_return_type();
 }

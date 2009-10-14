@@ -17,6 +17,7 @@ package org.fest.assertions;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -27,9 +28,16 @@ import org.junit.Test;
  */
 public class ObjectAssert_isEqualTo_Test implements GenericAssert_isEqualTo_TestCase {
 
+  private static Object six;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    six = 6;
+  }
+
   @Test
   public void should_pass_if_actual_and_expected_are_equal() {
-    new ObjectAssert(6).isEqualTo(6);
+    new ObjectAssert(six).isEqualTo(6);
   }
 
   @Test
@@ -41,7 +49,7 @@ public class ObjectAssert_isEqualTo_Test implements GenericAssert_isEqualTo_Test
   public void should_fail_if_actual_and_expected_are_not_equal() {
     expectAssertionError("expected:<[8]> but was:<[6]>").on(new CodeToTest() {
       public void run() {
-        new ObjectAssert(6).isEqualTo(8);
+        new ObjectAssert(six).isEqualTo(8);
       }
     });
   }
@@ -50,8 +58,29 @@ public class ObjectAssert_isEqualTo_Test implements GenericAssert_isEqualTo_Test
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_equal() {
     expectAssertionError("[A Test] expected:<[8]> but was:<[6]>").on(new CodeToTest() {
       public void run() {
-        new ObjectAssert(6).as("A Test")
-                           .isEqualTo(8);
+        new ObjectAssert(six).as("A Test")
+                             .isEqualTo(8);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(six).overridingErrorMessage("My custom message")
+                             .isEqualTo(8);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(six).as("A Test")
+                             .overridingErrorMessage("My custom message")
+                             .isEqualTo(8);
       }
     });
   }

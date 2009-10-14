@@ -18,7 +18,10 @@ package org.fest.assertions;
 import static java.util.Collections.emptyList;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
+import java.util.Collection;
+
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -29,6 +32,13 @@ import org.junit.Test;
  */
 public class CollectionAssert_isNull_Test implements NullableAssert_isNull_TestCase {
 
+  private static Collection<Object> collection;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    collection = emptyList();
+  }
+
   @Test
   public void should_pass_if_actual_is_null() {
     new CollectionAssert(null).isNull();
@@ -38,7 +48,7 @@ public class CollectionAssert_isNull_Test implements NullableAssert_isNull_TestC
   public void should_fail_if_actual_is_not_null() {
     expectAssertionError("<[]> should be null").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(emptyList()).isNull();
+        new CollectionAssert(collection).isNull();
       }
     });
   }
@@ -47,7 +57,29 @@ public class CollectionAssert_isNull_Test implements NullableAssert_isNull_TestC
   public void should_fail_and_display_description_of_assertion_if_actual_is_not_null() {
     expectAssertionError("[A Test] <[]> should be null").on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(emptyList()).as("A Test").isNull();
+        new CollectionAssert(collection).as("A Test")
+                                        .isNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CollectionAssert(collection).overridingErrorMessage("My custom message")
+                                        .isNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CollectionAssert(collection).as("A Test")
+                                        .overridingErrorMessage("My custom message")
+                                        .isNull();
       }
     });
   }

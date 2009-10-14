@@ -25,7 +25,7 @@ import org.junit.Before;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class FileAssert_TestCase {
+public abstract class FileAssert_TestCase {
 
   FileStub file;
 

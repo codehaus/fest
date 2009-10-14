@@ -16,6 +16,7 @@ package org.fest.assertions;
 
 import static org.fest.assertions.CommonFailures.expectErrorIfObjectIsNull;
 import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfObjectIsNull;
+import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
 import org.junit.Test;
@@ -52,7 +53,28 @@ public class StringAssert_isNotNull_Test implements NullableAssert_isNotNull_Tes
       }
     });
   }
+  
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert(null).overridingErrorMessage("My custom message")
+                              .isNotNull();
+      }
+    });
+  }
 
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert(null).as("A Test")
+                              .overridingErrorMessage("My custom message")
+                              .isNotNull();
+      }
+    });
+  }
+  
   @Test
   public void should_have_leaf_assertion_class_as_return_type() {
     StringAssert initialInstance = new StringAssert("HELLO");

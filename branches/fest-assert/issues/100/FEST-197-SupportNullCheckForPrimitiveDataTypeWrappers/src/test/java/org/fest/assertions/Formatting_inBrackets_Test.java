@@ -28,70 +28,70 @@ import org.junit.Test;
 public class Formatting_inBrackets_Test {
 
   @Test
-  public void should_format_Object() {
+  public void should_surround_Object_with_brackets() {
     assertEquals("<3>", Formatting.inBrackets(new Integer(3)));
   }
 
   @Test
-  public void should_format_String() {
+  public void should_surround_String_with_brackets() {
     assertEquals("<'Yoda'>", Formatting.inBrackets("Yoda"));
   }
 
   @Test
-  public void should_format_null() {
+  public void should_surround_null_with_brackets() {
     assertEquals("<null>", Formatting.inBrackets(null));
   }
 
   @Test
-  public void should_format_array_of_Objects() {
+  public void should_surround_array_of_Objects_with_brackets() {
     Object o = new Object[] { "First", 3 };
     assertEquals("<['First', 3]>", Formatting.inBrackets(o));
   }
 
   @Test
-  public void should_format_array_of_booleans() {
+  public void should_surround_array_of_booleans_with_brackets() {
     Object o = booleanArray(true, false);
     assertEquals("<[true, false]>", Formatting.inBrackets(o));
   }
 
   @Test
-  public void should_format_array_of_bytes() {
+  public void should_surround_array_of_bytes_with_brackets() {
     Object o = byteArray(3, 8);
     assertEquals("<[3, 8]>", Formatting.inBrackets(o));
   }
 
   @Test
-  public void should_format_array_of_chars() {
+  public void should_surround_array_of_chars_with_brackets() {
     Object o = charArray('a', 'b');
     assertEquals("<[a, b]>", Formatting.inBrackets(o));
   }
 
   @Test
-  public void should_format_array_of_doubles() {
+  public void should_surround_array_of_doubles_with_brackets() {
     Object o = doubleArray(6.8, 8.3);
     assertEquals("<[6.8, 8.3]>", Formatting.inBrackets(o));
   }
 
   @Test
-  public void should_format_array_of_floats() {
+  public void should_surround_array_of_floats_with_brackets() {
     Object o = floatArray(6.1f, 8.6f);
     assertEquals("<[6.1, 8.6]>", Formatting.inBrackets(o));
   }
 
   @Test
-  public void should_format_array_of_ints() {
+  public void should_surround_array_of_ints_with_brackets() {
     Object o = intArray(78, 66);
     assertEquals("<[78, 66]>", Formatting.inBrackets(o));
   }
 
   @Test
-  public void should_format_array_of_longs() {
+  public void should_surround_array_of_longs_with_brackets() {
     Object o = longArray(160l, 98l);
     assertEquals("<[160, 98]>", Formatting.inBrackets(o));
   }
 
   @Test
-  public void should_format_array_of_shorts() {
+  public void should_surround_array_of_shorts_with_brackets() {
     Object o = shortArray(5, 8);
     assertEquals("<[5, 8]>", Formatting.inBrackets(o));
   }

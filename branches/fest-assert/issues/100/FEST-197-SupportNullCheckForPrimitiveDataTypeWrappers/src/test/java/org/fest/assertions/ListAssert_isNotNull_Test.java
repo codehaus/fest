@@ -14,11 +14,11 @@
  */
 package org.fest.assertions;
 
+import java.util.ArrayList;
 import static java.util.Collections.emptyList;
 import static org.fest.assertions.CommonFailures.expectErrorIfListIsNull;
 import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfListIsNull;
-
-import java.util.ArrayList;
+import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
 import org.junit.Test;
@@ -49,6 +49,28 @@ public class ListAssert_isNotNull_Test implements NullableAssert_isNotNull_TestC
     expectErrorWithDescriptionIfListIsNull(new CodeToTest() {
       public void run() {
         new ListAssert(null).as("A Test")
+                            .isNotNull();
+      }
+    });
+  }
+  
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(null).overridingErrorMessage("My custom message")
+                            .isNotNull();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_null() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(null).as("A Test")
+                            .overridingErrorMessage("My custom message")
                             .isNotNull();
       }
     });

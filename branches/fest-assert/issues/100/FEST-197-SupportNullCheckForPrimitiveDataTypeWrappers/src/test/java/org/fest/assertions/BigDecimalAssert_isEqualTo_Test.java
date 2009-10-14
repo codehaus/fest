@@ -20,6 +20,7 @@ import static org.fest.test.ExpectedFailure.expectAssertionError;
 import java.math.BigDecimal;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -32,9 +33,16 @@ import org.junit.Test;
  */
 public class BigDecimalAssert_isEqualTo_Test implements GenericAssert_isEqualTo_TestCase {
 
+  private static BigDecimal eight;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    eight = eight();
+  }
+
   @Test
   public void should_pass_if_actual_and_expected_are_equal() {
-    new BigDecimalAssert(eight()).isEqualTo(eight());
+    new BigDecimalAssert(eight).isEqualTo(eight());
   }
 
   @Test
@@ -46,7 +54,7 @@ public class BigDecimalAssert_isEqualTo_Test implements GenericAssert_isEqualTo_
   public void should_fail_if_actual_and_expected_are_not_equal() {
     expectAssertionError("expected:<8.0[0]> but was:<8.0[]>").on(new CodeToTest() {
       public void run() {
-        new BigDecimalAssert(eight()).isEqualTo(new BigDecimal("8.00"));
+        new BigDecimalAssert(eight).isEqualTo(new BigDecimal("8.00"));
       }
     });
   }
@@ -55,8 +63,8 @@ public class BigDecimalAssert_isEqualTo_Test implements GenericAssert_isEqualTo_
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_equal() {
     expectAssertionError("[A Test] expected:<8.0[0]> but was:<8.0[]>").on(new CodeToTest() {
       public void run() {
-        new BigDecimalAssert(eight()).as("A Test")
-                                     .isEqualTo(new BigDecimal("8.00"));
+        new BigDecimalAssert(eight).as("A Test")
+                                   .isEqualTo(new BigDecimal("8.00"));
       }
     });
   }
@@ -65,8 +73,8 @@ public class BigDecimalAssert_isEqualTo_Test implements GenericAssert_isEqualTo_
   public void should_fail_with_custom_message_if_actual_and_expected_are_not_equal() {
     expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new BigDecimalAssert(eight()).overridingErrorMessage("My custom message")
-                                     .isEqualTo(new BigDecimal("8.00"));
+        new BigDecimalAssert(eight).overridingErrorMessage("My custom message")
+                                   .isEqualTo(new BigDecimal("8.00"));
       }
     });
   }
@@ -75,9 +83,9 @@ public class BigDecimalAssert_isEqualTo_Test implements GenericAssert_isEqualTo_
   public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_equal() {
     expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new BigDecimalAssert(eight()).as("A Test")
-                                     .overridingErrorMessage("My custom message")
-                                     .isEqualTo(new BigDecimal("8.00"));
+        new BigDecimalAssert(eight).as("A Test")
+                                   .overridingErrorMessage("My custom message")
+                                   .isEqualTo(new BigDecimal("8.00"));
       }
     });
   }
