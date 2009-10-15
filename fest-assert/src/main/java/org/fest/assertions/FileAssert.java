@@ -106,10 +106,10 @@ public class FileAssert extends GenericAssert<File> {
   public FileAssert hasSize(long expected) {
     isNotNull();
     long size = actual.length();
-    if (size != expected)
-      fail(concat(
+    if (size == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(
           "size of file:", inBrackets(actual), " expected:", inBrackets(expected), " but was:", inBrackets(size)));
-    return this;
   }
 
   /**

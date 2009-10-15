@@ -151,6 +151,7 @@ public abstract class ArrayAssert<T> extends GroupAssert<T> {
   protected final void assertThatActualHasSize(int expected) {
     int actualSize = actualGroupSize();
     if (actualSize == expected) return;
+    failIfCustomMessageIsSet();
     fail(concat(
         "expected size:", inBrackets(expected)," but was:", inBrackets(actualSize), " for array:", actualInBrackets()));
   }

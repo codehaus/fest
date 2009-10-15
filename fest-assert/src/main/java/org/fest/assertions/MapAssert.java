@@ -186,10 +186,10 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
   public MapAssert hasSize(int expected) {
     isNotNull();
     int actualSize = actualGroupSize();
-    if (actualSize != expected)
-      fail(concat(
+    if (actualSize == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(
           "expected size:", inBrackets(expected)," but was:", inBrackets(actualSize), " for map:", inBrackets(actual)));
-    return this;
   }
 
   /**

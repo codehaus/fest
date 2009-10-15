@@ -254,10 +254,10 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
    */
   public CollectionAssert hasSize(int expected) {
     int actualSize = actualGroupSize();
-    if (actualSize != expected)
-      fail(concat(
-          "expected size:", inBrackets(expected)," but was:", inBrackets(actualSize), " for collection:", format(actual)));
-    return this;
+    if (actualSize == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(
+        "expected size:", inBrackets(expected)," but was:", inBrackets(actualSize), " for collection:", format(actual)));
   }
 
   /**

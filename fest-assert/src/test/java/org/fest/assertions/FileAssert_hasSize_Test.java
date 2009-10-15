@@ -16,10 +16,11 @@ package org.fest.assertions;
 
 import static org.fest.assertions.CommonFailures.expectErrorIfObjectIsNull;
 import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfObjectIsNull;
+import static org.fest.assertions.FileStub.newFile;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * Tests for <code>{@link FileAssert}</code>.
@@ -28,11 +29,18 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class FileAssert_hasSize_Test extends FileAssert_TestCase implements Assert_hasSize_TestCase {
+public class FileAssert_hasSize_Test implements Assert_hasSize_TestCase {
+
+  private static FileStub file;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    file = newFile("c:\\f.txt");
+    file.length(8);
+  }
 
   @Test
   public void should_pass_if_actual_has_expected_size() {
-    file.length(8);
     new FileAssert(file).hasSize(8);
   }
 
@@ -57,7 +65,6 @@ public class FileAssert_hasSize_Test extends FileAssert_TestCase implements Asse
 
   @Test
   public void should_fail_if_actual_does_not_have_expected_size() {
-    file.length(8);
     expectAssertionError("size of file:<c:\\f.txt> expected:<6> but was:<8>").on(new CodeToTest() {
       public void run() {
         new FileAssert(file).hasSize(6);
@@ -67,10 +74,30 @@ public class FileAssert_hasSize_Test extends FileAssert_TestCase implements Asse
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_does_not_have_expected_size() {
-    file.length(8);
     expectAssertionError("[A Test] size of file:<c:\\f.txt> expected:<6> but was:<8>").on(new CodeToTest() {
       public void run() {
         new FileAssert(file).as("A Test")
+                            .hasSize(6);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_have_expected_size() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(file).overridingErrorMessage("My custom message")
+                            .hasSize(6);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_have_expected_size() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(file).as("A Test")
+                            .overridingErrorMessage("My custom message")
                             .hasSize(6);
       }
     });

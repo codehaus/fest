@@ -331,10 +331,10 @@ public class ListAssert extends GroupAssert<List<?>> {
    */
   public ListAssert hasSize(int expected) {
     int actualSize = actualGroupSize();
-    if (actualSize != expected)
-      fail(concat(
+    if (actualSize == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(
           "expected size:", inBrackets(expected)," but was:", inBrackets(actualSize), " for list:", inBrackets(actual)));
-    return this;
   }
 
   /**

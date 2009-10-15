@@ -205,9 +205,9 @@ public class StringAssert extends GroupAssert<String> {
    */
   public StringAssert hasSize(int expected) {
     int actualSize = actualGroupSize();
-    if (actualSize != expected)
-      fail(concat("expected size:", inBrackets(expected)," but was:", inBrackets(actualSize), " for String:", actual()));
-    return this;
+    if (actualSize == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("expected size:", inBrackets(expected)," but was:", inBrackets(actualSize), " for String:", actual()));
   }
 
   /**
