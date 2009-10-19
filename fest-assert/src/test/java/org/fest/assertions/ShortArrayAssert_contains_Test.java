@@ -14,12 +14,13 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ArrayFactory.shortArray;
 import static org.fest.assertions.CommonFailures.*;
-import static org.fest.assertions.EmptyArrays.emptyShortArray;
 import static org.fest.assertions.Primitives.asShort;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -30,14 +31,21 @@ import org.junit.Test;
  */
 public class ShortArrayAssert_contains_Test implements GroupAssert_contains_TestCase {
 
+  private static short[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = shortArray(8, 6);
+  }
+
   @Test
   public void should_pass_if_actual_contains_given_value() {
-    new ShortArrayAssert(asShort(8)).contains(asShort(8));
+    new ShortArrayAssert(array).contains(asShort(8));
   }
 
   @Test
   public void should_pass_if_actual_contains_given_values() {
-    new ShortArrayAssert(asShort(8), asShort(6)).contains(asShort(8), asShort(6));
+    new ShortArrayAssert(array).contains(asShort(8), asShort(6));
   }
 
   @Test
@@ -63,7 +71,7 @@ public class ShortArrayAssert_contains_Test implements GroupAssert_contains_Test
   public void should_throw_error_if_expected_is_null() {
     expectNullPointerException("the given array of shorts should not be null").on(new CodeToTest() {
       public void run() {
-        new ShortArrayAssert(emptyShortArray()).contains(null);
+        new ShortArrayAssert(array).contains(null);
       }
     });
   }
@@ -72,27 +80,48 @@ public class ShortArrayAssert_contains_Test implements GroupAssert_contains_Test
   public void should_throw_error_and_display_description_of_assertion_if_expected_is_null() {
     expectNullPointerException("[A Test] the given array of shorts should not be null").on(new CodeToTest() {
       public void run() {
-        new ShortArrayAssert(emptyShortArray()).as("A Test")
-                                               .contains(null);
+        new ShortArrayAssert(array).as("A Test")
+                                   .contains(null);
       }
     });
   }
 
   @Test
   public void should_fail_if_actual_does_not_contain_given_values() {
-    expectAssertionError("array:<[]> does not contain element(s):<[8, 6]>").on(new CodeToTest() {
+    expectAssertionError("array:<[8, 6]> does not contain element(s):<[10]>").on(new CodeToTest() {
       public void run() {
-        new ShortArrayAssert(emptyShortArray()).contains(asShort(8), asShort(6));
+        new ShortArrayAssert(array).contains(asShort(10));
       }
     });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_does_not_contain_given_values() {
-    expectAssertionError("[A Test] array:<[]> does not contain element(s):<[8, 6]>").on(new CodeToTest() {
+    expectAssertionError("[A Test] array:<[8, 6]> does not contain element(s):<[10]>").on(new CodeToTest() {
       public void run() {
-        new ShortArrayAssert(emptyShortArray()).as("A Test")
-                                               .contains(asShort(8), asShort(6));
+        new ShortArrayAssert(array).as("A Test")
+                                   .contains(asShort(10));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_contain_given_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ShortArrayAssert(array).overridingErrorMessage("My custom message")
+                                   .contains(asShort(10));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_contain_given_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ShortArrayAssert(array).as("A Test")
+                                   .overridingErrorMessage("My custom message")
+                                   .contains(asShort(10));
       }
     });
   }

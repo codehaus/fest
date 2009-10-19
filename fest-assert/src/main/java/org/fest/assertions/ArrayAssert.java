@@ -54,10 +54,20 @@ public abstract class ArrayAssert<T> extends GroupAssert<T> {
    * @throws AssertionError if the actual <code>byte</code> array does not contain the given values.
    */
   protected final void assertContains(List<Object> values) {
-    List<Object> copyOfActual = copy(actual);
+    List<Object> notFound = notFoundInActual(values);
+    if (notFound.isEmpty()) return;
+    failIfCustomMessageIsSet();
+    failIfElementsNotFound(notFound);
+  }
+
+  private List<Object> notFoundInActual(List<Object> values) {
+    List<Object> copy = copy(actual);
     List<Object> notFound = new ArrayList<Object>();
-    for (Object value : values) if (!copyOfActual.contains(value)) notFound.add(value);
-    if (!notFound.isEmpty()) failIfElementsNotFound(notFound);
+    for (Object value : values) {
+      if (copy.contains(value)) continue;
+      notFound.add(value);
+    }
+    return notFound;
   }
 
   /**

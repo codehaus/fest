@@ -53,9 +53,14 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
   public CollectionAssert contains(Object...objects) {
     isNotNull();
     validateIsNotNull(objects);
-    Collection<Object> notFound = notFound(actual, objects);
-    if (!notFound.isEmpty()) failIfElementsNotFound(notFound);
-    return this;
+    Collection<Object> notFound = notFoundInActual(objects);
+    if (notFound.isEmpty()) return this;
+    failIfCustomMessageIsSet();
+    throw failureIfElementsNotFound(notFound);
+  }
+
+  private Collection<Object> notFoundInActual(Object... objects) {
+    return notFound(actual, objects);
   }
 
   /**
@@ -79,14 +84,14 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
       }
       copy.remove(o);
     }
-    if (!notFound.isEmpty()) failIfElementsNotFound(notFound);
+    if (!notFound.isEmpty()) throw failureIfElementsNotFound(notFound);
     if (!copy.isEmpty())
       fail(concat("unexpected element(s):", format(copy), " in collection:", format(actual)));
     return this;
   }
 
-  private void failIfElementsNotFound(Collection<Object> notFound) {
-    fail(concat("collection:", format(actual), " does not contain element(s):", format(notFound)));
+  private AssertionError failureIfElementsNotFound(Collection<Object> notFound) {
+    return failure(concat("collection:", format(actual), " does not contain element(s):", format(notFound)));
   }
 
   /**

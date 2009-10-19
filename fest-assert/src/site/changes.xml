@@ -79,6 +79,10 @@
         Method 'contains(Object, Index)' in ListAssert now throws IndexOutOfBoundsException instead of AssertionError if 
         the value in the given Index is out of bounds.
       </action>
+      <action dev="alexruiz" type="add" issue="FEST-242">
+        When two objects are compared with 'isEqualTo' and the comparison fails, a ComparisonFailure is thrown using the
+        'toString' implementation of the compared objects.
+      </action>
       <action dev="alexruiz" type="remove">
         Deprecated method 'value' in class Delta. Replaced with method 'doubleValue'.
       </action>
