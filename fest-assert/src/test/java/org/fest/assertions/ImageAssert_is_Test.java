@@ -18,7 +18,11 @@ import static org.fest.assertions.CommonFailures.*;
 import static org.fest.assertions.Images.*;
 import static org.fest.assertions.NotNull.notNullImage;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
+
+import java.awt.image.BufferedImage;
+
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,16 +32,23 @@ import org.junit.Test;
  */
 public class ImageAssert_is_Test implements GenericAssert_satisfies_TestCase {
 
+  private static BufferedImage image;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    image = fivePixelBlueImage();
+  }
+
   @Test
   public void should_pass_if_condition_is_satisfied() {
-    new ImageAssert(fivePixelBlueImage()).is(notNullImage());
+    new ImageAssert(image).is(notNullImage());
   }
 
   @Test
   public void should_throw_error_if_condition_is_null() {
     expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
-        new ImageAssert(fivePixelBlueImage()).is(null);
+        new ImageAssert(image).is(null);
       }
     });
   }
@@ -75,6 +86,37 @@ public class ImageAssert_is_Test implements GenericAssert_satisfies_TestCase {
     expectAssertionError("[A Test] actual value:<null> should be:<Not Null>").on(new CodeToTest() {
       public void run() {
         new ImageAssert(null).as("A Test")
+                             .is(notNullImage().as("Not Null"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ImageAssert(null).overridingErrorMessage("My custom message")
+                             .is(notNullImage());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ImageAssert(null).as("A Test")
+                             .overridingErrorMessage("My custom message")
+                             .is(notNullImage());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ImageAssert(null).overridingErrorMessage("My custom message")
                              .is(notNullImage().as("Not Null"));
       }
     });

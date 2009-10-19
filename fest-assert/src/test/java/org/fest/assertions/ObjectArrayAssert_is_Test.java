@@ -84,4 +84,39 @@ public class ObjectArrayAssert_is_Test implements GenericAssert_satisfies_TestCa
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        // TODO create constant for actual in ArrayFactory.
+        Object[] actual = null;
+        new ObjectArrayAssert(actual).overridingErrorMessage("My custom message")
+                                     .is(notNullObjectArray());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        Object[] actual = null;
+        new ObjectArrayAssert(actual).as("A Test")
+                                     .overridingErrorMessage("My custom message")
+                                     .is(notNullObjectArray());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        Object[] actual = null;
+        new ObjectArrayAssert(actual).overridingErrorMessage("My custom message")
+                                     .is(notNullObjectArray().as("Not Null"));
+      }
+    });
+  }
 }

@@ -112,15 +112,26 @@ public final class Fail {
    * @param other the object to compare to.
    * @throws AssertionError if the given objects are the same.
    */
-  static void failIfSame(String customErrorMessage, Description descriptionOfActual, Object actual, Object other) {
+  public static void failIfSame(String customErrorMessage, Description descriptionOfActual, Object actual, Object other) {
     if (actual != other) return;
     failWithMessage(customErrorMessage);
     fail(descriptionOfActual, array("given objects are same:", inBrackets(actual)));
   }
 
-  static void failIfNotSame(Description description, Object first, Object second) {
-    if (first == second) return;
-    fail(description, array("expected same instance but found:", inBrackets(first), " and:", inBrackets(second)));
+  /**
+   * Throws an <code>{@link AssertionError}</code> if the given objects are not the same.
+   * @param customErrorMessage any custom error message. This message will replace the default one only if it (the
+   * custom message) is not <code>null</code>.
+   * @param descriptionOfActual the description of the actual value.
+   * @param actual the actual object.
+   * @param other the object to compare to.
+   * @throws AssertionError if the given objects are not the same.
+   */
+  public static void failIfNotSame(String customErrorMessage, Description descriptionOfActual, Object actual, Object other) {
+    if (actual == other) return;
+    failWithMessage(customErrorMessage);
+    fail(descriptionOfActual,
+        array("expected same instance but found:", inBrackets(actual), " and:", inBrackets(other)));
   }
 
   /**

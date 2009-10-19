@@ -47,7 +47,29 @@ public class StringAssert_isSameAs_Test implements GenericAssert_isSameAs_TestCa
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_same() {
     expectAssertionError("[A Test] expected same instance but found:<'Leia'> and:<''>").on(new CodeToTest() {
       public void run() {
-        new StringAssert("Leia").as("A Test").isSameAs("");
+        new StringAssert("Leia").as("A Test")
+                                .isSameAs("");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_not_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("Leia").overridingErrorMessage("My custom message")
+                                .isSameAs("");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("Leia").as("A Test")
+                                .overridingErrorMessage("My custom message")
+                                .isSameAs("");
       }
     });
   }

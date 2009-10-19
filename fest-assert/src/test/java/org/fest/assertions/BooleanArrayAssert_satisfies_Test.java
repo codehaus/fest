@@ -82,4 +82,35 @@ public class BooleanArrayAssert_satisfies_Test implements GenericAssert_satisfie
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BooleanArrayAssert(null).overridingErrorMessage("My custom message")
+                                    .satisfies(notNullBooleanArray());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BooleanArrayAssert(null).as("A Test")
+                                    .overridingErrorMessage("My custom message")
+                                    .satisfies(notNullBooleanArray());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BooleanArrayAssert(null).overridingErrorMessage("My custom message")
+                                    .satisfies(notNullBooleanArray().as("Not Null"));
+      }
+    });
+  }
 }

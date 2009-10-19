@@ -194,7 +194,9 @@ public abstract class GenericAssert<T> extends Assert {
    * @throws AssertionError if the actual value does not satisfy the given condition.
    */
   protected final void assertSatisfies(Condition<T> condition) {
-    if (!matches(condition)) fail(errorMessageIfConditionNotSatisfied(condition));
+    if (matches(condition)) return;
+    failIfCustomMessageIsSet();
+    fail(errorMessageIfConditionNotSatisfied(condition));
   }
 
   private String errorMessageIfConditionNotSatisfied(Condition<T> condition) {
@@ -209,7 +211,9 @@ public abstract class GenericAssert<T> extends Assert {
    * @throws AssertionError if the actual value does not satisfy the given condition.
    */
   protected final void assertIs(Condition<T> condition) {
-    if (!matches(condition)) fail(errorMessageIfIsNot(condition));
+    if (matches(condition)) return;
+    failIfCustomMessageIsSet();
+    fail(errorMessageIfIsNot(condition));
   }
 
   private String errorMessageIfIsNot(Condition<T> condition) {
@@ -292,7 +296,7 @@ public abstract class GenericAssert<T> extends Assert {
    * @throws AssertionError if the actual value is not the same as the given one.
    */
   protected final void assertSameAs(T expected) {
-    failIfNotSame(rawDescription(), actual, expected);
+    failIfNotSame(customErrorMessage(), rawDescription(), actual, expected);
   }
 
   /**
