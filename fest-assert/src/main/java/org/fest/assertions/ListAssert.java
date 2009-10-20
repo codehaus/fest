@@ -257,9 +257,9 @@ public class ListAssert extends GroupAssert<List<?>> {
   public ListAssert doesNotHaveDuplicates() {
     isNotNull();
     Collection<?> duplicates = duplicatesFrom(actual);
-    if (!duplicates.isEmpty())
-      fail(concat("list:", inBrackets(actual), " contains duplicate(s):", inBrackets(duplicates)));
-    return this;
+    if (duplicates.isEmpty()) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("list:", inBrackets(actual), " contains duplicate(s):", inBrackets(duplicates)));
   }
 
   /** {@inheritDoc} */

@@ -134,9 +134,9 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
   public CollectionAssert doesNotHaveDuplicates() {
     isNotNull();
     Collection<?> duplicates = duplicatesFrom(actual);
-    if (!duplicates.isEmpty())
-      fail(concat("collection:", format(actual), " contains duplicate(s):", format(duplicates)));
-    return this;
+    if (duplicates.isEmpty()) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("collection:", format(actual), " contains duplicate(s):", format(duplicates)));
   }
 
   private String format(Collection<?> c) {
