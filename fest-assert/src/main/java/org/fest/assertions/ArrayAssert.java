@@ -57,7 +57,7 @@ public abstract class ArrayAssert<T> extends GroupAssert<T> {
     List<Object> notFound = notFoundInActual(values);
     if (notFound.isEmpty()) return;
     failIfCustomMessageIsSet();
-    failIfElementsNotFound(notFound);
+    failureIfExpectedElementsNotFound(notFound.toArray());
   }
 
   private List<Object> notFoundInActual(List<Object> values) {
@@ -77,22 +77,33 @@ public abstract class ArrayAssert<T> extends GroupAssert<T> {
    * elements other than the ones specified.
    */
   protected final void assertContainsOnly(List<Object> values) {
-    List<Object> copyOfActual = copy(actual);
+    List<Object> copy = copy(actual);
+    List<Object> notFound = notFoundInCopy(copy, values);
+    if (!notFound.isEmpty()) failureIfExpectedElementsNotFound(notFound.toArray());
+    if (copy.isEmpty()) return;
+    throw failureIfUnexpectedElementsFound(copy.toArray());
+  }
+
+  private List<Object> notFoundInCopy(List<Object> copy, List<Object> values) {
     List<Object> notFound = new ArrayList<Object>();
     for (Object value : values) {
-      if (!copyOfActual.contains(value)) {
+      if (!copy.contains(value)) {
         notFound.add(value);
         continue;
       }
-      copyOfActual.remove(value);
+      copy.remove(value);
     }
-    if (!notFound.isEmpty()) failIfElementsNotFound(notFound);
-    if (!copyOfActual.isEmpty())
-      fail(concat("unexpected element(s):", inBrackets(copyOfActual.toArray()), " in array:", actualInBrackets()));
+    return notFound;
   }
 
-  private void failIfElementsNotFound(List<Object> notFound) {
-    fail(concat("array:", actualInBrackets(), " does not contain element(s):", inBrackets(notFound.toArray())));
+  private void failureIfExpectedElementsNotFound(Object[] notFound) {
+    failIfCustomMessageIsSet();
+    fail(concat("array:", actualInBrackets(), " does not contain element(s):", inBrackets(notFound)));
+  }
+
+  private AssertionError failureIfUnexpectedElementsFound(Object[] unexpected) {
+    failIfCustomMessageIsSet();
+    return failure(concat("unexpected element(s):", inBrackets(unexpected), " in array:", actualInBrackets()));
   }
 
   /**

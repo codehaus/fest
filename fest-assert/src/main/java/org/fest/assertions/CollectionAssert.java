@@ -55,8 +55,7 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
     validateIsNotNull(objects);
     Collection<Object> notFound = notFoundInActual(objects);
     if (notFound.isEmpty()) return this;
-    failIfCustomMessageIsSet();
-    throw failureIfElementsNotFound(notFound);
+    throw failureIfExpectedElementsNotFound(notFound);
   }
 
   private Collection<Object> notFoundInActual(Object... objects) {
@@ -75,8 +74,15 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
   public CollectionAssert containsOnly(Object...objects) {
     isNotNull();
     validateIsNotNull(objects);
-    List<Object> notFound = new ArrayList<Object>();
     List<Object> copy = new ArrayList<Object>(actual);
+    List<Object> notFound = notFoundInCopy(copy, objects);
+    if (!notFound.isEmpty()) throw failureIfExpectedElementsNotFound(notFound);
+    if (copy.isEmpty()) return this;
+    throw failureIfUnexpectedElementsFound(copy);
+  }
+
+  private List<Object> notFoundInCopy(List<Object> copy, Object... objects) {
+    List<Object> notFound = new ArrayList<Object>();
     for (Object o : objects) {
       if (!copy.contains(o)) {
         notFound.add(o);
@@ -84,14 +90,17 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
       }
       copy.remove(o);
     }
-    if (!notFound.isEmpty()) throw failureIfElementsNotFound(notFound);
-    if (!copy.isEmpty())
-      fail(concat("unexpected element(s):", format(copy), " in collection:", format(actual)));
-    return this;
+    return notFound;
   }
 
-  private AssertionError failureIfElementsNotFound(Collection<Object> notFound) {
+  private AssertionError failureIfExpectedElementsNotFound(Collection<Object> notFound) {
+    failIfCustomMessageIsSet();
     return failure(concat("collection:", format(actual), " does not contain element(s):", format(notFound)));
+  }
+
+  private AssertionError failureIfUnexpectedElementsFound(List<Object> unexpected) {
+    failIfCustomMessageIsSet();
+    return failure(concat("unexpected element(s):", format(unexpected), " in collection:", format(actual)));
   }
 
   /**
