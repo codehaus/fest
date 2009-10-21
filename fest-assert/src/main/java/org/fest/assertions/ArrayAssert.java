@@ -115,8 +115,9 @@ public abstract class ArrayAssert<T> extends GroupAssert<T> {
     List<Object> copyOfActual = copy(actual);
     List<Object> found = new ArrayList<Object>();
     for (Object value : values) if (copyOfActual.contains(value)) found.add(value);
-    if (!found.isEmpty())
-      fail(concat("array:", actualInBrackets(), " does not exclude element(s):", inBrackets(found.toArray())));
+    if (found.isEmpty()) return;
+    failIfCustomMessageIsSet();
+    fail(concat("array:", actualInBrackets(), " does not exclude element(s):", inBrackets(found.toArray())));
   }
 
   /**

@@ -238,9 +238,9 @@ public class ListAssert extends GroupAssert<List<?>> {
     isNotNull();
     validateIsNotNull(objects);
     Collection<Object> found = found(actual, objects);
-    if (!found.isEmpty())
-      fail(concat("list:", inBrackets(actual), " does not exclude element(s):", inBrackets(found)));
-    return this;
+    if (found.isEmpty()) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("list:", inBrackets(actual), " does not exclude element(s):", inBrackets(found)));
   }
 
   private void validateIsNotNull(Object[] objects) {

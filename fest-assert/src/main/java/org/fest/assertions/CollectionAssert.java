@@ -115,9 +115,9 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
     isNotNull();
     validateIsNotNull(objects);
     Collection<Object> found = found(actual, objects);
-    if (!found.isEmpty())
-      fail(concat("collection:", format(actual), " does not exclude element(s):", format(found)));
-    return this;
+    if (found.isEmpty()) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("collection:", format(actual), " does not exclude element(s):", format(found)));
   }
 
   private void validateIsNotNull(Object[] objects) {

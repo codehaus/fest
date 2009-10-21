@@ -14,12 +14,14 @@
  */
 package org.fest.assertions;
 
-import static java.util.Collections.emptyList;
 import static org.fest.assertions.CommonFailures.*;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import static org.fest.util.Collections.list;
 
+import java.util.List;
+
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -29,14 +31,21 @@ import org.junit.Test;
  */
 public class ListAssert_excludes_Test implements GroupAssert_excludes_TestCase {
 
+  private static List<String> list;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    list = list("Leia");
+  }
+
   @Test
   public void should_pass_if_actual_excludes_given_value() {
-    new ListAssert(list("Leia")).excludes("Luke");
+    new ListAssert(list).excludes("Luke");
   }
 
   @Test
   public void should_pass_if_actual_excludes_given_values() {
-    new ListAssert(list("Leia")).excludes("Luke", "Han");
+    new ListAssert(list).excludes("Luke", "Han");
   }
 
   @Test
@@ -63,7 +72,7 @@ public class ListAssert_excludes_Test implements GroupAssert_excludes_TestCase {
     expectNullPointerException("the given array of objects should not be null").on(new CodeToTest() {
       public void run() {
         Object[] expected = null;
-        new ListAssert(emptyList()).excludes(expected);
+        new ListAssert(list).excludes(expected);
       }
     });
   }
@@ -73,8 +82,8 @@ public class ListAssert_excludes_Test implements GroupAssert_excludes_TestCase {
     expectNullPointerException("[A Test] the given array of objects should not be null").on(new CodeToTest() {
       public void run() {
         Object[] expected = null;
-        new ListAssert(emptyList()).as("A Test")
-                                   .excludes(expected);
+        new ListAssert(list).as("A Test")
+                            .excludes(expected);
       }
     });
   }
@@ -83,7 +92,7 @@ public class ListAssert_excludes_Test implements GroupAssert_excludes_TestCase {
   public void should_fail_if_actual_contains_given_values() {
     expectAssertionError("list:<['Leia']> does not exclude element(s):<['Leia']>").on(new CodeToTest() {
       public void run() {
-        new ListAssert(list("Leia")).excludes("Leia");
+        new ListAssert(list).excludes("Leia");
       }
     });
   }
@@ -92,8 +101,29 @@ public class ListAssert_excludes_Test implements GroupAssert_excludes_TestCase {
   public void should_fail_and_display_description_of_assertion_if_actual_contains_given_values() {
     expectAssertionError("[A Test] list:<['Leia']> does not exclude element(s):<['Leia']>").on(new CodeToTest() {
       public void run() {
-        new ListAssert(list("Leia")).as("A Test")
-                                    .excludes("Leia");
+        new ListAssert(list).as("A Test")
+                            .excludes("Leia");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_contains_given_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).overridingErrorMessage("My custom message")
+                            .excludes("Leia");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_contains_given_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .excludes("Leia");
       }
     });
   }
