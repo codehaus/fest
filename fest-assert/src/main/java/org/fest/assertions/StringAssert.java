@@ -140,8 +140,9 @@ public class StringAssert extends GroupAssert<String> {
    */
   public StringAssert isNotEmpty() {
     isNotNull();
-    if (Strings.isEmpty(actual)) fail(concat("expecting a non-empty String, but it was empty"));
-    return this;
+    if (!Strings.isEmpty(actual)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("expecting a non-empty String, but it was empty"));
   }
 
   /**

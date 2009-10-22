@@ -14,10 +14,10 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ArrayFactory.byteArray;
 import static org.fest.assertions.CommonFailures.expectErrorIfArrayIsNull;
 import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfArrayIsNull;
 import static org.fest.assertions.EmptyArrays.emptyByteArray;
-import static org.fest.assertions.Primitives.asByte;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
@@ -33,11 +33,30 @@ public class ByteArrayAssert_isNotEmpty_Test implements GroupAssert_isNotEmpty_T
 
   @Test
   public void should_pass_if_actual_is_not_empty() {
-    new ByteArrayAssert(asByte(8), asByte(6)).isNotEmpty();
+    new ByteArrayAssert(byteArray(8, 6)).isNotEmpty();
   }
 
   @Test
   public void should_fail_if_actual_is_null() {
+    expectErrorIfArrayIsNull(new CodeToTest() {
+      public void run() {
+        new ByteArrayAssert(null).isNotEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
+    expectErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
+      public void run() {
+        new ByteArrayAssert(null).as("A Test")
+                                 .isNotEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_if_actual_is_empty() {
     expectAssertionError("expecting a non-empty array, but it was empty").on(new CodeToTest() {
       public void run() {
         new ByteArrayAssert(emptyByteArray()).isNotEmpty();
@@ -46,7 +65,7 @@ public class ByteArrayAssert_isNotEmpty_Test implements GroupAssert_isNotEmpty_T
   }
 
   @Test
-  public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
+  public void should_fail_and_display_description_of_assertion_if_actual_is_empty() {
     expectAssertionError("[A Test] expecting a non-empty array, but it was empty").on(new CodeToTest() {
       public void run() {
         new ByteArrayAssert(emptyByteArray()).as("A Test")
@@ -56,20 +75,22 @@ public class ByteArrayAssert_isNotEmpty_Test implements GroupAssert_isNotEmpty_T
   }
 
   @Test
-  public void should_fail_if_actual_is_empty() {
-    expectErrorIfArrayIsNull(new CodeToTest() {
+  public void should_fail_with_custom_message_if_actual_is_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new ByteArrayAssert(null).isNotEmpty();
+        new ByteArrayAssert(emptyByteArray()).overridingErrorMessage("My custom message")
+                                             .isNotEmpty();
       }
     });
   }
 
   @Test
-  public void should_fail_and_display_description_of_assertion_if_actual_is_empty() {
-    expectErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new ByteArrayAssert(null).as("A Test")
-                                 .isNotEmpty();
+        new ByteArrayAssert(emptyByteArray()).as("A Test")
+                                             .overridingErrorMessage("My custom message")
+                                             .isNotEmpty();
       }
     });
   }

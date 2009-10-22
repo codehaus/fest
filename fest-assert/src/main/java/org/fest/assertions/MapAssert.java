@@ -234,8 +234,9 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
    */
   public MapAssert isNotEmpty() {
     isNotNull();
-    if (actual.isEmpty()) fail("expecting non-empty map, but it was empty");
-    return this;
+    if (!actual.isEmpty()) return this;
+    failIfCustomMessageIsSet();
+    throw failure("expecting non-empty map, but it was empty");
   }
 
   /**

@@ -380,8 +380,9 @@ public class ListAssert extends GroupAssert<List<?>> {
    */
   public ListAssert isNotEmpty() {
     isNotNull();
-    if (actual.isEmpty()) fail("expecting a non-empty list, but it was empty");
-    return this;
+    if (!actual.isEmpty()) return this;
+    failIfCustomMessageIsSet();
+    throw failure("expecting a non-empty list, but it was empty");
   }
 
   /**
