@@ -198,6 +198,7 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
    */
   public final void isNullOrEmpty() {
     if (Maps.isEmpty(actual)) return;
+    failIfCustomMessageIsSet();
     fail(concat("expecting a null or empty map, but was:", formattedActual()));
   }
 

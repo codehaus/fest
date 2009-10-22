@@ -154,6 +154,7 @@ public abstract class ArrayAssert<T> extends GroupAssert<T> {
    */
   public final void isNullOrEmpty() {
     if (actual == null || actualGroupSize() == 0) return;
+    failIfCustomMessageIsSet();
     fail(concat("expecting a null or empty array, but was:", actualInBrackets()));
   }
 

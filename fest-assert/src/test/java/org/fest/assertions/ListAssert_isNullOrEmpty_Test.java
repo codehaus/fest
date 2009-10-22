@@ -18,7 +18,10 @@ import static java.util.Collections.emptyList;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import static org.fest.util.Collections.list;
 
+import java.util.List;
+
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -27,6 +30,13 @@ import org.junit.Test;
  * @author Alex Ruiz
  */
 public class ListAssert_isNullOrEmpty_Test implements GroupAssert_isNullOrEmpty_TestCase {
+
+  private static List<Integer> list;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    list = list(8);
+  }
 
   @Test
   public void should_pass_if_actual_is_null() {
@@ -42,7 +52,7 @@ public class ListAssert_isNullOrEmpty_Test implements GroupAssert_isNullOrEmpty_
   public void should_fail_if_actual_has_content() {
     expectAssertionError("expecting a null or empty list, but was:<[8]>").on(new CodeToTest() {
       public void run() {
-        new ListAssert(list(8)).isNullOrEmpty();
+        new ListAssert(list).isNullOrEmpty();
       }
     });
   }
@@ -51,8 +61,29 @@ public class ListAssert_isNullOrEmpty_Test implements GroupAssert_isNullOrEmpty_
   public void should_fail_and_display_description_of_assertion_if_actual_has_content() {
     expectAssertionError("[A Test] expecting a null or empty list, but was:<[8]>").on(new CodeToTest() {
       public void run() {
-        new ListAssert(list(8)).as("A Test")
-                                     .isNullOrEmpty();
+        new ListAssert(list).as("A Test")
+                            .isNullOrEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_has_content() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).overridingErrorMessage("My custom message")
+                            .isNullOrEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_has_content() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .isNullOrEmpty();
       }
     });
   }
