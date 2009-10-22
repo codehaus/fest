@@ -114,8 +114,9 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is not equal to the given one.
    */
   public CharAssert isEqualTo(char expected) {
-    if (actual != expected) fail(unexpectedNotEqual(actual, expected));
-    return this;
+    if (actual == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedNotEqual(actual, expected));
   }
 
   /**

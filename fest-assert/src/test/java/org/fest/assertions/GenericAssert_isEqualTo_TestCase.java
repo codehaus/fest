@@ -22,8 +22,4 @@ package org.fest.assertions;
 public interface GenericAssert_isEqualTo_TestCase extends Assert_isEqualTo_TestCase {
 
   void should_pass_if_both_actual_and_expected_are_null();
-
-  void should_fail_with_custom_message_if_actual_and_expected_are_not_equal();
-
-  void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_equal();
 }

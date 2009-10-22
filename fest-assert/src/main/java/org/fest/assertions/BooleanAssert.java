@@ -131,8 +131,9 @@ public class BooleanAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>boolean</code> is not equal to the given one.
    */
   public BooleanAssert isEqualTo(boolean expected) {
-    if (actual != expected) fail(unexpectedNotEqual(actual, expected));
-    return this;
+    if (actual == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedNotEqual(actual, expected));
   }
 
   /**

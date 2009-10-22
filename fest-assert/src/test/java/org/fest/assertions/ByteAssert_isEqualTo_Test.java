@@ -29,6 +29,11 @@ import org.junit.Test;
 public class ByteAssert_isEqualTo_Test implements Assert_isEqualTo_TestCase {
 
   @Test
+  public void should_pass_if_actual_and_expected_are_equal() {
+    new ByteAssert(asByte(6)).isEqualTo(asByte(6));
+  }
+
+  @Test
   public void should_fail_if_actual_and_expected_are_not_equal() {
     expectAssertionError("expected:<8> but was:<6>").on(new CodeToTest() {
       public void run() {
@@ -48,7 +53,23 @@ public class ByteAssert_isEqualTo_Test implements Assert_isEqualTo_TestCase {
   }
 
   @Test
-  public void should_pass_if_actual_and_expected_are_equal() {
-    new ByteAssert(asByte(6)).isEqualTo(asByte(6));
+  public void should_fail_with_custom_message_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteAssert(asByte(6)).overridingErrorMessage("My custom message")
+                                 .isEqualTo(asByte(8));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteAssert(asByte(6)).as("A Test")
+                                 .overridingErrorMessage("My custom message")
+                                 .isEqualTo(asByte(8));
+      }
+    });
   }
 }
