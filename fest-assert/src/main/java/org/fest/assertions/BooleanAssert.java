@@ -145,4 +145,10 @@ public class BooleanAssert extends PrimitiveAssert {
     failIfEqual(rawDescription(), actual, other);
     return this;
   }
+
+  /** {@inheritDoc} */
+  public BooleanAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
+    return this;
+  }
 }

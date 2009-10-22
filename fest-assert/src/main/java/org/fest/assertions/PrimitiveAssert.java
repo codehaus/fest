@@ -81,4 +81,26 @@ public abstract class PrimitiveAssert extends Assert {
    * @return this assertion object.
    */
   protected abstract PrimitiveAssert describedAs(Description description);
+
+  /**
+   * Replaces the default message displayed in case of a failure with the given one.
+   * <p>
+   * For example, the following assertion:
+   * <pre>
+   * assertThat("Hello").isEqualTo("Bye");
+   * </pre>
+   * will fail with the default message "<em>expected:<'[Bye]'> but was:<'[Hello]'></em>."
+   * </p>
+   * <p>
+   * We can replace this message with our own:
+   * <pre>
+   * assertThat("Hello").overridingErrorMessage("'Hello' should be equal to 'Bye'").isEqualTo("Bye");
+   * </pre>
+   * in this case, the assertion will fail showing the message "<em>'Hello' should be equal to 'Bye'</em>".
+   * </p>
+   * @param message the given error message, which will replace the default one.
+   * @return this assertion.
+   * @since 1.2
+   */
+  protected abstract PrimitiveAssert overridingErrorMessage(String message);
 }

@@ -15,6 +15,7 @@
 package org.fest.assertions;
 
 import static org.fest.assertions.BigDecimals.eight;
+import static org.fest.assertions.BigDecimals.nine;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import java.math.BigDecimal;
@@ -47,19 +48,19 @@ public class BigDecimalAssert_isSameAs_Test implements GenericAssert_isSameAs_Te
 
   @Test
   public void should_fail_if_actual_and_expected_are_not_same() {
-    expectAssertionError("expected same instance but found:<8.0> and:<8.0>").on(new CodeToTest() {
+    expectAssertionError("expected same instance but found:<8.0> and:<9.0>").on(new CodeToTest() {
       public void run() {
-        new BigDecimalAssert(eight).isSameAs(eight());
+        new BigDecimalAssert(eight).isSameAs(nine());
       }
     });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_same() {
-    expectAssertionError("[A Test] expected same instance but found:<8.0> and:<8.0>").on(new CodeToTest() {
+    expectAssertionError("[A Test] expected same instance but found:<8.0> and:<9.0>").on(new CodeToTest() {
       public void run() {
         new BigDecimalAssert(eight).as("A Test")
-                                   .isSameAs(eight());
+                                   .isSameAs(nine());
       }
     });
   }
@@ -69,7 +70,7 @@ public class BigDecimalAssert_isSameAs_Test implements GenericAssert_isSameAs_Te
     expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
         new BigDecimalAssert(eight).overridingErrorMessage("My custom message")
-                                   .isSameAs(eight());
+                                   .isSameAs(nine());
       }
     });
   }
@@ -80,7 +81,7 @@ public class BigDecimalAssert_isSameAs_Test implements GenericAssert_isSameAs_Te
       public void run() {
         new BigDecimalAssert(eight).as("A Test")
                                    .overridingErrorMessage("My custom message")
-                                   .isSameAs(eight());
+                                   .isSameAs(nine());
       }
     });
   }

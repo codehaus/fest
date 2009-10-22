@@ -114,8 +114,9 @@ public class LongAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>long</code> value is not equal to the given one.
    */
   public LongAssert isEqualTo(long expected) {
-    if (actual != expected) fail(unexpectedNotEqual(actual, expected));
-    return this;
+    if (actual == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedNotEqual(actual, expected));
   }
 
   /**
@@ -198,5 +199,11 @@ public class LongAssert extends PrimitiveAssert implements NumberAssert {
    */
   public LongAssert isNegative() {
     return isLessThan(ZERO);
+  }
+
+  /** {@inheritDoc} */
+  public LongAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
+    return this;
   }
 }

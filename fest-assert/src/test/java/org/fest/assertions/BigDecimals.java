@@ -24,16 +24,20 @@ import java.math.BigDecimal;
  */
 final class BigDecimals {
 
+  private static final BigDecimal EIGHT = new BigDecimal("8.0");
+  private static final BigDecimal NINE = new BigDecimal("9.0");
+  private static final BigDecimal NEGATIVE_EIGHT = new BigDecimal(-8);
+
   static BigDecimal eight() {
-    return new BigDecimal("8.0");
+    return EIGHT;
   }
 
   static BigDecimal nine() {
-    return new BigDecimal("9.0");
+    return NINE;
   }
 
   static BigDecimal negativeEight() {
-    return new BigDecimal(-8);
+    return NEGATIVE_EIGHT;
   }
 
   private BigDecimals() {}

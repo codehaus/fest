@@ -15,6 +15,7 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.Fail.failWithMessage;
 import static org.fest.assertions.Formatting.format;
 import static org.fest.assertions.Formatting.valueOf;
 
@@ -27,6 +28,7 @@ import static org.fest.assertions.Formatting.valueOf;
 public abstract class Assert {
 
   private Description description;
+  private String errorMessage;
 
   /**
    * Returns the description of the actual value in this assertion.
@@ -73,6 +75,26 @@ public abstract class Assert {
    */
   protected final String formattedErrorMessage(String message) {
     return format(description, message);
+  }
+
+  /**
+   * Specifies the message to use in case of a failure, replacing the default one.
+   * @param message the new error message.
+   */
+  protected final void replaceDefaultErrorMessagesWith(String message) {
+    errorMessage = message;
+  }
+
+  /**
+   * Returns the message to use when a failure occurs, if one has been specified.
+   * @return the message to use when a failure occurs, or <code>null</code> if none has been specified.
+   */
+  protected final String customErrorMessage() {
+    return errorMessage;
+  }
+
+  final void failIfCustomMessageIsSet() {
+    failWithMessage(customErrorMessage());
   }
 
   /**

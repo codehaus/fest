@@ -104,8 +104,9 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>double</code> value is not equal to the given one.
    */
   public DoubleAssert isEqualTo(double expected) {
-    if (compareTo(expected) != 0) fail(unexpectedNotEqual(actual, expected));
-    return this;
+    if (compareTo(expected) == 0) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedNotEqual(actual, expected));
   }
 
   /**
@@ -260,5 +261,11 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
     private Delta(double value) {
       this.value = value;
     }
+  }
+
+  /** {@inheritDoc} */
+  public DoubleAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
+    return this;
   }
 }

@@ -114,8 +114,9 @@ public class ShortAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>short</code> value is not equal to the given one.
    */
   public ShortAssert isEqualTo(short expected) {
-    if (actual != expected) fail(unexpectedNotEqual(actual, expected));
-    return this;
+    if (actual == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedNotEqual(actual, expected));
   }
 
   /**
@@ -198,5 +199,11 @@ public class ShortAssert extends PrimitiveAssert implements NumberAssert {
    */
   public ShortAssert isNegative() {
     return isLessThan(ZERO);
+  }
+
+  /** {@inheritDoc} */
+  public ShortAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
+    return this;
   }
 }

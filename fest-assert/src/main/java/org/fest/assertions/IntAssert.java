@@ -116,8 +116,9 @@ public class IntAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>int</code> value is not equal to the given one.
    */
   public IntAssert isEqualTo(int expected) {
-    if (actual != expected) fail(unexpectedNotEqual(actual, expected));
-    return this;
+    if (actual == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedNotEqual(actual, expected));
   }
 
   /**
@@ -200,5 +201,11 @@ public class IntAssert extends PrimitiveAssert implements NumberAssert {
    */
   public IntAssert isNegative() {
     return isLessThan(ZERO);
+  }
+
+  /** {@inheritDoc} */
+  public IntAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
+    return this;
   }
 }

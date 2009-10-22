@@ -30,8 +30,6 @@ public abstract class GenericAssert<T> extends Assert {
 
   protected final T actual;
 
-  private String errorMessage;
-
   /**
    * Creates a new <code>{@link GenericAssert}</code>.
    * @param actual the actual target to verify.
@@ -308,10 +306,6 @@ public abstract class GenericAssert<T> extends Assert {
     failIfSame(customErrorMessage(), rawDescription(), actual, expected);
   }
 
-  void failIfCustomMessageIsSet() {
-    failWithMessage(customErrorMessage());
-  }
-
   /**
    * Replaces the default message displayed in case of a failure with the given one.
    * <p>
@@ -333,20 +327,4 @@ public abstract class GenericAssert<T> extends Assert {
    * @since 1.2
    */
   protected abstract GenericAssert<T> overridingErrorMessage(String message);
-
-  /**
-   * Specifies the message to use in case of a failure, replacing the default one.
-   * @param message the new error message.
-   */
-  protected final void replaceDefaultErrorMessagesWith(String message) {
-    errorMessage = message;
-  }
-
-  /**
-   * Returns the message to use when a failure occurs, if one has been specified.
-   * @return the message to use when a failure occurs, or <code>null</code> if none has been specified.
-   */
-  protected final String customErrorMessage() {
-    return errorMessage;
-  }
 }

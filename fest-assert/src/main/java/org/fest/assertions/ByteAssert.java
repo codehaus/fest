@@ -116,8 +116,9 @@ public class ByteAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>byte</code> value is not equal to the given one.
    */
   public ByteAssert isEqualTo(byte expected) {
-    if (actual != expected) fail(unexpectedNotEqual(actual, expected));
-    return this;
+    if (actual == expected) return this;
+    failIfCustomMessageIsSet();
+    throw fail(unexpectedNotEqual(actual, expected));
   }
 
   /**
@@ -200,5 +201,11 @@ public class ByteAssert extends PrimitiveAssert implements NumberAssert {
    */
   public ByteAssert isNegative() {
     return isLessThan(ZERO);
+  }
+
+  /** {@inheritDoc} */
+  public ByteAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
+    return this;
   }
 }

@@ -192,4 +192,10 @@ public class CharAssert extends PrimitiveAssert {
     if (!Character.isLowerCase(actual)) fail(concat(inBrackets(actual), " should be a lowercase character"));
     return this;
   }
+
+  /** {@inheritDoc} */
+  public CharAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
+    return this;
+  }
 }
