@@ -367,7 +367,9 @@ public class ListAssert extends GroupAssert<List<?>> {
    */
   public void isEmpty() {
     isNotNull();
-    if (!Collections.isEmpty(actual)) fail(concat("expecting empty list, but was:", inBrackets(actual)));
+    if (Collections.isEmpty(actual)) return;
+    failIfCustomMessageIsSet();
+    fail(concat("expecting empty list, but was:", inBrackets(actual)));
   }
 
   /**

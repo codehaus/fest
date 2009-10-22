@@ -203,14 +203,13 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
 
   /**
    * Verifies that the actual <code>{@link Map}</code> is empty.
-   * @throws AssertionError if the actual <code>Map</code> is <code>null</code>.
    * @throws AssertionError if the actual <code>Map</code> is <code>null</code> or not empty.
    */
   public void isEmpty() {
     isNotNull();
-    if ((actual != null) && !actual.isEmpty()) {
-      fail(concat("expecting empty map, but was:", formattedActual()));
-    }
+    if (actual.isEmpty()) return;
+    failIfCustomMessageIsSet();
+    fail(concat("expecting empty map, but was:", formattedActual()));
   }
 
   private String formattedActual() {

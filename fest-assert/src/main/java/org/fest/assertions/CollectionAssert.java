@@ -244,7 +244,9 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
    */
   public void isEmpty() {
     isNotNull();
-    if (!Collections.isEmpty(actual)) fail(concat("expecting empty collection, but was:", format(actual)));
+    if (Collections.isEmpty(actual)) return;
+    failIfCustomMessageIsSet();
+    fail(concat("expecting empty collection, but was:", format(actual)));
   }
 
   /**

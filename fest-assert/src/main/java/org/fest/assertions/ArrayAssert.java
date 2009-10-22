@@ -143,7 +143,9 @@ public abstract class ArrayAssert<T> extends GroupAssert<T> {
    * @throws AssertionError if the actual array is <code>null</code> or not empty.
    */
   public final void isEmpty() {
-    if (actualGroupSize() > 0) fail(concat("expecting empty array, but was:", actualInBrackets()));
+    if (actualGroupSize() == 0) return;
+    failIfCustomMessageIsSet();
+    fail(concat("expecting empty array, but was:", actualInBrackets()));
   }
 
   /**
