@@ -53,6 +53,27 @@ public class CharAssert_isGreaterThan_Test implements Assert_isGreaterThan_TestC
   }
 
   @Test
+  public void should_fail_with_custom_message_if_actual_is_equal_to_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharAssert('a').overridingErrorMessage("My custom message")
+                           .isGreaterThan('a');
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_equal_to_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharAssert('a').as("A Test")
+                           .overridingErrorMessage("My custom message")
+                           .isGreaterThan('a');
+      }
+    });
+  }
+
+  @Test
   public void should_fail_if_actual_is_less_than_expected() {
     expectAssertionError("actual value:<A> should be greater than:<a>").on(new CodeToTest() {
       public void run() {
@@ -66,6 +87,27 @@ public class CharAssert_isGreaterThan_Test implements Assert_isGreaterThan_TestC
     expectAssertionError("[A Test] actual value:<A> should be greater than:<a>").on(new CodeToTest() {
       public void run() {
         new CharAssert('A').as("A Test")
+                           .isGreaterThan('a');
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharAssert('A').overridingErrorMessage("My custom message")
+                           .isGreaterThan('a');
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharAssert('A').as("A Test")
+                           .overridingErrorMessage("My custom message")
                            .isGreaterThan('a');
       }
     });

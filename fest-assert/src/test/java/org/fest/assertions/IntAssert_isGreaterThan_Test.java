@@ -52,6 +52,27 @@ public class IntAssert_isGreaterThan_Test implements Assert_isGreaterThan_TestCa
   }
 
   @Test
+  public void should_fail_with_custom_message_if_actual_is_equal_to_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new IntAssert(6).overridingErrorMessage("My custom message")
+                        .isGreaterThan(6);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_equal_to_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new IntAssert(6).as("A Test")
+                        .overridingErrorMessage("My custom message")
+                        .isGreaterThan(6);
+      }
+    });
+  }
+
+  @Test
   public void should_fail_if_actual_is_less_than_expected() {
     expectAssertionError("actual value:<6> should be greater than:<10>").on(new CodeToTest() {
       public void run() {
@@ -65,6 +86,27 @@ public class IntAssert_isGreaterThan_Test implements Assert_isGreaterThan_TestCa
     expectAssertionError("[A Test] actual value:<6> should be greater than:<10>").on(new CodeToTest() {
       public void run() {
         new IntAssert(6).as("A Test")
+                        .isGreaterThan(10);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new IntAssert(6).overridingErrorMessage("My custom message")
+                        .isGreaterThan(10);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new IntAssert(6).as("A Test")
+                        .overridingErrorMessage("My custom message")
                         .isGreaterThan(10);
       }
     });

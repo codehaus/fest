@@ -127,8 +127,9 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>double</code> value is not greater than the given one.
    */
   public DoubleAssert isGreaterThan(double other) {
-    if (compareTo(other) <= 0) fail(unexpectedLessThanOrEqualTo(actual, other));
-    return this;
+    if (compareTo(other) > 0) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedLessThanOrEqualTo(actual, other));
   }
 
   /**
