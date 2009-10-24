@@ -56,4 +56,25 @@ public class ByteAssert_isGreaterThanOrEqualTo_Test implements Assert_isGreaterT
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteAssert(asByte(6)).overridingErrorMessage("My custom message")
+                                 .isGreaterThanOrEqualTo(asByte(8));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteAssert(asByte(6)).as("A Test")
+                                 .overridingErrorMessage("My custom message")
+                                 .isGreaterThanOrEqualTo(asByte(8));
+      }
+    });
+  }
 }

@@ -94,6 +94,7 @@ public abstract class Assert {
   }
 
   final void failIfCustomMessageIsSet() {
+    // TODO make protected and document
     failWithMessage(customErrorMessage());
   }
 

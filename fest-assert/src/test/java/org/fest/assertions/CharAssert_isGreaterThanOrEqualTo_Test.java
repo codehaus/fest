@@ -56,4 +56,25 @@ public class CharAssert_isGreaterThanOrEqualTo_Test implements Assert_isGreaterT
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharAssert('A').overridingErrorMessage("My custom message")
+                           .isGreaterThanOrEqualTo('a');
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharAssert('A').as("A Test")
+                           .overridingErrorMessage("My custom message")
+                           .isGreaterThanOrEqualTo('a');
+      }
+    });
+  }
 }
