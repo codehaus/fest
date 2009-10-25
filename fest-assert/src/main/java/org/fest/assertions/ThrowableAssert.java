@@ -27,6 +27,7 @@ import static org.fest.util.Strings.concat;
  */
 public class ThrowableAssert extends GenericAssert<Throwable> {
 
+  // TODO remove dependency on ObjectAssert.
   private final ObjectAssert objectAssert;
 
   /**
@@ -232,6 +233,7 @@ public class ThrowableAssert extends GenericAssert<Throwable> {
   /** {@inheritDoc} */
   public ThrowableAssert overridingErrorMessage(String message) {
     replaceDefaultErrorMessagesWith(message);
+    objectAssert.overridingErrorMessage(message);
     return this;
   }
 }

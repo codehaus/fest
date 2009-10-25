@@ -50,9 +50,9 @@ public class ObjectAssert extends GenericAssert<Object> {
     isNotNull();
     validateNotNull(type);
     Class<?> current = actual.getClass();
-    if (!type.isAssignableFrom(current))
-      fail(concat("expected instance of:", inBrackets(type), " but was instance of:", inBrackets(current)));
-    return this;
+    if (type.isAssignableFrom(current)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("expected instance of:", inBrackets(type), " but was instance of:", inBrackets(current)));
   }
 
   /**

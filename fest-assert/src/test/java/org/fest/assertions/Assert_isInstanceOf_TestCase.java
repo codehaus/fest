@@ -23,6 +23,10 @@ public interface Assert_isInstanceOf_TestCase {
 
   void should_pass_if_actual_is_instance_of_expected();
 
+  void should_fail_if_actual_is_null();
+
+  void should_fail_and_display_description_of_assertion_if_actual_is_null();
+
   void should_throw_error_if_expected_is_null();
 
   void should_throw_error_and_display_description_of_assertion_if_expected_is_null();
@@ -31,7 +35,7 @@ public interface Assert_isInstanceOf_TestCase {
 
   void should_fail_and_display_description_of_assertion_if_actual_is_not_instance_of_expected();
 
-  void should_fail_if_actual_is_null();
+  void should_fail_with_custom_message_if_actual_is_not_instance_of_expected();
 
-  void should_fail_and_display_description_of_assertion_if_actual_is_null();
+  void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_instance_of_expected();
 }
