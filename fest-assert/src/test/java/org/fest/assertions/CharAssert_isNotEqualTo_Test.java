@@ -29,6 +29,11 @@ import org.junit.Test;
 public class CharAssert_isNotEqualTo_Test implements Assert_isNotEqualTo_TestCase {
 
   @Test
+  public void should_pass_if_actual_and_expected_are_not_equal() {
+    new CharAssert('a').isNotEqualTo('b');
+  }
+
+  @Test
   public void should_fail_if_actual_and_expected_are_equal() {
     expectAssertionError("actual value:<a> should not be equal to:<a>").on(new CodeToTest() {
       public void run() {
@@ -41,13 +46,30 @@ public class CharAssert_isNotEqualTo_Test implements Assert_isNotEqualTo_TestCas
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_equal() {
     expectAssertionError("[A Test] actual value:<a> should not be equal to:<a>").on(new CodeToTest() {
       public void run() {
-        new CharAssert('a').as("A Test").isNotEqualTo('a');
+        new CharAssert('a').as("A Test")
+                           .isNotEqualTo('a');
       }
     });
   }
 
   @Test
-  public void should_pass_if_actual_and_expected_are_not_equal() {
-    new CharAssert('a').isNotEqualTo('b');
+  public void should_fail_with_custom_message_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharAssert('a').overridingErrorMessage("My custom message")
+                           .isNotEqualTo('a');
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharAssert('a').as("A Test")
+                           .overridingErrorMessage("My custom message")
+                           .isNotEqualTo('a');
+      }
+    });
   }
 }

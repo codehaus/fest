@@ -205,8 +205,9 @@ public class ShortArrayAssert extends ArrayAssert<short[]> {
    * @throws AssertionError if the actual <code>short</code> array is equal to the given one.
    */
   public ShortArrayAssert isNotEqualTo(short[] array) {
-    if (Arrays.equals(actual, array)) fail(unexpectedEqual(actual, array));
-    return this;
+    if (!Arrays.equals(actual, array)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, array));
   }
 
   /**

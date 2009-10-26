@@ -116,8 +116,9 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>double</code> value is equal to the given one.
    */
   public DoubleAssert isNotEqualTo(double other) {
-    if (compareTo(other) == 0) fail(unexpectedEqual(actual, other));
-    return this;
+    if (compareTo(other) != 0) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, other));
   }
 
   /**
@@ -200,7 +201,10 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>double</code> value is not equal to <code>NAN</code>.
    */
-  public DoubleAssert isNaN() { return isEqualTo(Double.NaN); }
+  public DoubleAssert isNaN() {
+    // TODO test
+    return isEqualTo(Double.NaN);
+  }
 
   /**
    * Verifies that the actual <code>double</code> value is equal to the given one, within a positive delta.

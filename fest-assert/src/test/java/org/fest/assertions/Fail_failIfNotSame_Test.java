@@ -29,8 +29,7 @@ public class Fail_failIfNotSame_Test {
 
   @Test
   public void should_fail_if_values_are_not_same() {
-    String expectedMessage = "[A message] expected same instance but found:<'Ben'> and:<'Han'>";
-    expectAssertionError(expectedMessage).on(new CodeToTest() {
+    expectAssertionError("[A message] expected same instance but found:<'Ben'> and:<'Han'>").on(new CodeToTest() {
       public void run() {
         Fail.failIfNotSame(null, new BasicDescription("A message"), "Ben", "Han");
       }
@@ -38,8 +37,17 @@ public class Fail_failIfNotSame_Test {
   }
 
   @Test
+  public void should_fail_with_custom_message_if_values_are_not_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        Fail.failIfNotSame("My custom message", null, "Ben", "Han");
+      }
+    });
+  }
+
+  @Test
   public void should_pass_if_values_are_same() {
     Object o = new Object();
-    Fail.failIfNotSame(null, new BasicDescription(""), o, o);
+    Fail.failIfNotSame(null, null, o, o);
   }
 }

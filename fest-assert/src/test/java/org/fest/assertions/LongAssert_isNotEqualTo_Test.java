@@ -28,6 +28,11 @@ import org.junit.Test;
 public class LongAssert_isNotEqualTo_Test implements Assert_isNotEqualTo_TestCase {
 
   @Test
+  public void should_pass_if_actual_and_expected_are_not_equal() {
+    new LongAssert(6).isNotEqualTo(8);
+  }
+
+  @Test
   public void should_fail_if_actual_and_expected_are_equal() {
     expectAssertionError("actual value:<6> should not be equal to:<6>").on(new CodeToTest() {
       public void run() {
@@ -47,7 +52,23 @@ public class LongAssert_isNotEqualTo_Test implements Assert_isNotEqualTo_TestCas
   }
 
   @Test
-  public void should_pass_if_actual_and_expected_are_not_equal() {
-    new LongAssert(6).isNotEqualTo(8);
+  public void should_fail_with_custom_message_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new LongAssert(6).overridingErrorMessage("My custom message")
+                         .isNotEqualTo(6);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new LongAssert(6).as("A Test")
+                         .overridingErrorMessage("My custom message")
+                         .isNotEqualTo(6);
+      }
+    });
   }
 }

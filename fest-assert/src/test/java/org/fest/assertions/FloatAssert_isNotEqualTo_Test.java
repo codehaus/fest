@@ -50,4 +50,25 @@ public class FloatAssert_isNotEqualTo_Test implements Assert_isNotEqualTo_TestCa
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FloatAssert(8.88f).overridingErrorMessage("My custom message")
+                              .isNotEqualTo(8.88f);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FloatAssert(8.88f).as("A Test")
+                              .overridingErrorMessage("My custom message")
+                              .isNotEqualTo(8.88f);
+      }
+    });
+  }
 }

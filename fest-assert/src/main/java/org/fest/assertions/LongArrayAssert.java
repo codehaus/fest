@@ -205,8 +205,9 @@ public class LongArrayAssert extends ArrayAssert<long[]> {
    * @throws AssertionError if the actual <code>long</code> array is equal to the given one.
    */
   public LongArrayAssert isNotEqualTo(long[] array) {
-    if (Arrays.equals(actual, array)) fail(unexpectedEqual(actual, array));
-    return this;
+    if (!Arrays.equals(actual, array)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, array));
   }
 
   /**

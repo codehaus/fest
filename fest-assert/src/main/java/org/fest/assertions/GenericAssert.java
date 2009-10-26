@@ -277,7 +277,7 @@ public abstract class GenericAssert<T> extends Assert {
    * @throws AssertionError if the actual value is equal to the given one.
    */
   protected final void assertNotEqualTo(T other) {
-    failIfEqual(rawDescription(), actual, other);
+    failIfEqual(customErrorMessage(), rawDescription(), actual, other);
   }
 
   /**

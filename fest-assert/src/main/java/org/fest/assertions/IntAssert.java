@@ -128,8 +128,9 @@ public class IntAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>int</code> value is equal to the given one.
    */
   public IntAssert isNotEqualTo(int other) {
-    if (actual == other) fail(unexpectedEqual(actual, other));
-    return this;
+    if (actual != other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, other));
   }
 
   /**

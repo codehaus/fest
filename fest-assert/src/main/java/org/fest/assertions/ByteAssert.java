@@ -128,8 +128,9 @@ public class ByteAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>byte</code> value is equal to the given one.
    */
   public ByteAssert isNotEqualTo(byte other) {
-    if (actual == other) fail(unexpectedEqual(actual, other));
-    return this;
+    if (actual != other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, other));
   }
 
   /**

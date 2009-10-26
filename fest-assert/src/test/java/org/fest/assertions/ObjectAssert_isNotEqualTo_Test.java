@@ -50,4 +50,25 @@ public class ObjectAssert_isNotEqualTo_Test implements Assert_isNotEqualTo_TestC
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(6).overridingErrorMessage("My custom message")
+                           .isNotEqualTo(6);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(6).as("A Test")
+                           .overridingErrorMessage("My custom message")
+                           .isNotEqualTo(6);
+      }
+    });
+  }
 }

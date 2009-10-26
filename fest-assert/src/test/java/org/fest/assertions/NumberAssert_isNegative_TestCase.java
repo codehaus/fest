@@ -15,11 +15,11 @@
 package org.fest.assertions;
 
 /**
- * Test case for implementations of <code>isNegative()</code>.
+ * Test case for implementations of <code>{@link NumberAssert#isNegative()}</code>.
  *
  * @author Alex Ruiz
  */
-public interface Assert_isNegative_TestCase {
+public interface NumberAssert_isNegative_TestCase {
 
   void should_pass_if_actual_is_negative();
 

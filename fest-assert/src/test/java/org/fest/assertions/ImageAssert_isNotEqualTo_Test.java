@@ -23,6 +23,7 @@ import static org.fest.test.ExpectedFailure.expectAssertionError;
 import java.awt.image.BufferedImage;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -33,38 +34,36 @@ import org.junit.Test;
  */
 public class ImageAssert_isNotEqualTo_Test implements Assert_isNotEqualTo_TestCase {
 
+  private static BufferedImage image;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    image = fivePixelBlueImage();
+  }
+
   @Test
   public void should_pass_if_actual_and_expected_are_not_equal() {
-    BufferedImage a = image(3, 5, BLUE);
-    BufferedImage e = fivePixelBlueImage();
-    new ImageAssert(a).isNotEqualTo(e);
+    new ImageAssert(image).isNotEqualTo(image(3, 5, BLUE));
   }
 
   @Test
   public void should_pass_if_actual_is_not_null_and_expected_is_null() {
-    BufferedImage a = fivePixelBlueImage();
-    new ImageAssert(a).isNotEqualTo(null);
+    new ImageAssert(image).isNotEqualTo(null);
   }
 
   @Test
   public void should_pass_if_width_is_not_equal() {
-    BufferedImage a = image(3, 5, BLUE);
-    BufferedImage e = fivePixelBlueImage();
-    new ImageAssert(a).isNotEqualTo(e);
+    new ImageAssert(image).isNotEqualTo(image(3, 5, BLUE));
   }
 
   @Test
   public void should_pass_if_height_is_not_equal() {
-    BufferedImage a = image(5, 3, BLUE);
-    BufferedImage e = fivePixelBlueImage();
-    new ImageAssert(a).isNotEqualTo(e);
+    new ImageAssert(image).isNotEqualTo(image(5, 3, BLUE));
   }
 
   @Test
   public void should_pass_if_color_is_not_equal() {
-    BufferedImage a = fivePixelBlueImage();
-    BufferedImage e = image(5, 5, YELLOW);
-    new ImageAssert(a).isNotEqualTo(e);
+    new ImageAssert(image).isNotEqualTo(image(5, 5, YELLOW));
   }
 
   @Test
@@ -90,7 +89,7 @@ public class ImageAssert_isNotEqualTo_Test implements Assert_isNotEqualTo_TestCa
   public void should_fail_if_actual_and_expected_are_equal() {
     expectAssertionError("images are equal").on(new CodeToTest() {
       public void run() {
-        new ImageAssert(fivePixelBlueImage()).isNotEqualTo(fivePixelBlueImage());
+        new ImageAssert(image).isNotEqualTo(fivePixelBlueImage());
       }
     });
   }
@@ -99,8 +98,29 @@ public class ImageAssert_isNotEqualTo_Test implements Assert_isNotEqualTo_TestCa
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_equal() {
     expectAssertionError("[A Test] images are equal").on(new CodeToTest() {
       public void run() {
-        new ImageAssert(fivePixelBlueImage()).as("A Test")
-                                             .isNotEqualTo(fivePixelBlueImage());
+        new ImageAssert(image).as("A Test")
+                              .isNotEqualTo(fivePixelBlueImage());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ImageAssert(image).overridingErrorMessage("My custom message")
+                              .isNotEqualTo(fivePixelBlueImage());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ImageAssert(image).as("A Test")
+                              .overridingErrorMessage("My custom message")
+                              .isNotEqualTo(fivePixelBlueImage());
       }
     });
   }

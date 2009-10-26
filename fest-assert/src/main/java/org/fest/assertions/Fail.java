@@ -50,8 +50,19 @@ public final class Fail {
     throw error;
   }
 
-  static void failIfEqual(Description description, Object first, Object second) {
-    if (areEqual(first, second)) fail(format(description, unexpectedEqual(first, second)));
+  /**
+   * Throws an <code>{@link AssertionError}</code> if the given objects are equal.
+   * @param customErrorMessage any custom error message. This message will replace the default one only if it (the
+   * custom message) is not <code>null</code>.
+   * @param descriptionOfActual the description of the actual value.
+   * @param actual the actual object.
+   * @param other the object to compare to.
+   * @throws AssertionError if the given objects are equal.
+   */
+  public static void failIfEqual(String customErrorMessage, Description descriptionOfActual, Object actual, Object other) {
+    if (!areEqual(actual, other)) return;
+    failWithMessage(customErrorMessage);
+    fail(format(descriptionOfActual, unexpectedEqual(actual, other)));
   }
 
   /**

@@ -267,8 +267,9 @@ public class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * @throws AssertionError if the actual <code>Object</code> array is equal to the given one.
    */
   public ObjectArrayAssert isNotEqualTo(Object[] array) {
-    if (Arrays.deepEquals(actual, array)) fail(unexpectedEqual(actual, array));
-    return this;
+    if (!Arrays.deepEquals(actual, array)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, array));
   }
 
   /**

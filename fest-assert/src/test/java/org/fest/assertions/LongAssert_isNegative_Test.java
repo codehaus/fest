@@ -25,7 +25,7 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public class LongAssert_isNegative_Test implements Assert_isNegative_TestCase {
+public class LongAssert_isNegative_Test implements NumberAssert_isNegative_TestCase {
 
   @Test
   public void should_pass_if_actual_is_negative() {

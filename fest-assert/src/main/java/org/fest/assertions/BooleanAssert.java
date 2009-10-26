@@ -143,7 +143,7 @@ public class BooleanAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>boolean</code> is equal to the given one.
    */
   public BooleanAssert isNotEqualTo(boolean other) {
-    failIfEqual(rawDescription(), actual, other);
+    failIfEqual(customErrorMessage(), rawDescription(), actual, other);
     return this;
   }
 

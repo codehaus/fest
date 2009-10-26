@@ -26,7 +26,7 @@ import org.junit.Test;
  * @author David DIDIER
  * @author Alex Ruiz
  */
-public class DoubleAssert_isNegative_Test implements Assert_isNegative_TestCase {
+public class DoubleAssert_isNegative_Test implements NumberAssert_isNegative_TestCase {
 
   @Test
   public void should_pass_if_actual_is_negative() {
