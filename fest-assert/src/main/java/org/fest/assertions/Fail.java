@@ -39,18 +39,6 @@ public final class Fail {
   }
 
   /**
-   * Throws an <code>{@link AssertionError}</code> with the given message an with the <code>{@link Throwable}</code>
-   * that caused the failure.
-   * @param description the description of the failed assertion. It can be <code>null</code>.
-   * @param realCause cause of the error.
-   */
-  public static void fail(String description, Throwable realCause) {
-    AssertionError error = failure(description);
-    error.initCause(realCause);
-    throw error;
-  }
-
-  /**
    * Throws an <code>{@link AssertionError}</code> if the given objects are equal.
    * @param customErrorMessage any custom error message. This message will replace the default one only if it (the
    * custom message) is not <code>null</code>.
@@ -145,18 +133,40 @@ public final class Fail {
         array("expected same instance but found:", inBrackets(actual), " and:", inBrackets(other)));
   }
 
+  private static void fail(Description description, Object[] message) {
+    throw failure(createMessageFrom(description, message));
+  }
+
   /**
-   * Throws an <code>{@link AssertionError}</code> using the custom error message specified in the given assertion. If
-   * the assertion does not have a custom error message, this method will not throw any exceptions.
-   * @param assertion the assertion object, that may contain a custom error message.
-   * @throws AssertionError if the given assertion has a custom error message.
+   * Throws an <code>{@link AssertionError}</code> using the custom error message specified in the given assertion.
+   * @param customErrorMessage the custom error message.
+   * @throws AssertionError with the given custom error message.
    */
   static void failWithMessage(String customErrorMessage) {
     if (customErrorMessage != null) fail(customErrorMessage);
   }
+  
+  /**
+   * Throws an <code>{@link AssertionError}</code> using the custom error message specified in the given assertion.
+   * The exception is thrown only if the given custom message is not <code>null</code>.
+   * @param customErrorMessage the custom error message.
+   * @param realCause cause of the error.
+   * @throws AssertionError if the custom error message is not <code>null</code>.
+   */
+  static void failWithMessage(String customErrorMessage, Throwable realCause) {
+    if (customErrorMessage != null) fail(customErrorMessage, realCause);
+  }
 
-  private static AssertionError fail(Description description, Object[] message) {
-    throw failure(createMessageFrom(description, message));
+  /**
+   * Throws an <code>{@link AssertionError}</code> with the given message and with the <code>{@link Throwable}</code>
+   * that caused the failure.
+   * @param description the description of the failed assertion. It can be <code>null</code>.
+   * @param realCause cause of the error.
+   */
+  public static void fail(String description, Throwable realCause) {
+    AssertionError error = failure(description);
+    error.initCause(realCause);
+    throw error;
   }
 
   /**

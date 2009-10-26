@@ -15,12 +15,14 @@
  */
 package org.fest.assertions;
 
-import static java.util.Collections.emptyList;
 import static org.fest.assertions.CommonFailures.*;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import static org.fest.util.Collections.list;
 
+import java.util.List;
+
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -30,9 +32,16 @@ import org.junit.Test;
  */
 public class ListAssert_containsExactly_Test {
 
+  private static List<String> list;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    list = list("Luke", "Leia");
+  }
+  
   @Test
   public void should_pass_if_actual_contains_exactly_the_expected_Objects() {
-    new ListAssert(list("Anakin", "Leia")).containsExactly("Anakin", "Leia");
+    new ListAssert(list).containsExactly("Luke", "Leia");
   }
 
   @Test
@@ -40,7 +49,7 @@ public class ListAssert_containsExactly_Test {
     expectNullPointerException("the given array of objects should not be null").on(new CodeToTest() {
       public void run() {
         Object[] objects = null;
-        new ListAssert(emptyList()).containsExactly(objects);
+        new ListAssert(list).containsExactly(objects);
       }
     });
   }
@@ -50,8 +59,8 @@ public class ListAssert_containsExactly_Test {
     expectNullPointerException("[A Test] the given array of objects should not be null").on(new CodeToTest() {
       public void run() {
         Object[] objects = null;
-        new ListAssert(emptyList()).as("A Test")
-                                   .containsExactly(objects);
+        new ListAssert(list).as("A Test")
+                            .containsExactly(objects);
       }
     });
   }
@@ -79,7 +88,7 @@ public class ListAssert_containsExactly_Test {
   public void should_fail_if_actual_does_not_contain_exactly_the_expected_Objects() {
     expectAssertionError("expected:<['[Anakin]']> but was:<['[Luke', 'Leia]']>").on(new CodeToTest() {
       public void run() {
-        new ListAssert(list("Luke", "Leia")).containsExactly("Anakin");
+        new ListAssert(list).containsExactly("Anakin");
       }
     });
   }
@@ -88,8 +97,29 @@ public class ListAssert_containsExactly_Test {
   public void should_fail_and_display_description_of_assertion_if_actual_does_not_contain_exactly_the_expected_Objects() {
     expectAssertionError("[A Test] expected:<['[Anakin]']> but was:<['[Luke', 'Leia]']>").on(new CodeToTest() {
       public void run() {
-        new ListAssert(list("Luke", "Leia")).as("A Test")
-                                            .containsExactly("Anakin");
+        new ListAssert(list).as("A Test")
+                            .containsExactly("Anakin");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_contain_exactly_the_expected_Objects() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).overridingErrorMessage("My custom message")
+                            .containsExactly("Anakin");
+      }
+    });
+  }
+  
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_contain_exactly_the_expected_Objects() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .containsExactly("Anakin");
       }
     });
   }

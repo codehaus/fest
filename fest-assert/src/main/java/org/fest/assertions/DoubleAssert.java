@@ -217,10 +217,7 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
    */
   @Deprecated
   public DoubleAssert isEqualTo(double expected, Delta delta) {
-    if (compareTo(expected) == 0) return this;
-    if (!(abs(expected - actual) <= delta.value))
-      fail(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(delta.value)));
-    return this;
+    return isEqualTo(expected, delta.value);
   }
 
   /**
@@ -232,11 +229,14 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
    * @since 1.1
    */
   public DoubleAssert isEqualTo(double expected, org.fest.assertions.Delta delta) {
+    return isEqualTo(expected, delta.doubleValue());
+  }
+
+  private DoubleAssert isEqualTo(double expected, double deltaValue) throws AssertionError {
     if (compareTo(expected) == 0) return this;
-    double deltaValue = delta.doubleValue();
-    if (!(abs(expected - actual) <= deltaValue))
-      fail(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(deltaValue)));
-    return this;
+    if (abs(expected - actual) <= deltaValue) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(deltaValue)));
   }
 
   private int compareTo(double other) {

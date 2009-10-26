@@ -57,4 +57,25 @@ public class FloatAssert_isEqualTo_withDelta_Test {
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FloatAssert(8.688f).overridingErrorMessage("My custom message")
+                               .isEqualTo(8.888f, delta(0.009f));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FloatAssert(8.688f).as("A Test")
+                               .overridingErrorMessage("My custom message")
+                               .isEqualTo(8.888f, delta(0.009f));
+      }
+    });
+  }
 }

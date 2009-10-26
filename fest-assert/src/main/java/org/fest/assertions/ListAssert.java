@@ -23,7 +23,9 @@ import static org.fest.util.Collections.list;
 import static org.fest.util.Objects.areEqual;
 import static org.fest.util.Strings.concat;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.fest.util.Collections;
 
@@ -66,6 +68,7 @@ public class ListAssert extends GroupAssert<List<?>> {
   }
 
   private void failElementNotFound(Object e, Object a, int index) {
+    failIfCustomMessageIsSet();
     fail(concat("expecting ", inBrackets(e), " at index ", inBrackets(index), " but found ", inBrackets(a)));
   }
 
@@ -101,6 +104,7 @@ public class ListAssert extends GroupAssert<List<?>> {
   }
 
   private void failIfSequenceNotFound(Object[] notFound) {
+    failIfCustomMessageIsSet();
     fail(concat("list:", inBrackets(actual), " does not contain the sequence:", inBrackets(notFound)));
   }
 
@@ -130,6 +134,7 @@ public class ListAssert extends GroupAssert<List<?>> {
   }
 
   private void failIfNotStartingWithSequence(Object[] notFound) {
+    failIfCustomMessageIsSet();
     fail(concat("list:", inBrackets(actual), " does not start with the sequence:", inBrackets(notFound)));
   }
 
@@ -162,6 +167,7 @@ public class ListAssert extends GroupAssert<List<?>> {
   }
 
   private void failIfNotEndingWithSequence(Object[] notFound) {
+    failIfCustomMessageIsSet();
     fail(concat("list:", inBrackets(actual), " does not end with the sequence:", inBrackets(notFound)));
   }
 
@@ -413,7 +419,7 @@ public class ListAssert extends GroupAssert<List<?>> {
    * @param objects the objects to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>List</code> is <code>null</code>.
-   * @throws AssertionError if the given array is <code>null</code>.
+   * @throws NullPointerException if the given array is <code>null</code>.
    * @throws AssertionError if the actual <code>List</code> does not contain the given objects.
    */
   public ListAssert containsExactly(Object... objects) {

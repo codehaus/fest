@@ -20,7 +20,10 @@ import static org.fest.assertions.CommonFailures.*;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import static org.fest.util.Collections.list;
 
+import java.util.List;
+
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -30,69 +33,120 @@ import org.junit.Test;
  */
 public class ListAssert_containsSequence_Test {
 
+  private static List<String> list;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    list = list("Anakin", "Leia", "Han");
+  }
+  
   @Test
   public void should_pass_if_actual_contains_sequence() {
-    new ListAssert(list("Anakin", "Leia", "Han")).containsSequence("Anakin", "Leia")
-                                                 .containsSequence("Leia", "Han");
+    new ListAssert(list).containsSequence("Anakin", "Leia")
+                        .containsSequence("Leia", "Han");
   }
 
   @Test
   public void should_pass_if_actual_and_expected_are_equal() {
-    new ListAssert(list("Anakin", "Leia", "Han")).containsSequence("Anakin", "Leia", "Han");
+    new ListAssert(list).containsSequence("Anakin", "Leia", "Han");
   }
 
   @Test
   public void should_pass_if_both_actual_and_sequence_are_empty() {
     Object[] sequence = new Object[0];
-    new ListAssert(list()).containsSequence(sequence);
+    new ListAssert(emptyList()).containsSequence(sequence);
   }
 
   @Test
   public void should_pass_if_actual_is_not_empty_and_expected_is_empty() {
     Object[] sequence = new Object[0];
-    new ListAssert(list("Anakin", "Leia", "Han")).containsSequence(sequence);
+    new ListAssert(list).containsSequence(sequence);
   }
 
   @Test
   public void should_fail_if_actual_does_not_contain_sequence() {
-    expectAssertionError("list:<['Anakin', 'Leia']> does not contain the sequence:<['Leia', 'Anakin']>").on(
-      new CodeToTest() {
-        public void run() {
-          new ListAssert(list("Anakin", "Leia")).containsSequence("Leia", "Anakin");
-        }
-      });
+    String message = "list:<['Anakin', 'Leia', 'Han']> does not contain the sequence:<['Ben']>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).containsSequence("Ben");
+      }
+    });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_does_not_contain_sequence() {
-    expectAssertionError("list:<['Anakin', 'Leia']> does not contain the sequence:<['Han', 'Luke']>").on(
-      new CodeToTest() {
-        public void run() {
-          new ListAssert(list("Anakin", "Leia")).containsSequence("Han", "Luke");
-        }
-      });
+    String message = "[A Test] list:<['Anakin', 'Leia', 'Han']> does not contain the sequence:<['Ben']>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .containsSequence("Ben");
+      }
+    });
   }
 
   @Test
+  public void should_fail_with_custom_message_if_actual_does_not_contain_sequence() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).overridingErrorMessage("My custom message")
+                            .containsSequence("Ben");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_contain_sequence() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .containsSequence("Ben");
+      }
+    });
+  }
+  
+  @Test
   public void should_fail_if_actual_does_not_contain_some_elements_in_the_sequence() {
-    expectAssertionError("list:<['Anakin', 'Leia']> does not contain the sequence:<['Anakin', 'Han']>").on(
-      new CodeToTest() {
-        public void run() {
-          new ListAssert(list("Anakin", "Leia")).containsSequence("Anakin", "Han");
-        }
-      });
+    String message = "list:<['Anakin', 'Leia', 'Han']> does not contain the sequence:<['Anakin', 'Ben']>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).containsSequence("Anakin", "Ben");
+      }
+    });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_does_not_contain_some_elements_in_the_sequence() {
-    expectAssertionError("[A Test] list:<['Anakin', 'Leia']> does not contain the sequence:<['Leia', 'Anakin']>").on(
-      new CodeToTest() {
-        public void run() {
-          new ListAssert(list("Anakin", "Leia")).as("A Test").containsSequence("Leia", "Anakin");
-        }
-      });
+    String message = "[A Test] list:<['Anakin', 'Leia', 'Han']> does not contain the sequence:<['Anakin', 'Ben']>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .containsSequence("Anakin", "Ben");
+      }
+    });
   }
 
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_contain_some_elements_in_the_sequence() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).overridingErrorMessage("My custom message")
+                            .containsSequence("Anakin", "Ben");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_contain_some_elements_in_the_sequence() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .containsSequence("Anakin", "Ben");
+      }
+    });
+  }
+  
   @Test
   public void should_fail_if_actual_is_null() {
     expectErrorIfListIsNull(new CodeToTest() {

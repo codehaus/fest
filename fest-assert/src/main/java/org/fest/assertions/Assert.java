@@ -98,6 +98,11 @@ public abstract class Assert {
     failWithMessage(customErrorMessage());
   }
 
+  final void failIfCustomMessageIsSet(Throwable realCause) {
+    // TODO make protected and document
+    failWithMessage(customErrorMessage(), realCause);
+  }
+
   /**
    * Fails by throwing an <code>{@link AssertionError}</code>.
    * <p>

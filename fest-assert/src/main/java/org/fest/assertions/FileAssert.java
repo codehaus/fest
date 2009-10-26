@@ -80,8 +80,9 @@ public class FileAssert extends GenericAssert<File> {
    */
   public FileAssert doesNotExist() {
     isNotNull();
-    if (actual.exists()) fail(concat("file:", inBrackets(actual), " should not exist"));
-    return this;
+    if (!actual.exists()) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("file:", inBrackets(actual), " should not exist"));
   }
 
   /**
@@ -120,9 +121,9 @@ public class FileAssert extends GenericAssert<File> {
    */
   public FileAssert isDirectory() {
     isNotNull();
-    if (!actual.isDirectory())
-      fail(concat("file:", inBrackets(actual), " should be a directory"));
-    return this;
+    if (actual.isDirectory()) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("file:", inBrackets(actual), " should be a directory"));
   }
 
   /**
@@ -145,9 +146,9 @@ public class FileAssert extends GenericAssert<File> {
    */
   public FileAssert isFile() {
     isNotNull();
-    if (!actual.isFile())
-      fail(concat("file:", inBrackets(actual), " should be a file"));
-    return this;
+    if (actual.isFile()) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("file:", inBrackets(actual), " should be a file"));
   }
 
   /**
@@ -269,6 +270,7 @@ public class FileAssert extends GenericAssert<File> {
   }
 
   private void fail(File expected, LineDiff[] diffs) {
+    failIfCustomMessageIsSet();
     StringBuilder b = new StringBuilder();
     b.append("file:").append(inBrackets(actual)).append(" and file:").append(inBrackets(expected))
       .append(" do not have same contents:");
@@ -280,14 +282,16 @@ public class FileAssert extends GenericAssert<File> {
   }
 
   private void cannotCompareToExpectedFile(File expected, Exception e) {
+    failIfCustomMessageIsSet(e);
     String message = concat(
         "unable to compare contents of files:", inBrackets(actual), " and ", inBrackets(expected));
     fail(message, e);
   }
 
   private FileAssert assertExists(File file) {
-    if (!file.exists()) fail(concat("file:", inBrackets(file), " should exist"));
-    return this;
+    if (file.exists()) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("file:", inBrackets(file), " should exist"));
   }
 
   /**
@@ -297,8 +301,9 @@ public class FileAssert extends GenericAssert<File> {
    */
   public FileAssert isRelative() {
     isNotNull();
-    if (actual.isAbsolute()) fail(concat("file:", inBrackets(actual), " should be a relative path"));
-    return this;
+    if (!actual.isAbsolute()) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("file:", inBrackets(actual), " should be a relative path"));
   }
 
   /**
@@ -308,8 +313,9 @@ public class FileAssert extends GenericAssert<File> {
    */
   public FileAssert isAbsolute() {
     isNotNull();
-    if (!actual.isAbsolute()) fail(concat("file:", inBrackets(actual), " should be an absolute path"));
-    return this;
+    if (actual.isAbsolute()) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("file:", inBrackets(actual), " should be an absolute path"));
   }
 
   /** {@inheritDoc} */

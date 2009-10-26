@@ -218,6 +218,7 @@ public class DoubleArrayAssert extends ArrayAssert<double[]> {
   }
 
   private void failNotEquals(double[] expected, Delta delta) {
+    failIfCustomMessageIsSet();
     fail(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(delta.doubleValue())));
   }
 
