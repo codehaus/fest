@@ -149,8 +149,9 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is not less than the given one.
    */
   public CharAssert isLessThan(char other) {
-    if (actual >= other) fail(unexpectedGreaterThanOrEqualTo(actual, other));
-    return this;
+    if (actual < other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedGreaterThanOrEqualTo(actual, other));
   }
 
   /**

@@ -151,8 +151,9 @@ public class IntAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>int</code> value is not less than the given one.
    */
   public IntAssert isLessThan(int other) {
-    if (actual >= other) fail(unexpectedGreaterThanOrEqualTo(actual, other));
-    return this;
+    if (actual < other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedGreaterThanOrEqualTo(actual, other));
   }
 
   /**

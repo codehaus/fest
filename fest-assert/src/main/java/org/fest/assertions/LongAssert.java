@@ -149,8 +149,9 @@ public class LongAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>long</code> value is not less than the given one.
    */
   public LongAssert isLessThan(long other) {
-    if (actual >= other) fail(unexpectedGreaterThanOrEqualTo(actual, other));
-    return this;
+    if (actual < other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedGreaterThanOrEqualTo(actual, other));
   }
 
   /**

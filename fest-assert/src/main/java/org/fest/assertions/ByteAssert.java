@@ -151,8 +151,9 @@ public class ByteAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>byte</code> value is not less than the given one.
    */
   public ByteAssert isLessThan(byte other) {
-    if (actual >= other) fail(unexpectedGreaterThanOrEqualTo(actual, other));
-    return this;
+    if (actual < other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedGreaterThanOrEqualTo(actual, other));
   }
 
   /**

@@ -166,8 +166,9 @@ public class FloatAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>float</code> value is not less than the given one.
    */
   public FloatAssert isLessThan(float other) {
-    if (compareTo(other) >= 0) fail(unexpectedGreaterThanOrEqualTo(actual, other));
-    return this;
+    if (compareTo(other) < 0) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedGreaterThanOrEqualTo(actual, other));
   }
 
   /**
@@ -203,6 +204,7 @@ public class FloatAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>float</code> value is not equal to <code>NaN</code>.
    */
   public FloatAssert isNaN() {
+    // TODO test
     return isEqualTo(Float.NaN);
   }
 
