@@ -185,8 +185,9 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is not an uppercase value.
    */
   public CharAssert isUpperCase() {
-    if (!Character.isUpperCase(actual)) fail(concat(inBrackets(actual), " should be an uppercase character"));
-    return this;
+    if (Character.isUpperCase(actual)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(inBrackets(actual), " should be an uppercase character"));
   }
 
   /**
@@ -195,8 +196,9 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is not an lowercase value.
    */
   public CharAssert isLowerCase() {
-    if (!Character.isLowerCase(actual)) fail(concat(inBrackets(actual), " should be a lowercase character"));
-    return this;
+    if (Character.isLowerCase(actual)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(inBrackets(actual), " should be a lowercase character"));
   }
 
   /** {@inheritDoc} */

@@ -14,7 +14,8 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.CommonFailures.*;
+import static org.fest.assertions.CommonFailures.expectErrorIfObjectIsNull;
+import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfObjectIsNull;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import java.io.IOException;
@@ -69,9 +70,32 @@ public class ThrowableAssert_hasNoCause_Test {
     expectAssertionError(message).on(new CodeToTest() {
       public void run() {
         Exception e = new Exception(new IOException());
-        new ThrowableAssert(e).as("A Test").hasNoCause();
+        new ThrowableAssert(e).as("A Test")
+                              .hasNoCause();
       }
     });
   }
 
+  @Test
+  public void should_fail_with_custom_message_if_actual_has_cause() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        Exception e = new Exception(new IOException());
+        new ThrowableAssert(e).overridingErrorMessage("My custom message")
+                              .hasNoCause();
+      }
+    });
+  }
+  
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_has_cause() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        Exception e = new Exception(new IOException());
+        new ThrowableAssert(e).as("A Test")
+                              .overridingErrorMessage("My custom message")
+                              .hasNoCause();
+      }
+    });
+  }
 }

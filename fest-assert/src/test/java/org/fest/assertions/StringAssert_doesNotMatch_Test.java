@@ -65,12 +65,33 @@ public class StringAssert_doesNotMatch_Test {
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_matches_given_pattern() {
-    expectAssertionError("[A Test] <'Luke 001'> should not match the regular expression:<'^.*\\d+$'>").on(
-      new CodeToTest() {
-        public void run() {
-          new StringAssert("Luke 001").as("A Test")
-                                      .doesNotMatch("^.*\\d+$");
-        }
-      });
+    String message = "[A Test] <'Luke 001'> should not match the regular expression:<'^.*\\d+$'>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new StringAssert("Luke 001").as("A Test")
+                                    .doesNotMatch("^.*\\d+$");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_matches_given_pattern() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("Luke 001").overridingErrorMessage("My custom message")
+                                    .doesNotMatch("^.*\\d+$");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_matches_given_pattern() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("Luke 001").as("A Test")
+                                    .overridingErrorMessage("My custom message")
+                                    .doesNotMatch("^.*\\d+$");
+      }
+    });
   }
 }

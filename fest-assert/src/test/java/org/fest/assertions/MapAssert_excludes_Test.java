@@ -19,10 +19,11 @@ import static org.fest.assertions.MapAssert.entry;
 import static org.fest.assertions.MapFactory.map;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
-import java.util.*;
+import java.util.Map;
 
 import org.fest.assertions.MapAssert.Entry;
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -34,9 +35,15 @@ import org.junit.Test;
  */
 public class MapAssert_excludes_Test {
 
+  private static Map<Object, Object> map;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    map = map(entry("key1", 1), entry("key2", 2));
+  }
+  
   @Test
   public void should_pass_if_actual_excludes_entries() {
-    Map<Object, Object> map = map(entry("key1", 1), entry("key2", 2));
     new MapAssert(map).excludes(entry("key6", 6), entry("key8", 8));
   }
 
@@ -44,7 +51,6 @@ public class MapAssert_excludes_Test {
   public void should_throw_error_if_entry_is_null() {
     expectNullPointerException("Entries to check should not contain null").on(new CodeToTest() {
       public void run() {
-        Map<Object, Object> map = map(entry("key1", 1), entry("key2", 2));
         Entry[] entries = { entry("key6", 6), null };
         new MapAssert(map).excludes(entries);
       }
@@ -55,7 +61,6 @@ public class MapAssert_excludes_Test {
   public void should_throw_error_and_display_description_of_assertion_if_entry_is_null() {
     expectNullPointerException("[A Test] Entries to check should not contain null").on(new CodeToTest() {
       public void run() {
-        Map<Object, Object> map = map(entry("key1", 1), entry("key2", 2));
         Entry[] entries = { entry("key6", 6), null };
         new MapAssert(map).as("A Test")
                           .excludes(entries);
@@ -86,7 +91,6 @@ public class MapAssert_excludes_Test {
   public void should_throw_error_if_expected_is_null() {
     expectNullPointerException("The given array of entries should not be null").on(new CodeToTest() {
       public void run() {
-        Map<Object, Object> map = map(entry("key1", 1), entry("key2", 2));
         Entry[] entry = null;
         new MapAssert(map).excludes(entry);
       }
@@ -97,7 +101,6 @@ public class MapAssert_excludes_Test {
   public void should_throw_error_and_display_description_of_assertion_if_expected_is_null() {
     expectNullPointerException("[A Test] The given array of entries should not be null").on(new CodeToTest() {
       public void run() {
-        Map<Object, Object> map = map(entry("key1", 1), entry("key2", 2));
         Entry[] entry = null;
         new MapAssert(map).as("A Test")
                           .excludes(entry);
@@ -109,7 +112,6 @@ public class MapAssert_excludes_Test {
   public void should_fail_if_actual_contains_entry() {
     expectAssertionError("the map:<{'key1'=1, 'key2'=2}> contains the entry:<['key2'=2]>").on(new CodeToTest() {
       public void run() {
-        Map<Object, Object> map = map(entry("key1", 1), entry("key2", 2));
         new MapAssert(map).excludes(entry("key2", 2));
       }
     });
@@ -117,34 +119,75 @@ public class MapAssert_excludes_Test {
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_contains_entry() {
-    expectAssertionError("[A Test] the map:<{'key1'=1, 'key2'=2}> contains the entry:<['key2'=2]>").on(
-      new CodeToTest() {
-        public void run() {
-          Map<Object, Object> map = map(entry("key1", 1), entry("key2", 2));
-          new MapAssert(map).as("A Test").excludes(entry("key2", 2));
-        }
-      });
+    String message = "[A Test] the map:<{'key1'=1, 'key2'=2}> contains the entry:<['key2'=2]>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new MapAssert(map).as("A Test")
+                          .excludes(entry("key2", 2));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_contains_entry() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new MapAssert(map).overridingErrorMessage("My custom message")
+                          .excludes(entry("key2", 2));
+      }
+    });
+  }
+  
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_contains_entry() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new MapAssert(map).as("A Test")
+                          .overridingErrorMessage("My custom message")
+                          .excludes(entry("key2", 2));
+      }
+    });
   }
 
   @Test
   public void should_fail_if_actual_contains_entries() {
-    expectAssertionError("the map:<{'key1'=1, 'key2'=2}> contains the entries:<['key1'=1, 'key2'=2]>").on(
-      new CodeToTest() {
-        public void run() {
-          Map<Object, Object> map = map(entry("key1", 1), entry("key2", 2));
-          new MapAssert(map).excludes(entry("key1", 1), entry("key2", 2));
-        }
-      });
+    String message = "the map:<{'key1'=1, 'key2'=2}> contains the entries:<['key1'=1, 'key2'=2]>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new MapAssert(map).excludes(entry("key1", 1), entry("key2", 2));
+      }
+    });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_contains_entries() {
-    expectAssertionError("[A Test] the map:<{'key1'=1, 'key2'=2}> contains the entries:<['key1'=1, 'key2'=2]>").on(
-      new CodeToTest() {
-        public void run() {
-          Map<Object, Object> map = map(entry("key1", 1), entry("key2", 2));
-          new MapAssert(map).as("A Test").excludes(entry("key1", 1), entry("key2", 2));
-        }
-      });
+    String message = "[A Test] the map:<{'key1'=1, 'key2'=2}> contains the entries:<['key1'=1, 'key2'=2]>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new MapAssert(map).as("A Test")
+                          .excludes(entry("key1", 1), entry("key2", 2));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_contains_entries() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new MapAssert(map).overridingErrorMessage("My custom message")
+                          .excludes(entry("key1", 1), entry("key2", 2));
+      }
+    });
+  }
+  
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_contains_entries() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new MapAssert(map).as("A Test")
+                          .overridingErrorMessage("My custom message")
+                          .excludes(entry("key1", 1), entry("key2", 2));
+      }
+    });
   }
 }

@@ -18,7 +18,10 @@ import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import org.fest.util.Maps;
 
@@ -163,6 +166,7 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
   }
 
   private void failIfNotFound(String description, Collection<?> notFound) {
+    failIfCustomMessageIsSet();
     fail(concat("the map:", formattedActual(), " does not contain the ", description, ":", inBrackets(notFound)));
   }
 
@@ -173,6 +177,7 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
   }
 
   private void failIfFound(String description, Collection<?> found) {
+    failIfCustomMessageIsSet();
     fail(concat("the map:", formattedActual(), " contains the ", description, ":", inBrackets(found)));
   }
 

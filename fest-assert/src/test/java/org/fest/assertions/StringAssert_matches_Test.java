@@ -72,4 +72,25 @@ public class StringAssert_matches_Test {
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_match_given_pattern() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("Luke 001").overridingErrorMessage("My custom message")
+                                    .matches("^\\d+.*$");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_match_given_pattern() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("Luke 001").as("A Test")
+                                    .overridingErrorMessage("My custom message")
+                                    .matches("^\\d+.*$");
+      }
+    });
+  }
 }
