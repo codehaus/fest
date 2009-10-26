@@ -144,7 +144,9 @@ public abstract class ComparableAssert<T extends Comparable<T>> extends GenericA
    */
   protected final void assertIsLessThanOrEqualTo(T other) {
     isNotNull();
-    if (actual.compareTo(other) > 0) fail(unexpectedGreaterThan(actual, other));
+    if (actual.compareTo(other) <= 0) return;
+    failIfCustomMessageIsSet();
+    fail(unexpectedGreaterThan(actual, other));
   }
 
   /**

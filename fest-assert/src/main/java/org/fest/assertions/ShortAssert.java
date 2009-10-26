@@ -173,8 +173,9 @@ public class ShortAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>short</code> value is not less than or equal to the given one.
    */
   public ShortAssert isLessThanOrEqualTo(short other) {
-    if (actual > other) fail(unexpectedGreaterThan(actual, other));
-    return this;
+    if (actual <= other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedGreaterThan(actual, other));
   }
 
   /**
