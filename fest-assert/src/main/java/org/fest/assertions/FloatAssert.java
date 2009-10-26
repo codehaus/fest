@@ -143,8 +143,9 @@ public class FloatAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>float</code> value is equal to the given one.
    */
   public FloatAssert isNotEqualTo(float other) {
-    if (compareTo(other) == 0) fail(unexpectedEqual(actual, other));
-    return this;
+    if (compareTo(other) != 0) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, other));
   }
 
   /**
