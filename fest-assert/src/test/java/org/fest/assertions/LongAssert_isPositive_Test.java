@@ -25,11 +25,51 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public class LongAssert_isPositive_Test implements Assert_isPositive_TestCase {
+public class LongAssert_isPositive_Test implements NumberAssert_isPositive_TestCase {
 
   @Test
   public void should_pass_if_actual_is_positive() {
     new LongAssert(6).isPositive();
+  }
+
+  @Test
+  public void should_fail_if_actual_is_negative() {
+    expectAssertionError("actual value:<-2> should be greater than:<0>").on(new CodeToTest() {
+      public void run() {
+        new LongAssert(-2).isPositive();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_and_display_description_of_assertion_if_actual_is_negative() {
+    expectAssertionError("[A Test] actual value:<-2> should be greater than:<0>").on(new CodeToTest() {
+      public void run() {
+        new LongAssert(-2).as("A Test")
+                          .isPositive();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_negative() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new LongAssert(-2).overridingErrorMessage("My custom message")
+                          .isPositive();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_negative() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new LongAssert(-2).as("A Test")
+                          .overridingErrorMessage("My custom message")
+                          .isPositive();
+      }
+    });
   }
 
   @Test
@@ -52,20 +92,22 @@ public class LongAssert_isPositive_Test implements Assert_isPositive_TestCase {
   }
 
   @Test
-  public void should_fail_if_actual_is_negative() {
-    expectAssertionError("actual value:<-2> should be greater than:<0>").on(new CodeToTest() {
+  public void should_fail_with_custom_message_if_actual_is_zero() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new LongAssert(-2).isPositive();
+        new LongAssert(0).overridingErrorMessage("My custom message")
+                         .isPositive();
       }
     });
   }
 
   @Test
-  public void should_fail_and_display_description_of_assertion_if_actual_is_negative() {
-    expectAssertionError("[A Test] actual value:<-2> should be greater than:<0>").on(new CodeToTest() {
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_zero() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new LongAssert(-2).as("A Test")
-                          .isPositive();
+        new LongAssert(0).as("A Test")
+                         .overridingErrorMessage("My custom message")
+                         .isPositive();
       }
     });
   }
