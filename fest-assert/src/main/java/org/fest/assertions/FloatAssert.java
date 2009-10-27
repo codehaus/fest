@@ -25,6 +25,7 @@ import static org.fest.util.Strings.concat;
  * method <code>{@link Assertions#assertThat(float)}</code>.
  *
  * @author Yvonne Wang
+ * @author Alex Ruiz
  */
 public class FloatAssert extends PrimitiveAssert implements NumberAssert {
 
@@ -128,12 +129,31 @@ public class FloatAssert extends PrimitiveAssert implements NumberAssert {
    * @param delta the given delta.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>float</code> value is not equal to the given one.
+   * @deprecated use method <code>{@link #isEqualTo(float, org.fest.assertions.Delta)}</code> instead. This method will
+   * be removed in version 2.0.
    */
+  @Deprecated
   public FloatAssert isEqualTo(float expected, Delta delta) {
+    return isEqualTo(expected, delta.value);
+  }
+
+  /**
+   * Verifies that the actual <code>float</code> value is equal to tdelta.valuene, within a positive delta.
+   * @param expected the value to compare the actual one to.
+   * @param delta the given delta.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>float</code> value is not equal to the given one.
+   * @since 1.2
+   */
+  public FloatAssert isEqualTo(float expected, org.fest.assertions.Delta delta) {
+    return isEqualTo(expected, delta.floatValue());
+  }
+
+  private FloatAssert isEqualTo(float expected, float deltaValue) {
     if (compareTo(expected) == 0) return this;
-    if (abs(expected - actual) <= delta.value) return this;
+    if (abs(expected - actual) <= deltaValue) return this;
     failIfCustomMessageIsSet();
-    throw failure(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(delta.value)));
+    throw failure(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(deltaValue)));
   }
 
   /**
@@ -206,7 +226,6 @@ public class FloatAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>float</code> value is not equal to <code>NaN</code>.
    */
   public FloatAssert isNaN() {
-    // TODO test
     return isEqualTo(Float.NaN);
   }
 
@@ -242,7 +261,10 @@ public class FloatAssert extends PrimitiveAssert implements NumberAssert {
    * <code>{@link FloatAssert#isEqualTo(float, org.fest.assertions.FloatAssert.Delta)}</code>.
    * @param d the delta value.
    * @return a new delta value holder.
+   * @deprecated use method <code>{@link org.fest.assertions.Delta#delta(double)}</code> instead. This method will be
+   * removed in version 2.0.
    */
+  @Deprecated
   public static Delta delta(float d) {
     return new Delta(d);
   }
@@ -250,7 +272,10 @@ public class FloatAssert extends PrimitiveAssert implements NumberAssert {
   /**
    * Holds a delta value to be used in
    * <code>{@link FloatAssert#isEqualTo(float, org.fest.assertions.FloatAssert.Delta)}</code>.
+   * @deprecated use top-level class <code>{@link org.fest.assertions.Delta}</code> instead. This class will be removed
+   * in version 2.0.
    */
+  @Deprecated
   public static class Delta {
     final float value;
 

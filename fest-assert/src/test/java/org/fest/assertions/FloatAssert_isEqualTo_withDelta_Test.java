@@ -14,10 +14,9 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.FloatAssert.delta;
+import static org.fest.assertions.Delta.delta;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
-import org.fest.assertions.FloatAssert.Delta;
 import org.fest.test.CodeToTest;
 import org.junit.Test;
 
@@ -26,6 +25,7 @@ import org.junit.Test;
  *
  * @author Yvonne Wang
  * @author David DIDIER
+ * @author Alex Ruiz
  */
 public class FloatAssert_isEqualTo_withDelta_Test {
 

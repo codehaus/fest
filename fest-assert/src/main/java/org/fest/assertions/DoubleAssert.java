@@ -12,6 +12,7 @@ import static org.fest.util.Strings.concat;
  *
  * @author Yvonne Wang
  * @author David DIDIER
+ * @author Alex Ruiz
  */
 public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
 
@@ -202,7 +203,6 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>double</code> value is not equal to <code>NAN</code>.
    */
   public DoubleAssert isNaN() {
-    // TODO test
     return isEqualTo(Double.NaN);
   }
 
@@ -232,7 +232,7 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
     return isEqualTo(expected, delta.doubleValue());
   }
 
-  private DoubleAssert isEqualTo(double expected, double deltaValue) throws AssertionError {
+  private DoubleAssert isEqualTo(double expected, double deltaValue) {
     if (compareTo(expected) == 0) return this;
     if (abs(expected - actual) <= deltaValue) return this;
     failIfCustomMessageIsSet();

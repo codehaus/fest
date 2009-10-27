@@ -87,7 +87,10 @@
         When two objects are compared with 'isEqualTo' and the comparison fails, a ComparisonFailure is thrown using the
         'toString' implementation of the compared objects.
       </action>
-      <action dev="alexruiz" type="remove">
+      <action dev="alexruiz" type="fix" issue="FEST-245">
+        Deprecated static inner class Delta in FloatAssert. It is replaced by top-level class org.assertions.Delta.
+      </action>
+      <action dev="alexruiz" type="fix">
         Deprecated method 'value' in class Delta. Replaced with method 'doubleValue'.
       </action>
     </release>
