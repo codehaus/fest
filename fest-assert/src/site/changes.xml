@@ -5,7 +5,7 @@
     <author email="alex.ruiz.05@gmail.com">Alex Ruiz</author>
   </properties>
   <body>
-    <release version="1.2" date="TBD" description="Subsequent release">
+    <release version="1.2" date="2009-11-02" description="Subsequent release">
       <action dev="tedyoung" type="fix" issue="FEST-147">
         Class Formatting and its methods are now public.
       </action>
@@ -90,7 +90,7 @@
       <action dev="alexruiz" type="fix" issue="FEST-245">
         Deprecated static inner class Delta in FloatAssert. It is replaced by top-level class org.assertions.Delta.
       </action>
-      <action dev="alexruiz" type="fix">
+      <action dev="alexruiz" type="fix" issue="FEST-245">
         Deprecated method 'value' in class Delta. Replaced with method 'doubleValue'.
       </action>
     </release>
