@@ -15,6 +15,7 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ErrorMessages.unexpectedNullType;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Objects.namesOf;
 import static org.fest.util.Strings.concat;
@@ -84,7 +85,7 @@ public class ObjectAssert extends GenericAssert<Object> {
 
   void validateNotNull(Class<?> type) {
     if (type == null)
-      throw new NullPointerException(formattedErrorMessage("expecting a non-null type, but it was null"));
+      throw new NullPointerException(unexpectedNullType(rawDescription()));
   }
 
   private String typeNames(Class<?>... types) {

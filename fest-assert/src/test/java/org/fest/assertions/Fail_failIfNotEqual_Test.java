@@ -14,9 +14,10 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.CommonFailures.expectComparisonFailure;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import org.fest.test.CodeToTest;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * Tests for <code>{@link Fail#failIfNotEqual(String, Description, Object, Object)}</code>.
@@ -28,7 +29,7 @@ public class Fail_failIfNotEqual_Test {
 
   @Test
   public void should_fail_if_values_are_not_equal() {
-    expectAssertionError("[A message] expected:<'[Luke]'> but was:<'[Yoda]'>").on(new CodeToTest() {
+    expectComparisonFailure("[A message] expected:<'[Luke]'> but was:<'[Yoda]'>").on(new CodeToTest() {
       public void run() {
         Fail.failIfNotEqual(null, new BasicDescription("A message"), "Yoda", "Luke");
       }
