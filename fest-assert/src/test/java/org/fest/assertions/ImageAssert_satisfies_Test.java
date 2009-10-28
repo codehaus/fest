@@ -92,21 +92,34 @@ public class ImageAssert_satisfies_Test implements GenericAssert_satisfies_TestC
     });
   }
 
-  /** {@inheritDoc} */
+  @Test
   public void should_fail_with_custom_message_if_condition_is_not_satisfied() {
-    // TODO Auto-generated method stub
-
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ImageAssert(null).overridingErrorMessage("My custom message")
+                             .satisfies(notNullImage());
+      }
+    });
   }
 
-  /** {@inheritDoc} */
+  @Test
   public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_not_satisfied() {
-    // TODO Auto-generated method stub
-
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ImageAssert(null).as("A Test")
+                             .overridingErrorMessage("My custom message")
+                             .satisfies(notNullImage());
+      }
+    });
   }
 
-  /** {@inheritDoc} */
+  @Test
   public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_not_satisfied() {
-    // TODO Auto-generated method stub
-
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ImageAssert(null).overridingErrorMessage("My custom message")
+                             .satisfies(notNullImage().as("Not Null"));
+      }
+    });
   }
 }

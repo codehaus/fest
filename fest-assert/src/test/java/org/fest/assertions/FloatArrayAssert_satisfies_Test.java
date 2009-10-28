@@ -55,13 +55,13 @@ public class FloatArrayAssert_satisfies_Test implements GenericAssert_satisfies_
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_condition_is_not_satisfied() {
-    expectAssertionError("[A Test] actual value:<null> should satisfy condition:<NotNull>").on(
-      new CodeToTest() {
-        public void run() {
-          new FloatArrayAssert(null).as("A Test")
-                                    .satisfies(notNullFloatArray());
-        }
-      });
+    String message = "[A Test] actual value:<null> should satisfy condition:<NotNull>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new FloatArrayAssert(null).as("A Test")
+                                  .satisfies(notNullFloatArray());
+      }
+    });
   }
 
   @Test

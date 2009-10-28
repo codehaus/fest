@@ -93,13 +93,24 @@ public abstract class Assert {
     return errorMessage;
   }
 
-  final void failIfCustomMessageIsSet() {
-    // TODO make protected and document
+  /**
+   * Throws an <code>{@link AssertionError}</code> only if the the custom message in this assertion object is not
+   * <code>null</code>.
+   * @throws AssertionError only if the custom error message in this assertion object is not <code>null</code>.
+   * @since 1.2
+   */
+  protected final void failIfCustomMessageIsSet() {
     failWithMessage(customErrorMessage());
   }
 
-  final void failIfCustomMessageIsSet(Throwable realCause) {
-    // TODO make protected and document
+  /**
+   * Throws an <code>{@link AssertionError}</code> only if the the custom message in this assertion object is not
+   * <code>null</code>.
+   * @param realCause cause of the error.
+   * @throws AssertionError only if the custom error message in this assertion object is not <code>null</code>.
+   * @since 1.2
+   */
+  protected final void failIfCustomMessageIsSet(Throwable realCause) {
     failWithMessage(customErrorMessage(), realCause);
   }
 
