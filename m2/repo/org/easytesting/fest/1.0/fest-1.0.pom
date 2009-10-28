@@ -495,8 +495,9 @@
           <includesTestSourceRoots>false</includesTestSourceRoots>
           <methodContexts>
            <private-constructor-noparam-nothrows>(.* )?private +[a-zA-Z0-9_$]+ *\( *\).*</private-constructor-noparam-nothrows>
+           <protected-constructor-noparam-nothrows>(.* )?protected +[a-zA-Z0-9_$]+ *\( *\).*</protected-constructor-noparam-nothrows>
           </methodContexts>
-          <contextFilters>@deprecated,private-constructor-noparam-nothrows</contextFilters>
+          <contextFilters>@deprecated,private-constructor-noparam-nothrows,protected-constructor-noparam-nothrows</contextFilters>
         </configuration>
       </plugin>
       <plugin>
