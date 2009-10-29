@@ -48,7 +48,7 @@ public final class Fail {
    * @throws AssertionError if the given objects are equal.
    * @since 1.2
    */
-  public static void failIfEqual(String customErrorMessage, Description descriptionOfActual, Object actual, Object other) {
+  protected static void failIfEqual(String customErrorMessage, Description descriptionOfActual, Object actual, Object other) {
     if (!areEqual(actual, other)) return;
     failWithMessage(customErrorMessage);
     fail(format(descriptionOfActual, unexpectedEqual(actual, other)));
@@ -66,7 +66,7 @@ public final class Fail {
    * @throws AssertionError if the given objects are not equal.
    * @since 1.2
    */
-  public static void failIfNotEqual(String customErrorMessage, Description descriptionOfActual, Object actual, Object expected) {
+  protected static void failIfNotEqual(String customErrorMessage, Description descriptionOfActual, Object actual, Object expected) {
     if (areEqual(actual, expected)) return;
     failWithMessage(customErrorMessage);
     failWhenNotEqual(descriptionOfActual, actual, expected);
