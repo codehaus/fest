@@ -87,7 +87,7 @@ public final class Fail {
    * @throws AssertionError if the given object is <code>null</code>.
    * @since 1.2
    */
-  public static void failIfNull(String customErrorMessage, Description description, Object o) {
+  protected static void failIfNull(String customErrorMessage, Description description, Object o) {
     if (o != null) return;
     failWithMessage(customErrorMessage);
     fail(description, array("expecting a non-null object, but it was null"));
@@ -102,7 +102,7 @@ public final class Fail {
    * @throws AssertionError if the given object is not <code>null</code>.
    * @since 1.2
    */
-  public static void failIfNotNull(String customErrorMessage, Description description, Object o) {
+  protected static void failIfNotNull(String customErrorMessage, Description description, Object o) {
     if (o == null) return;
     failWithMessage(customErrorMessage);
     fail(description, array(inBrackets(o), " should be null"));
@@ -118,7 +118,7 @@ public final class Fail {
    * @throws AssertionError if the given objects are the same.
    * @since 1.2
    */
-  public static void failIfSame(String customErrorMessage, Description descriptionOfActual, Object actual, Object other) {
+  protected static void failIfSame(String customErrorMessage, Description descriptionOfActual, Object actual, Object other) {
     if (actual != other) return;
     failWithMessage(customErrorMessage);
     fail(descriptionOfActual, array("given objects are same:", inBrackets(actual)));
@@ -134,7 +134,7 @@ public final class Fail {
    * @throws AssertionError if the given objects are not the same.
    * @since 1.2
    */
-  public static void failIfNotSame(String customErrorMessage, Description descriptionOfActual, Object actual, Object other) {
+  protected static void failIfNotSame(String customErrorMessage, Description descriptionOfActual, Object actual, Object other) {
     if (actual == other) return;
     failWithMessage(customErrorMessage);
     fail(descriptionOfActual,
@@ -151,7 +151,7 @@ public final class Fail {
    * @throws AssertionError only if the custom error message is not <code>null</code>.
    * @since 1.2
    */
-  public static void failWithMessage(String customErrorMessage) {
+  protected static void failWithMessage(String customErrorMessage) {
     if (customErrorMessage != null) fail(customErrorMessage);
   }
 
@@ -162,7 +162,7 @@ public final class Fail {
    * @throws AssertionError only if the custom error message is not <code>null</code>.
    * @since 1.2
    */
-  public static void failWithMessage(String customErrorMessage, Throwable realCause) {
+  protected static void failWithMessage(String customErrorMessage, Throwable realCause) {
     if (customErrorMessage != null) fail(customErrorMessage, realCause);
   }
 
@@ -206,5 +206,9 @@ public final class Fail {
     return new AssertionError(message);
   }
 
-  private Fail() {}
+  /**
+   * This constructor is protected to make it possible to subclass this class. Since all its methods are static, there
+   * is no point on creating a new instance of it.
+   */
+  protected Fail() {}
 }
