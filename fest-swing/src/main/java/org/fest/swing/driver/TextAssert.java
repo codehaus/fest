@@ -56,16 +56,14 @@ class TextAssert extends Assert implements AssertExtension {
 
   TextAssert isEqualOrMatches(String s) {
     if (areEqualOrMatch(s, actual)) return this;
-    fail(concat(format(description()),
+    throw failure(concat(format(description()),
         "actual value:<", quote(actual), "> is not equal to or does not match pattern:<", quote(s), ">"));
-    return this;
   }
 
   TextAssert matches(Pattern pattern) {
     if (match(pattern, actual)) return this;
-    fail(concat(format(description()),
+    throw failure(concat(format(description()),
         "actual value:<", quote(actual), "> does not match pattern:<", quote(pattern.pattern()), ">"));
-    return this;
   }
 
   private static String format(String message) {

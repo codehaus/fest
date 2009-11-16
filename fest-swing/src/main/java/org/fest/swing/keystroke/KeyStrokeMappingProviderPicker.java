@@ -26,10 +26,21 @@ class KeyStrokeMappingProviderPicker {
 
 //  private static final String GERMAN = "de";
 
+  private static final String FRENCH = "fr";
+
   KeyStrokeMappingProvider providerFor(Locale locale) {
     // removed support for German-specific mapping, until FEST-175 is fixed.
     // if (isGerman(locale)) return new KeyStrokeMappingProvider_de();
+    if (isFrench(locale)) return new KeyStrokeMappingProvider_fr();
     return new KeyStrokeMappingProvider_en();
+  }
+
+  private boolean isFrench(Locale locale) {
+    return doesLocaleHaveLanguage(locale, FRENCH);
+  }
+
+  private boolean doesLocaleHaveLanguage(Locale locale, String language) {
+    return language.equalsIgnoreCase(locale.getDisplayLanguage()) || language.equalsIgnoreCase(locale.getLanguage());
   }
 
 //  private boolean isGerman(Locale locale) {

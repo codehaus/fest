@@ -5,6 +5,14 @@
     <author email="alex.ruiz.05@gmail.com">Alex Ruiz</author>
   </properties>
   <body>
+    <release version="1.2a4" date="2010-03-01" description="Subsequent release">
+      <action dev="alexruiz" type="fix" issue="FEST-232" due-to="Florian SIMON">
+        Added KeyStrokeMappingProvider_fr to support French keyboards.
+      </action>
+      <action dev="alexruiz" type="fix" issue="FEST-251">
+        Updated FEST-Assert to version 1.2.
+      </action>
+    </release>
     <release version="1.2a3" date="2009-08-31" description="Subsequent release">
       <action dev="alexruiz" type="add" issue="FEST-7" due-to="Cephei">
         Added method 'expandRow(int)' to JTreeFixture.

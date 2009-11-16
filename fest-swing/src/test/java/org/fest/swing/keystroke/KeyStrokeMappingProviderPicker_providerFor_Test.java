@@ -48,7 +48,7 @@ public class KeyStrokeMappingProviderPicker_providerFor_Test {
 
   @Parameters
   public static Collection<Object[]> locales() {
-    return list(new Object[][] { { FRENCH }, { ENGLISH }, { CHINESE }, { ITALIAN }, { SIMPLIFIED_CHINESE } });
+    return list(new Object[][] { { ENGLISH }, { CHINESE }, { ITALIAN }, { SIMPLIFIED_CHINESE } });
   }
 
   public KeyStrokeMappingProviderPicker_providerFor_Test(Locale locale) {
@@ -63,6 +63,12 @@ public class KeyStrokeMappingProviderPicker_providerFor_Test {
   public void should_pick_provider_for_German_if_locale_has_German_language() {
     KeyStrokeMappingProvider provider = picker.providerFor(GERMAN);
     assertThat(provider).isInstanceOf(KeyStrokeMappingProvider_de.class);
+  }
+
+  @Test
+  public void should_pick_provider_for_German_if_locale_has_French_language() {
+    KeyStrokeMappingProvider provider = picker.providerFor(FRENCH);
+    assertThat(provider).isInstanceOf(KeyStrokeMappingProvider_fr.class);
   }
 
   @Test
