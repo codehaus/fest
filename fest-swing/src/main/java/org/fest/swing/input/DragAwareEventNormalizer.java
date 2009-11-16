@@ -41,7 +41,7 @@ class DragAwareEventNormalizer extends EventNormalizer {
 
   private DragAwareEventQueue dragAwareEventQueue;
 
-  @Override void startListening(Toolkit toolkit, AWTEventListener delegate, long mask) {
+  @Override public void startListening(Toolkit toolkit, AWTEventListener delegate, long mask) {
     super.startListening(toolkit, delegate, mask);
     try {
       dragAwareEventQueue = newDragAwareEventQueue(toolkit, mask);
@@ -63,7 +63,7 @@ class DragAwareEventNormalizer extends EventNormalizer {
     return new DragAwareEventQueue(toolkit, mask, this);
   }
 
-  @Override void stopListening() {
+  @Override public void stopListening() {
     disposeDragAwareEventQueue();
     super.stopListening();
   }

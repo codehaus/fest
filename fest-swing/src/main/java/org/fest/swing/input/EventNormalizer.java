@@ -23,30 +23,44 @@ import org.fest.swing.listener.WeakEventListener;
 import static org.fest.swing.listener.WeakEventListener.attachAsWeakEventListener;
 
 /**
- * Understands an <code>{@link AWTEventListener}</code> which normalizes the event stream by sending a single 
+ * Understands an <code>{@link AWTEventListener}</code> which normalizes the event stream by sending a single
  * <code>WINDOW_CLOSED</code>, instead of one every time dispose is called.
+ *
+ * @author Alex Ruiz
  */
-class EventNormalizer implements AWTEventListener {
+public class EventNormalizer implements AWTEventListener {
 
   private final DisposedWindowMonitor disposedWindowMonitor;
 
   private WeakEventListener weakEventListener;
   private AWTEventListener listener;
 
-  EventNormalizer() {
+  /**
+   * Creates a new </code>{@link EventNormalizer}</code>.
+   */
+  public EventNormalizer() {
     this(new DisposedWindowMonitor());
   }
 
   EventNormalizer(DisposedWindowMonitor disposedWindowMonitor) {
     this.disposedWindowMonitor = disposedWindowMonitor;
   }
-  
-  void startListening(final Toolkit toolkit, AWTEventListener delegate, long mask) {
+
+  /**
+   * Starts listening for events.
+   * @param toolkit the <code>Toolkit</code> to use.
+   * @param delegate the event listener to delegate event processing to.
+   * @param mask the event mask to use to register this normalizer in the <code>Toolkit</code>.
+   */
+  public void startListening(final Toolkit toolkit, AWTEventListener delegate, long mask) {
     listener = delegate;
     weakEventListener = attachAsWeakEventListener(toolkit, this, mask);
   }
 
-  void stopListening() {
+  /**
+   * Stops listening for events and disposes the delegate event listener.
+   */
+  public void stopListening() {
     disposeWeakEventListener();
     listener = null;
   }
@@ -57,13 +71,16 @@ class EventNormalizer implements AWTEventListener {
     weakEventListener = null;
   }
 
-  /** Event reception callback. */
+  /**
+   * Event reception callback.
+   * @param event the dispatached event.
+   */
   public void eventDispatched(AWTEvent event) {
     boolean discard = disposedWindowMonitor.isDuplicateDispose(event);
     if (!discard && listener != null) delegate(event);
   }
 
-  void delegate(AWTEvent e) {
+  private void delegate(AWTEvent e) {
     listener.eventDispatched(e);
   }
 }

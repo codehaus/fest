@@ -19,14 +19,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.util.Platform.isWindows;
 import static org.fest.util.Strings.concat;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.event.InputEvent;
 
 import javax.swing.JComponent;
@@ -119,6 +112,7 @@ public class AWT {
    * @param r the given <code>Rectangle</code>.
    * @return a point at the center of the given <code>Rectangle</code>.
    */
+  @RunsInCurrentThread
   public static Point centerOf(Rectangle r) {
     return new Point((r.x + (r.width / 2)), (r.y + (r.height / 2)));
   }
@@ -160,6 +154,33 @@ public class AWT {
     // Must perform an additional check, since applets may have their own version in their AppContext
     return c instanceof Frame
         && (c == JOptionPane.getRootFrame() || c.getClass().getName().startsWith(ROOT_FRAME_CLASSNAME));
+  }
+
+  /**
+   * Returns whether the given <code>Component</code> is a heavy-weight pop-up, that is, a container for a
+   * <code>JPopupMenu</code> that is implemented with a heavy-weight component (usually a <code>Window</code>).
+   * @param c the given <code>Component</code>.
+   * @return <code>true</code> if the given <code>Component</code> is a heavy-weight pop-up; <code>false</code>
+   * otherwise.
+   * @since 1.2
+   */
+  @RunsInCurrentThread
+  public static boolean isHeavyWeightPopup(Component c) {
+    if (!(c instanceof Window) || c instanceof Dialog || c instanceof Frame) return false;
+    String name = obtainNameSafely(c);
+    if ("###overrideRedirect###".equals(name) || "###focusableSwingPopup###".equals(name)) return true;
+    String typeName = c.getClass().getName();
+    return typeName.indexOf("PopupFactory$WindowPopup") != -1 || typeName.indexOf("HeavyWeightWindow") != -1;
+  }
+
+  @RunsInCurrentThread
+  private static String obtainNameSafely(Component c) {
+    // Work around some components throwing exceptions if getName is called prematurely
+    try {
+      return c.getName();
+    } catch (Throwable e) {
+      return null;
+    }
   }
 
   /**
