@@ -19,11 +19,13 @@ import static org.fest.util.Objects.areEqual;
 import static org.fest.util.Strings.isEmpty;
 
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Understands utility methods related to <code>String</code>s.
  *
  * @author Alex Ruiz
+ * @author Uli Schrempp
  */
 public final class Strings {
 
@@ -59,7 +61,13 @@ public final class Strings {
    */
   public static boolean areEqualOrMatch(String pattern, String s) {
     if (areEqual(pattern, s)) return true;
-    if (pattern != null && s != null) return s.matches(pattern);
+    if (pattern != null && s != null) {
+      try {
+        return s.matches(pattern);
+      } catch (PatternSyntaxException invalidRegex) {
+        return s.contains(pattern);
+      }
+    }
     return false;
   }
 

@@ -23,6 +23,7 @@ import org.junit.Test;
  * Tests for <code>{@link Strings#areEqualOrMatch(String, String)}</code>.
  *
  * @author Alex Ruiz
+ * @author Uli Schrempp
  */
 public class Strings_areEqualOrMatch_Test {
 
@@ -54,5 +55,15 @@ public class Strings_areEqualOrMatch_Test {
   @Test
   public void should_return_true_if_String_and_pattern_are_null() {
     assertThat(Strings.areEqualOrMatch(null, null)).isTrue();
+  }
+
+  @Test
+  public void should_return_true_if_pattern_is_invalid_regex_but_is_contained_in_string() {
+    assertThat(Strings.areEqualOrMatch("\\\\server\\share\\myfolder", "\\\\server\\share\\myfolder\\mysubfolder")).isTrue();
+  }
+
+  @Test
+  public void should_return_true_if_pattern_is_invalid_regex_and_doesnt_match_string() {
+    assertThat(Strings.areEqualOrMatch("\\myfolder", "this does not match")).isFalse();
   }
 }
