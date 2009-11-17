@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.Locale;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -59,7 +58,7 @@ public class KeyStrokeMappingProviderPicker_providerFor_Test {
     picker = new KeyStrokeMappingProviderPicker();
   }
 
-  @Ignore(value = "German-specific mapping disabled till FEST-175 is fixed")
+  @Test
   public void should_pick_provider_for_German_if_locale_has_German_language() {
     KeyStrokeMappingProvider provider = picker.providerFor(GERMAN);
     assertThat(provider).isInstanceOf(KeyStrokeMappingProvider_de.class);

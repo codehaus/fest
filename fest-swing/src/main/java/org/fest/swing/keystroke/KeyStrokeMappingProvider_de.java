@@ -28,6 +28,7 @@ import javax.swing.KeyStroke;
  * <code>{@link java.util.Locale#GERMAN GERMAN}</code>.
  *
  * @author Uli Schrempp
+ * @author Alex Ruiz
  */
 public class KeyStrokeMappingProvider_de implements KeyStrokeMappingProvider {
 
@@ -109,15 +110,12 @@ public class KeyStrokeMappingProvider_de implements KeyStrokeMappingProvider {
     mappings.add(mapping('m', VK_M, NO_MASK));
     mappings.add(mapping('M', VK_M, SHIFT_MASK));
     mappings.add(mapping('µ', VK_M, ALT_GRAPH_MASK));
-    mappings.add(mapping('ß', VK_MINUS, NO_MASK));
     mappings.add(mapping('?', VK_MINUS, SHIFT_MASK));
     mappings.add(mapping('\\', VK_MINUS, ALT_GRAPH_MASK));
     mappings.add(mapping('n', VK_N, NO_MASK));
     mappings.add(mapping('N', VK_N, SHIFT_MASK));
     mappings.add(mapping('o', VK_O, NO_MASK));
     mappings.add(mapping('O', VK_O, SHIFT_MASK));
-    mappings.add(mapping('ü', VK_OPEN_BRACKET, NO_MASK));
-    mappings.add(mapping('Ü', VK_OPEN_BRACKET, SHIFT_MASK));
     mappings.add(mapping('p', VK_P, NO_MASK));
     mappings.add(mapping('P', VK_P, SHIFT_MASK));
     mappings.add(mapping('.', VK_PERIOD, NO_MASK));
@@ -125,14 +123,10 @@ public class KeyStrokeMappingProvider_de implements KeyStrokeMappingProvider {
     mappings.add(mapping('q', VK_Q, NO_MASK));
     mappings.add(mapping('Q', VK_Q, SHIFT_MASK));
     mappings.add(mapping('@', VK_Q, ALT_GRAPH_MASK));
-    mappings.add(mapping('ä', VK_QUOTE, NO_MASK));
-    mappings.add(mapping('Ä', VK_QUOTE, SHIFT_MASK));
     mappings.add(mapping('r', VK_R, NO_MASK));
     mappings.add(mapping('R', VK_R, SHIFT_MASK));
     mappings.add(mapping('s', VK_S, NO_MASK));
     mappings.add(mapping('S', VK_S, SHIFT_MASK));
-    mappings.add(mapping('ö', VK_SEMICOLON, NO_MASK));
-    mappings.add(mapping('Ö', VK_SEMICOLON, SHIFT_MASK));
     mappings.add(mapping('-', VK_SLASH, NO_MASK));
     mappings.add(mapping('_', VK_SLASH, SHIFT_MASK));
     mappings.add(mapping(' ', VK_SPACE, NO_MASK));

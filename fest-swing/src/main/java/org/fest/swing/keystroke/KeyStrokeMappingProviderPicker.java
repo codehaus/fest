@@ -24,14 +24,12 @@ import java.util.Locale;
  */
 class KeyStrokeMappingProviderPicker {
 
-//  private static final String GERMAN = "de";
-
   private static final String FRENCH = "fr";
+  private static final String GERMAN = "de";
 
   KeyStrokeMappingProvider providerFor(Locale locale) {
-    // removed support for German-specific mapping, until FEST-175 is fixed.
-    // if (isGerman(locale)) return new KeyStrokeMappingProvider_de();
     if (isFrench(locale)) return new KeyStrokeMappingProvider_fr();
+    if (isGerman(locale)) return new KeyStrokeMappingProvider_de();
     return new KeyStrokeMappingProvider_en();
   }
 
@@ -39,11 +37,11 @@ class KeyStrokeMappingProviderPicker {
     return doesLocaleHaveLanguage(locale, FRENCH);
   }
 
+  private boolean isGerman(Locale locale) {
+    return doesLocaleHaveLanguage(locale, GERMAN);
+  }
+
   private boolean doesLocaleHaveLanguage(Locale locale, String language) {
     return language.equalsIgnoreCase(locale.getDisplayLanguage()) || language.equalsIgnoreCase(locale.getLanguage());
   }
-
-//  private boolean isGerman(Locale locale) {
-//    return GERMAN.equalsIgnoreCase(locale.getDisplayLanguage()) || GERMAN.equalsIgnoreCase(locale.getLanguage());
-//  }
 }
