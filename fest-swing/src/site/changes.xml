@@ -9,6 +9,9 @@
       <action dev="alexruiz" type="fix" issue="FEST-175" due-to="Jan Zuchhold">
         Removed mappings for German umlauts in KeyStrokeMappingProvider_de.
       </action>
+      <action dev="alexruiz" type="fix" issue="FEST-215" due-to="Ansgar Konermann">
+        Moved JDK-6 specific code to new module fest-swing-jdk6.
+      </action>
       <action dev="alexruiz" type="fix" issue="FEST-232" due-to="Florian SIMON">
         Added KeyStrokeMappingProvider_fr to support French keyboards.
       </action>
