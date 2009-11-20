@@ -18,6 +18,10 @@
       <action dev="alexruiz" type="fix" issue="FEST-232" due-to="Florian SIMON">
         Added KeyStrokeMappingProvider_fr to support French keyboards.
       </action>
+      <action dev="alexruiz" type="fix" issue="FEST-244" due-to="Harry L">
+        Added method 'requireItemCount(int)' to ItemGroupFixture and its implementations JComboBoxFixture and 
+        JListFixture.
+      </action>
       <action dev="alexruiz" type="fix" issue="FEST-251">
         Updated FEST-Assert to version 1.2.
       </action>

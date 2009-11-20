@@ -43,7 +43,7 @@ import org.fest.swing.util.Range;
  * @author Yvonne Wang
  * @author Fabien Barbero
  */
-public class JListFixture extends ComponentFixture<JList> implements CommonComponentFixture, 
+public class JListFixture extends ComponentFixture<JList> implements CommonComponentFixture,
   ItemGroupFixture, JComponentFixture, JPopupMenuInvokerFixture {
 
   private JListDriver driver;
@@ -746,6 +746,19 @@ public class JListFixture extends ComponentFixture<JList> implements CommonCompo
   }
 
   /**
+   * Verifies that this fixture's <code>{@link JList}</code> has the expected number of items
+   * @param expected the expected number of items.
+   * @return this fixture.
+   * @throws AssertionError if the number of items in this fixture's <code>JList</code> is not equal to the expected
+   * one.
+   * @since 1.2
+   */
+  public JListFixture requireItemCount(int expected) {
+    driver.requireItemCount(target, expected);
+    return this;
+  }
+
+  /**
    * Asserts that the toolTip in this fixture's <code>{@link JList}</code> matches the given value.
    * @param expected the given value. It can be a regular expression.
    * @return this fixture.
@@ -779,7 +792,7 @@ public class JListFixture extends ComponentFixture<JList> implements CommonCompo
    * not found.
    * @throws NullPointerException if the given key is <code>null</code>.
    * @since 1.2
-   */  
+   */
   public Object clientProperty(Object key) {
     return driver.clientProperty(target, key);
   }
@@ -796,7 +809,7 @@ public class JListFixture extends ComponentFixture<JList> implements CommonCompo
   }
 
   /**
-   * Shows a pop-up menu at the given point using this fixture's <code>{@link JList}</code> as the invoker of the pop-up 
+   * Shows a pop-up menu at the given point using this fixture's <code>{@link JList}</code> as the invoker of the pop-up
    * menu.
    * @param p the given point where to show the pop-up menu.
    * @return a fixture that manages the displayed pop-up menu.
@@ -807,7 +820,7 @@ public class JListFixture extends ComponentFixture<JList> implements CommonCompo
   public JPopupMenuFixture showPopupMenuAt(Point p) {
     return new JPopupMenuFixture(robot, driver.invokePopupMenu(target, p));
   }
-  
+
   /**
    * Updates the implementation of <code>{@link JListCellReader}</code> to use when comparing internal values of
    * this fixture's <code>{@link JList}</code> and the values expected in a test. The default implementation to use

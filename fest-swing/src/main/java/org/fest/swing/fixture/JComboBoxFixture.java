@@ -40,7 +40,7 @@ import org.fest.swing.timing.Timeout;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JComboBoxFixture extends ComponentFixture<JComboBox> implements CommonComponentFixture, 
+public class JComboBoxFixture extends ComponentFixture<JComboBox> implements CommonComponentFixture,
     EditableComponentFixture, ItemGroupFixture, JComponentFixture, JPopupMenuInvokerFixture {
 
   private JComboBoxDriver driver;
@@ -441,6 +441,19 @@ public class JComboBoxFixture extends ComponentFixture<JComboBox> implements Com
   }
 
   /**
+   * Verifies that this fixture's <code>{@link JComboBox}</code> has the expected number of items
+   * @param expected the expected number of items.
+   * @return this fixture.
+   * @throws AssertionError if the number of items in this fixture's <code>JComboBox</code> is not equal to the expected
+   * one.
+   * @since 1.2
+   */
+  public JComboBoxFixture requireItemCount(int expected) {
+    driver.requireItemCount(target, expected);
+    return this;
+  }
+
+  /**
    * Verifies that the <code>String</code> representation of the selected item in this fixture's
    * <code>{@link JComboBox}</code> matches the given regular expression pattern.
    * @param pattern the regular expression pattern to match.
@@ -504,7 +517,7 @@ public class JComboBoxFixture extends ComponentFixture<JComboBox> implements Com
     driver.requireToolTip(target, pattern);
     return this;
   }
-  
+
   /**
    * Returns the client property stored in this fixture's <code>{@link JComboBox}</code>, under the given key.
    * @param key the key to use to retrieve the client property.
@@ -512,7 +525,7 @@ public class JComboBoxFixture extends ComponentFixture<JComboBox> implements Com
    * not found.
    * @throws NullPointerException if the given key is <code>null</code>.
    * @since 1.2
-   */  
+   */
   public Object clientProperty(Object key) {
     return driver.clientProperty(target, key);
   }
@@ -527,7 +540,7 @@ public class JComboBoxFixture extends ComponentFixture<JComboBox> implements Com
   public JPopupMenuFixture showPopupMenu() {
     return new JPopupMenuFixture(robot, driver.invokePopupMenu(target));
   }
-  
+
   /**
    * Shows a pop-up menu at the given point using this fixture's <code>{@link JComboBox}</code> as the invoker of the
    * pop-up menu.

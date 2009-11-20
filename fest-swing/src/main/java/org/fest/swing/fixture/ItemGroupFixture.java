@@ -82,7 +82,7 @@ public interface ItemGroupFixture {
   ItemGroupFixture requireSelection(String value);
 
   /**
-   * Verifies that the value of the selected item in this fixture's <code>{@link Component}</code> matches the given 
+   * Verifies that the value of the selected item in this fixture's <code>{@link Component}</code> matches the given
    * regular expression pattern.
    * @param pattern the regular expression pattern to match.
    * @return this fixture.
@@ -91,7 +91,7 @@ public interface ItemGroupFixture {
    * @since 1.2
    */
   ItemGroupFixture requireSelection(Pattern pattern);
-  
+
   /**
    * Verifies that the index of the selected item in this fixture's <code>{@link Component}</code> is equal to the given
    * value.
@@ -105,7 +105,17 @@ public interface ItemGroupFixture {
   /**
    * Verifies that this fixture's <code>{@link Component}</code> does not have a selection.
    * @return this fixture.
-   * @throws AssertionError if the this fixture's <code>Component</code> has a selection.
+   * @throws AssertionError if this fixture's <code>Component</code> has a selection.
    */
   ItemGroupFixture requireNoSelection();
+
+  /**
+   * Verifies that this fixture's <code>{@link Component}</code> has the expected number of items
+   * @param expected the expected number of items.
+   * @return this fixture.
+   * @throws AssertionError if the number of items in this fixture's <code>Component</code> is not equal to the expected
+   * one.
+   * @since 1.2
+   */
+  ItemGroupFixture requireItemCount(int expected);
 }

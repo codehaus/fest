@@ -23,6 +23,7 @@ import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAnd
 import static org.fest.swing.driver.JComboBoxAccessibleEditorValidator.validateEditorIsAccessible;
 import static org.fest.swing.driver.JComboBoxContentQuery.contents;
 import static org.fest.swing.driver.JComboBoxEditableQuery.isEditable;
+import static org.fest.swing.driver.JComboBoxItemCountQuery.itemCountIn;
 import static org.fest.swing.driver.JComboBoxItemIndexValidator.validateIndex;
 import static org.fest.swing.driver.JComboBoxMatchingItemQuery.matchingItemIndex;
 import static org.fest.swing.driver.JComboBoxSelectedIndexQuery.selectedIndexOf;
@@ -474,5 +475,19 @@ public class JComboBoxDriver extends JComponentDriver {
   public void cellReader(JComboBoxCellReader newCellReader) {
     validateCellReader(newCellReader);
     cellReader = newCellReader;
+  }
+
+  /**
+   * Verifies that number of items in the given <code>{@link JComboBox}</code> is equal to the expected one.
+   * @param comboBox the target <code>JComboBox</code>.
+   * @param expected the expected number of items.
+   * @throws AssertionError if the number of items in the given <code>{@link JComboBox}</code> is not equal to the
+   * expected one.
+   * @since 1.2
+   */
+  @RunsInEDT
+  public void requireItemCount(JComboBox comboBox, int expected) {
+    int actual = itemCountIn(comboBox);
+    assertThat(actual).as(propertyName(comboBox, "itemCount")).isEqualTo(expected);
   }
 }

@@ -23,6 +23,7 @@ import static org.fest.swing.awt.AWT.visibleCenterOf;
 import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
 import static org.fest.swing.driver.CommonValidations.validateCellReader;
 import static org.fest.swing.driver.JListContentQuery.contents;
+import static org.fest.swing.driver.JListItemCountQuery.itemCountIn;
 import static org.fest.swing.driver.JListItemIndexValidator.validateIndices;
 import static org.fest.swing.driver.JListItemValueQuery.itemValue;
 import static org.fest.swing.driver.JListMatchingItemQuery.*;
@@ -683,7 +684,7 @@ public class JListDriver extends JComponentDriver {
 
   /**
    * Returns the index of the first item matching the given regular expression pattern.
-   * @param list the target <code>JList</code>
+   * @param list the target <code>JList</code>.
    * @param pattern the regular expression pattern to match.
    * @return the index of the first item matching the given regular expression pattern.
    * @throws LocationUnavailableException if an element matching the given value cannot be found.
@@ -741,5 +742,19 @@ public class JListDriver extends JComponentDriver {
   public void cellReader(JListCellReader newCellReader) {
     validateCellReader(newCellReader);
     cellReader = newCellReader;
+  }
+
+  /**
+   * Verifies that number of items in the given <code>{@link JList}</code> is equal to the expected one.
+   * @param list the target <code>JList</code>.
+   * @param expected the expected number of items.
+   * @throws AssertionError if the number of items in the given <code>{@link JList}</code> is not equal to the expected
+   * one.
+   * @since 1.2
+   */
+  @RunsInEDT
+  public void requireItemCount(JList list, int expected) {
+    int actual = itemCountIn(list);
+    assertThat(actual).as(propertyName(list, "itemCount")).isEqualTo(expected);
   }
 }
