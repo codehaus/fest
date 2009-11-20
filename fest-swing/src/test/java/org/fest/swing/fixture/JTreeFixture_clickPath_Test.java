@@ -37,7 +37,7 @@ public class JTreeFixture_clickPath_Test extends JTreeFixture_TestCase {
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture().clickPath(path));
+        assertThatReturnsSelf(fixture().clickPath(path));
       }
     }.run();
   }

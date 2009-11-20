@@ -17,22 +17,17 @@ package org.fest.swing.fixture;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JButtons.button;
-import static org.fest.swing.test.builder.JFileChoosers.fileChooser;
 import static org.fest.swing.test.builder.JTextFields.textField;
 import static org.fest.util.Arrays.array;
 
 import java.io.File;
 
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.driver.ComponentDriver;
-import org.fest.swing.driver.JFileChooserDriver;
 import org.junit.Test;
 
 /**
@@ -41,66 +36,35 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JFileChooserFixtureTest extends CommonComponentFixture_TestCase<JFileChooser> {
+public class JFileChooserFixtureTest extends JFileChooserFixture_TestCase {
 
-  private JFileChooserDriver driver;
-  private JFileChooser target;
-  private JFileChooserFixture fixture;
-
-  void onSetUp() {
-    driver = createMock(JFileChooserDriver.class);
-    target = fileChooser().createNew();
-    fixture = new JFileChooserFixture(robot, target);
-    fixture.driver(driver);
-  }
-
-  @Test(expected = NullPointerException.class)
-  public void shouldThrowErrorIfDriverIsNull() {
-    fixture.driver(null);
-  }
-
-  @Test
-  public void shouldCreateFixtureWithGivenComponentName() {
-    String name = "fileChooser";
-    expectLookupByName(name, targetType());
-    verifyLookup(new JFileChooserFixture(robot, name));
-  }
-
-  @Test
-  public void shouldCreateFixtureByType() {
-    expectLookupByType(targetType());
-    verifyLookup(new JFileChooserFixture(robot));
-  }
-
-  private Class<JFileChooser> targetType() {
-    return JFileChooser.class;
-  }
+  // TODO Reorganize into smaller units
 
   @Test
   public void shouldReturnFileNameTextBox() {
     final JTextField fileNameTextBox = textField().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.fileNameTextBox(target)).andReturn(fileNameTextBox);
+        expect(driver().fileNameTextBox(target())).andReturn(fileNameTextBox);
       }
 
       protected void codeToTest() {
-        JTextComponentFixture fileNameTextBoxFixture = fixture.fileNameTextBox();
-        assertThat(fileNameTextBoxFixture.component()).isSameAs(fileNameTextBox);
+        JTextComponentFixture result = fixture().fileNameTextBox();
+        assertThat(result.component()).isSameAs(fileNameTextBox);
       }
     }.run();
   }
 
   @Test
   public void shouldClickApproveButton() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.clickApproveButton(target);
+        driver().clickApproveButton(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        fixture.approve();
+        fixture().approve();
       }
     }.run();
   }
@@ -108,28 +72,28 @@ public class JFileChooserFixtureTest extends CommonComponentFixture_TestCase<JFi
   @Test
   public void shouldReturnApproveButton() {
     final JButton approveButton = button().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.approveButton(target)).andReturn(approveButton);
+        expect(driver().approveButton(target())).andReturn(approveButton);
       }
 
       protected void codeToTest() {
-        JButtonFixture result = fixture.approveButton();
-        assertThat(result.target).isSameAs(approveButton);
+        JButtonFixture result = fixture().approveButton();
+        assertThat(result.component()).isSameAs(approveButton);
       }
     }.run();
   }
 
   @Test
   public void shouldClickCancelButton() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.clickCancelButton(target);
+        driver().clickCancelButton(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        fixture.cancel();
+        fixture().cancel();
       }
     }.run();
   }
@@ -137,14 +101,14 @@ public class JFileChooserFixtureTest extends CommonComponentFixture_TestCase<JFi
   @Test
   public void shouldReturnCancelButton() {
     final JButton cancelButton = button().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.cancelButton(target)).andReturn(cancelButton);
+        expect(driver().cancelButton(target())).andReturn(cancelButton);
       }
 
       protected void codeToTest() {
-        JButtonFixture result = fixture.cancelButton();
-        assertThat(result.target).isSameAs(cancelButton);
+        JButtonFixture result = fixture().cancelButton();
+        assertThat(result.component()).isSameAs(cancelButton);
       }
     }.run();
   }
@@ -152,14 +116,14 @@ public class JFileChooserFixtureTest extends CommonComponentFixture_TestCase<JFi
   @Test
   public void shouldSelectFile() {
     final File file = new File("fake");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectFile(target, file);
+        driver().selectFile(target(), file);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectFile(file));
+        assertThatReturnsSelf(fixture().selectFile(file));
       }
     }.run();
   }
@@ -167,14 +131,14 @@ public class JFileChooserFixtureTest extends CommonComponentFixture_TestCase<JFi
   @Test
   public void shouldSelectFiles() {
     final File[] files = array(new File("Fake1"), new File("Fake2"));
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectFiles(target, files);
+        driver().selectFiles(target(), files);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectFiles(files));
+        assertThatReturnsSelf(fixture().selectFiles(files));
       }
     }.run();
   }
@@ -182,19 +146,15 @@ public class JFileChooserFixtureTest extends CommonComponentFixture_TestCase<JFi
   @Test
   public void shouldSetCurrentDirectory() {
     final File file = new File("fake");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.setCurrentDirectory(target(), file);
+        driver().setCurrentDirectory(target(), file);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.setCurrentDirectory(file));
+        assertThatReturnsSelf(fixture().setCurrentDirectory(file));
       }
     }.run();
   }
-
-  ComponentDriver driver() { return driver; }
-  JFileChooser target() { return target; }
-  JFileChooserFixture fixture() { return fixture; }
 }

@@ -57,6 +57,7 @@ public class JPopupMenuFixture extends ComponentFixture<JPopupMenu> implements C
    * @throws NullPointerException if the given driver is <code>null</code>.
    */
   protected final void driver(JPopupMenuDriver newDriver) {
+    validateNotNull(newDriver);
     driver = newDriver;
   }
 

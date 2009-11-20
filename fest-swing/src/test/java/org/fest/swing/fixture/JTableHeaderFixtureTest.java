@@ -42,7 +42,7 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHeader> {
+public class JTableHeaderFixtureTest extends ComponentFixture_TestCase<JTableHeader> {
 
   private JTableHeaderDriver driver;
   private JTableHeader target;
@@ -50,7 +50,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
 
   void onSetUp() {
     target = tableHeader().createNew();
-    fixture = new JTableHeaderFixture(robot, target);
+    fixture = new JTableHeaderFixture(robot(), target);
     driver = createMock(JTableHeaderDriver.class);
     fixture.driver(driver);
   }
@@ -67,7 +67,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
 
   @Test(expected = NullPointerException.class)
   public void shouldThrowErrorIfTargetIsNull() {
-    new JTableHeaderFixture(robot, null);
+    new JTableHeaderFixture(robot(), null);
   }
 
   @Test
@@ -80,7 +80,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.clickColumn(index));
+        assertThatReturnsSelf(fixture.clickColumn(index));
       }
     }.run();
   }
@@ -97,7 +97,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.clickColumn(index, leftButton().times(2)));
+        assertThatReturnsSelf(fixture.clickColumn(index, leftButton().times(2)));
       }
     }.run();
   }
@@ -112,7 +112,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.clickColumn(name));
+        assertThatReturnsSelf(fixture.clickColumn(name));
       }
     }.run();
   }
@@ -127,7 +127,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.clickColumn(pattern));
+        assertThatReturnsSelf(fixture.clickColumn(pattern));
       }
     }.run();
   }
@@ -144,7 +144,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.clickColumn(name, leftButton().times(2)));
+        assertThatReturnsSelf(fixture.clickColumn(name, leftButton().times(2)));
       }
     }.run();
   }
@@ -161,7 +161,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.clickColumn(pattern, leftButton().times(2)));
+        assertThatReturnsSelf(fixture.clickColumn(pattern, leftButton().times(2)));
       }
     }.run();
   }
@@ -174,10 +174,6 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
   @Test(expected = NullPointerException.class)
   public void shouldThrowErrorWhenClickingColumnByNameIfMouseClickInfoIsNull() {
     fixture.clickColumn("first", null);
-  }
-
-  private void assertThatReturnsThis(JTableHeaderFixture result) {
-    assertThat(result).isSameAs(fixture);
   }
 
   @Test
@@ -236,7 +232,7 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
+        assertThatReturnsSelf(fixture.requireToolTip("A ToolTip"));
       }
     }.run();
   }
@@ -251,11 +247,11 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip(pattern));
+        assertThatReturnsSelf(fixture.requireToolTip(pattern));
       }
     }.run();
   }
-  
+
   @Test
   public void shouldReturnClientProperty() {
     new EasyMockTemplate(driver()) {
@@ -268,7 +264,8 @@ public class JTableHeaderFixtureTest extends ComponentFixtureTestCase<JTableHead
       }
     }.run();
   }
-  
+
   ComponentDriver driver() { return driver; }
   JTableHeader target() { return target; }
+  JTableHeaderFixture fixture() { return fixture; }
 }

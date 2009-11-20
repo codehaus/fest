@@ -20,20 +20,11 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JPopupMenus.popupMenu;
-import static org.fest.swing.test.builder.JTrees.tree;
-import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.util.Arrays.array;
 
-import java.awt.Point;
-import java.util.regex.Pattern;
-
 import javax.swing.JPopupMenu;
-import javax.swing.JTree;
-
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.cell.JTreeCellReader;
-import org.fest.swing.driver.JComponentDriver;
-import org.fest.swing.driver.JTreeDriver;
 import org.junit.Test;
 
 /**
@@ -43,125 +34,102 @@ import org.junit.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JTreeFixtureTest extends CommonComponentFixture_TestCase<JTree> {
+public class JTreeFixtureTest extends JTreeFixture_TestCase {
 
-  private JTreeDriver driver;
-  private JTree target;
-  private JTreeFixture fixture;
-
-  void onSetUp() {
-    driver = createMock(JTreeDriver.class);
-    target = tree().createNew();
-    fixture = new JTreeFixture(robot, target);
-    fixture.driver(driver);
-  }
-
-  @Test(expected = NullPointerException.class)
-  public void shouldThrowErrorIfDriverIsNull() {
-    fixture.driver(null);
-  }
-
-  @Test
-  public void shouldCreateFixtureWithGivenComponentName() {
-    String name = "tree";
-    expectLookupByName(name, JTree.class);
-    verifyLookup(new JTreeFixture(robot, name));
-  }
-  
   @Test
   public void shouldDoubleClickRow() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.doubleClickRow(target, 0);
+        driver().doubleClickRow(target(), 0);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.doubleClickRow(0));
+        assertThatReturnsSelf(fixture().doubleClickRow(0));
       }
     }.run();
   }
 
   @Test
   public void shouldDoubleClickPath() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.doubleClickPath(target, "root");
+        driver().doubleClickPath(target(), "root");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.doubleClickPath("root"));
+        assertThatReturnsSelf(fixture().doubleClickPath("root"));
       }
     }.run();
   }
 
   @Test
   public void shouldExpandRow() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.expandRow(target, 8);
+        driver().expandRow(target(), 8);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.expandRow(8));
+        assertThatReturnsSelf(fixture().expandRow(8));
       }
     }.run();
   }
 
   @Test
   public void shouldCollapseRow() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.collapseRow(target, 8);
+        driver().collapseRow(target(), 8);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.collapseRow(8));
+        assertThatReturnsSelf(fixture().collapseRow(8));
       }
     }.run();
   }
 
   @Test
   public void shouldExpandPath() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.expandPath(target, "root");
+        driver().expandPath(target(), "root");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.expandPath("root"));
+        assertThatReturnsSelf(fixture().expandPath("root"));
       }
     }.run();
   }
 
   @Test
   public void shouldCollapsePath() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.collapsePath(target, "root");
+        driver().collapsePath(target(), "root");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.collapsePath("root"));
+        assertThatReturnsSelf(fixture().collapsePath("root"));
       }
     }.run();
   }
 
   @Test
   public void shouldDragAtRow() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.drag(target, 8);
+        driver().drag(target(), 8);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.drag(8));
+        assertThatReturnsSelf(fixture().drag(8));
       }
     }.run();
   }
@@ -169,28 +137,28 @@ public class JTreeFixtureTest extends CommonComponentFixture_TestCase<JTree> {
   @Test
   public void shouldDragAtTreePath() {
     final String path = "root/node1";
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.drag(target, path);
+        driver().drag(target(), path);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.drag(path));
+        assertThatReturnsSelf(fixture().drag(path));
       }
     }.run();
   }
 
   @Test
   public void shouldDropAtRow() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.drop(target, 8);
+        driver().drop(target(), 8);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.drop(8));
+        assertThatReturnsSelf(fixture().drop(8));
       }
     }.run();
   }
@@ -198,28 +166,28 @@ public class JTreeFixtureTest extends CommonComponentFixture_TestCase<JTree> {
   @Test
   public void shouldDropAtTreePath() {
     final String path = "root/node1";
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.drop(target, path);
+        driver().drop(target(), path);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.drop(path));
+        assertThatReturnsSelf(fixture().drop(path));
       }
     }.run();
   }
 
   @Test
   public void shouldSelectRow() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectRow(target, 8);
+        driver().selectRow(target(), 8);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectRow(8));
+        assertThatReturnsSelf(fixture().selectRow(8));
       }
     }.run();
   }
@@ -227,14 +195,14 @@ public class JTreeFixtureTest extends CommonComponentFixture_TestCase<JTree> {
   @Test
   public void shouldSelectRows() {
     final int[] rows = { 6, 8 };
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectRows(target, rows);
+        driver().selectRows(target(), rows);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectRows(rows));
+        assertThatReturnsSelf(fixture().selectRows(rows));
       }
     }.run();
   }
@@ -242,14 +210,14 @@ public class JTreeFixtureTest extends CommonComponentFixture_TestCase<JTree> {
   @Test
   public void shouldSelectTreePath() {
     final String path = "root/node1";
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectPath(target, path);
+        driver().selectPath(target(), path);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectPath(path));
+        assertThatReturnsSelf(fixture().selectPath(path));
       }
     }.run();
   }
@@ -257,14 +225,14 @@ public class JTreeFixtureTest extends CommonComponentFixture_TestCase<JTree> {
   @Test
   public void shouldSelectTreePaths() {
     final String[] paths = array("root/node1", "root/node2");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectPaths(target, paths);
+        driver().selectPaths(target(), paths);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectPaths(paths));
+        assertThatReturnsSelf(fixture().selectPaths(paths));
       }
     }.run();
   }
@@ -272,14 +240,14 @@ public class JTreeFixtureTest extends CommonComponentFixture_TestCase<JTree> {
   @Test
   public void shouldRequireSelectedTreePath() {
     final String[] paths = { "root/node1" };
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireSelection(target, paths);
+        driver().requireSelection(target(), paths);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireSelection(paths));
+        assertThatReturnsSelf(fixture().requireSelection(paths));
       }
     }.run();
   }
@@ -287,70 +255,70 @@ public class JTreeFixtureTest extends CommonComponentFixture_TestCase<JTree> {
   @Test
   public void shouldRequireSelectedRow() {
     final int[] rows = { 0 };
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireSelection(target, rows);
+        driver().requireSelection(target(), rows);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireSelection(rows));
+        assertThatReturnsSelf(fixture().requireSelection(rows));
       }
     }.run();
   }
 
   @Test
   public void shouldRequireNoSelection() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireNoSelection(target);
+        driver().requireNoSelection(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireNoSelection());
+        assertThatReturnsSelf(fixture().requireNoSelection());
       }
     }.run();
   }
 
   @Test
   public void shouldToggleRow() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.toggleRow(target, 8);
+        driver().toggleRow(target(), 8);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.toggleRow(8));
+        assertThatReturnsSelf(fixture().toggleRow(8));
       }
     }.run();
   }
 
   @Test
   public void shouldRequireEditable() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireEditable(target);
+        driver().requireEditable(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireEditable());
+        assertThatReturnsSelf(fixture().requireEditable());
       }
     }.run();
   }
 
   @Test
   public void shouldRequireNotEditable() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireNotEditable(target);
+        driver().requireNotEditable(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireNotEditable());
+        assertThatReturnsSelf(fixture().requireNotEditable());
       }
     }.run();
   }
@@ -358,14 +326,14 @@ public class JTreeFixtureTest extends CommonComponentFixture_TestCase<JTree> {
   @Test
   public void shouldRequireSelectedPath() {
     final String[] paths = { "root/node1" };
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireSelection(target, paths);
+        driver().requireSelection(target(), paths);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireSelection(paths));
+        assertThatReturnsSelf(fixture().requireSelection(paths));
       }
     }.run();
 
@@ -374,14 +342,14 @@ public class JTreeFixtureTest extends CommonComponentFixture_TestCase<JTree> {
   @Test
   public void shouldSetCellReaderInDriver() {
     final JTreeCellReader reader = createMock(JTreeCellReader.class);
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.cellReader(reader);
+        driver().cellReader(reader);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.cellReader(reader));
+        assertThatReturnsSelf(fixture().cellReader(reader));
       }
     }.run();
   }
@@ -389,13 +357,13 @@ public class JTreeFixtureTest extends CommonComponentFixture_TestCase<JTree> {
   @Test
   public void shouldReturnSeparatorFromDriver() {
     final String separator = "\\";
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.separator()).andReturn(separator);
+        expect(driver().separator()).andReturn(separator);
       }
 
       protected void codeToTest() {
-        String result = fixture.separator();
+        String result = fixture().separator();
         assertThat(result).isSameAs(separator);
       }
     }.run();
@@ -404,14 +372,14 @@ public class JTreeFixtureTest extends CommonComponentFixture_TestCase<JTree> {
   @Test
   public void shouldSetSeparatorInDriver() {
     final String separator = "\\";
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.separator(separator);
+        driver().separator(separator);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.separator(separator));
+        assertThatReturnsSelf(fixture().separator(separator));
       }
     }.run();
   }
@@ -420,14 +388,14 @@ public class JTreeFixtureTest extends CommonComponentFixture_TestCase<JTree> {
   public void shouldShowPopupMenuAtRow() {
     final int row = 0;
     final JPopupMenu popupMenu = popupMenu().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.showPopupMenu(target, row)).andReturn(popupMenu);
+        expect(driver().showPopupMenu(target(), row)).andReturn(popupMenu);
       }
 
       protected void codeToTest() {
-        JPopupMenuFixture showPopupMenuFixture = fixture.showPopupMenuAt(row);
-        assertThat(showPopupMenuFixture.target).isSameAs(popupMenu);
+        JPopupMenuFixture showPopupMenuFixture = fixture().showPopupMenuAt(row);
+        assertThat(showPopupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
@@ -436,81 +404,17 @@ public class JTreeFixtureTest extends CommonComponentFixture_TestCase<JTree> {
   public void shouldShowPopupMenuAtPath() {
     final String path = "root";
     final JPopupMenu popupMenu = popupMenu().createNew();
-    new EasyMockTemplate(driver) {
-      protected void expectations() {
-        expect(driver.showPopupMenu(target, path)).andReturn(popupMenu);
-      }
-
-      protected void codeToTest() {
-        JPopupMenuFixture showPopupMenuFixture = fixture.showPopupMenuAt(path);
-        assertThat(showPopupMenuFixture.target).isSameAs(popupMenu);
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldRequireToolTip() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireToolTip(target(), "A ToolTip");
-        expectLastCall().once();
+        expect(driver().showPopupMenu(target(), path)).andReturn(popupMenu);
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
+        JPopupMenuFixture showPopupMenuFixture = fixture().showPopupMenuAt(path);
+        assertThat(showPopupMenuFixture.component()).isSameAs(popupMenu);
       }
     }.run();
   }
 
-  @Test
-  public void shouldRequireToolTipToMatchPattern() {
-    final Pattern pattern = regex(".");
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        driver.requireToolTip(target(), pattern);
-        expectLastCall().once();
-      }
 
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip(pattern));
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldShowPopupMenu() {
-    final JPopupMenu popupMenu = createMock(JPopupMenu.class);
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.invokePopupMenu(target())).andReturn(popupMenu);
-      }
-
-      protected void codeToTest() {
-        JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot);
-        assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldShowPopupMenuAtPoint() {
-    final JPopupMenu popupMenu = createMock(JPopupMenu.class);
-    final Point p = new Point();
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.invokePopupMenu(target(), p)).andReturn(popupMenu);
-      }
-
-      protected void codeToTest() {
-        JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot);
-        assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
-      }
-    }.run();
-  }
-
-  JComponentDriver driver() { return driver; }
-  JTree target() { return target; }
-  JTreeFixture fixture() { return fixture; }
 }

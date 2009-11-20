@@ -17,20 +17,12 @@ package org.fest.swing.fixture;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.test.builder.JLabels.label;
 import static org.fest.swing.test.core.Regex.regex;
 
-import java.awt.Point;
 import java.util.regex.Pattern;
 
-import javax.swing.JLabel;
-import javax.swing.JPopupMenu;
-
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.driver.JComponentDriver;
-import org.fest.swing.driver.JLabelDriver;
 import org.junit.Test;
 
 /**
@@ -39,55 +31,34 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JLabelFixtureTest extends CommonComponentFixture_TestCase<JLabel> {
+public class JLabelFixtureTest extends JLabelFixture_TestCase {
 
-  private JLabelDriver driver;
-  private JLabel target;
-  private JLabelFixture fixture;
-
-  void onSetUp() {
-    driver = createMock(JLabelDriver.class);
-    target = label().createNew();
-    fixture = new JLabelFixture(robot, target);
-    fixture.driver(driver);
-  }
-
-  @Test(expected = NullPointerException.class)
-  public void shouldThrowErrorIfDriverIsNull() {
-    fixture.driver(null);
-  }
-
-  @Test
-  public void shouldCreateFixtureWithGivenComponentName() {
-    String name = "label";
-    expectLookupByName(name, JLabel.class);
-    verifyLookup(new JLabelFixture(robot, name));
-  }
+  // TODO Reorganize into smaller units
 
   @Test
   public void shouldReturnText() {
     final String text = "A Label";
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.textOf(target)).andReturn(text);
+        expect(driver().textOf(target())).andReturn(text);
       }
 
       protected void codeToTest() {
-        assertThat(fixture.text()).isEqualTo(text);
+        assertThat(fixture().text()).isEqualTo(text);
       }
     }.run();
   }
 
   @Test
   public void shouldRequireText() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireText(target, "A Label");
+        driver().requireText(target(), "A Label");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireText("A Label"));
+        assertThatReturnsSelf(fixture().requireText("A Label"));
       }
     }.run();
   }
@@ -95,94 +66,15 @@ public class JLabelFixtureTest extends CommonComponentFixture_TestCase<JLabel> {
   @Test
   public void shouldRequireTextToMatchPattern() {
     final Pattern pattern = regex(".");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireText(target, pattern);
+        driver().requireText(target(), pattern);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireText(pattern));
+        assertThatReturnsSelf(fixture().requireText(pattern));
       }
     }.run();
   }
-
-  @Test
-  public void shouldRequireToolTip() {
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        driver.requireToolTip(target(), "A ToolTip");
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldRequireToolTipToMatchPattern() {
-    final Pattern pattern = regex(".");
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        driver.requireToolTip(target(), pattern);
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip(pattern));
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldShowPopupMenu() {
-    final JPopupMenu popupMenu = createMock(JPopupMenu.class);
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.invokePopupMenu(target())).andReturn(popupMenu);
-      }
-
-      protected void codeToTest() {
-        JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot);
-        assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldShowPopupMenuAtPoint() {
-    final JPopupMenu popupMenu = createMock(JPopupMenu.class);
-    final Point p = new Point();
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.invokePopupMenu(target(), p)).andReturn(popupMenu);
-      }
-
-      protected void codeToTest() {
-        JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot);
-        assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldReturnClientProperty() {
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.clientProperty(target, "name")).andReturn("Luke");
-      }
-
-      protected void codeToTest() {
-        assertThat(fixture.clientProperty("name")).isEqualTo("Luke");
-      }
-    }.run();
-  }
-  
-  JComponentDriver driver() { return driver; }
-  JLabel target() { return target; }
-  JLabelFixture fixture() { return fixture; }
 }

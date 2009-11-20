@@ -15,23 +15,11 @@
  */
 package org.fest.swing.fixture;
 
-import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.test.builder.JInternalFrames.internalFrame;
-import static org.fest.swing.test.core.Regex.regex;
-
 import java.awt.Dimension;
 import java.awt.Point;
-import java.util.regex.Pattern;
-
-import javax.swing.JInternalFrame;
-import javax.swing.JPopupMenu;
-
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.driver.JComponentDriver;
-import org.fest.swing.driver.JInternalFrameDriver;
 import org.junit.Test;
 
 /**
@@ -39,125 +27,104 @@ import org.junit.Test;
  *
  * @author Alex Ruiz
  */
-public class JInternalFrameFixtureTest extends CommonComponentFixture_TestCase<JInternalFrame> {
+public class JInternalFrameFixtureTest extends JInternalFrameFixture_TestCase {
 
-  private JInternalFrameDriver driver;
-  private JInternalFrame target;
-  private JInternalFrameFixture fixture;
-
-  void onSetUp() {
-    driver = createMock(JInternalFrameDriver.class);
-    target = internalFrame().createNew();
-    fixture = new JInternalFrameFixture(robot, target);
-    fixture.driver(driver);
-  }
-
-  @Test(expected = NullPointerException.class)
-  public void shouldThrowErrorIfDriverIsNull() {
-    fixture.driver(null);
-  }
-
-  @Test
-  public void shouldCreateFixtureWithGivenComponentName() {
-    String name = "internalFrame";
-    expectLookupByName(name, JInternalFrame.class);
-    verifyLookup(new JInternalFrameFixture(robot, name));
-  }
+  // TODO Reorganize into smaller units
 
   @Test
   public void shouldMoveToFront() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.moveToFront(target);
+        driver().moveToFront(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.moveToFront());
+        assertThatReturnsSelf(fixture().moveToFront());
       }
     }.run();
   }
 
   @Test
   public void shouldMoveToBack() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.moveToBack(target);
+        driver().moveToBack(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.moveToBack());
+        assertThatReturnsSelf(fixture().moveToBack());
       }
     }.run();
   }
 
   @Test
   public void shouldDeiconify() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.deiconify(target);
+        driver().deiconify(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.deiconify());
+        assertThatReturnsSelf(fixture().deiconify());
       }
     }.run();
   }
 
   @Test
   public void shouldIconify() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.iconify(target);
+        driver().iconify(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.iconify());
+        assertThatReturnsSelf(fixture().iconify());
       }
     }.run();
   }
 
   @Test
   public void shouldMaximize() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.maximize(target);
+        driver().maximize(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.maximize());
+        assertThatReturnsSelf(fixture().maximize());
       }
     }.run();
   }
 
   @Test
   public void shouldNormalize() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.normalize(target);
+        driver().normalize(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.normalize());
+        assertThatReturnsSelf(fixture().normalize());
       }
     }.run();
   }
 
   @Test
   public void shouldClose() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.close(target);
+        driver().close(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        fixture.close();
+        fixture().close();
       }
     }.run();
   }
@@ -165,14 +132,14 @@ public class JInternalFrameFixtureTest extends CommonComponentFixture_TestCase<J
   @Test
   public void shouldRequireSize() {
     final Dimension size = new Dimension(800, 600);
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireSize(target, size);
+        driver().requireSize(target(), size);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireSize(size));
+        assertThatReturnsSelf(fixture().requireSize(size));
       }
     }.run();
   }
@@ -180,14 +147,14 @@ public class JInternalFrameFixtureTest extends CommonComponentFixture_TestCase<J
   @Test
   public void shouldMoveToPoint() {
     final Point p = new Point(6, 8);
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.moveTo(target, p);
+        driver().moveTo(target(), p);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.moveTo(p));
+        assertThatReturnsSelf(fixture().moveTo(p));
       }
     }.run();
   }
@@ -195,14 +162,14 @@ public class JInternalFrameFixtureTest extends CommonComponentFixture_TestCase<J
   @Test
   public void shouldResizeHeight() {
     final int height = 68;
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.resizeHeightTo(target, height);
+        driver().resizeHeightTo(target(), height);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.resizeHeightTo(height));
+        assertThatReturnsSelf(fixture().resizeHeightTo(height));
       }
     }.run();
   }
@@ -210,14 +177,14 @@ public class JInternalFrameFixtureTest extends CommonComponentFixture_TestCase<J
   @Test
   public void shouldResizeWidth() {
     final int width = 68;
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.resizeWidthTo(target, width);
+        driver().resizeWidthTo(target(), width);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.resizeWidthTo(width));
+        assertThatReturnsSelf(fixture().resizeWidthTo(width));
       }
     }.run();
   }
@@ -225,99 +192,20 @@ public class JInternalFrameFixtureTest extends CommonComponentFixture_TestCase<J
   @Test
   public void shouldResizeWidthAndHeight() {
     final Dimension size = new Dimension(800, 600);
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.resizeTo(target, size);
+        driver().resizeTo(target(), size);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.resizeTo(size));
+        assertThatReturnsSelf(fixture().resizeTo(size));
       }
     }.run();
   }
 
   @Test
   public void shouldBeContainerFixture() {
-    assertThat(fixture).isInstanceOf(ContainerFixture.class);
+    assertThat(fixture()).isInstanceOf(ContainerFixture.class);
   }
-
-  @Test
-  public void shouldRequireToolTip() {
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        driver.requireToolTip(target(), "A ToolTip");
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldRequireToolTipToMatchPattern() {
-    final Pattern pattern = regex(".");
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        driver.requireToolTip(target(), pattern);
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip(pattern));
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldShowPopupMenu() {
-    final JPopupMenu popupMenu = createMock(JPopupMenu.class);
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.invokePopupMenu(target())).andReturn(popupMenu);
-      }
-
-      protected void codeToTest() {
-        JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot);
-        assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldShowPopupMenuAtPoint() {
-    final JPopupMenu popupMenu = createMock(JPopupMenu.class);
-    final Point p = new Point();
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.invokePopupMenu(target(), p)).andReturn(popupMenu);
-      }
-
-      protected void codeToTest() {
-        JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot);
-        assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldReturnClientProperty() {
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.clientProperty(target, "name")).andReturn("Luke");
-      }
-
-      protected void codeToTest() {
-        assertThat(fixture.clientProperty("name")).isEqualTo("Luke");
-      }
-    }.run();
-  }
-  
-  JComponentDriver driver() { return driver; }
-  JInternalFrame target() { return target; }
-  JInternalFrameFixture fixture() { return fixture; }
 }

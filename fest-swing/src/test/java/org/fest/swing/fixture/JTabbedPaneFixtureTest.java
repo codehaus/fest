@@ -17,22 +17,16 @@ package org.fest.swing.fixture;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.data.Index.atIndex;
 import static org.fest.swing.test.builder.JButtons.button;
-import static org.fest.swing.test.builder.JTabbedPanes.tabbedPane;
 import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.util.Arrays.array;
 
 import java.awt.Component;
 import java.util.regex.Pattern;
 
-import javax.swing.JTabbedPane;
-
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.driver.JComponentDriver;
-import org.fest.swing.driver.JTabbedPaneDriver;
 import org.junit.Test;
 
 /**
@@ -41,41 +35,20 @@ import org.junit.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JTabbedPaneFixtureTest extends CommonComponentFixture_TestCase<JTabbedPane> {
+public class JTabbedPaneFixtureTest extends JTabbedPaneFixture_TestCase {
 
-  private JTabbedPaneDriver driver;
-  private JTabbedPane target;
-  private JTabbedPaneFixture fixture;
-
-  void onSetUp() {
-    driver = createMock(JTabbedPaneDriver.class);
-    target = tabbedPane().createNew();
-    fixture = new JTabbedPaneFixture(robot, target);
-    fixture.driver(driver);
-  }
-
-  @Test(expected = NullPointerException.class)
-  public void shouldThrowErrorIfDriverIsNull() {
-    fixture.driver(null);
-  }
-
-  @Test
-  public void shouldCreateFixtureWithGivenComponentName() {
-    String name = "tabbedPane";
-    expectLookupByName(name, JTabbedPane.class);
-    verifyLookup(new JTabbedPaneFixture(robot, name));
-  }
+  // TODO Reorganize into smaller units
 
   @Test
   public void shouldSelectTabWithIndex() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectTab(target, 8);
+        driver().selectTab(target(), 8);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectTab(8));
+        assertThatReturnsSelf(fixture().selectTab(8));
       }
     }.run();
   }
@@ -83,27 +56,27 @@ public class JTabbedPaneFixtureTest extends CommonComponentFixture_TestCase<JTab
   @Test
   public void shouldReturnSelectedComponent() {
     final Component selected = button().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.selectedComponentOf(target)).andReturn(selected);
+        expect(driver().selectedComponentOf(target())).andReturn(selected);
       }
 
       protected void codeToTest() {
-        assertThat(fixture.selectedComponent()).isSameAs(selected);
+        assertThat(fixture().selectedComponent()).isSameAs(selected);
       }
     }.run();
   }
 
   @Test
   public void shouldRequireTitleAtTabIndex() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireTabTitle(target, "Hello", atIndex(1));
+        driver().requireTabTitle(target(), "Hello", atIndex(1));
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireTitle("Hello", atIndex(1)));
+        assertThatReturnsSelf(fixture().requireTitle("Hello", atIndex(1)));
       }
     }.run();
   }
@@ -111,14 +84,14 @@ public class JTabbedPaneFixtureTest extends CommonComponentFixture_TestCase<JTab
   @Test
   public void shouldRequireTitleMatchingPatternAtTabIndex() {
     final Pattern pattern = regex("hello");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireTabTitle(target, pattern, atIndex(1));
+        driver().requireTabTitle(target(), pattern, atIndex(1));
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireTitle(pattern, atIndex(1)));
+        assertThatReturnsSelf(fixture().requireTitle(pattern, atIndex(1)));
       }
     }.run();
   }
@@ -126,14 +99,14 @@ public class JTabbedPaneFixtureTest extends CommonComponentFixture_TestCase<JTab
   @Test
   public void shouldRequireTabTitles() {
     final String[] titles = array("One", "Two");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireTabTitles(target, titles);
+        driver().requireTabTitles(target(), titles);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireTabTitles(titles));
+        assertThatReturnsSelf(fixture().requireTabTitles(titles));
       }
     }.run();
 
@@ -141,14 +114,14 @@ public class JTabbedPaneFixtureTest extends CommonComponentFixture_TestCase<JTab
 
   @Test
   public void shouldSelectTabWithText() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectTab(target, "A Tab");
+        driver().selectTab(target(), "A Tab");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectTab("A Tab"));
+        assertThatReturnsSelf(fixture().selectTab("A Tab"));
       }
     }.run();
   }
@@ -156,14 +129,14 @@ public class JTabbedPaneFixtureTest extends CommonComponentFixture_TestCase<JTab
   @Test
   public void shouldSelectTabMatchingPattern() {
     final Pattern pattern = regex("hello");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectTab(target, pattern);
+        driver().selectTab(target(), pattern);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectTab(pattern));
+        assertThatReturnsSelf(fixture().selectTab(pattern));
       }
     }.run();
   }
@@ -171,61 +144,15 @@ public class JTabbedPaneFixtureTest extends CommonComponentFixture_TestCase<JTab
   @Test
   public void shouldReturnTabTitles() {
     final String[] titles = array("One", "Two");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.tabTitles(target)).andReturn(titles);
+        expect(driver().tabTitles(target())).andReturn(titles);
       }
 
       protected void codeToTest() {
-        String[] result = fixture.tabTitles();
+        String[] result = fixture().tabTitles();
         assertThat(result).isSameAs(titles);
       }
     }.run();
   }
-
-  @Test
-  public void shouldRequireToolTip() {
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        driver.requireToolTip(target(), "A ToolTip");
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldRequireToolTipToMatchPattern() {
-    final Pattern pattern = regex(".");
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        driver.requireToolTip(target(), pattern);
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip(pattern));
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldReturnClientProperty() {
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.clientProperty(target, "name")).andReturn("Luke");
-      }
-
-      protected void codeToTest() {
-        assertThat(fixture.clientProperty("name")).isEqualTo("Luke");
-      }
-    }.run();
-  }
-  
-  JComponentDriver driver() { return driver; }
-  JTabbedPane target() { return target; }
-  JTabbedPaneFixture fixture() { return fixture; }
 }

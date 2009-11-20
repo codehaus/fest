@@ -20,23 +20,18 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
-import static org.fest.swing.test.builder.JLists.list;
 import static org.fest.swing.test.builder.JPopupMenus.popupMenu;
 import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.swing.util.Range.from;
 import static org.fest.swing.util.Range.to;
 import static org.fest.util.Arrays.array;
 
-import java.awt.Point;
 import java.util.regex.Pattern;
 
-import javax.swing.JList;
 import javax.swing.JPopupMenu;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.cell.JListCellReader;
-import org.fest.swing.driver.JComponentDriver;
-import org.fest.swing.driver.JListDriver;
 import org.fest.swing.util.Range.From;
 import org.fest.swing.util.Range.To;
 import org.junit.Test;
@@ -47,41 +42,20 @@ import org.junit.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
+public class JListFixtureTest extends JListFixture_TestCase {
 
-  private JListDriver driver;
-  private JList target;
-  private JListFixture fixture;
-
-  void onSetUp() {
-    driver = createMock(JListDriver.class);
-    target = list().createNew();
-    fixture = new JListFixture(robot, target);
-    fixture.driver(driver);
-  }
-
-  @Test(expected = NullPointerException.class)
-  public void shouldThrowErrorIfDriverIsNull() {
-    fixture.driver(null);
-  }
-
-  @Test
-  public void shouldCreateFixtureWithGivenComponentName() {
-    String name = "list";
-    expectLookupByName(name, JList.class);
-    verifyLookup(new JListFixture(robot, name));
-  }
+  // TODO Reorganize into smaller units
 
   @Test
   public void shouldReturnContents() {
     final String[] contents = array("Luke", "Leia");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.contentsOf(target)).andReturn(contents);
+        expect(driver().contentsOf(target())).andReturn(contents);
       }
 
       protected void codeToTest() {
-        Object[] result = fixture.contents();
+        Object[] result = fixture().contents();
         assertThat(result).isSameAs(contents);
       }
     }.run();
@@ -90,13 +64,13 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
   @Test
   public void shouldReturnSelection() {
     final String[] selection = array("Luke", "Leia");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.selectionOf(target)).andReturn(selection);
+        expect(driver().selectionOf(target())).andReturn(selection);
       }
 
       protected void codeToTest() {
-        Object[] result = fixture.selection();
+        Object[] result = fixture().selection();
         assertThat(result).isSameAs(selection);
       }
     }.run();
@@ -104,14 +78,14 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
 
   @Test
   public void shouldClearSelection() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.clearSelection(target);
+        driver().clearSelection(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.clearSelection());
+        assertThatReturnsSelf(fixture().clearSelection());
       }
     }.run();
   }
@@ -120,14 +94,14 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
   public void shouldSelectItemsInRange() {
     final From from = from(6);
     final To to = to(8);
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectItems(target, from, to);
+        driver().selectItems(target(), from, to);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectItems(from, to));
+        assertThatReturnsSelf(fixture().selectItems(from, to));
       }
     }.run();
   }
@@ -135,28 +109,28 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
   @Test
   public void shouldSelectItemsUnderIndices() {
     final int[] indices = new int[] { 6, 8 };
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectItems(target, indices);
+        driver().selectItems(target(), indices);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectItems(indices));
+        assertThatReturnsSelf(fixture().selectItems(indices));
       }
     }.run();
   }
 
   @Test
   public void shouldSelectItemUnderIndex() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectItem(target, 6);
+        driver().selectItem(target(), 6);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectItem(6));
+        assertThatReturnsSelf(fixture().selectItem(6));
       }
     }.run();
   }
@@ -164,14 +138,14 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
   @Test
   public void shouldSelectItemsWithValues() {
     final String[] values = array("Frodo", "Sam");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectItems(target, values);
+        driver().selectItems(target(), values);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectItems(values));
+        assertThatReturnsSelf(fixture().selectItems(values));
       }
     }.run();
   }
@@ -179,28 +153,28 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
   @Test
   public void shouldSelectItemsMatchingPatterns() {
     final Pattern[] patterns = array(regex("Frodo"), regex("Sam"));
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectItems(target, patterns);
+        driver().selectItems(target(), patterns);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectItems(patterns));
+        assertThatReturnsSelf(fixture().selectItems(patterns));
       }
     }.run();
   }
 
   @Test
   public void shouldSelectItemWithValue() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectItem(target, "Frodo");
+        driver().selectItem(target(), "Frodo");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectItem("Frodo"));
+        assertThatReturnsSelf(fixture().selectItem("Frodo"));
       }
     }.run();
   }
@@ -208,56 +182,56 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
   @Test
   public void shouldSelectItemMatchingPattern() {
     final Pattern pattern = regex("Hello");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectItem(target, pattern);
+        driver().selectItem(target(), pattern);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectItem(pattern));
+        assertThatReturnsSelf(fixture().selectItem(pattern));
       }
     }.run();
   }
 
   @Deprecated
   public void shouldDoubleClickItemUnderIndex() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.clickItem(target, 6, LEFT_BUTTON, 2);
+        driver().clickItem(target(), 6, LEFT_BUTTON, 2);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.doubleClickItem(6));
+        assertThatReturnsSelf(fixture().doubleClickItem(6));
       }
     }.run();
   }
 
   @Deprecated
   public void shouldDoubleClickItemWithValue() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.clickItem(target, "Frodo", LEFT_BUTTON, 2);
+        driver().clickItem(target(), "Frodo", LEFT_BUTTON, 2);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.doubleClickItem("Frodo"));
+        assertThatReturnsSelf(fixture().doubleClickItem("Frodo"));
       }
     }.run();
   }
 
   @Test
   public void shouldRequireSelectionValue() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireSelection(target, "Frodo");
+        driver().requireSelection(target(), "Frodo");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireSelection("Frodo"));
+        assertThatReturnsSelf(fixture().requireSelection("Frodo"));
       }
     }.run();
   }
@@ -265,28 +239,28 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
   @Test
   public void shouldRequireSelectionMatchingPattern() {
     final Pattern p = regex("hello");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireSelection(target, p);
+        driver().requireSelection(target(), p);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireSelection(p));
+        assertThatReturnsSelf(fixture().requireSelection(p));
       }
     }.run();
   }
 
   @Test
   public void shouldRequireSelectionIndex() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireSelection(target, 6);
+        driver().requireSelection(target(), 6);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireSelection(6));
+        assertThatReturnsSelf(fixture().requireSelection(6));
       }
     }.run();
   }
@@ -294,14 +268,14 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
   @Test
   public void shouldRequireSelectedItems() {
     final String[] items = array("Frodo", "Sam");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireSelectedItems(target, items);
+        driver().requireSelectedItems(target(), items);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireSelectedItems(items));
+        assertThatReturnsSelf(fixture().requireSelectedItems(items));
       }
     }.run();
   }
@@ -309,14 +283,14 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
   @Test
   public void shouldRequireSelectedItemsToMatchPatterns() {
     final Pattern[] patterns = array(regex("Frodo"), regex("Sam"));
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireSelectedItems(target, patterns);
+        driver().requireSelectedItems(target(), patterns);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireSelectedItems(patterns));
+        assertThatReturnsSelf(fixture().requireSelectedItems(patterns));
       }
     }.run();
   }
@@ -324,63 +298,63 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
   @Test
   public void shouldRequireSelectedIndices() {
     final int[] items = { 0, 1 };
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireSelectedItems(target, items);
+        driver().requireSelectedItems(target(), items);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireSelectedItems(items));
+        assertThatReturnsSelf(fixture().requireSelectedItems(items));
       }
     }.run();
   }
 
   @Test
   public void shouldRequireNoSelection() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireNoSelection(target);
+        driver().requireNoSelection(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireNoSelection());
+        assertThatReturnsSelf(fixture().requireNoSelection());
       }
     }.run();
   }
 
   @Test
   public void shouldReturnValueAtIndex() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.value(target, 6)).andReturn("Frodo");
+        expect(driver().value(target(), 6)).andReturn("Frodo");
       }
 
       protected void codeToTest() {
-        assertThat(fixture.valueAt(6)).isEqualTo("Frodo");
+        assertThat(fixture().valueAt(6)).isEqualTo("Frodo");
       }
     }.run();
   }
 
   @Test
   public void shouldReturnJListItemFixture() {
-    JListItemFixture item = fixture.item(6);
+    JListItemFixture item = fixture().item(6);
     assertThat(item.index).isEqualTo(6);
-    assertThat(item.list).isSameAs(fixture);
+    assertThat(item.list).isSameAs(fixture());
   }
 
   @Test
   public void shouldReturnJListItemFixtureUsingValue() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.indexOf(target, "Frodo")).andReturn(8);
+        expect(driver().indexOf(target(), "Frodo")).andReturn(8);
       }
 
       protected void codeToTest() {
-        JListItemFixture item = fixture.item("Frodo");
+        JListItemFixture item = fixture().item("Frodo");
         assertThat(item.index).isEqualTo(8);
-        assertThat(item.list).isSameAs(fixture);
+        assertThat(item.list).isSameAs(fixture());
       }
     }.run();
   }
@@ -388,29 +362,29 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
   @Test
   public void shouldReturnJListItemFixtureWithItemMatchingPatternAsString() {
     final Pattern pattern = regex("Frodo");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.indexOf(target, pattern)).andReturn(8);
+        expect(driver().indexOf(target(), pattern)).andReturn(8);
       }
 
       protected void codeToTest() {
-        JListItemFixture item = fixture.item(pattern);
+        JListItemFixture item = fixture().item(pattern);
         assertThat(item.index).isEqualTo(8);
-        assertThat(item.list).isSameAs(fixture);
+        assertThat(item.list).isSameAs(fixture());
       }
     }.run();
   }
 
   @Test
   public void shouldDragElementMatchingValue() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.drag(target, "Frodo");
+        driver().drag(target(), "Frodo");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.drag("Frodo"));
+        assertThatReturnsSelf(fixture().drag("Frodo"));
       }
     }.run();
   }
@@ -418,28 +392,28 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
   @Test
   public void shouldDragElementMatchingPattern() {
     final Pattern p = regex("Frodo");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.drag(target, p);
+        driver().drag(target(), p);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.drag(p));
+        assertThatReturnsSelf(fixture().drag(p));
       }
     }.run();
   }
 
   @Test
   public void shouldDropElementMatchingValue() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.drop(target, "Frodo");
+        driver().drop(target(), "Frodo");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.drop("Frodo"));
+        assertThatReturnsSelf(fixture().drop("Frodo"));
       }
     }.run();
   }
@@ -447,56 +421,56 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
   @Test
   public void shouldDropElementMatchingPattern() {
     final Pattern p = regex("Frodo");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.drop(target, p);
+        driver().drop(target(), p);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.drop(p));
+        assertThatReturnsSelf(fixture().drop(p));
       }
     }.run();
   }
 
   @Test
   public void shouldDragElementUnderIndex() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.drag(target, 8);
+        driver().drag(target(), 8);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.drag(8));
+        assertThatReturnsSelf(fixture().drag(8));
       }
     }.run();
   }
 
   @Test
   public void shouldDrop() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.drop(target);
+        driver().drop(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.drop());
+        assertThatReturnsSelf(fixture().drop());
       }
     }.run();
   }
 
   @Test
   public void shouldDropElementUnderIndex() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.drop(target, 8);
+        driver().drop(target(), 8);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.drop(8));
+        assertThatReturnsSelf(fixture().drop(8));
       }
     }.run();
   }
@@ -504,14 +478,14 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
   @Test
   public void shouldShowJPopupMenuAtItemUnderIndex() {
     final JPopupMenu popup = popupMenu().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.showPopupMenu(target, 6)).andReturn(popup);
+        expect(driver().showPopupMenu(target(), 6)).andReturn(popup);
       }
 
       protected void codeToTest() {
-        JPopupMenuFixture result = fixture.showPopupMenuAt(6);
-        assertThat(result.target).isSameAs(popup);
+        JPopupMenuFixture result = fixture().showPopupMenuAt(6);
+        assertThat(result.component()).isSameAs(popup);
       }
     }.run();
   }
@@ -519,14 +493,14 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
   @Test
   public void shouldShowJPopupMenuAtItemWithValue() {
     final JPopupMenu popup = popupMenu().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.showPopupMenu(target, "Frodo")).andReturn(popup);
+        expect(driver().showPopupMenu(target(), "Frodo")).andReturn(popup);
       }
 
       protected void codeToTest() {
-        JPopupMenuFixture result = fixture.showPopupMenuAt("Frodo");
-        assertThat(result.target).isSameAs(popup);
+        JPopupMenuFixture result = fixture().showPopupMenuAt("Frodo");
+        assertThat(result.component()).isSameAs(popup);
       }
     }.run();
   }
@@ -535,14 +509,14 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
   public void shouldShowJPopupMenuAtItemMatchingPattern() {
     final Pattern pattern = regex("Frodo");
     final JPopupMenu popup = popupMenu().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.showPopupMenu(target, pattern)).andReturn(popup);
+        expect(driver().showPopupMenu(target(), pattern)).andReturn(popup);
       }
 
       protected void codeToTest() {
-        JPopupMenuFixture result = fixture.showPopupMenuAt(pattern);
-        assertThat(result.target).isSameAs(popup);
+        JPopupMenuFixture result = fixture().showPopupMenuAt(pattern);
+        assertThat(result.component()).isSameAs(popup);
       }
     }.run();
   }
@@ -550,94 +524,15 @@ public class JListFixtureTest extends CommonComponentFixture_TestCase<JList> {
   @Test
   public void shouldSetCellReaderInDriver() {
     final JListCellReader reader = createMock(JListCellReader.class);
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.cellReader(reader);
+        driver().cellReader(reader);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.cellReader(reader));
+        assertThatReturnsSelf(fixture().cellReader(reader));
       }
     }.run();
   }
-
-  @Test
-  public void shouldRequireToolTip() {
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        driver.requireToolTip(target(), "A ToolTip");
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldRequireToolTipToMatchPattern() {
-    final Pattern pattern = regex(".");
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        driver.requireToolTip(target(), pattern);
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip(pattern));
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldShowPopupMenu() {
-    final JPopupMenu popupMenu = createMock(JPopupMenu.class);
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.invokePopupMenu(target())).andReturn(popupMenu);
-      }
-
-      protected void codeToTest() {
-        JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot);
-        assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldShowPopupMenuAtPoint() {
-    final JPopupMenu popupMenu = createMock(JPopupMenu.class);
-    final Point p = new Point();
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.invokePopupMenu(target(), p)).andReturn(popupMenu);
-      }
-
-      protected void codeToTest() {
-        JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot);
-        assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldReturnClientProperty() {
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.clientProperty(target, "name")).andReturn("Luke");
-      }
-
-      protected void codeToTest() {
-        assertThat(fixture.clientProperty("name")).isEqualTo("Luke");
-      }
-    }.run();
-  }
-  
-  JComponentDriver driver() { return driver; }
-  JList target() { return target; }
-  JListFixture fixture() { return fixture; }
 }

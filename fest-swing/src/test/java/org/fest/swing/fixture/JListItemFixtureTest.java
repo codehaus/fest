@@ -30,9 +30,12 @@ import org.junit.Test;
 
 /**
  * Tests for <code>{@link JListItemFixture}</code>.
+ *
  * @author Alex Ruiz
  */
 public class JListItemFixtureTest {
+
+  // TODO Reorganize into smaller units
 
   private JListFixture list;
   private int index;

@@ -15,22 +15,13 @@
  */
 package org.fest.swing.fixture;
 
-import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.test.builder.JTextFields.textField;
 import static org.fest.swing.test.core.Regex.regex;
 
-import java.awt.Point;
 import java.util.regex.Pattern;
 
-import javax.swing.JPopupMenu;
-import javax.swing.text.JTextComponent;
-
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.driver.JComponentDriver;
-import org.fest.swing.driver.JTextComponentDriver;
 import org.junit.Test;
 
 /**
@@ -39,134 +30,109 @@ import org.junit.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JTextComponentFixtureTest extends CommonComponentFixture_TestCase<JTextComponent> {
+public class JTextComponentFixtureTest extends JTextComponentFixture_TestCase {
 
-  private JTextComponentDriver driver;
-  private JTextComponent target;
-  private JTextComponentFixture fixture;
-
-  void onSetUp() {
-    driver = createMock(JTextComponentDriver.class);
-    target = textField().withText("a text field").createNew();
-    fixture = new JTextComponentFixture(robot, target);
-    fixture.driver(driver);
-  }
-
-  Class<JTextComponent> targetType() {
-    return JTextComponent.class;
-  }
-
-  @Test(expected = NullPointerException.class)
-  public void shouldThrowErrorIfDriverIsNull() {
-    fixture.driver(null);
-  }
-
-  @Test
-  public void shouldCreateFixtureWithGivenComponentName() {
-    String name = "textComponent";
-    expectLookupByName(name, JTextComponent.class);
-    verifyLookup(new JTextComponentFixture(robot, name));
-  }
+  // TODO Reorganize into smaller units
 
   @Test
   public void shouldDeleteText() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.deleteText(target);
+        driver().deleteText(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.deleteText());
+        assertThatReturnsSelf(fixture().deleteText());
       }
     }.run();
   }
 
   @Test
   public void shouldEnterText() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.enterText(target, "Some Text");
+        driver().enterText(target(), "Some Text");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.enterText("Some Text"));
+        assertThatReturnsSelf(fixture().enterText("Some Text"));
       }
     }.run();
   }
 
   @Test
   public void shouldSetText() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.setText(target, "Some Text");
+        driver().setText(target(), "Some Text");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.setText("Some Text"));
+        assertThatReturnsSelf(fixture().setText("Some Text"));
       }
     }.run();
   }
 
   @Test
   public void shouldSelectText() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectText(target, "Some Text");
+        driver().selectText(target(), "Some Text");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.select("Some Text"));
+        assertThatReturnsSelf(fixture().select("Some Text"));
       }
     }.run();
   }
 
   @Test
   public void shouldSelectTextInRange() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectText(target, 6, 8);
+        driver().selectText(target(), 6, 8);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectText(6, 8));
+        assertThatReturnsSelf(fixture().selectText(6, 8));
       }
     }.run();
   }
 
   @Test
   public void shouldSelectAll() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectAll(target);
+        driver().selectAll(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectAll());
+        assertThatReturnsSelf(fixture().selectAll());
       }
     }.run();
   }
 
   @Test
   public void shouldReturnText() {
-    assertThat(fixture.text()).isEqualTo(target.getText());
+    assertThat(fixture().text()).isEqualTo(target().getText());
   }
 
   @Test
   public void shouldRequireText() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireText(target, "A Label");
+        driver().requireText(target(), "A Label");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireText("A Label"));
+        assertThatReturnsSelf(fixture().requireText("A Label"));
       }
     }.run();
   }
@@ -174,137 +140,58 @@ public class JTextComponentFixtureTest extends CommonComponentFixture_TestCase<J
   @Test
   public void shouldRequireTextToMatchPattern() {
     final Pattern pattern = regex(".");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireText(target, pattern);
+        driver().requireText(target(), pattern);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireText(pattern));
+        assertThatReturnsSelf(fixture().requireText(pattern));
       }
     }.run();
   }
 
   @Test
   public void shouldRequireEmpty() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireEmpty(target);
+        driver().requireEmpty(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireEmpty());
+        assertThatReturnsSelf(fixture().requireEmpty());
       }
     }.run();
   }
 
   @Test
   public void shouldRequireEditable() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireEditable(target);
+        driver().requireEditable(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireEditable());
+        assertThatReturnsSelf(fixture().requireEditable());
       }
     }.run();
   }
 
   @Test
   public void shouldRequireNotEditable() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireNotEditable(target);
+        driver().requireNotEditable(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireNotEditable());
+        assertThatReturnsSelf(fixture().requireNotEditable());
       }
     }.run();
   }
-
-  @Test
-  public void shouldRequireToolTip() {
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        driver.requireToolTip(target(), "A ToolTip");
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldRequireToolTipToMatchPattern() {
-    final Pattern pattern = regex(".");
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        driver.requireToolTip(target(), pattern);
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip(pattern));
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldShowPopupMenu() {
-    final JPopupMenu popupMenu = createMock(JPopupMenu.class);
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.invokePopupMenu(target())).andReturn(popupMenu);
-      }
-
-      protected void codeToTest() {
-        JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot);
-        assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldShowPopupMenuAtPoint() {
-    final JPopupMenu popupMenu = createMock(JPopupMenu.class);
-    final Point p = new Point();
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.invokePopupMenu(target(), p)).andReturn(popupMenu);
-      }
-
-      protected void codeToTest() {
-        JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot);
-        assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldReturnClientProperty() {
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.clientProperty(target, "name")).andReturn("Luke");
-      }
-
-      protected void codeToTest() {
-        assertThat(fixture.clientProperty("name")).isEqualTo("Luke");
-      }
-    }.run();
-  }
-  
-  JComponentDriver driver() { return driver; }
-  JTextComponent target() { return target; }
-  JTextComponentFixture fixture() { return fixture; }
 }
 

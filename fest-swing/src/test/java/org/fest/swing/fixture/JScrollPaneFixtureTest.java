@@ -16,24 +16,10 @@
 package org.fest.swing.fixture;
 
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.test.builder.JLists.list;
 import static org.fest.swing.test.builder.JScrollBars.scrollBar;
-import static org.fest.swing.test.builder.JScrollPanes.scrollPane;
-import static org.fest.swing.test.core.Regex.regex;
-
-import java.awt.Point;
-import java.util.regex.Pattern;
-
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.driver.ComponentDriver;
-import org.fest.swing.driver.JScrollPaneDriver;
 import org.junit.Test;
 
 /**
@@ -42,43 +28,21 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class JScrollPaneFixtureTest extends CommonComponentFixture_TestCase<JScrollPane> {
+public class JScrollPaneFixtureTest extends JScrollPaneFixture_TestCase {
 
-  private JScrollPaneDriver driver;
-  private JScrollPane target;
-  private JScrollPaneFixture fixture;
-
-  void onSetUp() {
-    driver = createMock(JScrollPaneDriver.class);
-    target = scrollPane().withView(list().createNew())
-                         .createNew();
-    fixture = new JScrollPaneFixture(robot, target);
-    fixture.driver(driver);
-  }
-
-  @Test(expected = NullPointerException.class)
-  public void shouldThrowErrorIfDriverIsNull() {
-    fixture.driver(null);
-  }
-
-  @Test
-  public void shouldCreateFixtureWithGivenComponentName() {
-    String name = "scrollPane";
-    expectLookupByName(name, JScrollPane.class);
-    verifyLookup(new JScrollPaneFixture(robot, name));
-  }
+  // TODO Reorganize into smaller units
 
   @Test
   public void shouldReturnHorizontalScrollBar() {
     final JScrollBar scrollBar = scrollBar().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.horizontalScrollBarIn(target)).andReturn(scrollBar);
+        expect(driver().horizontalScrollBarIn(target())).andReturn(scrollBar);
       }
 
       protected void codeToTest() {
-        JScrollBarFixture horizontalScrollBar = fixture.horizontalScrollBar();
-        assertThat(horizontalScrollBar.target).isSameAs(scrollBar);
+        JScrollBarFixture horizontalScrollBar = fixture().horizontalScrollBar();
+        assertThat(horizontalScrollBar.component()).isSameAs(scrollBar);
       }
     }.run();
   }
@@ -86,94 +50,15 @@ public class JScrollPaneFixtureTest extends CommonComponentFixture_TestCase<JScr
   @Test
   public void shouldReturnVerticalScrollBar() {
     final JScrollBar scrollBar = scrollBar().createNew();
-    new EasyMockTemplate(driver) {
-      protected void expectations() {
-        expect(driver.verticalScrollBarIn(target)).andReturn(scrollBar);
-      }
-
-      protected void codeToTest() {
-        JScrollBarFixture verticalScrollBar = fixture.verticalScrollBar();
-        assertThat(verticalScrollBar.target).isSameAs(scrollBar);
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldRequireToolTip() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireToolTip(target(), "A ToolTip");
-        expectLastCall().once();
+        expect(driver().verticalScrollBarIn(target())).andReturn(scrollBar);
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
+        JScrollBarFixture verticalScrollBar = fixture().verticalScrollBar();
+        assertThat(verticalScrollBar.component()).isSameAs(scrollBar);
       }
     }.run();
   }
-
-  @Test
-  public void shouldRequireToolTipToMatchPattern() {
-    final Pattern pattern = regex(".");
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        driver.requireToolTip(target(), pattern);
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip(pattern));
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldShowPopupMenu() {
-    final JPopupMenu popupMenu = createMock(JPopupMenu.class);
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.invokePopupMenu(target())).andReturn(popupMenu);
-      }
-
-      protected void codeToTest() {
-        JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot);
-        assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldShowPopupMenuAtPoint() {
-    final JPopupMenu popupMenu = createMock(JPopupMenu.class);
-    final Point p = new Point();
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.invokePopupMenu(target(), p)).andReturn(popupMenu);
-      }
-
-      protected void codeToTest() {
-        JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot);
-        assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldReturnClientProperty() {
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.clientProperty(target, "name")).andReturn("Luke");
-      }
-
-      protected void codeToTest() {
-        assertThat(fixture.clientProperty("name")).isEqualTo("Luke");
-      }
-    }.run();
-  }
-  
-  ComponentDriver driver() { return driver; }
-  JScrollPane target() { return target; }
-  JScrollPaneFixture fixture() { return fixture; }
 }

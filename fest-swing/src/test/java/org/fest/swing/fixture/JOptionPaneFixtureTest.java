@@ -16,22 +16,18 @@
 package org.fest.swing.fixture;
 
 import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JButtons.button;
-import static org.fest.swing.test.builder.JOptionPanes.optionPane;
 import static org.fest.swing.test.builder.JTextFields.textField;
 import static org.fest.swing.test.core.Regex.regex;
 
 import java.util.regex.Pattern;
 
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.driver.ComponentDriver;
-import org.fest.swing.driver.JOptionPaneDriver;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -39,42 +35,27 @@ import org.junit.Test;
  *
  * @author Alex Ruiz
  */
-public class JOptionPaneFixtureTest extends CommonComponentFixture_TestCase<JOptionPane> {
+public class JOptionPaneFixtureTest extends JOptionPaneFixture_TestCase {
 
-  private JOptionPaneDriver driver;
-  private JOptionPane target;
-  private JOptionPaneFixture fixture;
+  // TODO Reorganize into smaller units
 
-  void onSetUp() {
-    driver = createMock(JOptionPaneDriver.class);
-    target = optionPane().createNew();
-    fixture = new JOptionPaneFixture(robot, target);
-    fixture.driver(driver);
-  }
+  private static JButton button;
 
-  @Test
-  public void shouldCreateFixtureByType() {
-    expect(robot.finder()).andReturn(finder);
-    expect(finder.findByType(JOptionPane.class, true)).andReturn(target());
-    replay(robot, finder);
-    verifyLookup(new JOptionPaneFixture(robot));
-  }
-
-  @Test(expected = NullPointerException.class)
-  public void shouldThrowErrorIfDriverIsNull() {
-    fixture.driver(null);
+  @BeforeClass
+  public static void setUpHelperComponents() {
+    button = button().createNew();
   }
 
   @Test
   public void shouldRequireTitle() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireTitle(target, "A Title");
+        driver().requireTitle(target(), "A Title");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireTitle("A Title"));
+        assertThatReturnsSelf(fixture().requireTitle("A Title"));
       }
     }.run();
   }
@@ -82,28 +63,28 @@ public class JOptionPaneFixtureTest extends CommonComponentFixture_TestCase<JOpt
   @Test
   public void shouldRequireTitleMatchingPattern() {
     final Pattern p = regex("Title");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireTitle(target, p);
+        driver().requireTitle(target(), p);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireTitle(p));
+        assertThatReturnsSelf(fixture().requireTitle(p));
       }
     }.run();
   }
 
   @Test
   public void shouldRequireMessage() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireMessage(target, "A Message");
+        driver().requireMessage(target(), "A Message");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireMessage("A Message"));
+        assertThatReturnsSelf(fixture().requireMessage("A Message"));
       }
     }.run();
   }
@@ -111,14 +92,14 @@ public class JOptionPaneFixtureTest extends CommonComponentFixture_TestCase<JOpt
   @Test
   public void shouldRequireMessageMatchingPattern() {
     final Pattern p = regex("Message");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireMessage(target, p);
+        driver().requireMessage(target(), p);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireMessage(p));
+        assertThatReturnsSelf(fixture().requireMessage(p));
       }
     }.run();
   }
@@ -126,89 +107,84 @@ public class JOptionPaneFixtureTest extends CommonComponentFixture_TestCase<JOpt
   @Test
   public void shouldRequireOptions() {
     final Object[] options = new Object[0];
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireOptions(target, options);
+        driver().requireOptions(target(), options);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireOptions(options));
+        assertThatReturnsSelf(fixture().requireOptions(options));
       }
     }.run();
   }
 
   @Test
   public void shouldReturnOkButton() {
-    final JButton button = button().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.okButton(target)).andReturn(button);
+        expect(driver().okButton(target())).andReturn(button);
       }
 
       protected void codeToTest() {
-        JButtonFixture result = fixture.okButton();
-        assertThat(result.target).isSameAs(button);
+        JButtonFixture result = fixture().okButton();
+        assertThat(result.component()).isSameAs(button);
       }
     }.run();
   }
 
   @Test
   public void shouldReturnCancelButton() {
-    final JButton button = button().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.cancelButton(target)).andReturn(button);
+        expect(driver().cancelButton(target())).andReturn(button);
       }
 
       protected void codeToTest() {
-        JButtonFixture result = fixture.cancelButton();
-        assertThat(result.target).isSameAs(button);
+        JButtonFixture result = fixture().cancelButton();
+        assertThat(result.component()).isSameAs(button);
       }
     }.run();
   }
 
   @Test
   public void shouldReturnYesButton() {
-    final JButton button = button().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.yesButton(target)).andReturn(button);
+        expect(driver().yesButton(target())).andReturn(button);
       }
 
       protected void codeToTest() {
-        JButtonFixture result = fixture.yesButton();
-        assertThat(result.target).isSameAs(button);
+        JButtonFixture result = fixture().yesButton();
+        assertThat(result.component()).isSameAs(button);
       }
     }.run();
   }
 
   @Test
   public void shouldReturnNoButton() {
-    final JButton button = button().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.noButton(target)).andReturn(button);
+        expect(driver().noButton(target())).andReturn(button);
       }
 
       protected void codeToTest() {
-        JButtonFixture result = fixture.noButton();
-        assertThat(result.target).isSameAs(button);
+        JButtonFixture result = fixture().noButton();
+        assertThat(result.component()).isSameAs(button);
       }
     }.run();
   }
 
   @Test
   public void shouldReturnButtonWithText() {
-    final JButton button = button().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.buttonWithText(target, "A Button")).andReturn(button);
+        expect(driver().buttonWithText(target(), "A Button")).andReturn(button);
       }
 
       protected void codeToTest() {
-        JButtonFixture result = fixture.buttonWithText("A Button");
-        assertThat(result.target).isSameAs(button);
+        JButtonFixture result = fixture().buttonWithText("A Button");
+        assertThat(result.component()).isSameAs(button);
       }
     }.run();
   }
@@ -216,30 +192,28 @@ public class JOptionPaneFixtureTest extends CommonComponentFixture_TestCase<JOpt
   @Test
   public void shouldReturnButtonWithTextMatchingPattern() {
     final Pattern p = regex("Butt.*");
-    final JButton button = button().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.buttonWithText(target, p)).andReturn(button);
+        expect(driver().buttonWithText(target(), p)).andReturn(button);
       }
 
       protected void codeToTest() {
-        JButtonFixture result = fixture.buttonWithText(p);
-        assertThat(result.target).isSameAs(button);
+        JButtonFixture result = fixture().buttonWithText(p);
+        assertThat(result.component()).isSameAs(button);
       }
     }.run();
   }
 
   @Test
   public void shouldReturnButton() {
-    final JButton button = button().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.button(target)).andReturn(button);
+        expect(driver().button(target())).andReturn(button);
       }
 
       protected void codeToTest() {
-        JButtonFixture result = fixture.button();
-        assertThat(result.target).isSameAs(button);
+        JButtonFixture result = fixture().button();
+        assertThat(result.component()).isSameAs(button);
       }
     }.run();
   }
@@ -247,89 +221,85 @@ public class JOptionPaneFixtureTest extends CommonComponentFixture_TestCase<JOpt
   @Test
   public void shouldReturnTextBox() {
     final JTextField textBox = textField().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.textBox(target)).andReturn(textBox);
+        expect(driver().textBox(target())).andReturn(textBox);
       }
 
       protected void codeToTest() {
-        JTextComponentFixture result = fixture.textBox();
-        assertThat(result.target).isSameAs(textBox);
+        JTextComponentFixture result = fixture().textBox();
+        assertThat(result.component()).isSameAs(textBox);
       }
     }.run();
   }
 
   @Test
   public void shouldRequireErrorMessage() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireErrorMessage(target);
+        driver().requireErrorMessage(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireErrorMessage());
+        assertThatReturnsSelf(fixture().requireErrorMessage());
       }
     }.run();
   }
 
   @Test
   public void shouldRequireInformationMessage() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireInformationMessage(target);
+        driver().requireInformationMessage(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireInformationMessage());
+        assertThatReturnsSelf(fixture().requireInformationMessage());
       }
     }.run();
   }
 
   @Test
   public void shouldRequireWarningMessage() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireWarningMessage(target);
+        driver().requireWarningMessage(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireWarningMessage());
+        assertThatReturnsSelf(fixture().requireWarningMessage());
       }
     }.run();
   }
 
   @Test
   public void shouldRequireQuestionMessage() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireQuestionMessage(target);
+        driver().requireQuestionMessage(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireQuestionMessage());
+        assertThatReturnsSelf(fixture().requireQuestionMessage());
       }
     }.run();
   }
 
   @Test
   public void shouldRequirePlainMessage() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requirePlainMessage(target);
+        driver().requirePlainMessage(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requirePlainMessage());
+        assertThatReturnsSelf(fixture().requirePlainMessage());
       }
     }.run();
   }
-
-  ComponentDriver driver() { return driver; }
-  JOptionPane target() { return target; }
-  JOptionPaneFixture fixture() { return fixture; }
 }

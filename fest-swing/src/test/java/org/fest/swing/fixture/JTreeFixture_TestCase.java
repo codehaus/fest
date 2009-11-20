@@ -21,6 +21,7 @@ import static org.fest.swing.test.builder.JTrees.tree;
 import javax.swing.JTree;
 
 import org.fest.swing.driver.JTreeDriver;
+import org.junit.BeforeClass;
 
 /**
  * Base test case for <code>{@link JTreeFixture}</code>.
@@ -29,20 +30,25 @@ import org.fest.swing.driver.JTreeDriver;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JTreeFixture_TestCase extends CommonComponentFixture_TestCase<JTree> {
+public class JTreeFixture_TestCase extends ComponentFixture_TestCase<JTree> {
+
+  private static JTree target;
 
   private JTreeDriver driver;
-  private JTree target;
   private JTreeFixture fixture;
+
+  @BeforeClass
+  public static void setUpTarget() {
+    target = tree().createNew();
+  }
 
   final void onSetUp() {
     driver = createMock(JTreeDriver.class);
-    target = tree().createNew();
-    fixture = new JTreeFixture(robot, target);
+    fixture = new JTreeFixture(robot(), target);
     fixture.driver(driver);
   }
 
-  JTreeDriver driver() { return driver; }
-  JTree target() { return target; }
-  JTreeFixture fixture() { return fixture; }
+  final JTreeDriver driver() { return driver; }
+  final JTree target() { return target; }
+  final JTreeFixture fixture() { return fixture; }
 }

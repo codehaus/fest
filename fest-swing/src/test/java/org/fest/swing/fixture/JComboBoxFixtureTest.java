@@ -15,28 +15,20 @@
  */
 package org.fest.swing.fixture;
 
-import static java.awt.event.KeyEvent.*;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.test.builder.JComboBoxes.comboBox;
 import static org.fest.swing.test.builder.JLists.list;
 import static org.fest.swing.test.core.Regex.regex;
 import static org.fest.util.Arrays.array;
 
-import java.awt.Point;
 import java.util.regex.Pattern;
 
-import javax.swing.JComboBox;
 import javax.swing.JList;
-import javax.swing.JPopupMenu;
 
-import org.easymock.classextension.EasyMock;
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.cell.JComboBoxCellReader;
-import org.fest.swing.driver.JComboBoxDriver;
-import org.fest.swing.driver.JComponentDriver;
 import org.junit.Test;
 
 /**
@@ -45,41 +37,20 @@ import org.junit.Test;
  * @author Alex Ruiz
  * @author Yvonne Wang
  */
-public class JComboBoxFixtureTest extends CommonComponentFixture_TestCase<JComboBox> {
+public class JComboBoxFixtureTest extends JComboBoxFixture_TestCase {
 
-  private JComboBoxDriver driver;
-  private JComboBox target;
-  private JComboBoxFixture fixture;
-
-  void onSetUp() {
-    driver = EasyMock.createMock(JComboBoxDriver.class);
-    target = comboBox().createNew();
-    fixture = new JComboBoxFixture(robot, target);
-    fixture.driver(driver);
-  }
-
-  @Test(expected = NullPointerException.class)
-  public void shouldThrowErrorIfDriverIsNull() {
-    fixture.driver(null);
-  }
-
-  @Test
-  public void shouldCreateFixtureWithGivenComponentName() {
-    String name = "comboBox";
-    expectLookupByName(name, JComboBox.class);
-    verifyLookup(new JComboBoxFixture(robot, name));
-  }
+  // TODO Reorganize into smaller units
 
   @Test
   public void shouldReturnContents() {
     final String[] contents = array("Frodo", "Sam");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.contentsOf(target)).andReturn(contents);
+        expect(driver().contentsOf(target())).andReturn(contents);
       }
 
       protected void codeToTest() {
-        Object[] result = fixture.contents();
+        Object[] result = fixture().contents();
         assertThat(result).isSameAs(contents);
       }
     }.run();
@@ -87,55 +58,42 @@ public class JComboBoxFixtureTest extends CommonComponentFixture_TestCase<JCombo
 
   @Test
   public void shouldReplaceText() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.replaceText(target, "Hello");
+        driver().replaceText(target(), "Hello");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.replaceText("Hello"));
+        assertThatReturnsSelf(fixture().replaceText("Hello"));
       }
     }.run();
   }
 
   @Test
   public void shouldSelectAllText() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectAllText(target);
+        driver().selectAllText(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectAllText());
+        assertThatReturnsSelf(fixture().selectAllText());
       }
     }.run();
   }
 
   @Test
   public void shouldEnterText() {
-    new EasyMockTemplate(driver) {
-      protected void expectations() {
-        driver.enterText(target, "Hello");
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.enterText("Hello"));
-      }
-    }.run();
-  }
-
-  @Override public void should_press_and_release_keys() {
     new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.pressAndReleaseKeys(target, VK_A, VK_B, VK_C);
+        driver().enterText(target(), "Hello");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture().pressAndReleaseKeys(VK_A, VK_B, VK_C));
+        assertThatReturnsSelf(fixture().enterText("Hello"));
       }
     }.run();
   }
@@ -143,13 +101,13 @@ public class JComboBoxFixtureTest extends CommonComponentFixture_TestCase<JCombo
   @Test
   public void shouldReturnList() {
     final JList list = list().createNew();
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.dropDownList()).andReturn(list);
+        expect(driver().dropDownList()).andReturn(list);
       }
 
       protected void codeToTest() {
-        JList result = fixture.list();
+        JList result = fixture().list();
         assertThat(result).isSameAs(list);
       }
     }.run();
@@ -157,42 +115,42 @@ public class JComboBoxFixtureTest extends CommonComponentFixture_TestCase<JCombo
 
   @Test
   public void shouldClearSelection() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.clearSelection(target);
+        driver().clearSelection(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.clearSelection());
+        assertThatReturnsSelf(fixture().clearSelection());
       }
     }.run();
   }
 
   @Test
   public void shouldSelectItemUnderIndex() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectItem(target, 6);
+        driver().selectItem(target(), 6);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectItem(6));
+        assertThatReturnsSelf(fixture().selectItem(6));
       }
     }.run();
   }
 
   @Test
   public void shouldSelectItemWithText() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectItem(target, "Frodo");
+        driver().selectItem(target(), "Frodo");
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectItem("Frodo"));
+        assertThatReturnsSelf(fixture().selectItem("Frodo"));
       }
     }.run();
   }
@@ -200,27 +158,27 @@ public class JComboBoxFixtureTest extends CommonComponentFixture_TestCase<JCombo
   @Test
   public void shouldSelectItemWithTextMatchingPattern() {
     final Pattern p = regex(".");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.selectItem(target, p);
+        driver().selectItem(target(), p);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.selectItem(p));
+        assertThatReturnsSelf(fixture().selectItem(p));
       }
     }.run();
   }
 
   @Test
   public void shouldReturnValueAtIndex() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        expect(driver.value(target, 8)).andReturn("Sam");
+        expect(driver().value(target(), 8)).andReturn("Sam");
       }
 
       protected void codeToTest() {
-        Object result = fixture.valueAt(8);
+        Object result = fixture().valueAt(8);
         assertThat(result).isEqualTo("Sam");
       }
     }.run();
@@ -228,42 +186,42 @@ public class JComboBoxFixtureTest extends CommonComponentFixture_TestCase<JCombo
 
   @Test
   public void shouldRequireEditable() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireEditable(target);
+        driver().requireEditable(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireEditable());
+        assertThatReturnsSelf(fixture().requireEditable());
       }
     }.run();
   }
 
   @Test
   public void shouldRequireNotEditable() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireNotEditable(target);
+        driver().requireNotEditable(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireNotEditable());
+        assertThatReturnsSelf(fixture().requireNotEditable());
       }
     }.run();
   }
 
   @Test
   public void shouldRequireNoSelection() {
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireNoSelection(target);
+        driver().requireNoSelection(target());
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireNoSelection());
+        assertThatReturnsSelf(fixture().requireNoSelection());
       }
     }.run();
   }
@@ -271,14 +229,14 @@ public class JComboBoxFixtureTest extends CommonComponentFixture_TestCase<JCombo
   @Test
   public void shouldSetCellReaderInDriver() {
     final JComboBoxCellReader reader = createMock(JComboBoxCellReader.class);
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.cellReader(reader);
+        driver().cellReader(reader);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.cellReader(reader));
+        assertThatReturnsSelf(fixture().cellReader(reader));
       }
     }.run();
   }
@@ -286,14 +244,14 @@ public class JComboBoxFixtureTest extends CommonComponentFixture_TestCase<JCombo
   @Test
   public void shouldRequireSelectionValue() {
     final String value = "Hello";
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireSelection(target, value);
+        driver().requireSelection(target(), value);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireSelection(value));
+        assertThatReturnsSelf(fixture().requireSelection(value));
       }
     }.run();
   }
@@ -301,14 +259,14 @@ public class JComboBoxFixtureTest extends CommonComponentFixture_TestCase<JCombo
   @Test
   public void shouldRequireSelectionByPatternMatching() {
     final Pattern p = regex("Hello");
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireSelection(target, p);
+        driver().requireSelection(target(), p);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireSelection(p));
+        assertThatReturnsSelf(fixture().requireSelection(p));
       }
     }.run();
   }
@@ -316,94 +274,15 @@ public class JComboBoxFixtureTest extends CommonComponentFixture_TestCase<JCombo
   @Test
   public void shouldRequireSelectionIndex() {
     final int index = 6;
-    new EasyMockTemplate(driver) {
+    new EasyMockTemplate(driver()) {
       protected void expectations() {
-        driver.requireSelection(target, index);
+        driver().requireSelection(target(), index);
         expectLastCall().once();
       }
 
       protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireSelection(index));
+        assertThatReturnsSelf(fixture().requireSelection(index));
       }
     }.run();
   }
-
-  @Test
-  public void shouldRequireToolTip() {
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        driver.requireToolTip(target(), "A ToolTip");
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip("A ToolTip"));
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldRequireToolTipToMatchPattern() {
-    final Pattern pattern = regex(".");
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        driver.requireToolTip(target(), pattern);
-        expectLastCall().once();
-      }
-
-      protected void codeToTest() {
-        assertThatReturnsThis(fixture.requireToolTip(pattern));
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldShowPopupMenu() {
-    final JPopupMenu popupMenu = createMock(JPopupMenu.class);
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.invokePopupMenu(target())).andReturn(popupMenu);
-      }
-
-      protected void codeToTest() {
-        JPopupMenuFixture popupMenuFixture = fixture.showPopupMenu();
-        assertThat(popupMenuFixture.robot).isSameAs(robot);
-        assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldShowPopupMenuAtPoint() {
-    final JPopupMenu popupMenu = createMock(JPopupMenu.class);
-    final Point p = new Point();
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.invokePopupMenu(target(), p)).andReturn(popupMenu);
-      }
-
-      protected void codeToTest() {
-        JPopupMenuFixture popupMenuFixture = fixture.showPopupMenuAt(p);
-        assertThat(popupMenuFixture.robot).isSameAs(robot);
-        assertThat(popupMenuFixture.component()).isSameAs(popupMenu);
-      }
-    }.run();
-  }
-
-  @Test
-  public void shouldReturnClientProperty() {
-    new EasyMockTemplate(driver()) {
-      protected void expectations() {
-        expect(driver.clientProperty(target, "name")).andReturn("Luke");
-      }
-
-      protected void codeToTest() {
-        assertThat(fixture.clientProperty("name")).isEqualTo("Luke");
-      }
-    }.run();
-  }
-  
-  JComponentDriver driver() { return driver; }
-  JComboBox target() { return target; }
-  JComboBoxFixture fixture() { return fixture; }
 }

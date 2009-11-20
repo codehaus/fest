@@ -17,6 +17,7 @@ package org.fest.swing.test.builder;
 
 import javax.swing.JFrame;
 
+import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 
@@ -39,7 +40,7 @@ public final class JFrames {
     private String name;
     private boolean resizable = true;
     private String title;
-    
+
     public JFrameFactory withName(String newName) {
       name = newName;
       return this;
@@ -49,23 +50,41 @@ public final class JFrames {
       title = newTitle;
       return this;
     }
-    
+
     public JFrameFactory resizable(boolean shouldBeResizable) {
       resizable = shouldBeResizable;
       return this;
+    }
+
+
+    @RunsInEDT
+    public JFrame createAndShow() {
+      return execute(new GuiQuery<JFrame>() {
+        protected JFrame executeInEDT() {
+          JFrame frame = create();
+          frame.pack();
+          frame.setVisible(true);
+          return frame;
+        }
+      });
     }
 
     @RunsInEDT
     public JFrame createNew() {
       return execute(new GuiQuery<JFrame>() {
         protected JFrame executeInEDT() {
-          JFrame frame = new JFrame();
-          frame.setName(name);
-          frame.setTitle(title);
-          frame.setResizable(resizable);
-          return frame;
+          return create();
         }
       });
+    }
+
+    @RunsInCurrentThread
+    private JFrame create() {
+      JFrame frame = new JFrame();
+      frame.setName(name);
+      frame.setTitle(title);
+      frame.setResizable(resizable);
+      return frame;
     }
   }
 }
