@@ -19,7 +19,6 @@ import static org.fest.reflect.core.Reflection.staticMethod;
 import javax.swing.*;
 
 import org.fest.swing.exception.EdtViolationException;
-import org.jdesktop.swinghelper.debug.CheckThreadViolationRepaintManager;
 
 /**
  * <p>
@@ -35,7 +34,7 @@ public class FailOnThreadViolationRepaintManager extends CheckThreadViolationRep
    * Creates a new <code>{@link FailOnThreadViolationRepaintManager}</code> and sets it as the current repaint manager.
    * <p>
    * On Sun JVMs, this method will install the new repaint manager the first time only. Once installed, subsequent calls
-   * to this method will not install new repaint managers. This optimization may not work on non-Sun JVMs, since we use 
+   * to this method will not install new repaint managers. This optimization may not work on non-Sun JVMs, since we use
    * reflection to check if a {@code CheckThreadViolationRepaintManager} is already installed.
    * </p>
    * @return the created (and installed) repaint manager.
@@ -57,13 +56,13 @@ public class FailOnThreadViolationRepaintManager extends CheckThreadViolationRep
       return null;
     }
   }
-  
+
   private static FailOnThreadViolationRepaintManager installNew() {
     FailOnThreadViolationRepaintManager m = new FailOnThreadViolationRepaintManager();
     setCurrentManager(m);
     return m;
   }
-  
+
   public FailOnThreadViolationRepaintManager() {}
 
   public FailOnThreadViolationRepaintManager(boolean completeCheck) {
@@ -76,7 +75,7 @@ public class FailOnThreadViolationRepaintManager extends CheckThreadViolationRep
    * @param stackTraceElements stack trace elements to be set to the thrown exception.
    * @throws EdtViolationException when a EDT access violation is found.
    */
-  @Override protected void violationFound(JComponent c, StackTraceElement[] stackTraceElements) {
+  @Override void violationFound(JComponent c, StackTraceElement[] stackTraceElements) {
     EdtViolationException e = new EdtViolationException("EDT violation detected");
     if (stackTraceElements != null) e.setStackTrace(stackTraceElements);
     throw e;

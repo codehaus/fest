@@ -9,6 +9,12 @@
       <action dev="alexruiz" type="fix" issue="FEST-175" due-to="Jan Zuchhold">
         Removed mappings for German umlauts in KeyStrokeMappingProvider_de.
       </action>
+      <action dev="alexruiz" type="fix" issue="FEST-207" due-to="Daniel Dyer">
+        Removed dependency on debug.jar.
+      </action>
+      <action dev="alexruiz" type="fix" issue="FEST-207" due-to="Daniel Dyer">
+        Added own CheckThreadViolationRepaintManager, a copy of the original from debug.jar
+      </action>
       <action dev="alexruiz" type="fix" issue="FEST-215" due-to="Ansgar Konermann">
         Moved JDK-6 specific code to new module fest-swing-jdk6.
       </action>
