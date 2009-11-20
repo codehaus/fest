@@ -17,6 +17,7 @@ package org.fest.swing.core.matcher;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JButtons.button;
+
 import javax.swing.JButton;
 
 import org.fest.swing.test.core.EDTSafeTestCase;

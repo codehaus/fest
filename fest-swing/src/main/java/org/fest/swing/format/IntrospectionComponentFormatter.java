@@ -15,19 +15,16 @@
  */
 package org.fest.swing.format;
 
-import java.awt.Component;
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.fest.util.Arrays;
-
 import static org.fest.swing.exception.ActionFailedException.actionFailure;
 import static org.fest.util.Collections.list;
-import static org.fest.util.Strings.*;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
+import java.awt.Component;
+import java.beans.*;
+import java.util.*;
+
+import org.fest.util.Arrays;
 
 /**
  * Understands a formatter that uses

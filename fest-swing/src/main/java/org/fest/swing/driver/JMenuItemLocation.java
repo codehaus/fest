@@ -15,16 +15,14 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.query.ComponentShowingQuery.isShowing;
+
 import java.awt.Component;
 
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
-
-import static org.fest.swing.query.ComponentShowingQuery.isShowing;
 
 /**
  * Understands the location of a <code>{@link JMenuItem}</code>.

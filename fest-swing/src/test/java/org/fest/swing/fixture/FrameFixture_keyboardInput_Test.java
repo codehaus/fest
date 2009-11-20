@@ -20,8 +20,10 @@ import static org.fest.swing.test.builder.JFrames.frame;
 import static org.fest.swing.test.task.WindowDestroyTask.hideAndDisposeInEDT;
 
 import java.awt.Frame;
+
 import org.fest.swing.driver.FrameDriver;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
 /**
  * Tests for methods in <code>{@link FrameFixture}</code> that are inherited from

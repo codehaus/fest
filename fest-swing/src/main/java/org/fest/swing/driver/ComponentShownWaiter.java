@@ -15,6 +15,10 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.query.ComponentVisibleQuery.isVisible;
+import static org.fest.swing.timing.Pause.pause;
+import static org.fest.swing.util.TimeoutWatch.startWatchWithTimeoutOf;
+
 import java.awt.Component;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -22,10 +26,6 @@ import java.awt.event.ComponentEvent;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.exception.WaitTimedOutError;
 import org.fest.swing.util.TimeoutWatch;
-
-import static org.fest.swing.query.ComponentVisibleQuery.isVisible;
-import static org.fest.swing.timing.Pause.pause;
-import static org.fest.swing.util.TimeoutWatch.startWatchWithTimeoutOf;
 
 /**
  * Understands waiting for a <code>{@link Component}</code> to be shown.

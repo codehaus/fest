@@ -15,12 +15,11 @@
  */
 package org.fest.swing.lock;
 
+import static org.fest.util.Strings.concat;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
 import org.fest.swing.exception.ScreenLockException;
-
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands a lock that each GUI test should acquire before being executed, to guarantee sequential execution of

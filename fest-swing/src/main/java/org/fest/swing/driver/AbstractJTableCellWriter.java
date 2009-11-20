@@ -15,6 +15,19 @@
  */
 package org.fest.swing.driver;
 
+import static java.lang.String.valueOf;
+import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
+import static org.fest.swing.driver.JTableCancelCellEditingTask.cancelEditing;
+import static org.fest.swing.driver.JTableCellEditorQuery.cellEditorIn;
+import static org.fest.swing.driver.JTableCellValidator.validateCellIsEditable;
+import static org.fest.swing.driver.JTableCellValidator.validateIndices;
+import static org.fest.swing.driver.JTableStopCellEditingTask.stopEditing;
+import static org.fest.swing.driver.JTableStopCellEditingTask.validateAndStopEditing;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.exception.ActionFailedException.actionFailure;
+import static org.fest.swing.timing.Pause.pause;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Component;
 import java.awt.Point;
 
@@ -24,25 +37,10 @@ import javax.swing.table.TableCellEditor;
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.cell.JTableCellWriter;
-import org.fest.swing.core.ComponentFoundCondition;
-import org.fest.swing.core.ComponentMatcher;
-import org.fest.swing.core.Robot;
-import org.fest.swing.core.TypeMatcher;
+import org.fest.swing.core.*;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.exception.ActionFailedException;
 import org.fest.swing.exception.WaitTimedOutError;
-
-import static java.lang.String.valueOf;
-
-import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
-import static org.fest.swing.driver.JTableCancelCellEditingTask.cancelEditing;
-import static org.fest.swing.driver.JTableCellEditorQuery.cellEditorIn;
-import static org.fest.swing.driver.JTableCellValidator.*;
-import static org.fest.swing.driver.JTableStopCellEditingTask.*;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.exception.ActionFailedException.actionFailure;
-import static org.fest.swing.timing.Pause.pause;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands the base class for implementations of <code>{@link JTableCellWriter}</code>.

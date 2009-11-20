@@ -20,9 +20,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 
 import java.awt.Component;
 
-import javax.swing.JComboBox;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.cell.JComboBoxCellReader;

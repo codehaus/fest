@@ -16,6 +16,7 @@
 package org.fest.swing.format;
 
 import static org.fest.swing.test.builder.JTextFields.textField;
+
 import org.fest.swing.test.core.EDTSafeTestCase;
 import org.junit.Test;
 

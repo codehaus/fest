@@ -14,12 +14,12 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.Window;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands a task that moves a <code>{@link Window}</code> to the front and gives it input focus. This task should

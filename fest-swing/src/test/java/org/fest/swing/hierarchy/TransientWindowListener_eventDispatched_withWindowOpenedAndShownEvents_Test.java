@@ -24,10 +24,10 @@ import static org.fest.util.Collections.list;
 import java.awt.AWTEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
-import java.util.*;
+import java.util.Collection;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.junit.*;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;

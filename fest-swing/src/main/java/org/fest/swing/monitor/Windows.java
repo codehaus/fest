@@ -17,10 +17,7 @@ package org.fest.swing.monitor;
 
 import java.awt.Component;
 import java.awt.Window;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.WeakHashMap;
+import java.util.*;
 
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;

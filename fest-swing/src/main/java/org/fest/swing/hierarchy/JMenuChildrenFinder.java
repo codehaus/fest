@@ -15,6 +15,9 @@
  */
 package org.fest.swing.hierarchy;
 
+import static java.util.Collections.emptyList;
+import static org.fest.util.Collections.list;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.util.Collection;
@@ -22,10 +25,6 @@ import java.util.Collection;
 import javax.swing.JMenu;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static java.util.Collections.emptyList;
-
-import static org.fest.util.Collections.list;
 
 /**
  * Understands how to find children components in a <code>{@link JMenu}</code>.

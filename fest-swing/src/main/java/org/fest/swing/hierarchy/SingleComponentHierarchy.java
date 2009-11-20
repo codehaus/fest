@@ -14,14 +14,11 @@
  */
 package org.fest.swing.hierarchy;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Window;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import static javax.swing.SwingUtilities.isDescendingFrom;
+
+import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 /**
  * Understands a component hierarchy created with a specified <code>{@link Component}</code> as root.

@@ -14,14 +14,12 @@
  */
 package org.fest.swing.test.swing;
 
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
+import static java.awt.datatransfer.DataFlavor.stringFlavor;
+
+import java.awt.datatransfer.*;
 
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
-
-import static java.awt.datatransfer.DataFlavor.stringFlavor;
 
 /**
  * Understands importing and exporting strings.

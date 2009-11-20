@@ -15,11 +15,10 @@
  */
 package org.fest.swing.edt;
 
-import org.fest.swing.exception.ActionFailedException;
-
 import static javax.swing.SwingUtilities.isEventDispatchThread;
-
 import static org.fest.swing.exception.ActionFailedException.actionFailure;
+
+import org.fest.swing.exception.ActionFailedException;
 
 /**
  * Understands executing an action, in the event dispatch thread, that returns a value.

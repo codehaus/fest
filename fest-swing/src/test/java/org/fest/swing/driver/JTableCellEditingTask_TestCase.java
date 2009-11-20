@@ -19,10 +19,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 
 import java.awt.Dimension;
 
-import javax.swing.DefaultCellEditor;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 
 import org.fest.swing.annotation.RunsInEDT;

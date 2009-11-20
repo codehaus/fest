@@ -15,9 +15,9 @@
  */
 package org.fest.swing.format;
 
-import java.awt.Component;
-import java.awt.Dialog;
-import java.awt.Frame;
+import static org.fest.util.Strings.*;
+
+import java.awt.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -29,8 +29,6 @@ import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.util.Strings.*;
 
 /**
  * Understands utility methods related to formatting.

@@ -22,7 +22,8 @@ import static org.fest.swing.test.task.WindowDestroyTask.hideAndDisposeInEDT;
 import java.awt.Dialog;
 
 import org.fest.swing.driver.DialogDriver;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
 /**
  * Tests for methods in <code>{@link DialogFixture}</code> that are inherited from

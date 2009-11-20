@@ -16,9 +16,7 @@
 package org.fest.swing.exception;
 
 import java.awt.Component;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 /**
  * Understands an error thrown when looking up a component using a <code>{@link org.fest.swing.core.ComponentFinder}</code>.

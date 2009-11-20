@@ -14,12 +14,12 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import javax.swing.JTabbedPane;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands a task that selects the tab with the given index in a <code>{@link JTabbedPane}</code>. This task is

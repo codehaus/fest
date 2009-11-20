@@ -17,7 +17,9 @@ package org.fest.swing.fixture;
 
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.swing.test.builder.JButtons.button;
+
 import javax.swing.JButton;
+
 import org.fest.swing.driver.AbstractButtonDriver;
 import org.junit.BeforeClass;
 

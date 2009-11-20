@@ -15,13 +15,11 @@
  */
 package org.fest.swing.keystroke;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import static java.awt.event.KeyEvent.*;
+
+import java.util.*;
 
 import javax.swing.KeyStroke;
-
-import static java.awt.event.KeyEvent.*;
 
 /**
  * Understands a default mapping of characters and <code>{@link KeyStroke}</code>s.

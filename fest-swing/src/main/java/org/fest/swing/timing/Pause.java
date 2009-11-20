@@ -15,14 +15,15 @@
  */
 package org.fest.swing.timing;
 
+import static org.fest.swing.util.TimeoutWatch.startWatchWithTimeoutOf;
+import static org.fest.util.Arrays.format;
+import static org.fest.util.Arrays.isEmpty;
+import static org.fest.util.Strings.concat;
+
 import java.util.concurrent.TimeUnit;
 
 import org.fest.swing.exception.WaitTimedOutError;
 import org.fest.swing.util.TimeoutWatch;
-
-import static org.fest.swing.util.TimeoutWatch.startWatchWithTimeoutOf;
-import static org.fest.util.Arrays.*;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands waiting for period of time or for a particular condition to be satisfied.

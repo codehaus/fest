@@ -15,15 +15,15 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
+import static org.fest.swing.format.Formatting.format;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Component;
 
 import javax.swing.JComboBox;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
-import static org.fest.swing.format.Formatting.format;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands an action that validates that the editor of a <code>{@link JComboBox}</code> is accessible or not. To be

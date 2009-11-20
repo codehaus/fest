@@ -17,8 +17,10 @@ package org.fest.swing.fixture;
 
 import static org.easymock.EasyMock.expectLastCall;
 import static org.fest.assertions.Assertions.assertThat;
+
 import java.awt.Dimension;
 import java.awt.Point;
+
 import org.fest.mocks.EasyMockTemplate;
 import org.junit.Test;
 

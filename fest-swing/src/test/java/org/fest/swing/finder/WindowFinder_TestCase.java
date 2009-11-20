@@ -15,7 +15,8 @@
  */
 package org.fest.swing.finder;
 
-import org.fest.swing.fixture.*;
+import org.fest.swing.fixture.FrameFixture;
+import org.fest.swing.fixture.JButtonFixture;
 import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.WindowLauncher;
 

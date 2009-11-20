@@ -21,10 +21,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JTabbedPane;
 
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
-import org.fest.swing.core.Robot;
+import org.fest.swing.core.*;
 import org.fest.swing.data.Index;
 import org.fest.swing.driver.JTabbedPaneDriver;
 import org.fest.swing.exception.ComponentLookupException;

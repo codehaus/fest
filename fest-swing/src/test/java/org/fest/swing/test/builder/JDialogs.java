@@ -15,6 +15,8 @@
  */
 package org.fest.swing.test.builder;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.Frame;
 
 import javax.swing.JDialog;
@@ -22,8 +24,6 @@ import javax.swing.JDialog;
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands creation of <code>{@link JDialog}</code>s.

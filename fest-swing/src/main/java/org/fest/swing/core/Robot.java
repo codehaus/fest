@@ -1,9 +1,6 @@
 package org.fest.swing.core;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.event.InputEvent;
 
 import javax.swing.JPopupMenu;

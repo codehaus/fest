@@ -22,9 +22,7 @@ import static org.fest.util.Collections.list;
 import java.awt.Component;
 import java.util.Collection;
 
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
 import org.fest.swing.annotation.RunsInEDT;

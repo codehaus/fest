@@ -17,9 +17,11 @@ package org.fest.swing.hierarchy;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.builder.JButtons.button;
+
 import java.awt.Component;
 
 import javax.swing.JButton;
+
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.test.swing.TestDialog;

@@ -17,6 +17,7 @@ package org.fest.swing.core.matcher;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JFrames.frame;
+
 import javax.swing.JFrame;
 
 import org.fest.swing.lock.ScreenLock;

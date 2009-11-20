@@ -20,6 +20,7 @@ import static org.fest.swing.test.builder.JButtons.button;
 import static org.fest.swing.test.builder.JDialogs.dialog;
 
 import java.awt.Component;
+
 import javax.swing.JDialog;
 
 import org.fest.swing.annotation.RunsInEDT;

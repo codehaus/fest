@@ -14,20 +14,7 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.Window;
-
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-
-import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.Robot;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
-import org.fest.swing.exception.ActionFailedException;
-
 import static java.lang.Boolean.getBoolean;
-
 import static org.fest.swing.core.WindowAncestorFinder.windowAncestorOf;
 import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
 import static org.fest.swing.driver.JMenuPopupMenuQuery.popupMenuOf;
@@ -38,6 +25,16 @@ import static org.fest.swing.format.Formatting.format;
 import static org.fest.swing.timing.Pause.pause;
 import static org.fest.swing.util.Platform.isOSX;
 import static org.fest.util.Strings.concat;
+
+import java.awt.Window;
+
+import javax.swing.*;
+
+import org.fest.swing.annotation.RunsInEDT;
+import org.fest.swing.core.Robot;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
+import org.fest.swing.exception.ActionFailedException;
 
 /**
  * Understands simulation of user input on a <code>{@link JMenuItem}</code>. Unlike <code>JMenuItemFixture</code>, this

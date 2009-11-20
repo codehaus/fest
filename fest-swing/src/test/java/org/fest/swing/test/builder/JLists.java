@@ -15,15 +15,13 @@
  */
 package org.fest.swing.test.builder;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.ListModel;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.util.Arrays.isEmpty;
+
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.util.Arrays.isEmpty;
 
 /**
  * Understands creation of <code>{@link JList}</code>s.

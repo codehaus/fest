@@ -25,9 +25,7 @@ import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.test.core.RobotBasedTestCase;
-import org.fest.swing.test.swing.CustomCellRenderer;
-import org.fest.swing.test.swing.TestListModel;
-import org.fest.swing.test.swing.TestWindow;
+import org.fest.swing.test.swing.*;
 import org.junit.Test;
 
 /**

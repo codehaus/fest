@@ -15,14 +15,15 @@
  */
 package org.fest.swing.test.core;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static java.util.Arrays.*;
-
+import static java.util.Arrays.copyOf;
+import static java.util.Arrays.deepEquals;
 import static org.fest.assertions.Fail.fail;
 import static org.fest.util.Arrays.format;
-import static org.fest.util.Strings.*;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Understands a mechanism to record and verify expected method invocations.

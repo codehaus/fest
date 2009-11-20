@@ -15,14 +15,14 @@
  */
 package org.fest.swing.format;
 
+import static java.lang.String.valueOf;
+import static javax.swing.JFileChooser.*;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
 import java.awt.Component;
 
 import javax.swing.JFileChooser;
-
-import static java.lang.String.valueOf;
-import static javax.swing.JFileChooser.*;
-
-import static org.fest.util.Strings.*;
 
 /**
  * Understands a formatter for <code>{@link JFileChooser}</code>s.

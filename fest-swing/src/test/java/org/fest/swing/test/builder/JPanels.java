@@ -15,14 +15,14 @@
  */
 package org.fest.swing.test.builder;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.Color;
 
 import javax.swing.JPanel;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands creation of <code>{@link JPanel}</code>s.

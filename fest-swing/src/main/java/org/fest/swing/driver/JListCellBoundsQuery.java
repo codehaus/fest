@@ -14,13 +14,13 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.driver.JListItemIndexValidator.validateIndex;
+
 import java.awt.Rectangle;
 
 import javax.swing.JList;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static org.fest.swing.driver.JListItemIndexValidator.validateIndex;
 
 /**
  * Understands an action that returns the bounding rectangle for the cell specified by the given index.

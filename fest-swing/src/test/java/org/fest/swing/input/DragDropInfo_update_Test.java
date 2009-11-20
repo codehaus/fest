@@ -17,7 +17,9 @@ package org.fest.swing.input;
 import static java.awt.event.MouseEvent.*;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JComboBoxes.comboBox;
+
 import java.awt.event.MouseEvent;
+
 import javax.swing.JComboBox;
 
 import org.junit.Test;

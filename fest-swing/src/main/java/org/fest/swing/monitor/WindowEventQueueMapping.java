@@ -15,17 +15,13 @@
  */
 package org.fest.swing.monitor;
 
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.Toolkit;
-import java.awt.Window;
+import static java.lang.Boolean.TRUE;
+import static org.fest.swing.query.ComponentParentQuery.parentOf;
+
+import java.awt.*;
 import java.util.*;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static java.lang.Boolean.TRUE;
-
-import static org.fest.swing.query.ComponentParentQuery.parentOf;
 
 /**
  * Understands a mapping of unique event queues to the set of root windows found on each queue.

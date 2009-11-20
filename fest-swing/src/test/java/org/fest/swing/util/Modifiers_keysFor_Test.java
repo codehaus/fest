@@ -15,16 +15,8 @@
  */
 package org.fest.swing.util;
 
-import static java.awt.event.InputEvent.ALT_GRAPH_MASK;
-import static java.awt.event.InputEvent.ALT_MASK;
-import static java.awt.event.InputEvent.CTRL_MASK;
-import static java.awt.event.InputEvent.META_MASK;
-import static java.awt.event.InputEvent.SHIFT_MASK;
-import static java.awt.event.KeyEvent.VK_ALT;
-import static java.awt.event.KeyEvent.VK_ALT_GRAPH;
-import static java.awt.event.KeyEvent.VK_CONTROL;
-import static java.awt.event.KeyEvent.VK_META;
-import static java.awt.event.KeyEvent.VK_SHIFT;
+import static java.awt.event.InputEvent.*;
+import static java.awt.event.KeyEvent.*;
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.Test;

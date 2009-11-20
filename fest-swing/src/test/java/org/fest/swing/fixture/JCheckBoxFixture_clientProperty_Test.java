@@ -19,6 +19,7 @@ import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.swing.test.builder.JCheckBoxes.checkBox;
 
 import javax.swing.JCheckBox;
+
 import org.fest.swing.driver.AbstractButtonDriver;
 import org.junit.BeforeClass;
 

@@ -23,16 +23,10 @@ import java.util.regex.Pattern;
 import javax.swing.JList;
 
 import org.fest.swing.cell.JListCellReader;
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
-import org.fest.swing.core.Robot;
+import org.fest.swing.core.*;
 import org.fest.swing.driver.BasicJListCellReader;
 import org.fest.swing.driver.JListDriver;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.LocationUnavailableException;
-import org.fest.swing.exception.WaitTimedOutError;
+import org.fest.swing.exception.*;
 import org.fest.swing.timing.Timeout;
 import org.fest.swing.util.Range;
 

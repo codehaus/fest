@@ -1,5 +1,7 @@
 package org.fest.swing.driver;
 
+import static javax.swing.SwingUtilities.getWindowAncestor;
+
 import java.awt.Frame;
 import java.awt.Window;
 
@@ -8,8 +10,6 @@ import javax.swing.plaf.ToolBarUI;
 import javax.swing.plaf.basic.BasicToolBarUI;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static javax.swing.SwingUtilities.getWindowAncestor;
 
 /**
  * Understands an action, executed in the event dispatch thread, that indicates whether a 

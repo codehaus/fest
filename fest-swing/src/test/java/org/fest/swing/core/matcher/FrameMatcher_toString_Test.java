@@ -16,6 +16,7 @@
 package org.fest.swing.core.matcher;
 
 import static org.fest.assertions.Assertions.assertThat;
+
 import org.fest.swing.test.core.EDTSafeTestCase;
 import org.junit.Test;
 

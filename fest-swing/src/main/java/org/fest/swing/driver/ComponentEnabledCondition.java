@@ -15,15 +15,15 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.format.Formatting.format;
+import static org.fest.swing.query.ComponentEnabledQuery.isEnabled;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Component;
 
 import org.fest.assertions.Description;
 import org.fest.swing.edt.GuiLazyLoadingDescription;
 import org.fest.swing.timing.Condition;
-
-import static org.fest.swing.format.Formatting.format;
-import static org.fest.swing.query.ComponentEnabledQuery.isEnabled;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands a condition that verifies that a component is enabled.

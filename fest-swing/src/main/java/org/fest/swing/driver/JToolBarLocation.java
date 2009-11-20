@@ -14,18 +14,18 @@
  */
 package org.fest.swing.driver;
 
+import static java.awt.BorderLayout.*;
+import static java.lang.Math.max;
+import static javax.swing.SwingConstants.HORIZONTAL;
+import static org.fest.util.Arrays.format;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
 import java.awt.*;
 
 import javax.swing.JToolBar;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static java.awt.BorderLayout.*;
-import static java.lang.Math.max;
-import static javax.swing.SwingConstants.HORIZONTAL;
-
-import static org.fest.util.Arrays.format;
-import static org.fest.util.Strings.*;
 
 /**
  * Understands a visible location on a <code>{@link JToolBar}</code>.

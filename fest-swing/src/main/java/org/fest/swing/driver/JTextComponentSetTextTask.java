@@ -15,12 +15,12 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import javax.swing.text.JTextComponent;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands a task that sets text in a given <code>{@link JTextComponent}</code>. This task is executed in the event

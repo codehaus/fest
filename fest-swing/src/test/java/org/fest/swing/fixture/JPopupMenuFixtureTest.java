@@ -22,6 +22,7 @@ import static org.fest.swing.test.builder.JMenuItems.menuItem;
 import static org.fest.util.Arrays.array;
 
 import javax.swing.JMenuItem;
+
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.core.GenericTypeMatcher;
 import org.junit.Test;

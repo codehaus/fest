@@ -15,14 +15,14 @@
  */
 package org.fest.swing.test.builder;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.util.Arrays.isEmpty;
+
 import javax.swing.JSpinner;
 import javax.swing.SpinnerListModel;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.util.Arrays.isEmpty;
 
 /**
  * Understands creation of <code>{@link JSpinner}</code>s.

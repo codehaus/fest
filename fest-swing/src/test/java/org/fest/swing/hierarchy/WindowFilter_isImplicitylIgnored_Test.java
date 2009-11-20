@@ -16,6 +16,7 @@ package org.fest.swing.hierarchy;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JButtons.button;
+
 import java.awt.Component;
 
 import org.junit.Test;

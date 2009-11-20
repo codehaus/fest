@@ -15,15 +15,14 @@
  */
 package org.fest.swing.hierarchy;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Window;
+import static org.fest.swing.awt.AWT.isAppletViewer;
+import static org.fest.swing.awt.AWT.isSharedInvisibleFrame;
+
+import java.awt.*;
 import java.util.Collection;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.monitor.WindowMonitor;
-
-import static org.fest.swing.awt.AWT.*;
 
 /**
  * Understands access to the current AWT hierarchy.

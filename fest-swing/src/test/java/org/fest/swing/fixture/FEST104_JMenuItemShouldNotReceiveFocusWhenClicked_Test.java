@@ -23,9 +23,7 @@ import java.awt.Dimension;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.swing.*;
 
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.test.core.RobotBasedTestCase;

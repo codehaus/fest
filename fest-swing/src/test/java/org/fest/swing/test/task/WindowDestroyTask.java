@@ -16,6 +16,7 @@
 package org.fest.swing.test.task;
 
 import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.Window;
 
 import org.fest.swing.annotation.RunsInCurrentThread;

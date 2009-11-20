@@ -15,9 +15,9 @@
  */
 package org.fest.swing.edt;
 
-import org.fest.swing.exception.ActionFailedException;
-
 import static javax.swing.SwingUtilities.isEventDispatchThread;
+
+import org.fest.swing.exception.ActionFailedException;
 
 /**
  * Understands a task that should be executed in the event dispatch thread.

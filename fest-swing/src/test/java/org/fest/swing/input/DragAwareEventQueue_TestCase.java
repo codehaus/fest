@@ -15,9 +15,11 @@
 package org.fest.swing.input;
 
 import static org.easymock.classextension.EasyMock.createMock;
+
 import java.awt.AWTEvent;
 import java.awt.ActiveEvent;
 import java.awt.event.AWTEventListener;
+
 import org.fest.swing.test.awt.ToolkitStub;
 import org.junit.Before;
 

@@ -22,9 +22,7 @@ import static org.fest.util.Strings.concat;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * Tests for <code>{@link StackTraces#appendCurrentThreadStackTraceToThrowable(Throwable, String)}</code>.

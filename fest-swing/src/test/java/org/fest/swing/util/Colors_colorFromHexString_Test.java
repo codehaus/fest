@@ -15,11 +15,7 @@
  */
 package org.fest.swing.util;
 
-import static java.awt.Color.BLACK;
-import static java.awt.Color.BLUE;
-import static java.awt.Color.GREEN;
-import static java.awt.Color.RED;
-import static java.awt.Color.YELLOW;
+import static java.awt.Color.*;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.util.Collections.list;
 

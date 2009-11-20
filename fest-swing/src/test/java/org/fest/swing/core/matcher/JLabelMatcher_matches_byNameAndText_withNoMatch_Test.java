@@ -20,6 +20,7 @@ import static org.fest.swing.test.builder.JLabels.label;
 import static org.fest.util.Collections.list;
 
 import java.util.Collection;
+
 import javax.swing.JLabel;
 
 import org.fest.swing.test.core.EDTSafeTestCase;

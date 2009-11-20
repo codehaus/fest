@@ -15,14 +15,9 @@
  */
 package org.fest.swing.fixture;
 
-import java.awt.Dialog;
-import java.awt.Dimension;
-import java.awt.Point;
+import java.awt.*;
 
-import org.fest.swing.core.BasicRobot;
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.core.*;
 import org.fest.swing.core.Robot;
 import org.fest.swing.driver.DialogDriver;
 import org.fest.swing.exception.ActionFailedException;

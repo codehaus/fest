@@ -17,7 +17,9 @@ package org.fest.swing.fixture;
 
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.swing.test.builder.JLabels.label;
+
 import javax.swing.JLabel;
+
 import org.fest.swing.driver.JLabelDriver;
 import org.junit.BeforeClass;
 

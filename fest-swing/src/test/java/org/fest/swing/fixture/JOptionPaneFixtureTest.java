@@ -15,7 +15,8 @@
  */
 package org.fest.swing.fixture;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JButtons.button;
 import static org.fest.swing.test.builder.JTextFields.textField;

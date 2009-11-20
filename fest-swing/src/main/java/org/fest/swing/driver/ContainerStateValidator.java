@@ -15,17 +15,16 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.Container;
-import java.awt.Dialog;
-import java.awt.Frame;
+import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
+import static org.fest.swing.driver.ComponentStateValidator.validateIsShowing;
+import static org.fest.swing.format.Formatting.format;
+import static org.fest.util.Strings.concat;
+
+import java.awt.*;
 
 import javax.swing.JInternalFrame;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static org.fest.swing.driver.ComponentStateValidator.*;
-import static org.fest.swing.format.Formatting.format;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands validation of the state of a <code>{@link Container}</code>.

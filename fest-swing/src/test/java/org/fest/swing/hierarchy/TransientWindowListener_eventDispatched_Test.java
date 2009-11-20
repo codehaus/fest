@@ -24,7 +24,7 @@ import java.awt.AWTEvent;
 import java.awt.event.WindowEvent;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link TransientWindowListener#eventDispatched(AWTEvent)}</code>.

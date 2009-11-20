@@ -18,6 +18,7 @@ package org.fest.swing.format;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JButtons.button;
 import static org.fest.util.Arrays.array;
+
 import javax.swing.JButton;
 
 import org.fest.swing.edt.GuiActionRunner;

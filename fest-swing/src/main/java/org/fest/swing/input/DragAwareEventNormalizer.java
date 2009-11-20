@@ -15,16 +15,15 @@
  */
 package org.fest.swing.input;
 
+import static java.util.logging.Level.WARNING;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
 import java.util.EmptyStackException;
 import java.util.logging.Logger;
 
 import org.fest.swing.exception.UnexpectedException;
-
-import static java.util.logging.Level.WARNING;
-
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands an <code>{@link AWTEventListener}</code> which normalizes the event stream:

@@ -15,13 +15,14 @@
  */
 package org.fest.swing.input;
 
+import static java.awt.event.WindowEvent.WINDOW_CLOSED;
+import static java.awt.event.WindowEvent.WINDOW_CLOSING;
+
 import java.awt.AWTEvent;
 import java.awt.Window;
 import java.awt.event.WindowEvent;
 import java.util.Map;
 import java.util.WeakHashMap;
-
-import static java.awt.event.WindowEvent.*;
 
 /**
  * Verifies that a notification of the disposal of a <code>{@link Window}</code> is not duplicated.

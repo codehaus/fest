@@ -14,10 +14,17 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Point;
-import java.awt.Window;
+import static javax.swing.SwingUtilities.getWindowAncestor;
+import static org.fest.reflect.core.Reflection.field;
+import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
+import static org.fest.swing.driver.JToolBarIsFloatingQuery.isJToolBarFloating;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.exception.ActionFailedException.actionFailure;
+import static org.fest.swing.format.Formatting.format;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
+import java.awt.*;
 
 import javax.swing.JToolBar;
 
@@ -29,16 +36,6 @@ import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ActionFailedException;
 import org.fest.swing.util.GenericRange;
 import org.fest.swing.util.Pair;
-
-import static javax.swing.SwingUtilities.getWindowAncestor;
-
-import static org.fest.reflect.core.Reflection.field;
-import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
-import static org.fest.swing.driver.JToolBarIsFloatingQuery.isJToolBarFloating;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.exception.ActionFailedException.actionFailure;
-import static org.fest.swing.format.Formatting.format;
-import static org.fest.util.Strings.*;
 
 /**
  * Understands simulation of user input on a <code>{@link JToolBar}</code>. Unlike <code>JToolBarFixture</code>, this

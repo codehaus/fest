@@ -24,10 +24,7 @@ import java.awt.BorderLayout;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.GenericTypeMatcher;

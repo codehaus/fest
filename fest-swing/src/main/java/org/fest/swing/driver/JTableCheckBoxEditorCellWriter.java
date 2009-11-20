@@ -15,6 +15,9 @@
  */
 package org.fest.swing.driver;
 
+import static java.lang.Boolean.parseBoolean;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.Point;
 
 import javax.swing.JCheckBox;
@@ -26,10 +29,6 @@ import org.fest.swing.cell.JTableCellWriter;
 import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.util.Pair;
-
-import static java.lang.Boolean.parseBoolean;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands an implementation of <code>{@link JTableCellWriter}</code> that knows how to use

@@ -18,11 +18,7 @@ package org.fest.swing.fixture;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
-import org.fest.swing.core.Robot;
+import org.fest.swing.core.*;
 import org.fest.swing.driver.JPopupMenuDriver;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.exception.WaitTimedOutError;

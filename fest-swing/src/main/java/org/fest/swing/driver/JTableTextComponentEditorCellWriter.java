@@ -15,6 +15,9 @@
  */
 package org.fest.swing.driver;
 
+import static java.awt.event.KeyEvent.VK_F2;
+import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
+
 import java.awt.Point;
 
 import javax.swing.JTable;
@@ -24,10 +27,6 @@ import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.cell.JTableCellWriter;
 import org.fest.swing.core.Robot;
 import org.fest.swing.exception.ActionFailedException;
-
-import static java.awt.event.KeyEvent.VK_F2;
-
-import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
 
 /**
  * Understands an implementation of <code>{@link JTableCellWriter}</code> that knows how to use

@@ -14,12 +14,12 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.format.Formatting.format;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Component;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static org.fest.swing.format.Formatting.format;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands validation of the state of a <code>{@link Component}</code>.

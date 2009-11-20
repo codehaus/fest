@@ -16,6 +16,7 @@ package org.fest.swing.format;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JComboBoxes.comboBox;
+
 import javax.swing.JComboBox;
 
 import org.fest.swing.test.core.EDTSafeTestCase;

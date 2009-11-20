@@ -15,14 +15,14 @@
  */
 package org.fest.swing.test.builder;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.util.Arrays.isEmpty;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.util.Arrays.isEmpty;
 
 /**
  * Understands creation of <code>{@link JComboBox}</code>s.

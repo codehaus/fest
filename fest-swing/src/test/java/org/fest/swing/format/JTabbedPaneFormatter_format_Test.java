@@ -17,6 +17,7 @@ package org.fest.swing.format;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JTabbedPanes.tabbedPane;
+
 import javax.swing.JTabbedPane;
 
 import org.fest.swing.test.core.EDTSafeTestCase;

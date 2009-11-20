@@ -17,9 +17,7 @@ package org.fest.swing.driver;
 
 import java.awt.Component;
 
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
 import org.fest.swing.cell.JTableCellWriter;

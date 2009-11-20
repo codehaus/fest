@@ -18,6 +18,7 @@ package org.fest.swing.fixture;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.swing.test.builder.JSplitPanes.splitPane;
+
 import javax.swing.JSplitPane;
 
 import org.fest.mocks.EasyMockTemplate;

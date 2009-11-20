@@ -21,6 +21,7 @@ import static org.fest.swing.test.core.Regex.regex;
 import java.util.regex.Pattern;
 
 import javax.swing.JComponent;
+
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.JComponentDriver;
 import org.junit.Test;

@@ -21,17 +21,14 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.builder.JTextFields.textField;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
+import java.awt.*;
 
 import javax.swing.JTextField;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.core.ComponentFinder;
+import org.fest.swing.core.*;
 import org.fest.swing.core.Robot;
-import org.fest.swing.core.Settings;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.test.core.EDTSafeTestCase;
 import org.junit.Before;

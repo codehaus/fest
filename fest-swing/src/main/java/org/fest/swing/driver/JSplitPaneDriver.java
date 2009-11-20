@@ -14,6 +14,12 @@
  */
 package org.fest.swing.driver;
 
+import static javax.swing.JSplitPane.VERTICAL_SPLIT;
+import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
+import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
+import static org.fest.swing.driver.JSplitPaneSetDividerLocationTask.setDividerLocation;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.Point;
 
 import javax.swing.JSplitPane;
@@ -23,13 +29,6 @@ import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.util.GenericRange;
-
-import static javax.swing.JSplitPane.VERTICAL_SPLIT;
-
-import static org.fest.swing.core.MouseButton.LEFT_BUTTON;
-import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
-import static org.fest.swing.driver.JSplitPaneSetDividerLocationTask.setDividerLocation;
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands simulation of user input on a <code>{@link JSplitPane}</code>. Unlike <code>JSplitPaneFixture</code>,

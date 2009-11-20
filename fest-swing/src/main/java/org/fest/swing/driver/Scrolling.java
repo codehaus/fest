@@ -14,20 +14,15 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Rectangle;
+import static javax.swing.SwingUtilities.convertRectangle;
+import static org.fest.swing.edt.GuiActionRunner.execute;
 
-import javax.swing.JComponent;
-import javax.swing.JInternalFrame;
-import javax.swing.JViewport;
+import java.awt.*;
+
+import javax.swing.*;
 
 import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiTask;
-
-import static javax.swing.SwingUtilities.convertRectangle;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands utility methods related to scrolling.

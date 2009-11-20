@@ -16,6 +16,7 @@
 package org.fest.swing.hierarchy;
 
 import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.test.core.MethodInvocations;

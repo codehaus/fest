@@ -17,6 +17,7 @@ package org.fest.swing.input;
 
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.classextension.EasyMock.createMock;
+
 import java.awt.Toolkit;
 
 import org.fest.mocks.EasyMockTemplate;

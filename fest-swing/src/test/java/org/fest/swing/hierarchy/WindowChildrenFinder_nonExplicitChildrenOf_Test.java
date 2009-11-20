@@ -20,9 +20,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.builder.JFrames.frame;
 import static org.fest.swing.test.builder.JTextFields.textField;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Window;
+import java.awt.*;
 import java.util.Collection;
 
 import javax.swing.JFrame;

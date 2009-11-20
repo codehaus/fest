@@ -17,7 +17,9 @@ package org.fest.swing.fixture;
 
 import static org.easymock.EasyMock.expect;
 import static org.fest.assertions.Assertions.assertThat;
+
 import javax.swing.JComponent;
+
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.driver.JComponentDriver;
 import org.junit.Test;

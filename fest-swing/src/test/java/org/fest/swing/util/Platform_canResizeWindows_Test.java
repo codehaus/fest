@@ -16,9 +16,7 @@
 package org.fest.swing.util;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.util.OSIdentifierStub.linux;
-import static org.fest.swing.util.OSIdentifierStub.osX;
-import static org.fest.swing.util.OSIdentifierStub.windows9x;
+import static org.fest.swing.util.OSIdentifierStub.*;
 
 import org.junit.Test;
 

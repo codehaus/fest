@@ -27,9 +27,7 @@ import javax.swing.JWindow;
 
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.test.core.EDTSafeTestCase;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * Tests for <code>{@link BasicRobot#showWindow(java.awt.Window, java.awt.Dimension, boolean)}</code>.

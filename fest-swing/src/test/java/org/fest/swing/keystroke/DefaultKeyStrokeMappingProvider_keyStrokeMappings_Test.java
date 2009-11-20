@@ -15,7 +15,7 @@
  */
 package org.fest.swing.keystroke;
 
-import java.util.*;
+import java.util.Collection;
 
 import javax.swing.KeyStroke;
 

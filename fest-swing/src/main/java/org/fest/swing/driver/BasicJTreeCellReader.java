@@ -15,6 +15,8 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.util.Strings.isDefaultToString;
+
 import java.awt.Component;
 
 import javax.swing.JTree;
@@ -22,8 +24,6 @@ import javax.swing.tree.TreeCellRenderer;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.cell.JTreeCellReader;
-
-import static org.fest.swing.util.Strings.isDefaultToString;
 
 /**
  * Understands the default implementation of <code>{@link JTreeCellReader}</code>.

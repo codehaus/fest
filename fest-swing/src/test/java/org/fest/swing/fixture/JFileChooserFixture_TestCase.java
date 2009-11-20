@@ -17,7 +17,9 @@ package org.fest.swing.fixture;
 
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.swing.test.builder.JFileChoosers.fileChooser;
+
 import javax.swing.JFileChooser;
+
 import org.fest.swing.driver.JFileChooserDriver;
 import org.junit.BeforeClass;
 

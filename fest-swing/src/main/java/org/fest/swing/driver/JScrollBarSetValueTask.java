@@ -15,11 +15,11 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import javax.swing.JScrollBar;
 
 import org.fest.swing.edt.GuiTask;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands a task that sets the value of a <code>{@link JScrollBar}</code>.This task is executed in the event

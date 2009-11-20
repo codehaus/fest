@@ -15,12 +15,13 @@
  */
 package org.fest.swing.launcher;
 
-import org.fest.reflect.exception.ReflectionError;
-import org.fest.swing.exception.UnexpectedException;
-
 import static org.fest.reflect.core.Reflection.staticMethod;
 import static org.fest.swing.util.Arrays.copyOf;
-import static org.fest.util.Strings.*;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
+import org.fest.reflect.exception.ReflectionError;
+import org.fest.swing.exception.UnexpectedException;
 
 /**
  * Understands execution of a Java application from a class that has a "main" method.

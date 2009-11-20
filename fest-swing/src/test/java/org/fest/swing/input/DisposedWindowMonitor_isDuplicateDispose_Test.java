@@ -15,9 +15,7 @@
  */
 package org.fest.swing.input;
 
-import static java.awt.event.WindowEvent.WINDOW_CLOSED;
-import static java.awt.event.WindowEvent.WINDOW_CLOSING;
-import static java.awt.event.WindowEvent.WINDOW_OPENED;
+import static java.awt.event.WindowEvent.*;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.MapAssert.entry;

@@ -24,9 +24,7 @@ import static org.fest.swing.timing.Pause.pause;
 import org.fest.swing.test.core.EDTSafeTestCase;
 import org.fest.swing.test.swing.TestWindow;
 import org.fest.swing.timing.Condition;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * Tests for <code>{@link BasicRobot#close(java.awt.Window)}</code>

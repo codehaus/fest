@@ -15,18 +15,18 @@
  */
 package org.fest.swing.driver;
 
+import static java.util.Collections.sort;
+import static javax.swing.Action.NAME;
+import static org.fest.swing.exception.ActionFailedException.actionFailure;
+import static org.fest.util.Collections.isEmpty;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
-
-import static java.util.Collections.sort;
-import static javax.swing.Action.NAME;
-
-import static org.fest.swing.exception.ActionFailedException.actionFailure;
-import static org.fest.util.Collections.isEmpty;
-import static org.fest.util.Strings.*;
 
 /**
  * Understands utility methods related to <code>{@link Action}</code>s.

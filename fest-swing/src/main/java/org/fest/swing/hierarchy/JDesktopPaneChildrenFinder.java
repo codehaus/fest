@@ -15,6 +15,8 @@
  */
 package org.fest.swing.hierarchy;
 
+import static java.util.Collections.emptyList;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.util.ArrayList;
@@ -25,8 +27,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JInternalFrame.JDesktopIcon;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static java.util.Collections.emptyList;
 
 /**
  * Understands how to find children components in a <code>{@link JDesktopPane}</code>.

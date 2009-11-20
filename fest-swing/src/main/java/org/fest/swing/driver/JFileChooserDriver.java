@@ -15,23 +15,23 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.core.matcher.JButtonMatcher.withText;
+import static org.fest.swing.driver.JFileChooserApproveButtonTextQuery.approveButtonTextFrom;
+import static org.fest.swing.driver.JFileChooserCancelButtonTextQuery.cancelButtonText;
+import static org.fest.swing.driver.JFileChooserSelectFileTask.validateAndSelectFile;
+import static org.fest.swing.driver.JFileChooserSelectFileTask.validateAndSelectFiles;
+import static org.fest.swing.driver.JFileChooserSetCurrentDirectoryTask.validateAndSetCurrentDirectory;
+import static org.fest.util.Arrays.isEmpty;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
 import java.io.File;
 
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
 import org.fest.swing.exception.ComponentLookupException;
-
-import static org.fest.swing.core.matcher.JButtonMatcher.withText;
-import static org.fest.swing.driver.JFileChooserApproveButtonTextQuery.approveButtonTextFrom;
-import static org.fest.swing.driver.JFileChooserCancelButtonTextQuery.cancelButtonText;
-import static org.fest.swing.driver.JFileChooserSelectFileTask.*;
-import static org.fest.swing.driver.JFileChooserSetCurrentDirectoryTask.validateAndSetCurrentDirectory;
-import static org.fest.util.Arrays.isEmpty;
-import static org.fest.util.Strings.*;
 
 /**
  * Understands simulation of user input on a <code>{@link JFileChooser}</code>. Unlike

@@ -16,6 +16,7 @@
 package org.fest.swing.image;
 
 import java.awt.image.BufferedImage;
+
 import org.junit.Before;
 import org.junit.Test;
 

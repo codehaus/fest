@@ -20,18 +20,13 @@
  */
 package org.fest.swing.test.swing;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-
-import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import static javax.swing.SwingUtilities.invokeLater;
+
+import java.awt.*;
+
+import javax.swing.*;
+import javax.swing.table.*;
 
 
 /**

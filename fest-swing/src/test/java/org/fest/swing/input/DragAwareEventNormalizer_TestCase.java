@@ -16,6 +16,7 @@
 package org.fest.swing.input;
 
 import java.awt.EventQueue;
+
 import org.junit.Before;
 
 /**

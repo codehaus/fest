@@ -21,14 +21,9 @@ import java.util.regex.Pattern;
 import javax.swing.JSpinner;
 import javax.swing.text.JTextComponent;
 
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
-import org.fest.swing.core.Robot;
+import org.fest.swing.core.*;
 import org.fest.swing.driver.JSpinnerDriver;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.UnexpectedException;
+import org.fest.swing.exception.*;
 import org.fest.swing.timing.Timeout;
 
 /**

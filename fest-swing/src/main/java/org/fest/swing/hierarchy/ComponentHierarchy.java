@@ -14,9 +14,7 @@
  */
 package org.fest.swing.hierarchy;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Window;
+import java.awt.*;
 import java.util.Collection;
 
 import org.fest.swing.annotation.RunsInCurrentThread;

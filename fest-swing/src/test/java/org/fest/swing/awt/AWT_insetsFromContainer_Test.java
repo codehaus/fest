@@ -20,9 +20,7 @@ import static org.fest.swing.core.BasicRobot.robotWithNewAwtHierarchy;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.test.query.ContainerInsetsQuery.insetsOf;
 
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
+import java.awt.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;

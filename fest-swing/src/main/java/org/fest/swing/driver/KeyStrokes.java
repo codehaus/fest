@@ -15,6 +15,10 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.exception.ActionFailedException.actionFailure;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +26,6 @@ import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static org.fest.swing.exception.ActionFailedException.actionFailure;
-import static org.fest.util.Strings.*;
 
 /**
  * Understands utility methods related to <code>{@link KeyStroke}</code>.

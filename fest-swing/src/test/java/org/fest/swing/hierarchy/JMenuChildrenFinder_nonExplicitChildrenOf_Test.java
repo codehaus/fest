@@ -23,9 +23,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.util.Collection;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;

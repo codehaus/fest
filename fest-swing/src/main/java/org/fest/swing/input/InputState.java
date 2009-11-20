@@ -14,23 +14,19 @@
  */
 package org.fest.swing.input;
 
+import static java.awt.AWTEvent.*;
+import static javax.swing.SwingUtilities.getDeepestComponentAt;
+import static org.fest.swing.awt.AWT.locationOnScreenOf;
+import static org.fest.swing.input.MouseInfo.BUTTON_MASK;
+
 import java.awt.*;
-import java.awt.event.AWTEventListener;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
 import org.fest.swing.exception.UnexpectedException;
 import org.fest.swing.listener.EventDispatchThreadedEventListener;
-
-import static java.awt.AWTEvent.*;
-import static javax.swing.SwingUtilities.getDeepestComponentAt;
-
-import static org.fest.swing.awt.AWT.locationOnScreenOf;
-import static org.fest.swing.input.MouseInfo.BUTTON_MASK;
 
 /**
  * Class to keep track of a given input state. Includes mouse/pointer position and keyboard modifier key state.

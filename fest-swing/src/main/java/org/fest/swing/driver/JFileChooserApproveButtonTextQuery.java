@@ -15,13 +15,13 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.util.Strings.isEmpty;
+
 import javax.swing.JFileChooser;
 import javax.swing.plaf.FileChooserUI;
 
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.util.Strings.isEmpty;
 
 /**
  * Understands an action, executed in the event dispatch thread, that returns the text used in the "approve button" of a

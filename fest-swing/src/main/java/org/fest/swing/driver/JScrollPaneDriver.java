@@ -15,14 +15,14 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands simulation of user input on a <code>{@link JScrollPane}</code>. This class is intended for internal use

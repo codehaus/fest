@@ -15,12 +15,7 @@
  */
 package org.fest.swing.keystroke;
 
-import static java.util.Locale.CHINESE;
-import static java.util.Locale.ENGLISH;
-import static java.util.Locale.FRENCH;
-import static java.util.Locale.GERMAN;
-import static java.util.Locale.ITALIAN;
-import static java.util.Locale.SIMPLIFIED_CHINESE;
+import static java.util.Locale.*;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.util.Collections.list;
 

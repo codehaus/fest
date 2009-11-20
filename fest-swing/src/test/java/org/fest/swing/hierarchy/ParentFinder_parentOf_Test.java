@@ -22,9 +22,7 @@ import static org.fest.swing.hierarchy.JFrameContentPaneQuery.contentPaneOf;
 import java.awt.Component;
 import java.awt.Container;
 
-import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;

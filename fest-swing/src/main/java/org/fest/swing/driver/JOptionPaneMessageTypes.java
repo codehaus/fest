@@ -15,15 +15,14 @@
  */
 package org.fest.swing.driver;
 
+import static javax.swing.JOptionPane.*;
+import static org.fest.swing.exception.ActionFailedException.actionFailure;
+import static org.fest.util.Strings.concat;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JOptionPane;
-
-import static javax.swing.JOptionPane.*;
-
-import static org.fest.swing.exception.ActionFailedException.actionFailure;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands message types of a <code>{@link JOptionPane}</code>.

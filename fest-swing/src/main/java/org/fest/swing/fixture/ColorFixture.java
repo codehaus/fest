@@ -15,13 +15,13 @@
  */
 package org.fest.swing.fixture;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.util.Colors.colorFromHexString;
+
 import java.awt.Color;
 
 import org.fest.assertions.BasicDescription;
 import org.fest.assertions.Description;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.util.Colors.colorFromHexString;
 
 /**
  * Understands state verification of <code>{@link Color}</code>s.

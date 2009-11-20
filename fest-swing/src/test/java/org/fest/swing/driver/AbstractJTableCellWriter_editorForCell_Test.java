@@ -22,9 +22,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.util.Collection;
 
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import org.fest.swing.test.core.RobotBasedTestCase;
 import org.junit.Test;

@@ -15,6 +15,11 @@
  */
 package org.fest.swing.format;
 
+import static java.lang.String.valueOf;
+import static org.fest.swing.format.SwingIntEnums.SELECTION_MODES;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +28,6 @@ import javax.swing.JList;
 import javax.swing.ListModel;
 
 import org.fest.util.Arrays;
-
-import static java.lang.String.valueOf;
-
-import static org.fest.swing.format.SwingIntEnums.SELECTION_MODES;
-import static org.fest.util.Strings.*;
 
 /**
  * Understands a formatter for <code>{@link JList}</code>s.

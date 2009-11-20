@@ -16,10 +16,11 @@
 package org.fest.swing.fixture;
 
 import static org.easymock.EasyMock.expectLastCall;
-import javax.swing.*;
+
+import javax.swing.AbstractButton;
 
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.driver.*;
+import org.fest.swing.driver.AbstractButtonDriver;
 import org.junit.Test;
 
 /**

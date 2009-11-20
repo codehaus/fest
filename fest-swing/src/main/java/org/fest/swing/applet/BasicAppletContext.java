@@ -15,16 +15,11 @@
  */
 package org.fest.swing.applet;
 
-import java.applet.Applet;
-import java.applet.AppletContext;
-import java.applet.AudioClip;
+import java.applet.*;
 import java.awt.Image;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Understands a basic (and limited) implementation of <code>{@link AppletContext}</code>.

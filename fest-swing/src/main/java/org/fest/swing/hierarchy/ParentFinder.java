@@ -15,17 +15,13 @@
  */
 package org.fest.swing.hierarchy;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Window;
+import static org.fest.swing.hierarchy.JInternalFrameDesktopPaneQuery.desktopPaneOf;
 
-import javax.swing.JInternalFrame;
-import javax.swing.JPopupMenu;
-import javax.swing.MenuElement;
+import java.awt.*;
+
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static org.fest.swing.hierarchy.JInternalFrameDesktopPaneQuery.desktopPaneOf;
 
 /**
  * Understands how to find the parent of a <code>{@link Component}</code>. This method returns the most likely parent 

@@ -19,6 +19,7 @@ import static javax.swing.JOptionPane.DEFAULT_OPTION;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JOptionPanes.optionPane;
+
 import javax.swing.JOptionPane;
 
 import org.fest.swing.test.core.EDTSafeTestCase;

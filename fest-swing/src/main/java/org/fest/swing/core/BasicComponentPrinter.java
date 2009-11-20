@@ -14,6 +14,10 @@
  */
 package org.fest.swing.core;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.format.Formatting.format;
+import static org.fest.swing.hierarchy.NewHierarchy.ignoreExistingComponents;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.io.PrintStream;
@@ -21,13 +25,7 @@ import java.io.PrintStream;
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
-import org.fest.swing.hierarchy.ComponentHierarchy;
-import org.fest.swing.hierarchy.ExistingHierarchy;
-import org.fest.swing.hierarchy.SingleComponentHierarchy;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.format.Formatting.format;
-import static org.fest.swing.hierarchy.NewHierarchy.ignoreExistingComponents;
+import org.fest.swing.hierarchy.*;
 
 /**
  * Understands printing the <code>String</code> representation of <code>{@link java.awt.Component}</code>s to

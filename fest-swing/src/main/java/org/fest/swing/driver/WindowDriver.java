@@ -14,19 +14,17 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Window;
+import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
+import static org.fest.swing.driver.WindowLikeContainerLocations.closeLocationOf;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
+import java.awt.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.exception.ActionFailedException;
-
-import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
-import static org.fest.swing.driver.WindowLikeContainerLocations.closeLocationOf;
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands simulation of user input on a <code>{@link Window}</code>. Unlike <code>WindowFixture</code>, this

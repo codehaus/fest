@@ -15,6 +15,9 @@
  */
 package org.fest.swing.driver;
 
+import static javax.swing.SwingConstants.HORIZONTAL;
+import static javax.swing.SwingConstants.VERTICAL;
+
 import java.awt.Insets;
 import java.awt.Point;
 import java.util.HashMap;
@@ -23,8 +26,6 @@ import java.util.Map;
 import javax.swing.JSlider;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static javax.swing.SwingConstants.*;
 
 /**
  * Understands a location in a <code>{@link JSlider}</code>.

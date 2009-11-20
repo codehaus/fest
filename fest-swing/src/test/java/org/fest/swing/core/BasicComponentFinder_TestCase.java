@@ -17,9 +17,7 @@ package org.fest.swing.core;
 
 import static org.fest.swing.edt.GuiActionRunner.execute;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;

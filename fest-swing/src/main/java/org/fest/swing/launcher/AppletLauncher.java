@@ -14,22 +14,21 @@
  */
 package org.fest.swing.launcher;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.launcher.NewAppletViewerQuery.showAppletViewerWith;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.isEmpty;
+
 import java.applet.Applet;
 import java.applet.AppletStub;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.applet.AppletViewer;
-import org.fest.swing.applet.BasicAppletContext;
-import org.fest.swing.applet.BasicAppletStub;
+import org.fest.swing.applet.*;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.exception.UnexpectedException;
 import org.fest.swing.launcher.AppletParameter.AppletParameterBuilder;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.launcher.NewAppletViewerQuery.showAppletViewerWith;
-import static org.fest.util.Strings.*;
 
 /**
  * Understands a fluent interface for launching and testing <code>{@link Applet}</code>s.

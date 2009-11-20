@@ -20,10 +20,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 
 import java.awt.Dimension;
 
-import javax.swing.DefaultCellEditor;
-import javax.swing.JComboBox;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.TableColumn;
 
 import org.fest.swing.edt.GuiQuery;

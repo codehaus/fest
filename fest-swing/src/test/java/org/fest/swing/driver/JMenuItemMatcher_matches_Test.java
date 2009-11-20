@@ -22,9 +22,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 import java.awt.Component;
 import java.awt.Dimension;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.ComponentFinder;

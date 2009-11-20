@@ -30,18 +30,12 @@ import static org.fest.swing.driver.TextAssert.verifyThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.swing.exception.ActionFailedException.actionFailure;
 import static org.fest.swing.format.Formatting.format;
-import static org.fest.util.Strings.concat;
-import static org.fest.util.Strings.isEmpty;
-import static org.fest.util.Strings.quote;
+import static org.fest.util.Strings.*;
 
-import java.awt.Container;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.regex.Pattern;
 
-import javax.swing.CellRendererPane;
-import javax.swing.JComponent;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 

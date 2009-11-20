@@ -14,13 +14,13 @@
  */
 package org.fest.swing.input;
 
+import static org.fest.swing.listener.WeakEventListener.attachAsWeakEventListener;
+
 import java.awt.AWTEvent;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
 
 import org.fest.swing.listener.WeakEventListener;
-
-import static org.fest.swing.listener.WeakEventListener.attachAsWeakEventListener;
 
 /**
  * Understands an <code>{@link AWTEventListener}</code> which normalizes the event stream by sending a single

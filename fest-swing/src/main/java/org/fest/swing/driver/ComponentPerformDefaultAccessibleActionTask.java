@@ -15,16 +15,16 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.exception.ActionFailedException.actionFailure;
+import static org.fest.swing.format.Formatting.format;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Component;
 
 import javax.accessibility.AccessibleAction;
 import javax.swing.Action;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static org.fest.swing.exception.ActionFailedException.actionFailure;
-import static org.fest.swing.format.Formatting.format;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands execution of the default (first) <code>{@link Action}</code> in a <code>{@link Component}</code>'s

@@ -15,13 +15,13 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.Component;
-
-import org.fest.swing.timing.Condition;
-
 import static org.fest.swing.format.Formatting.format;
 import static org.fest.swing.query.ComponentShowingQuery.isShowing;
 import static org.fest.util.Strings.concat;
+
+import java.awt.Component;
+
+import org.fest.swing.timing.Condition;
 
 /**
  * Understands a condition that verifies that a <code>{@link Component}</code> is showing on the screen.

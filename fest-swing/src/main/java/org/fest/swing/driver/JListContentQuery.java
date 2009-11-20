@@ -14,13 +14,13 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import javax.swing.JList;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.cell.JListCellReader;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands an action, executed in the event dispatch thread, that returns an array of <code>String</code>s that

@@ -14,19 +14,17 @@
  */
 package org.fest.swing.monitor;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.util.Collections.list;
+
 import java.awt.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.util.Collections.list;
 
 /**
  * Understands a monitor that maps event queues to GUI components and GUI components to event event queues.

@@ -32,9 +32,7 @@ import static org.fest.swing.util.TimeoutWatch.startWatchWithTimeoutOf;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Point;
+import java.awt.*;
 
 import javax.accessibility.AccessibleAction;
 import javax.swing.JMenu;
@@ -44,11 +42,10 @@ import org.fest.assertions.Description;
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.core.*;
+import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiLazyLoadingDescription;
 import org.fest.swing.edt.GuiTask;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.WaitTimedOutError;
+import org.fest.swing.exception.*;
 import org.fest.swing.format.ComponentFormatter;
 import org.fest.swing.format.Formatting;
 import org.fest.swing.timing.Timeout;

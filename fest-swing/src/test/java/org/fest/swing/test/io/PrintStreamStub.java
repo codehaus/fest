@@ -15,13 +15,13 @@
  */
 package org.fest.swing.test.io;
 
+import static org.fest.util.Strings.concat;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands a stub of <code>{@link PrintStream}</code>.

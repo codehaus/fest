@@ -15,16 +15,15 @@
  */
 package org.fest.swing.input;
 
+import static java.awt.event.InputEvent.*;
+import static java.awt.event.MouseEvent.*;
+import static org.fest.swing.query.ComponentShowingQuery.isShowing;
+
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.lang.ref.WeakReference;
 import java.util.Stack;
-
-import static java.awt.event.InputEvent.*;
-import static java.awt.event.MouseEvent.*;
-
-import static org.fest.swing.query.ComponentShowingQuery.isShowing;
 
 /**
  * Understands a description mouse-related operations.

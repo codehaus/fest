@@ -18,9 +18,7 @@ package org.fest.swing.fixture;
 import static org.fest.swing.core.ComponentLookupScope.ALL;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;

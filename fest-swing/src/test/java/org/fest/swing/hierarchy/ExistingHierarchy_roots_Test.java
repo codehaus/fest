@@ -16,6 +16,7 @@
 package org.fest.swing.hierarchy;
 
 import static org.fest.assertions.Assertions.assertThat;
+
 import java.awt.Window;
 import java.util.Collection;
 

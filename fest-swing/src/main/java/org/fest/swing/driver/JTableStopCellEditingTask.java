@@ -14,15 +14,16 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.driver.JTableCellValidator.validateCellIsEditable;
+import static org.fest.swing.driver.JTableCellValidator.validateIndices;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
-
-import static org.fest.swing.driver.JTableCellValidator.*;
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands a task that stops editing of a cell in a <code>{@link JTable}</code>. This task is executed in the

@@ -15,9 +15,9 @@
  */
 package org.fest.swing.format;
 
-import java.awt.Component;
-
 import static org.fest.util.Strings.concat;
+
+import java.awt.Component;
 
 /**
  * Understands a template for implementations of <code>{@link ComponentFormatter}</code>.

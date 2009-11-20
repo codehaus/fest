@@ -17,11 +17,13 @@ package org.fest.swing.fixture;
 
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.swing.test.builder.JLabels.label;
+
 import javax.swing.JLabel;
 
 import org.fest.swing.core.Robot;
 import org.fest.swing.test.core.EDTSafeTestCase;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link JLabelFixture#driver(org.fest.swing.driver.JLabelDriver)}</code>.

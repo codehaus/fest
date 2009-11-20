@@ -23,9 +23,7 @@ import java.awt.Component;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.test.builder.JLabels;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * Tests for <code>{@link FocusOwnerFinder#focusOwner()}</code>.

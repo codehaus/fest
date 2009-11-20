@@ -15,16 +15,15 @@
  */
 package org.fest.swing.test.builder;
 
+import static javax.swing.JSplitPane.HORIZONTAL_SPLIT;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.Component;
 
 import javax.swing.JSplitPane;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-
-import static javax.swing.JSplitPane.HORIZONTAL_SPLIT;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands creation of <code>{@link JSplitPane}</code>s.

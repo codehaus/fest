@@ -18,6 +18,7 @@ package org.fest.swing.format;
 import static javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JTables.table;
+
 import javax.swing.JTable;
 
 import org.fest.swing.test.core.EDTSafeTestCase;

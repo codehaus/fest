@@ -15,6 +15,9 @@
  */
 package org.fest.swing.fixture;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.swing.format.Formatting.format;
+
 import java.awt.Component;
 import java.awt.Container;
 
@@ -23,9 +26,6 @@ import javax.swing.JMenuItem;
 import org.fest.swing.core.ComponentMatcher;
 import org.fest.swing.core.Robot;
 import org.fest.swing.driver.JMenuItemMatcher;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.swing.format.Formatting.format;
 
 /**
  * Understands lookup of <code>{@link JMenuItem}</code>s.

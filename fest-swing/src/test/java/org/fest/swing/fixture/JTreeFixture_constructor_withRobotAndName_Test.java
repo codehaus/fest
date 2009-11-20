@@ -22,7 +22,8 @@ import static org.fest.swing.test.swing.TreeNodeFactory.node;
 import java.awt.Component;
 import java.awt.Dimension;
 
-import javax.swing.*;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
 import javax.swing.tree.*;
 
 import org.fest.swing.annotation.RunsInCurrentThread;

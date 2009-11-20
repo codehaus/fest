@@ -1,5 +1,8 @@
 package org.fest.swing.driver;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.reflect.core.Reflection.method;
+
 import java.awt.Point;
 
 import javax.swing.JTree;
@@ -9,9 +12,6 @@ import javax.swing.text.JTextComponent;
 import javax.swing.tree.TreePath;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.reflect.core.Reflection.method;
 
 /**
  * Understands a task that uses reflection to toggle the "expand state" of a node in a given

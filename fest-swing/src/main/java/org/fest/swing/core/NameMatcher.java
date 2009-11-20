@@ -15,14 +15,13 @@
  */
 package org.fest.swing.core;
 
+import static java.lang.String.valueOf;
+import static org.fest.util.Objects.areEqual;
+import static org.fest.util.Strings.*;
+
 import java.awt.Component;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static java.lang.String.valueOf;
-
-import static org.fest.util.Objects.areEqual;
-import static org.fest.util.Strings.*;
 
 /**
  * Understands <code>{@link java.awt.Component}</code> matching by name and (optionally) by type.

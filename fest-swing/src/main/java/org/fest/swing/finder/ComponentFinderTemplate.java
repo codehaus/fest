@@ -15,15 +15,15 @@
  */
 package org.fest.swing.finder;
 
+import static org.fest.swing.timing.Pause.pause;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Component;
 import java.util.concurrent.TimeUnit;
 
 import org.fest.swing.core.*;
 import org.fest.swing.exception.WaitTimedOutError;
 import org.fest.swing.fixture.ComponentFixture;
-
-import static org.fest.swing.timing.Pause.pause;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands a template for <code>{@link Component}</code> finders.

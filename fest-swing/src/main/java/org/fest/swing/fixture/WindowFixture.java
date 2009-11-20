@@ -15,15 +15,15 @@
  */
 package org.fest.swing.fixture;
 
+import static org.fest.swing.core.BasicRobot.robotWithCurrentAwtHierarchy;
+
 import java.awt.Dimension;
 import java.awt.Window;
 
-import org.fest.swing.core.Robot;
 import org.fest.swing.core.BasicRobot;
+import org.fest.swing.core.Robot;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.lock.ScreenLock;
-
-import static org.fest.swing.core.BasicRobot.robotWithCurrentAwtHierarchy;
 
 /**
  * Understands simulation of user events on a <code>{@link Window}</code> and verification of the state of such

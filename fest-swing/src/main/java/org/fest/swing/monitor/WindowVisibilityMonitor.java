@@ -16,10 +16,7 @@
 package org.fest.swing.monitor;
 
 import java.awt.Window;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 

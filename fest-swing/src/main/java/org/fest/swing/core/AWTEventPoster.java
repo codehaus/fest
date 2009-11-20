@@ -15,15 +15,12 @@
  */
 package org.fest.swing.core;
 
-import java.awt.AWTEvent;
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.Toolkit;
+import static org.fest.swing.timing.Pause.pause;
+
+import java.awt.*;
 
 import org.fest.swing.input.InputState;
 import org.fest.swing.monitor.WindowMonitor;
-
-import static org.fest.swing.timing.Pause.pause;
 
 /**
  * Understands posting <code>{@link AWTEvent}</code>s in a <code>{@link EventQueue}</code>.

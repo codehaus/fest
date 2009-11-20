@@ -15,10 +15,10 @@
  */
 package org.fest.swing.format;
 
+import static java.lang.String.valueOf;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import static java.lang.String.valueOf;
 
 /**
  * Understands a workaround to obtain a <code>String</code> representation of an <code>int</code> enumeration.

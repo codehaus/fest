@@ -16,6 +16,7 @@
 package org.fest.swing.fixture;
 
 import static org.easymock.EasyMock.expectLastCall;
+
 import java.awt.Component;
 
 import org.fest.mocks.EasyMockTemplate;

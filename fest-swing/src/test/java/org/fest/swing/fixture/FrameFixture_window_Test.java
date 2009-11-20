@@ -20,6 +20,7 @@ import static org.fest.swing.test.builder.JFrames.frame;
 import static org.fest.swing.test.task.WindowDestroyTask.hideAndDisposeInEDT;
 
 import java.awt.Frame;
+
 import org.fest.swing.driver.FrameDriver;
 import org.junit.After;
 

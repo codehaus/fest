@@ -14,6 +14,16 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.driver.ComponentMovableQuery.isUserMovable;
+import static org.fest.swing.driver.ComponentMoveTask.moveComponent;
+import static org.fest.swing.driver.ComponentSetSizeTask.setComponentSize;
+import static org.fest.swing.driver.ComponentStateValidator.componentNotShowingOnScreenFailure;
+import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
+import static org.fest.swing.driver.ContainerStateValidator.validateCanResize;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.format.Formatting.format;
+import static org.fest.util.Strings.concat;
+
 import java.awt.*;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
@@ -22,15 +32,6 @@ import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.util.Pair;
 import org.fest.swing.util.Triple;
-
-import static org.fest.swing.driver.ComponentMovableQuery.isUserMovable;
-import static org.fest.swing.driver.ComponentMoveTask.moveComponent;
-import static org.fest.swing.driver.ComponentSetSizeTask.setComponentSize;
-import static org.fest.swing.driver.ComponentStateValidator.*;
-import static org.fest.swing.driver.ContainerStateValidator.validateCanResize;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.format.Formatting.format;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands simulation of user input on a <code>{@link Container}</code>. This class is intended for internal use

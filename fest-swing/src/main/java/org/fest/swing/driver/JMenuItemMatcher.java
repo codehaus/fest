@@ -14,6 +14,10 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.driver.AbstractButtonTextQuery.textOf;
+import static org.fest.util.Objects.areEqual;
+import static org.fest.util.Strings.*;
+
 import java.awt.Component;
 
 import javax.swing.JMenuItem;
@@ -21,10 +25,6 @@ import javax.swing.JPopupMenu;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.core.ComponentMatcher;
-
-import static org.fest.swing.driver.AbstractButtonTextQuery.textOf;
-import static org.fest.util.Objects.areEqual;
-import static org.fest.util.Strings.*;
 
 /**
  * Matches a <code>{@link JMenuItem}</code> given a simple label or a menu path of the format "menu|submenu|menuitem",

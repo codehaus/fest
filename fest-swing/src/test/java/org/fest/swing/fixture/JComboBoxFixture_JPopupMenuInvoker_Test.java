@@ -17,7 +17,9 @@ package org.fest.swing.fixture;
 
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.swing.test.builder.JComboBoxes.comboBox;
+
 import javax.swing.JComboBox;
+
 import org.fest.swing.driver.JComboBoxDriver;
 import org.junit.BeforeClass;
 

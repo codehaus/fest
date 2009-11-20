@@ -22,10 +22,7 @@ import static org.fest.swing.test.recorder.ClickRecorder.attachTo;
 
 import java.awt.Dimension;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;

@@ -15,13 +15,13 @@
  */
 package org.fest.swing.test.builder;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import javax.swing.JFrame;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands creation of <code>{@link JFrame}</code>s.

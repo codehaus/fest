@@ -20,9 +20,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 import static org.fest.util.Strings.concat;
 
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
+import javax.swing.tree.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;

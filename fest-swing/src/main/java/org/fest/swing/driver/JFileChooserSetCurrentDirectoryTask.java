@@ -15,14 +15,14 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.io.File;
 
 import javax.swing.JFileChooser;
 
 import org.fest.swing.edt.GuiTask;
-
-import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands a task that sets the current directory in a <code>{@link JFileChooser}</code>. This task is executed in

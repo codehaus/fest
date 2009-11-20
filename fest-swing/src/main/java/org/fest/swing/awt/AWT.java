@@ -22,10 +22,7 @@ import static org.fest.util.Strings.concat;
 import java.awt.*;
 import java.awt.event.InputEvent;
 
-import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;

@@ -24,13 +24,9 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JTextFields.textField;
 
 import java.applet.Applet;
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.FileDialog;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 import java.util.List;
 
 import org.fest.mocks.EasyMockTemplate;
@@ -38,9 +34,7 @@ import org.fest.swing.listener.WeakEventListener;
 import org.fest.swing.test.awt.ToolkitStub;
 import org.fest.swing.test.core.EDTSafeTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;

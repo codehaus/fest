@@ -15,6 +15,9 @@
  */
 package org.fest.swing.test.swing;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Dimension;
 
 import javax.swing.JDesktopPane;
@@ -23,9 +26,6 @@ import javax.swing.JInternalFrame;
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands an MDI frame.

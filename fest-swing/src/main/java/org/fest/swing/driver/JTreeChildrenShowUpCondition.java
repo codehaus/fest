@@ -15,14 +15,14 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.driver.JTreeChildOfPathCountQuery.childCount;
+import static org.fest.util.Strings.concat;
+
 import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.timing.Condition;
-
-import static org.fest.swing.driver.JTreeChildOfPathCountQuery.childCount;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands a condition that verifies that the children of a node in a <code>{@link JTree}</code> are displayed.

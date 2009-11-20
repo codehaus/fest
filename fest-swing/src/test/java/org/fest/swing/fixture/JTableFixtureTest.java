@@ -30,9 +30,7 @@ import static org.fest.swing.test.builder.JTableHeaders.tableHeader;
 import static org.fest.swing.test.core.CommonAssertions.failWhenExpectingException;
 import static org.fest.swing.test.core.Regex.regex;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Point;
+import java.awt.*;
 import java.util.regex.Pattern;
 
 import javax.swing.JPopupMenu;

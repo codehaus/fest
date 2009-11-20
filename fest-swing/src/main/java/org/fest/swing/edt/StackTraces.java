@@ -15,12 +15,11 @@
  */
 package org.fest.swing.edt;
 
+import static java.lang.Thread.currentThread;
+import static org.fest.util.Collections.list;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.Thread.currentThread;
-
-import static org.fest.util.Collections.list;
 
 /**
  * Understands utility methods related to stack traces.

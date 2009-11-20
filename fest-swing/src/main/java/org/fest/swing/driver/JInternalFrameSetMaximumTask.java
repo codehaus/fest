@@ -15,13 +15,13 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.beans.PropertyVetoException;
 
 import javax.swing.JInternalFrame;
 
 import org.fest.swing.edt.GuiTask;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands a task that maximizes or restores a <code>{@link JInternalFrame}</code>. This task is executed in the

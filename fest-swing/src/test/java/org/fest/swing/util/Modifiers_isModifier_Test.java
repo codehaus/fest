@@ -15,12 +15,7 @@
  */
 package org.fest.swing.util;
 
-import static java.awt.event.KeyEvent.VK_A;
-import static java.awt.event.KeyEvent.VK_ALT;
-import static java.awt.event.KeyEvent.VK_ALT_GRAPH;
-import static java.awt.event.KeyEvent.VK_CONTROL;
-import static java.awt.event.KeyEvent.VK_META;
-import static java.awt.event.KeyEvent.VK_SHIFT;
+import static java.awt.event.KeyEvent.*;
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.Test;

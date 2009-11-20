@@ -22,7 +22,8 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JToolBar;
 
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.exception.ComponentLookupException;

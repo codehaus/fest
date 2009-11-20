@@ -24,7 +24,8 @@ import javax.swing.JButton;
 import org.fest.swing.core.Robot;
 import org.fest.swing.driver.ComponentDriver;
 import org.fest.swing.test.core.EDTSafeTestCase;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for <code>{@link GenericComponentFixture#driver(org.fest.swing.driver.ComponentDriver)}</code> and

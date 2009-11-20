@@ -15,6 +15,13 @@
  */
 package org.fest.swing.driver;
 
+import static javax.swing.JFileChooser.DIRECTORIES_ONLY;
+import static javax.swing.JFileChooser.FILES_ONLY;
+import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.format.Formatting.format;
+import static org.fest.util.Strings.concat;
+
 import java.io.File;
 
 import javax.swing.JFileChooser;
@@ -22,13 +29,6 @@ import javax.swing.JFileChooser;
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;
-
-import static javax.swing.JFileChooser.*;
-
-import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.format.Formatting.format;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands a task that selects a file in a <code>{@link JFileChooser}</code>. This task is executed in the event

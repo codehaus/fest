@@ -21,18 +21,13 @@ import static org.fest.swing.query.ComponentParentQuery.parentOf;
 
 import java.awt.Window;
 
-import javax.swing.JButton;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.test.core.EDTSafeTestCase;
 import org.fest.swing.test.swing.TestWindow;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * Tests for <code>{@link WindowAncestorFinder#windowAncestorOf(java.awt.Component)}</code>.

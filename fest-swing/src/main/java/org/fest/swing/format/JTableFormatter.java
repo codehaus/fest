@@ -15,13 +15,13 @@
  */
 package org.fest.swing.format;
 
+import static java.lang.String.valueOf;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
 import java.awt.Component;
 
 import javax.swing.JTable;
-
-import static java.lang.String.valueOf;
-
-import static org.fest.util.Strings.*;
 
 /**
  * Understands a formatter for <code>{@link JTable}</code>s.

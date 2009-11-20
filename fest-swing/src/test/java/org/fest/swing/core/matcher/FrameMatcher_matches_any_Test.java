@@ -18,6 +18,7 @@ package org.fest.swing.core.matcher;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JFrames.frame;
 import static org.fest.swing.test.builder.JTextFields.textField;
+
 import org.fest.swing.test.core.EDTSafeTestCase;
 import org.junit.Test;
 

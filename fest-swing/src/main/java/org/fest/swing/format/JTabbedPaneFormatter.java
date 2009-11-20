@@ -15,15 +15,15 @@
  */
 package org.fest.swing.format;
 
+import static java.lang.String.valueOf;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
 import java.awt.Component;
 
 import javax.swing.JTabbedPane;
 
 import org.fest.util.Arrays;
-
-import static java.lang.String.valueOf;
-
-import static org.fest.util.Strings.*;
 
 /**
  * Understands a formatter for <code>{@link JTabbedPane}</code>s.

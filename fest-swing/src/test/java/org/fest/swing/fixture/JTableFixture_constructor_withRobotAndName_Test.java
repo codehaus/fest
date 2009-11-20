@@ -21,7 +21,8 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 import java.awt.Component;
 import java.awt.Dimension;
 
-import javax.swing.*;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.edt.GuiQuery;

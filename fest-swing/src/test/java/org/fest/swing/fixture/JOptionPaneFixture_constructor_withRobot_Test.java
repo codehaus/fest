@@ -20,6 +20,7 @@ import static org.fest.swing.test.builder.JOptionPanes.optionPane;
 import static org.fest.swing.test.swing.JOptionPaneLauncher.launch;
 
 import javax.swing.JOptionPane;
+
 import org.fest.swing.test.core.RobotBasedTestCase;
 import org.junit.Test;
 

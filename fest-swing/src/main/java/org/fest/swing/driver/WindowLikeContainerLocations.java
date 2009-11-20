@@ -15,13 +15,11 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.Container;
-import java.awt.Insets;
-import java.awt.Point;
+import static org.fest.swing.util.Platform.*;
+
+import java.awt.*;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static org.fest.swing.util.Platform.*;
 
 /**
  * Understands locations of the control buttons in a window-like container.

@@ -16,6 +16,7 @@
 package org.fest.swing.format;
 
 import static org.fest.assertions.Assertions.assertThat;
+
 import javax.swing.JButton;
 
 import org.fest.swing.test.core.EDTSafeTestCase;

@@ -14,15 +14,13 @@
  */
 package org.fest.swing.hierarchy;
 
+import static org.fest.swing.awt.AWT.isSharedInvisibleFrame;
+
 import java.awt.Component;
 import java.awt.Window;
-import java.util.Collection;
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.*;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static org.fest.swing.awt.AWT.isSharedInvisibleFrame;
 
 /**
  * Understands a filter of windows to ignore in a component hierarchy.

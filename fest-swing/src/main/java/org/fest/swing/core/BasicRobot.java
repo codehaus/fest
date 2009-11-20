@@ -46,24 +46,17 @@ import static org.fest.util.Strings.isEmpty;
 
 import java.applet.Applet;
 import java.awt.*;
-import java.awt.event.InvocationEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.awt.event.*;
+import java.util.*;
 import java.util.List;
 
-import javax.swing.JMenu;
-import javax.swing.JPopupMenu;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.WaitTimedOutError;
+import org.fest.swing.exception.*;
 import org.fest.swing.hierarchy.ComponentHierarchy;
 import org.fest.swing.hierarchy.ExistingHierarchy;
 import org.fest.swing.input.InputState;

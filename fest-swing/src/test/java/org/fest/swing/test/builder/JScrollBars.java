@@ -15,14 +15,13 @@
  */
 package org.fest.swing.test.builder;
 
+import static java.awt.Adjustable.HORIZONTAL;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import javax.swing.JScrollBar;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-
-import static java.awt.Adjustable.HORIZONTAL;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands creation of <code>{@link JScrollBar}</code>s.

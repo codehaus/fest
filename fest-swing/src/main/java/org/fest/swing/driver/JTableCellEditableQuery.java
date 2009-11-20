@@ -15,12 +15,12 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.driver.JTableCellValidator.validateCellIndices;
+
 import javax.swing.JTable;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.data.TableCell;
-
-import static org.fest.swing.driver.JTableCellValidator.validateCellIndices;
 
 /**
  * Understands an action, executed in the event dispatch thread, that indicates whether a cell in a

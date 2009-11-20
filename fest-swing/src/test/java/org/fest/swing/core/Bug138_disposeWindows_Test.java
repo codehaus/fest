@@ -29,9 +29,7 @@ import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.hierarchy.ComponentHierarchy;
 import org.fest.swing.lock.ScreenLock;
 import org.fest.swing.test.core.EDTSafeTestCase;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * Test case for <a href="http://code.google.com/p/fest/issues/detail?id=138">Bug 138</a>.

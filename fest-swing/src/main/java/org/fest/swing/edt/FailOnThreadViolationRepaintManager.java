@@ -14,15 +14,12 @@
  */
 package org.fest.swing.edt;
 
-import javax.swing.JComponent;
-import javax.swing.RepaintManager;
-import javax.swing.SwingUtilities;
+import static org.fest.reflect.core.Reflection.staticMethod;
 
-import org.jdesktop.swinghelper.debug.CheckThreadViolationRepaintManager;
+import javax.swing.*;
 
 import org.fest.swing.exception.EdtViolationException;
-
-import static org.fest.reflect.core.Reflection.staticMethod;
+import org.jdesktop.swinghelper.debug.CheckThreadViolationRepaintManager;
 
 /**
  * <p>

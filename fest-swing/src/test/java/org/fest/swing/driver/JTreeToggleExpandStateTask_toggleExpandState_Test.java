@@ -19,14 +19,10 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.driver.JTreeExpandedPathQuery.isExpanded;
 import static org.fest.swing.edt.GuiActionRunner.execute;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
+import javax.swing.tree.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;

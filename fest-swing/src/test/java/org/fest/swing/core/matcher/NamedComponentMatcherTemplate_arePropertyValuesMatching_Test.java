@@ -17,7 +17,7 @@ package org.fest.swing.core.matcher;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.util.Objects.*;
-import static org.fest.util.Objects.HASH_CODE_PRIME;
+
 import javax.swing.JLabel;
 
 import org.junit.Test;

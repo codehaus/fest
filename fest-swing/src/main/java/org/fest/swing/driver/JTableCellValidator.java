@@ -15,14 +15,14 @@
  */
 package org.fest.swing.driver;
 
+import static java.lang.String.valueOf;
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
 import javax.swing.JTable;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.data.TableCell;
-
-import static java.lang.String.valueOf;
-
-import static org.fest.util.Strings.*;
 
 /**
  * Understands validation of <code>{@link JTable}</code>-related information.

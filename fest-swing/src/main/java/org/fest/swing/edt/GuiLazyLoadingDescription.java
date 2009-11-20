@@ -15,10 +15,10 @@
  */
 package org.fest.swing.edt;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import org.fest.assertions.Description;
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands a <code>{@link Description}</code> that loads the text to return in the event dispatch thread.

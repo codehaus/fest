@@ -17,7 +17,9 @@ package org.fest.swing.launcher;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.query.ComponentShowingQuery.isShowing;
+
 import java.applet.Applet;
+
 import org.fest.swing.applet.AppletViewer;
 import org.fest.swing.test.core.SequentialTestCase;
 import org.fest.swing.test.swing.TestApplet;

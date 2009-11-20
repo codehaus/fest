@@ -23,9 +23,7 @@ import static org.fest.swing.test.core.CommonAssertions.*;
 
 import java.awt.Container;
 
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiTask;

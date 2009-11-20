@@ -21,8 +21,9 @@ import static org.fest.swing.test.builder.JDialogs.dialog;
 import static org.fest.swing.test.task.WindowDestroyTask.hideAndDisposeInEDT;
 
 import java.awt.Dialog;
+
 import org.fest.mocks.EasyMockTemplate;
-import org.fest.swing.driver.*;
+import org.fest.swing.driver.DialogDriver;
 import org.junit.After;
 import org.junit.Test;
 

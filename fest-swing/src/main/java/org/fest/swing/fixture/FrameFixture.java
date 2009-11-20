@@ -15,19 +15,12 @@
  */
 package org.fest.swing.fixture;
 
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Point;
+import java.awt.*;
 
-import org.fest.swing.core.BasicRobot;
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.core.*;
 import org.fest.swing.core.Robot;
 import org.fest.swing.driver.FrameDriver;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.WaitTimedOutError;
+import org.fest.swing.exception.*;
 import org.fest.swing.timing.Timeout;
 
 /**

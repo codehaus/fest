@@ -14,17 +14,14 @@
  */
 package org.fest.swing.test.awt;
 
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.fest.util.Collections.list;
+
 import java.awt.*;
 import java.awt.event.AWTEventListener;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-
-import static org.easymock.classextension.EasyMock.createMock;
-
-import static org.fest.util.Collections.list;
 
 /**
  * Understands a stub of <code>{@link Toolkit}</code>.

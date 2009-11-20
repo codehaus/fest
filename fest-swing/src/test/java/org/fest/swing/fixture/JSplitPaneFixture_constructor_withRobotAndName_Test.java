@@ -17,6 +17,7 @@ package org.fest.swing.fixture;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.Dimension;
 
 import javax.swing.JSplitPane;

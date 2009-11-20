@@ -19,9 +19,7 @@ import static org.easymock.EasyMock.expect;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.awt.Window;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.test.swing.TestWindow;

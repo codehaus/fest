@@ -23,6 +23,7 @@ import static org.fest.swing.test.builder.JPopupMenus.popupMenu;
 import static org.fest.util.Arrays.array;
 
 import javax.swing.JPopupMenu;
+
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.cell.JTreeCellReader;
 import org.junit.Test;

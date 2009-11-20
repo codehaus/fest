@@ -17,7 +17,9 @@ package org.fest.swing.fixture;
 
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.swing.test.builder.JInternalFrames.internalFrame;
+
 import javax.swing.JInternalFrame;
+
 import org.fest.swing.driver.JInternalFrameDriver;
 import org.junit.BeforeClass;
 

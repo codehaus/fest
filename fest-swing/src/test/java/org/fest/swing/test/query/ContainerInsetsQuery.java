@@ -15,13 +15,13 @@
  */
 package org.fest.swing.test.query;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.Container;
 import java.awt.Insets;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands an action, executed in the event dispatch thread, that returns the insets of a

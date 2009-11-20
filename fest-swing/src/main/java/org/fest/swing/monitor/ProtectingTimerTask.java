@@ -15,12 +15,11 @@
  */
 package org.fest.swing.monitor;
 
+import static java.util.logging.Level.WARNING;
+import static org.fest.reflect.core.Reflection.field;
+
 import java.util.TimerTask;
 import java.util.logging.Logger;
-
-import static java.util.logging.Level.WARNING;
-
-import static org.fest.reflect.core.Reflection.field;
 
 /**
  * Prevents misbehaving <code>{@link TimerTask}</code>s from canceling the timer thread by throwing exceptions and/or

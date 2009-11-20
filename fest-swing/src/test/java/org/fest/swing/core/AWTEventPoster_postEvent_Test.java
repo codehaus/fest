@@ -21,10 +21,7 @@ import static org.easymock.classextension.EasyMock.createMock;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.util.StopWatch.startNewStopWatch;
 
-import java.awt.AWTEvent;
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.Toolkit;
+import java.awt.*;
 
 import org.fest.mocks.EasyMockTemplate;
 import org.fest.swing.input.InputState;

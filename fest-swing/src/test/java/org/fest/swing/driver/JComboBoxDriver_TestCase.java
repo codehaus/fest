@@ -29,9 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.text.JTextComponent;
 
 import org.fest.swing.annotation.RunsInEDT;
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
+import org.fest.swing.edt.*;
 import org.fest.swing.test.core.MethodInvocations;
 import org.fest.swing.test.core.RobotBasedTestCase;
 import org.fest.swing.test.swing.TestWindow;

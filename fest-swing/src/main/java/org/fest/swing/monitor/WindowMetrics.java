@@ -15,9 +15,7 @@
  */
 package org.fest.swing.monitor;
 
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Window;
+import java.awt.*;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 

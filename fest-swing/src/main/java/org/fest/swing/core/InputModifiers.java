@@ -14,9 +14,9 @@
  */
 package org.fest.swing.core;
 
-import java.awt.event.InputEvent;
-
 import static java.awt.event.InputEvent.*;
+
+import java.awt.event.InputEvent;
 
 /**
  * Understands input modifiers.

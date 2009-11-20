@@ -14,13 +14,13 @@
  */
 package org.fest.swing.query;
 
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.Component;
 import java.awt.Dimension;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands an action, executed in the event dispatch thread, that returns the size of a

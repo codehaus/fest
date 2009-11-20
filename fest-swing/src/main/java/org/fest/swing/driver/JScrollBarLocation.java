@@ -15,6 +15,9 @@
  */
 package org.fest.swing.driver;
 
+import static java.awt.Adjustable.HORIZONTAL;
+import static java.awt.Adjustable.VERTICAL;
+
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,8 +25,6 @@ import java.util.Map;
 import javax.swing.JScrollBar;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static java.awt.Adjustable.*;
 
 /**
  * Understands a location in a <code>{@link JScrollBar}</code>.

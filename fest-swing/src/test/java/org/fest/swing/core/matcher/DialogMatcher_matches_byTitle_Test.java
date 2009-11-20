@@ -17,6 +17,7 @@ package org.fest.swing.core.matcher;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JDialogs.dialog;
+
 import javax.swing.JDialog;
 
 import org.fest.swing.test.core.EDTSafeTestCase;

@@ -14,6 +14,11 @@
  */
 package org.fest.swing.driver;
 
+import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
+import static org.fest.swing.driver.JSliderSetValueTask.setValue;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Point;
 
 import javax.swing.JSlider;
@@ -24,11 +29,6 @@ import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.util.GenericRange;
 import org.fest.swing.util.Pair;
-
-import static org.fest.swing.driver.ComponentStateValidator.validateIsEnabledAndShowing;
-import static org.fest.swing.driver.JSliderSetValueTask.setValue;
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands simulation of user input on a <code>{@link JSlider}</code>. Unlike <code>JSliderFixture</code>, this

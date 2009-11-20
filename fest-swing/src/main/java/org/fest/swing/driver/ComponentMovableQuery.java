@@ -15,9 +15,7 @@
  */
 package org.fest.swing.driver;
 
-import java.awt.Component;
-import java.awt.Dialog;
-import java.awt.Frame;
+import java.awt.*;
 
 import javax.swing.JInternalFrame;
 

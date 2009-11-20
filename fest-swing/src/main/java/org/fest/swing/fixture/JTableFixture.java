@@ -18,9 +18,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.driver.ComponentDriver.propertyName;
 import static org.fest.util.Strings.concat;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Point;
+import java.awt.*;
 import java.util.regex.Pattern;
 
 import javax.swing.JTable;
@@ -29,18 +27,12 @@ import javax.swing.table.JTableHeader;
 import org.fest.assertions.Description;
 import org.fest.swing.cell.JTableCellReader;
 import org.fest.swing.cell.JTableCellWriter;
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.core.MouseButton;
-import org.fest.swing.core.MouseClickInfo;
+import org.fest.swing.core.*;
 import org.fest.swing.core.Robot;
 import org.fest.swing.data.TableCell;
 import org.fest.swing.data.TableCellByColumnId;
-import org.fest.swing.driver.BasicJTableCellReader;
-import org.fest.swing.driver.BasicJTableCellWriter;
-import org.fest.swing.driver.JTableDriver;
-import org.fest.swing.exception.ActionFailedException;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.exception.WaitTimedOutError;
+import org.fest.swing.driver.*;
+import org.fest.swing.exception.*;
 import org.fest.swing.timing.Timeout;
 
 /**

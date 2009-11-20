@@ -15,10 +15,12 @@
  */
 package org.fest.swing.test.swing;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Point;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+import static org.fest.swing.test.task.FrameShowTask.packAndShow;
+import static org.fest.swing.test.task.FrameShowTask.waitForShowing;
+import static org.fest.swing.test.task.WindowDestroyTask.hideAndDispose;
+
+import java.awt.*;
 
 import javax.swing.JFrame;
 
@@ -26,10 +28,6 @@ import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
-import static org.fest.swing.test.task.FrameShowTask.*;
-import static org.fest.swing.test.task.WindowDestroyTask.hideAndDispose;
 
 /**
  * Understands the base window for all GUI tests.

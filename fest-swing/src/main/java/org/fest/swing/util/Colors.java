@@ -15,11 +15,12 @@
  */
 package org.fest.swing.util;
 
+import static org.fest.util.Strings.concat;
+import static org.fest.util.Strings.quote;
+
 import java.awt.Color;
 
 import org.fest.util.Strings;
-
-import static org.fest.util.Strings.*;
 
 /**
  * Understands utility methods related to colors.

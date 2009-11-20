@@ -22,9 +22,7 @@ import static org.fest.swing.edt.GuiActionRunner.execute;
 import java.awt.BorderLayout;
 import java.awt.Component;
 
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiQuery;

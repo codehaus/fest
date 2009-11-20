@@ -18,6 +18,7 @@ package org.fest.swing.fixture;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.fest.swing.core.MouseButton.MIDDLE_BUTTON;
 import static org.fest.swing.core.MouseClickInfo.middleButton;
+
 import java.awt.Component;
 
 import org.fest.mocks.EasyMockTemplate;

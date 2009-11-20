@@ -15,19 +15,19 @@
  */
 package org.fest.swing.monitor;
 
+import static java.awt.AWTEvent.COMPONENT_EVENT_MASK;
+import static java.awt.AWTEvent.WINDOW_EVENT_MASK;
+import static java.awt.event.ComponentEvent.COMPONENT_SHOWN;
+import static java.awt.event.WindowEvent.*;
+import static org.fest.swing.listener.WeakEventListener.attachAsWeakEventListener;
+import static org.fest.swing.query.ComponentParentQuery.parentOf;
+
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.AWTEventListener;
 import java.awt.event.ComponentEvent;
 
 import org.fest.swing.annotation.RunsInEDT;
-
-import static java.awt.AWTEvent.*;
-import static java.awt.event.ComponentEvent.COMPONENT_SHOWN;
-import static java.awt.event.WindowEvent.*;
-
-import static org.fest.swing.listener.WeakEventListener.attachAsWeakEventListener;
-import static org.fest.swing.query.ComponentParentQuery.parentOf;
 
 /**
  * Understands a monitor for components and event queues.

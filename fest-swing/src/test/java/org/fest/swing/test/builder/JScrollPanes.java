@@ -15,6 +15,10 @@
  */
 package org.fest.swing.test.builder;
 
+import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS;
+import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
+import static org.fest.swing.edt.GuiActionRunner.execute;
+
 import java.awt.Component;
 import java.awt.Dimension;
 
@@ -22,10 +26,6 @@ import javax.swing.JScrollPane;
 
 import org.fest.swing.annotation.RunsInEDT;
 import org.fest.swing.edt.GuiQuery;
-
-import static javax.swing.ScrollPaneConstants.*;
-
-import static org.fest.swing.edt.GuiActionRunner.execute;
 
 /**
  * Understands creation of <code>{@link JScrollPane}</code>s.

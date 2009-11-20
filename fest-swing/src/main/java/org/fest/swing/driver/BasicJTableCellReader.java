@@ -18,14 +18,9 @@ package org.fest.swing.driver;
 import static java.lang.String.valueOf;
 import static org.fest.swing.driver.ModelValueToString.asText;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
+import java.awt.*;
 
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JTable;
+import javax.swing.*;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
 import org.fest.swing.cell.JTableCellReader;

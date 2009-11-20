@@ -16,6 +16,7 @@
 package org.fest.swing.core.matcher;
 
 import static org.fest.assertions.Assertions.assertThat;
+
 import javax.swing.JLabel;
 
 import org.junit.Before;

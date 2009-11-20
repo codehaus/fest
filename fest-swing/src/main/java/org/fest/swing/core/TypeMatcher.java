@@ -15,13 +15,12 @@
  */
 package org.fest.swing.core;
 
+import static java.lang.String.valueOf;
+import static org.fest.util.Strings.concat;
+
 import java.awt.Component;
 
 import org.fest.swing.annotation.RunsInCurrentThread;
-
-import static java.lang.String.valueOf;
-
-import static org.fest.util.Strings.concat;
 
 /**
  * Understands <code>{@link java.awt.Component}</code> matching by type.

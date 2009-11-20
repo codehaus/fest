@@ -17,10 +17,7 @@ package org.fest.swing.test.swing;
 
 import java.awt.Component;
 
-import javax.swing.JList;
-import javax.swing.JTable;
-import javax.swing.JTree;
-import javax.swing.ListCellRenderer;
+import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 

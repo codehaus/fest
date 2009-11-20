@@ -18,7 +18,9 @@ package org.fest.swing.fixture;
 import static org.easymock.EasyMock.expect;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.swing.test.builder.JScrollBars.scrollBar;
+
 import javax.swing.JScrollBar;
+
 import org.fest.mocks.EasyMockTemplate;
 import org.junit.Test;
 

@@ -17,9 +17,7 @@ package org.fest.swing.fixture;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
 
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.PlainDocument;
+import javax.swing.text.*;
 
 /**
  * Example document used to reproduce <a href="http://code.google.com/p/fest/issues/detail?id=219" target="_blank">issue
