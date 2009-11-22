@@ -19,6 +19,18 @@
     <name>FEST (Fixtures for Easy Software Testing)</name>
     <url>http://fest.easytesting.org</url>
   </organization>
+  <distributionManagement>
+    <repository>
+      <id>codehaus</id>
+      <name>CodeHaus Maven Repository</name>
+      <url>dav:https://dav.codehaus.org/repository/fest/</url>
+    </repository>
+    <snapshotRepository>
+      <id>codehaus.snapshot</id>
+      <name>CodeHaus Maven Snapshot Repository</name>
+      <url>dav:https://dav.codehaus.org/snapshots.repository/fest/</url>
+    </snapshotRepository>
+  </distributionManagement>
   <developers>
     <developer>
       <id>alexruiz</id>
