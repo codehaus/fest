@@ -16,7 +16,7 @@ package org.fest.assertions;
 
 import static org.easymock.EasyMock.*;
 import static org.easymock.classextension.EasyMock.createMock;
-import static org.fest.util.Arrays.array;
+import static org.fest.assertions.Mocks.createComparisonFailureFrom;
 import static org.junit.Assert.assertNull;
 import org.fest.mocks.EasyMockTemplate;
 import org.junit.*;
@@ -33,18 +33,17 @@ public class ComparisonFailureFactory_comparisonFailure_withMocks_Test {
   @Before
   public void setUp() {
     invoker = createMock(ConstructorInvoker.class);
+    ComparisonFailureFactory.constructorInvoker(invoker);
   }
 
-  @AfterClass
-  public static void tearDown() {
+  @After
+  public void tearDown() {
     ComparisonFailureFactory.constructorInvoker(new ConstructorInvoker());
   }
 
   @Test
   public void should_return_null_if_created_Object_is_not_AssertionError() {
-    ComparisonFailureFactory.constructorInvoker(invoker);
     new EasyMockTemplate(invoker) {
-
       protected void expectations() {
         expect(createComparisonFailure()).andReturn(new Object());
       }
@@ -58,9 +57,7 @@ public class ComparisonFailureFactory_comparisonFailure_withMocks_Test {
 
   @Test
   public void should_return_null_if_call_to_constructor_throws_exception() {
-    ComparisonFailureFactory.constructorInvoker(invoker);
     new EasyMockTemplate(invoker) {
-
       protected void expectations() {
         expect(createComparisonFailure()).andThrow(new Exception());
       }
@@ -72,15 +69,7 @@ public class ComparisonFailureFactory_comparisonFailure_withMocks_Test {
     }.run();
   }
 
-  @SuppressWarnings("unchecked")
   private Object createComparisonFailure() {
-    try {
-      return invoker.newInstance(
-          eq("org.junit.ComparisonFailure"),
-          aryEq(array(String.class, String.class, String.class)),
-          aryEq(array("[message]", "'expected'", "'actual'")));
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
+    return createComparisonFailureFrom(invoker);
   }
 }

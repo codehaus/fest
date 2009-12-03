@@ -80,4 +80,25 @@ public class BigDecimalAssert_isGreaterThanOrEqualTo_Test implements Assert_isGr
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(eight()).overridingErrorMessage("My custom message")
+                                     .isGreaterThanOrEqualTo(nine());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(eight()).as("A Test")
+                                     .overridingErrorMessage("My custom message")
+                                     .isGreaterThanOrEqualTo(nine());
+      }
+    });
+  }
 }

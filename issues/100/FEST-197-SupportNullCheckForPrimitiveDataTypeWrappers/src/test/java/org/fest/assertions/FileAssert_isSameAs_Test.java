@@ -17,7 +17,7 @@ package org.fest.assertions;
 import static org.fest.assertions.FileStub.newFile;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import org.fest.test.CodeToTest;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * Tests for <code>{@link FileAssert#isSameAs(java.io.File)}</code>.
@@ -26,7 +26,14 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class FileAssert_isSameAs_Test extends FileAssert_TestCase implements GenericAssert_isSameAs_TestCase {
+public class FileAssert_isSameAs_Test implements GenericAssert_isSameAs_TestCase {
+
+  private static FileStub file;
+
+  @BeforeClass
+  public static void setUp() {
+    file = newFile("c:\\f.txt");
+  }
 
   @Test
   public void should_pass_if_actual_and_expected_are_same() {
@@ -47,6 +54,27 @@ public class FileAssert_isSameAs_Test extends FileAssert_TestCase implements Gen
     expectAssertionError("[A Test] expected same instance but found:<c:\\f.txt> and:<c:\\>").on(new CodeToTest() {
       public void run() {
         new FileAssert(file).as("A Test")
+                            .isSameAs(newFile("c:\\"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_not_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(file).overridingErrorMessage("My custom message")
+                            .isSameAs(newFile("c:\\"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(file).as("A Test")
+                            .overridingErrorMessage("My custom message")
                             .isSameAs(newFile("c:\\"));
       }
     });

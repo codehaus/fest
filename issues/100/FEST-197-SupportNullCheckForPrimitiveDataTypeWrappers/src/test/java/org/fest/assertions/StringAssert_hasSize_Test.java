@@ -67,7 +67,29 @@ public class StringAssert_hasSize_Test implements Assert_hasSize_TestCase {
   public void should_fail_and_display_description_of_assertion_if_actual_does_not_have_expected_size() {
     expectAssertionError("[A Test] expected size:<2> but was:<5> for String:<'Vader'>").on(new CodeToTest() {
       public void run() {
-        new StringAssert("Vader").as("A Test").hasSize(2);
+        new StringAssert("Vader").as("A Test")
+                                 .hasSize(2);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_have_expected_size() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("Vader").overridingErrorMessage("My custom message")
+                                 .hasSize(2);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_have_expected_size() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("Vader").as("A Test")
+                                 .overridingErrorMessage("My custom message")
+                                 .hasSize(2);
       }
     });
   }

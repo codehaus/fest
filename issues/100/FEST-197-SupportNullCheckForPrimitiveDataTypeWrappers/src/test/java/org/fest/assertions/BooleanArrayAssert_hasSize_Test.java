@@ -14,11 +14,13 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ArrayFactory.booleanArray;
 import static org.fest.assertions.CommonFailures.expectErrorIfArrayIsNull;
 import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfArrayIsNull;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -29,9 +31,16 @@ import org.junit.Test;
  */
 public class BooleanArrayAssert_hasSize_Test implements Assert_hasSize_TestCase {
 
+  private static boolean[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = booleanArray(true, false, true);
+  }
+
   @Test
   public void should_pass_if_actual_has_expected_size() {
-    new BooleanArrayAssert(true, false, true).hasSize(3);
+    new BooleanArrayAssert(array).hasSize(3);
   }
 
   @Test
@@ -47,26 +56,47 @@ public class BooleanArrayAssert_hasSize_Test implements Assert_hasSize_TestCase 
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
     expectErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
       public void run() {
-        new BooleanArrayAssert(null).as("A Test")
-                                    .hasSize(2);
+        new BooleanArrayAssert(null).as("A Test").hasSize(2);
       }
     });
   }
 
   @Test
   public void should_fail_if_actual_does_not_have_expected_size() {
-    expectAssertionError("expected size:<2> but was:<1> for array:<[true]>").on(new CodeToTest() {
+    expectAssertionError("expected size:<2> but was:<3> for array:<[true, false, true]>").on(new CodeToTest() {
       public void run() {
-        new BooleanArrayAssert(true).hasSize(2);
+        new BooleanArrayAssert(array).hasSize(2);
       }
     });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_does_not_have_expected_size() {
-    expectAssertionError("[A Test] expected size:<2> but was:<1> for array:<[true]>").on(new CodeToTest() {
+    expectAssertionError("[A Test] expected size:<2> but was:<3> for array:<[true, false, true]>").on(new CodeToTest() {
       public void run() {
-        new BooleanArrayAssert(true).as("A Test").hasSize(2);
+        new BooleanArrayAssert(array).as("A Test")
+                                     .hasSize(2);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_have_expected_size() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BooleanArrayAssert(array).overridingErrorMessage("My custom message")
+                                     .hasSize(2);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_have_expected_size() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BooleanArrayAssert(array).as("A Test")
+                                     .overridingErrorMessage("My custom message")
+                                     .hasSize(2);
       }
     });
   }

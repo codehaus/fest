@@ -53,6 +53,27 @@ public class ShortAssert_isGreaterThan_Test implements Assert_isGreaterThan_Test
   }
 
   @Test
+  public void should_fail_with_custom_message_if_actual_is_equal_to_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ShortAssert(asShort(6)).overridingErrorMessage("My custom message")
+                                   .isGreaterThan(asShort(6));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_equal_to_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ShortAssert(asShort(6)).as("A Test")
+                                   .overridingErrorMessage("My custom message")
+                                   .isGreaterThan(asShort(6));
+      }
+    });
+  }
+
+  @Test
   public void should_fail_if_actual_is_less_than_expected() {
     expectAssertionError("actual value:<6> should be greater than:<10>").on(new CodeToTest() {
       public void run() {
@@ -70,4 +91,27 @@ public class ShortAssert_isGreaterThan_Test implements Assert_isGreaterThan_Test
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ShortAssert(asShort(6)).overridingErrorMessage("My custom message")
+                                   .isGreaterThan(asShort(10));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ShortAssert(asShort(6)).as("A Test")
+                                   .overridingErrorMessage("My custom message")
+                                   .isGreaterThan(asShort(10));
+      }
+    });
+  }
+
+
 }

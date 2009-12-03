@@ -15,17 +15,25 @@
 package org.fest.assertions;
 
 import static org.fest.assertions.CommonFailures.*;
+import static org.fest.assertions.FileStub.newFile;
 import static org.fest.assertions.NotNull.notNullFile;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import org.fest.test.CodeToTest;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * Tests for <code>{@link FileAssert#is(Condition)}</code>.
  *
  * @author Alex Ruiz
  */
-public class FileAssert_is_Test extends FileAssert_TestCase implements GenericAssert_satisfies_TestCase {
+public class FileAssert_is_Test implements GenericAssert_satisfies_TestCase {
+
+  private static FileStub file;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    file = newFile("c:\\f.txt");
+  }
 
   @Test
   public void should_pass_if_condition_is_satisfied() {
@@ -74,6 +82,37 @@ public class FileAssert_is_Test extends FileAssert_TestCase implements GenericAs
     expectAssertionError("[A Test] actual value:<null> should be:<Not Null>").on(new CodeToTest() {
       public void run() {
         new FileAssert(null).as("A Test")
+                            .is(notNullFile().as("Not Null"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(null).overridingErrorMessage("My custom message")
+                            .is(notNullFile());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(null).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .is(notNullFile());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(null).overridingErrorMessage("My custom message")
                             .is(notNullFile().as("Not Null"));
       }
     });

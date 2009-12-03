@@ -41,6 +41,44 @@ public class CharArrayAssert_containsOnly_Test implements GroupAssert_containsOn
   }
 
   @Test
+  public void should_fail_if_actual_is_null() {
+    expectErrorIfArrayIsNull(new CodeToTest() {
+      public void run() {
+        new CharArrayAssert(null).containsOnly(charArray('c', 'd'));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
+    expectErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
+      public void run() {
+        new CharArrayAssert(null).as("A Test")
+                                 .containsOnly(charArray('c', 'd'));
+      }
+    });
+  }
+
+  @Test
+  public void should_throw_error_if_expected_is_null() {
+    expectNullPointerException("the given array of chars should not be null").on(new CodeToTest() {
+      public void run() {
+        new CharArrayAssert(emptyCharArray()).containsOnly(null);
+      }
+    });
+  }
+
+  @Test
+  public void should_throw_error_and_display_description_of_assertion_if_expected_is_null() {
+    expectNullPointerException("[A Test] the given array of chars should not be null").on(new CodeToTest() {
+      public void run() {
+        new CharArrayAssert(emptyCharArray()).as("A Test")
+                                             .containsOnly(null);
+      }
+    });
+  }
+
+  @Test
   public void should_fail_if_actual_is_empty_and_expecting_at_least_one_element() {
     expectAssertionError("array:<[]> does not contain element(s):<[c, d]>").on(new CodeToTest() {
       public void run() {
@@ -60,40 +98,22 @@ public class CharArrayAssert_containsOnly_Test implements GroupAssert_containsOn
   }
 
   @Test
-  public void should_fail_if_actual_is_null() {
-    expectErrorIfArrayIsNull(new CodeToTest() {
+  public void should_fail_with_custom_message_if_actual_is_empty_and_expecting_at_least_one_element() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new CharArrayAssert(null).containsOnly(charArray('c', 'd'));
+        new CharArrayAssert(emptyCharArray()).overridingErrorMessage("My custom message")
+                                             .containsOnly(charArray('c', 'd'));
       }
     });
   }
 
   @Test
-  public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
-      public void run() {
-        new CharArrayAssert(null).as("A Test")
-                                 .containsOnly(charArray('c', 'd'));
-      }
-    });
-  }
-
-
-  @Test
-  public void should_throw_error_if_expected_is_null() {
-    expectNullPointerException("the given array of chars should not be null").on(new CodeToTest() {
-      public void run() {
-        new CharArrayAssert(emptyCharArray()).containsOnly(null);
-      }
-    });
-  }
-
-  @Test
-  public void should_throw_error_and_display_description_of_assertion_if_expected_is_null() {
-    expectNullPointerException("[A Test] the given array of chars should not be null").on(new CodeToTest() {
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_empty_and_expecting_at_least_one_element() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
         new CharArrayAssert(emptyCharArray()).as("A Test")
-                                             .containsOnly(null);
+                                             .overridingErrorMessage("My custom message")
+                                             .containsOnly(charArray('c', 'd'));
       }
     });
   }
@@ -118,6 +138,27 @@ public class CharArrayAssert_containsOnly_Test implements GroupAssert_containsOn
   }
 
   @Test
+  public void should_fail_with_custom_message_if_actual_contains_unexpected_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharArrayAssert('a', 'b').overridingErrorMessage("My custom message")
+                                     .containsOnly(charArray('a'));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_contains_unexpected_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharArrayAssert('a', 'b').as("A Test")
+                                     .overridingErrorMessage("My custom message")
+                                     .containsOnly(charArray('a'));
+      }
+    });
+  }
+
+  @Test
   public void should_fail_if_actual_does_not_contain_all_the_expected_values() {
     expectAssertionError("array:<[a, b]> does not contain element(s):<[c]>").on(new CodeToTest() {
       public void run() {
@@ -135,4 +176,27 @@ public class CharArrayAssert_containsOnly_Test implements GroupAssert_containsOn
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_contain_all_the_expected_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharArrayAssert('a', 'b').overridingErrorMessage("My custom message")
+                                     .containsOnly(charArray('c'));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_contain_all_the_expected_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharArrayAssert('a', 'b').as("A Test")
+                                     .overridingErrorMessage("My custom message")
+                                     .containsOnly(charArray('c'));
+      }
+    });
+  }
+
+
 }

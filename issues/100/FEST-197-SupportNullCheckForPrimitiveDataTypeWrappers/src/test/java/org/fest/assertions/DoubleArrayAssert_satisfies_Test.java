@@ -81,4 +81,35 @@ public class DoubleArrayAssert_satisfies_Test implements GenericAssert_satisfies
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(null).overridingErrorMessage("My custom message")
+                                   .satisfies(notNullDoubleArray());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(null).as("A Test")
+                                   .overridingErrorMessage("My custom message")
+                                   .satisfies(notNullDoubleArray());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(null).overridingErrorMessage("My custom message")
+                                   .satisfies(notNullDoubleArray().as("Not Null"));
+      }
+    });
+  }
 }

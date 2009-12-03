@@ -23,6 +23,7 @@ import static org.fest.util.Collections.list;
 import java.util.List;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -33,30 +34,16 @@ import org.junit.Test;
  */
 public class CollectionAssert_hasSize_Test implements Assert_hasSize_TestCase {
 
+  private static List<String> collection;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    collection = list("Gandalf", "Frodo", "Sam");
+  }
+
   @Test
   public void should_pass_if_actual_has_expected_size() {
-    new CollectionAssert(list("Gandalf", "Frodo", "Sam")).hasSize(3);
-  }
-
-  @Test
-  public void should_fail_if_actual_does_not_have_expected_size() {
-    expectAssertionError("expected size:<2> but was:<1> for collection:<['Frodo']>").on(new CodeToTest() {
-      public void run() {
-        List<String> names = list("Frodo");
-        new CollectionAssert(names).hasSize(2);
-      }
-    });
-  }
-
-  @Test
-  public void should_fail_and_display_description_of_assertion_if_actual_does_not_have_expected_size() {
-    expectAssertionError("[A Test] expected size:<2> but was:<1> for collection:<['Frodo']>").on(new CodeToTest() {
-      public void run() {
-        List<String> names = list("Frodo");
-        new CollectionAssert(names).as("A Test")
-                                   .hasSize(2);
-      }
-    });
+    new CollectionAssert(collection).hasSize(3);
   }
 
   @Test
@@ -74,6 +61,48 @@ public class CollectionAssert_hasSize_Test implements Assert_hasSize_TestCase {
       public void run() {
         new CollectionAssert(null).as("A Test")
                                   .hasSize(0);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_if_actual_does_not_have_expected_size() {
+    String message = "expected size:<2> but was:<3> for collection:<['Gandalf', 'Frodo', 'Sam']>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new CollectionAssert(collection).hasSize(2);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_and_display_description_of_assertion_if_actual_does_not_have_expected_size() {
+    String message = "[A Test] expected size:<2> but was:<3> for collection:<['Gandalf', 'Frodo', 'Sam']>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new CollectionAssert(collection).as("A Test")
+                                        .hasSize(2);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_have_expected_size() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CollectionAssert(collection).overridingErrorMessage("My custom message")
+                                        .hasSize(2);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_have_expected_size() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CollectionAssert(collection).as("A Test")
+                                        .overridingErrorMessage("My custom message")
+                                        .hasSize(2);
       }
     });
   }

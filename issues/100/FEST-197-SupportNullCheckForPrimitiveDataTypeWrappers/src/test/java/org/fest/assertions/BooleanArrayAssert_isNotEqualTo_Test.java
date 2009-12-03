@@ -46,7 +46,29 @@ public class BooleanArrayAssert_isNotEqualTo_Test implements Assert_isNotEqualTo
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_equal() {
     expectAssertionError("[A Test] actual value:<[true]> should not be equal to:<[true]>").on(new CodeToTest() {
       public void run() {
-        new BooleanArrayAssert(true).as("A Test").isNotEqualTo(booleanArray(true));
+        new BooleanArrayAssert(true).as("A Test")
+                                    .isNotEqualTo(booleanArray(true));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BooleanArrayAssert(true).overridingErrorMessage("My custom message")
+                                    .isNotEqualTo(booleanArray(true));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BooleanArrayAssert(true).as("A Test")
+                                    .overridingErrorMessage("My custom message")
+                                    .isNotEqualTo(booleanArray(true));
       }
     });
   }

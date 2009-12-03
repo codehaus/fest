@@ -52,6 +52,27 @@ public class IntAssert_isLessThan_Test implements Assert_isLessThan_TestCase {
   }
 
   @Test
+  public void should_fail_with_custom_message_if_actual_is_equal_to_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new IntAssert(6).overridingErrorMessage("My custom message")
+                        .isLessThan(6);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_equal_to_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new IntAssert(6).as("A Test")
+                        .overridingErrorMessage("My custom message")
+                        .isLessThan(6);
+      }
+    });
+  }
+
+  @Test
   public void should_fail_if_actual_is_greater_than_expected() {
     expectAssertionError("actual value:<10> should be less than:<6>").on(new CodeToTest() {
       public void run() {
@@ -65,6 +86,27 @@ public class IntAssert_isLessThan_Test implements Assert_isLessThan_TestCase {
     expectAssertionError("[A Test] actual value:<10> should be less than:<6>").on(new CodeToTest() {
       public void run() {
         new IntAssert(10).as("A Test")
+                         .isLessThan(6);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_greater_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new IntAssert(10).overridingErrorMessage("My custom message")
+                         .isLessThan(6);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_greater_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new IntAssert(10).as("A Test")
+                         .overridingErrorMessage("My custom message")
                          .isLessThan(6);
       }
     });

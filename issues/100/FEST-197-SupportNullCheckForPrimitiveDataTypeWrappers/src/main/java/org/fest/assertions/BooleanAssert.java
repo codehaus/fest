@@ -131,8 +131,9 @@ public class BooleanAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>boolean</code> is not equal to the given one.
    */
   public BooleanAssert isEqualTo(boolean expected) {
-    if (actual != expected) fail(unexpectedNotEqual(actual, expected));
-    return this;
+    if (actual == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedNotEqual(actual, expected));
   }
 
   /**
@@ -142,7 +143,13 @@ public class BooleanAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>boolean</code> is equal to the given one.
    */
   public BooleanAssert isNotEqualTo(boolean other) {
-    failIfEqual(rawDescription(), actual, other);
+    failIfEqual(customErrorMessage(), rawDescription(), actual, other);
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  public BooleanAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
     return this;
   }
 }

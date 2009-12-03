@@ -20,7 +20,10 @@ import static org.fest.assertions.CommonFailures.*;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import static org.fest.util.Collections.list;
 
+import java.util.List;
+
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -30,64 +33,110 @@ import org.junit.Test;
  */
 public class ListAssert_startsWith_Test {
 
+  private static final Object[] EMPTY_SEQUENCE = new Object[0];
+  private static List<String> list;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    list = list("Anakin", "Leia");
+  }
+  
   @Test
   public void should_pass_if_actual_starts_with_sequence() {
-    new ListAssert(list("Anakin", "Leia", "Han")).startsWith("Anakin", "Leia");
+    new ListAssert(list).startsWith("Anakin");
   }
 
   @Test
   public void should_pass_if_actual_and_expected_are_equal() {
-    new ListAssert(list("Anakin", "Leia", "Han")).startsWith("Anakin", "Leia", "Han");
+    new ListAssert(list).startsWith("Anakin", "Leia");
   }
 
   @Test
   public void should_pass_if_both_actual_and_sequence_are_empty() {
-    Object[] sequence = new Object[0];
-    new ListAssert(list()).startsWith(sequence);
+    new ListAssert(list()).startsWith(EMPTY_SEQUENCE);
   }
 
   @Test
   public void should_fail_if_actual_is_smaller_than_sequence() {
-    expectAssertionError("list:<['Anakin', 'Leia']> does not start with the sequence:<['Anakin', 'Leia', 'Han']>").on(
-      new CodeToTest() {
-        public void run() {
-          new ListAssert(list("Anakin", "Leia")).startsWith("Anakin", "Leia", "Han");
-        }
-      });
+    String message = "list:<['Anakin', 'Leia']> does not start with the sequence:<['Anakin', 'Leia', 'Han']>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).startsWith("Anakin", "Leia", "Han");
+      }
+    });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_smaller_than_sequence() {
-    expectAssertionError("[A Test] list:<['Anakin', 'Leia']> does not start with the sequence:<['Anakin', 'Leia', 'Han']>").on(
-      new CodeToTest() {
-        public void run() {
-          new ListAssert(list("Anakin", "Leia")).as("A Test")
-                                                .startsWith("Anakin", "Leia", "Han");
-        }
-      });
+    String message = "[A Test] list:<['Anakin', 'Leia']> does not start with the sequence:<['Anakin', 'Leia', 'Han']>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .startsWith("Anakin", "Leia", "Han");
+      }
+    });
   }
 
   @Test
+  public void should_fail_with_custom_message_if_actual_is_smaller_than_sequence() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).overridingErrorMessage("My custom message")
+                            .startsWith("Anakin", "Leia", "Han");
+      }
+    });
+  }
+  
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_smaller_than_sequence() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .startsWith("Anakin", "Leia", "Han");
+      }
+    });
+  }
+  
+  @Test
   public void should_fail_if_actual_is_not_empty_and_sequence_is_empty() {
-    expectAssertionError("list:<['Anakin', 'Leia']> does not start with the sequence:<[]>").on(
-      new CodeToTest() {
-        public void run() {
-          Object[] sequence = new Object[0];
-          new ListAssert(list("Anakin", "Leia")).startsWith(sequence);
-        }
-      });
+    expectAssertionError("list:<['Anakin', 'Leia']> does not start with the sequence:<[]>").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).startsWith(EMPTY_SEQUENCE);
+      }
+    });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_not_empty_and_sequence_is_empty() {
-    expectAssertionError("[A Test] list:<['Anakin', 'Leia']> does not start with the sequence:<[]>").on(
-      new CodeToTest() {
-        public void run() {
-          Object[] sequence = new Object[0];
-          new ListAssert(list("Anakin", "Leia")).as("A Test")
-                                                .startsWith(sequence);
-        }
-      });
+    String message = "[A Test] list:<['Anakin', 'Leia']> does not start with the sequence:<[]>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .startsWith(EMPTY_SEQUENCE);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_empty_and_sequence_is_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).overridingErrorMessage("My custom message")
+                            .startsWith(EMPTY_SEQUENCE);
+      }
+    });
+  }
+  
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_empty_and_sequence_is_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .startsWith(EMPTY_SEQUENCE);
+      }
+    });
   }
 
   @Test
@@ -95,22 +144,43 @@ public class ListAssert_startsWith_Test {
     expectAssertionError("list:<['Anakin', 'Leia']> does not start with the sequence:<['Leia', 'Anakin']>").on(
       new CodeToTest() {
         public void run() {
-          new ListAssert(list("Anakin", "Leia")).startsWith("Leia", "Anakin");
+          new ListAssert(list).startsWith("Leia", "Anakin");
         }
       });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_does_not_start_with_sequence() {
-    expectAssertionError("[A Test] list:<['Anakin', 'Leia']> does not start with the sequence:<['Leia', 'Anakin']>").on(
-      new CodeToTest() {
-        public void run() {
-          new ListAssert(list("Anakin", "Leia")).as("A Test")
-                                                .startsWith("Leia", "Anakin");
-        }
-      });
+    String message = "[A Test] list:<['Anakin', 'Leia']> does not start with the sequence:<['Leia', 'Anakin']>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .startsWith("Leia", "Anakin");
+      }
+    });
   }
 
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_start_with_sequence() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).overridingErrorMessage("My custom message")
+                            .startsWith("Leia", "Anakin");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_start_with_sequence() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .startsWith("Leia", "Anakin");
+      }
+    });
+  }
+  
   @Test
   public void should_fail_if_actual_is_null() {
     expectErrorIfListIsNull(new CodeToTest() {

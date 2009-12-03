@@ -5,7 +5,7 @@
     <author email="alex.ruiz.05@gmail.com">Alex Ruiz</author>
   </properties>
   <body>
-    <release version="1.2" date="TBD" description="Subsequent release">
+    <release version="1.2" date="2009-11-02" description="Subsequent release">
       <action dev="tedyoung" type="fix" issue="FEST-147">
         Class Formatting and its methods are now public.
       </action>
@@ -79,7 +79,18 @@
         Method 'contains(Object, Index)' in ListAssert now throws IndexOutOfBoundsException instead of AssertionError if 
         the value in the given Index is out of bounds.
       </action>
-      <action dev="alexruiz" type="remove">
+      <action dev="alexruiz" type="add" issue="FEST-234">
+        Added method 'overridingErrorMessage(String)' that allows users to specify custom error messages, replacing
+        the default ones.
+      </action>
+      <action dev="alexruiz" type="add" issue="FEST-242">
+        When two objects are compared with 'isEqualTo' and the comparison fails, a ComparisonFailure is thrown using the
+        'toString' implementation of the compared objects.
+      </action>
+      <action dev="alexruiz" type="fix" issue="FEST-245">
+        Deprecated static inner class Delta in FloatAssert. It is replaced by top-level class org.assertions.Delta.
+      </action>
+      <action dev="alexruiz" type="fix" issue="FEST-245">
         Deprecated method 'value' in class Delta. Replaced with method 'doubleValue'.
       </action>
     </release>

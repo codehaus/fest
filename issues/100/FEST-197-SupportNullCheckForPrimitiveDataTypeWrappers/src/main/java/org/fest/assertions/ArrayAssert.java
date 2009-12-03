@@ -54,10 +54,20 @@ public abstract class ArrayAssert<T> extends GroupAssert<T> {
    * @throws AssertionError if the actual <code>byte</code> array does not contain the given values.
    */
   protected final void assertContains(List<Object> values) {
-    List<Object> copyOfActual = copy(actual);
+    List<Object> notFound = notFoundInActual(values);
+    if (notFound.isEmpty()) return;
+    failIfCustomMessageIsSet();
+    failureIfExpectedElementsNotFound(notFound.toArray());
+  }
+
+  private List<Object> notFoundInActual(List<Object> values) {
+    List<Object> copy = copy(actual);
     List<Object> notFound = new ArrayList<Object>();
-    for (Object value : values) if (!copyOfActual.contains(value)) notFound.add(value);
-    if (!notFound.isEmpty()) failIfElementsNotFound(notFound);
+    for (Object value : values) {
+      if (copy.contains(value)) continue;
+      notFound.add(value);
+    }
+    return notFound;
   }
 
   /**
@@ -67,22 +77,33 @@ public abstract class ArrayAssert<T> extends GroupAssert<T> {
    * elements other than the ones specified.
    */
   protected final void assertContainsOnly(List<Object> values) {
-    List<Object> copyOfActual = copy(actual);
+    List<Object> copy = copy(actual);
+    List<Object> notFound = notFoundInCopy(copy, values);
+    if (!notFound.isEmpty()) failureIfExpectedElementsNotFound(notFound.toArray());
+    if (copy.isEmpty()) return;
+    throw failureIfUnexpectedElementsFound(copy.toArray());
+  }
+
+  private List<Object> notFoundInCopy(List<Object> copy, List<Object> values) {
     List<Object> notFound = new ArrayList<Object>();
     for (Object value : values) {
-      if (!copyOfActual.contains(value)) {
+      if (!copy.contains(value)) {
         notFound.add(value);
         continue;
       }
-      copyOfActual.remove(value);
+      copy.remove(value);
     }
-    if (!notFound.isEmpty()) failIfElementsNotFound(notFound);
-    if (!copyOfActual.isEmpty())
-      fail(concat("unexpected element(s):", inBrackets(copyOfActual.toArray()), " in array:", actualInBrackets()));
+    return notFound;
   }
 
-  private void failIfElementsNotFound(List<Object> notFound) {
-    fail(concat("array:", actualInBrackets(), " does not contain element(s):", inBrackets(notFound.toArray())));
+  private void failureIfExpectedElementsNotFound(Object[] notFound) {
+    failIfCustomMessageIsSet();
+    fail(concat("array:", actualInBrackets(), " does not contain element(s):", inBrackets(notFound)));
+  }
+
+  private AssertionError failureIfUnexpectedElementsFound(Object[] unexpected) {
+    failIfCustomMessageIsSet();
+    return failure(concat("unexpected element(s):", inBrackets(unexpected), " in array:", actualInBrackets()));
   }
 
   /**
@@ -94,8 +115,9 @@ public abstract class ArrayAssert<T> extends GroupAssert<T> {
     List<Object> copyOfActual = copy(actual);
     List<Object> found = new ArrayList<Object>();
     for (Object value : values) if (copyOfActual.contains(value)) found.add(value);
-    if (!found.isEmpty())
-      fail(concat("array:", actualInBrackets(), " does not exclude element(s):", inBrackets(found.toArray())));
+    if (found.isEmpty()) return;
+    failIfCustomMessageIsSet();
+    fail(concat("array:", actualInBrackets(), " does not exclude element(s):", inBrackets(found.toArray())));
   }
 
   /**
@@ -121,7 +143,9 @@ public abstract class ArrayAssert<T> extends GroupAssert<T> {
    * @throws AssertionError if the actual array is <code>null</code> or not empty.
    */
   public final void isEmpty() {
-    if (actualGroupSize() > 0) fail(concat("expecting empty array, but was:", actualInBrackets()));
+    if (actualGroupSize() == 0) return;
+    failIfCustomMessageIsSet();
+    fail(concat("expecting empty array, but was:", actualInBrackets()));
   }
 
   /**
@@ -130,6 +154,7 @@ public abstract class ArrayAssert<T> extends GroupAssert<T> {
    */
   public final void isNullOrEmpty() {
     if (actual == null || actualGroupSize() == 0) return;
+    failIfCustomMessageIsSet();
     fail(concat("expecting a null or empty array, but was:", actualInBrackets()));
   }
 
@@ -139,7 +164,9 @@ public abstract class ArrayAssert<T> extends GroupAssert<T> {
    * @throws AssertionError if the actual array is empty.
    */
   protected final void assertThatActualIsNotEmpty() {
-    if (actualGroupSize() == 0) fail("expecting a non-empty array, but it was empty");
+    if (actualGroupSize() > 0) return;
+    failIfCustomMessageIsSet();
+    fail("expecting a non-empty array, but it was empty");
   }
 
   /**
@@ -151,6 +178,7 @@ public abstract class ArrayAssert<T> extends GroupAssert<T> {
   protected final void assertThatActualHasSize(int expected) {
     int actualSize = actualGroupSize();
     if (actualSize == expected) return;
+    failIfCustomMessageIsSet();
     fail(concat(
         "expected size:", inBrackets(expected)," but was:", inBrackets(actualSize), " for array:", actualInBrackets()));
   }

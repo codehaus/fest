@@ -21,6 +21,7 @@ import static org.fest.util.Strings.concat;
 import java.awt.image.BufferedImage;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -31,32 +32,58 @@ import org.junit.Test;
  */
 public class ImageAssert_isSameAs_Test implements GenericAssert_isSameAs_TestCase {
 
+  private static BufferedImage image;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    image = fivePixelBlueImage();
+  }
+
   @Test
   public void should_pass_if_actual_and_expected_are_same() {
-    BufferedImage image = fivePixelBlueImage();
     new ImageAssert(image).isSameAs(image);
   }
 
   @Test
   public void should_fail_if_actual_and_expected_are_not_same() {
-    final BufferedImage a = fivePixelBlueImage();
     final BufferedImage e = fivePixelBlueImage();
-    expectAssertionError(concat("expected same instance but found:<", a, "> and:<", e, ">")).on(new CodeToTest() {
+    expectAssertionError(concat("expected same instance but found:<", image, "> and:<", e, ">")).on(new CodeToTest() {
       public void run() {
-        new ImageAssert(a).isSameAs(e);
+        new ImageAssert(image).isSameAs(e);
       }
     });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_same() {
-    final BufferedImage a = fivePixelBlueImage();
     final BufferedImage e = fivePixelBlueImage();
-    expectAssertionError(concat("[A Test] expected same instance but found:<", a, "> and:<", e, ">")).on(
-      new CodeToTest() {
-        public void run() {
-          new ImageAssert(a).as("A Test").isSameAs(e);
-        }
-      });
+    String message = concat("[A Test] expected same instance but found:<", image, "> and:<", e, ">");
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new ImageAssert(image).as("A Test")
+                              .isSameAs(e);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_not_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ImageAssert(image).overridingErrorMessage("My custom message")
+                              .isSameAs(fivePixelBlueImage());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ImageAssert(image).as("A Test")
+                              .overridingErrorMessage("My custom message")
+                              .isSameAs(fivePixelBlueImage());
+      }
+    });
   }
 }

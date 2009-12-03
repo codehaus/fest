@@ -74,7 +74,7 @@ public class LongArrayAssert_isNotNull_Test implements NullableAssert_isNotNull_
       }
     });
   }
-
+  
   @Test
   public void should_have_leaf_assertion_class_as_return_type() {
     LongArrayAssert initialInstance = new LongArrayAssert(1L);

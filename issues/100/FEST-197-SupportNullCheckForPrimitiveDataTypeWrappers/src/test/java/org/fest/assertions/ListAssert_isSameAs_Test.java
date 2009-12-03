@@ -22,6 +22,7 @@ import static org.fest.util.Collections.list;
 import java.util.List;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -31,9 +32,15 @@ import org.junit.Test;
  */
 public class ListAssert_isSameAs_Test implements GenericAssert_isSameAs_TestCase {
 
+  private static List<String> list;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    list = list("Leia");
+  }
+
   @Test
   public void should_pass_if_actual_and_expected_are_same() {
-    List<String> list = list("Leia");
     new ListAssert(list).isSameAs(list);
   }
 
@@ -41,7 +48,7 @@ public class ListAssert_isSameAs_Test implements GenericAssert_isSameAs_TestCase
   public void should_fail_if_actual_and_expected_are_not_same() {
     expectAssertionError("expected same instance but found:<['Leia']> and:<[]>").on(new CodeToTest() {
       public void run() {
-        new ListAssert(list("Leia")).isSameAs(emptyList());
+        new ListAssert(list).isSameAs(emptyList());
       }
     });
   }
@@ -50,7 +57,29 @@ public class ListAssert_isSameAs_Test implements GenericAssert_isSameAs_TestCase
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_same() {
     expectAssertionError("[A Test] expected same instance but found:<['Leia']> and:<[]>").on(new CodeToTest() {
       public void run() {
-        new ListAssert(list("Leia")).as("A Test").isSameAs(emptyList());
+        new ListAssert(list).as("A Test")
+                            .isSameAs(emptyList());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_not_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).overridingErrorMessage("My custom message")
+                            .isSameAs(emptyList());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .isSameAs(emptyList());
       }
     });
   }

@@ -31,7 +31,7 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class BigDecimalAssert_isZero_Test implements Assert_isZero_TestCase {
+public class BigDecimalAssert_isZero_Test implements NumberAssert_isZero_TestCase {
 
   @Test
   public void should_pass_if_actual_is_zero() {
@@ -51,7 +51,8 @@ public class BigDecimalAssert_isZero_Test implements Assert_isZero_TestCase {
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
     expectErrorWithDescriptionIfObjectIsNull(new CodeToTest() {
       public void run() {
-        new BigDecimalAssert(null).as("A Test").isZero();
+        new BigDecimalAssert(null).as("A Test")
+                                  .isZero();
       }
     });
   }
@@ -69,7 +70,29 @@ public class BigDecimalAssert_isZero_Test implements Assert_isZero_TestCase {
   public void should_fail_and_display_description_of_assertion_if_actual_is_not_zero() {
     expectAssertionError("[A Test] expected:<0> but was:<8.0>").on(new CodeToTest() {
       public void run() {
-        new BigDecimalAssert(eight()).as("A Test").isZero();
+        new BigDecimalAssert(eight()).as("A Test")
+                                     .isZero();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_zero() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(eight()).overridingErrorMessage("My custom message")
+                                     .isZero();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_zero() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(eight()).as("A Test")
+                                     .overridingErrorMessage("My custom message")
+                                     .isZero();
       }
     });
   }

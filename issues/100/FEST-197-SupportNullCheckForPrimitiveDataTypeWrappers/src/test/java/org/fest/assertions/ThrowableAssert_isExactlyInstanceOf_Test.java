@@ -72,6 +72,27 @@ public class ThrowableAssert_isExactlyInstanceOf_Test {
       }
     });
   }
+  
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_instance_of_expected_but_not_exactly() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ThrowableAssert(new NullPointerException()).overridingErrorMessage("My custom message")
+                                                       .isExactlyInstanceOf(Exception.class);
+      }
+    });
+  }
+  
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_instance_of_expected_but_not_exactly() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ThrowableAssert(new NullPointerException()).as("A Test")
+                                                       .overridingErrorMessage("My custom message")
+                                                       .isExactlyInstanceOf(Exception.class);
+      }
+    });
+  }
 
   @Test
   public void should_fail_if_actual_is_not_exactly_instance_of_expected() {
@@ -88,11 +109,33 @@ public class ThrowableAssert_isExactlyInstanceOf_Test {
     String message = "[A Test] expected exactly the same type:<java.lang.NullPointerException> but was:<java.lang.Exception>";
     expectAssertionError(message).on(new CodeToTest() {
       public void run() {
-        new ThrowableAssert(new Exception()).as("A Test").isExactlyInstanceOf(NullPointerException.class);
+        new ThrowableAssert(new Exception()).as("A Test")
+                                            .isExactlyInstanceOf(NullPointerException.class);
       }
     });
   }
 
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_exactly_instance_of_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ThrowableAssert(new Exception()).overridingErrorMessage("My custom message")
+                                            .isExactlyInstanceOf(NullPointerException.class);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_exactly_instance_of_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ThrowableAssert(new Exception()).as("A Test")
+                                            .overridingErrorMessage("My custom message")
+                                            .isExactlyInstanceOf(NullPointerException.class);
+      }
+    });
+  }
+  
   @Test
   public void should_fail_if_actual_is_null() {
     expectErrorIfObjectIsNull(new CodeToTest() {
@@ -106,7 +149,8 @@ public class ThrowableAssert_isExactlyInstanceOf_Test {
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
     expectErrorWithDescriptionIfObjectIsNull(new CodeToTest() {
       public void run() {
-        new ThrowableAssert(null).as("A Test").isExactlyInstanceOf(NullPointerException.class);
+        new ThrowableAssert(null).as("A Test")
+                                 .isExactlyInstanceOf(NullPointerException.class);
       }
     });
   }

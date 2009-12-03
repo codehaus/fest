@@ -55,4 +55,25 @@ public class IntAssert_isLessThanOrEqualTo_Test implements Assert_isLessThanOrEq
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_greater_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new IntAssert(8).overridingErrorMessage("My custom message")
+                        .isLessThanOrEqualTo(6);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_greater_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new IntAssert(8).as("A Test")
+                        .overridingErrorMessage("My custom message")
+                        .isLessThanOrEqualTo(6);
+      }
+    });
+  }
 }

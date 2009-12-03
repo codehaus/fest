@@ -14,11 +14,12 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ArrayFactory.intArray;
 import static org.fest.assertions.CommonFailures.*;
-import static org.fest.assertions.EmptyArrays.emptyIntArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -29,14 +30,21 @@ import org.junit.Test;
  */
 public class IntArrayAssert_excludes_Test implements GroupAssert_excludes_TestCase {
 
+  private static int[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = intArray(6, 8);
+  }
+
   @Test
   public void should_pass_if_actual_excludes_given_value() {
-    new IntArrayAssert(6, 8).excludes(10);
+    new IntArrayAssert(array).excludes(10);
   }
 
   @Test
   public void should_pass_if_actual_excludes_given_values() {
-    new IntArrayAssert(6, 8).excludes(10, 2);
+    new IntArrayAssert(array).excludes(10, 2);
   }
 
   @Test
@@ -62,7 +70,7 @@ public class IntArrayAssert_excludes_Test implements GroupAssert_excludes_TestCa
   public void should_throw_error_if_expected_is_null() {
     expectNullPointerException("the given array of ints should not be null").on(new CodeToTest() {
       public void run() {
-        new IntArrayAssert(emptyIntArray()).excludes(null);
+        new IntArrayAssert(array).excludes(null);
       }
     });
   }
@@ -71,8 +79,8 @@ public class IntArrayAssert_excludes_Test implements GroupAssert_excludes_TestCa
   public void should_throw_error_and_display_description_of_assertion_if_expected_is_null() {
     expectNullPointerException("[A Test] the given array of ints should not be null").on(new CodeToTest() {
       public void run() {
-        new IntArrayAssert(emptyIntArray()).as("A Test")
-                                           .excludes(null);
+        new IntArrayAssert(array).as("A Test")
+                                 .excludes(null);
       }
     });
   }
@@ -81,7 +89,7 @@ public class IntArrayAssert_excludes_Test implements GroupAssert_excludes_TestCa
   public void should_fail_if_actual_contains_given_values() {
     expectAssertionError("array:<[6, 8]> does not exclude element(s):<[6]>").on(new CodeToTest() {
       public void run() {
-        new IntArrayAssert(6, 8).excludes(6);
+        new IntArrayAssert(array).excludes(6);
       }
     });
   }
@@ -90,8 +98,29 @@ public class IntArrayAssert_excludes_Test implements GroupAssert_excludes_TestCa
   public void should_fail_and_display_description_of_assertion_if_actual_contains_given_values() {
     expectAssertionError("[A Test] array:<[6, 8]> does not exclude element(s):<[6]>").on(new CodeToTest() {
       public void run() {
-        new IntArrayAssert(6, 8).as("A Test")
-                                .excludes(6);
+        new IntArrayAssert(array).as("A Test")
+                                 .excludes(6);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_contains_given_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new IntArrayAssert(array).overridingErrorMessage("My custom message")
+                                 .excludes(6);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_contains_given_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new IntArrayAssert(array).as("A Test")
+                                 .overridingErrorMessage("My custom message")
+                                 .excludes(6);
       }
     });
   }

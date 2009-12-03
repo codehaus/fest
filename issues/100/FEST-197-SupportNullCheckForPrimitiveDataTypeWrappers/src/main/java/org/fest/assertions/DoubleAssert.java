@@ -12,6 +12,7 @@ import static org.fest.util.Strings.concat;
  *
  * @author Yvonne Wang
  * @author David DIDIER
+ * @author Alex Ruiz
  */
 public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
 
@@ -104,8 +105,9 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>double</code> value is not equal to the given one.
    */
   public DoubleAssert isEqualTo(double expected) {
-    if (compareTo(expected) != 0) fail(unexpectedNotEqual(actual, expected));
-    return this;
+    if (compareTo(expected) == 0) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedNotEqual(actual, expected));
   }
 
   /**
@@ -115,8 +117,9 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>double</code> value is equal to the given one.
    */
   public DoubleAssert isNotEqualTo(double other) {
-    if (compareTo(other) == 0) fail(unexpectedEqual(actual, other));
-    return this;
+    if (compareTo(other) != 0) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, other));
   }
 
   /**
@@ -126,8 +129,9 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>double</code> value is not greater than the given one.
    */
   public DoubleAssert isGreaterThan(double other) {
-    if (compareTo(other) <= 0) fail(unexpectedLessThanOrEqualTo(actual, other));
-    return this;
+    if (compareTo(other) > 0) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedLessThanOrEqualTo(actual, other));
   }
 
   /**
@@ -137,8 +141,9 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>double</code> value is not less than the given one.
    */
   public DoubleAssert isLessThan(double other) {
-    if (compareTo(other) >= 0) fail(unexpectedGreaterThanOrEqualTo(actual, other));
-    return this;
+    if (compareTo(other) < 0) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedGreaterThanOrEqualTo(actual, other));
   }
 
   /**
@@ -148,8 +153,9 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>double</code> value is not greater than or equal to the given one.
    */
   public DoubleAssert isGreaterThanOrEqualTo(double other) {
-    if (compareTo(other) < 0) fail(unexpectedLessThan(actual, other));
-    return this;
+    if (compareTo(other) >= 0) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedLessThan(actual, other));
   }
 
   /**
@@ -159,8 +165,9 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>double</code> value is not less than or equal to the given one.
    */
   public DoubleAssert isLessThanOrEqualTo(double other) {
-    if (compareTo(other) > 0) fail(unexpectedGreaterThan(actual, other));
-    return this;
+    if (compareTo(other) <= 0) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedGreaterThan(actual, other));
   }
 
   /**
@@ -195,7 +202,9 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
    * @return this assertion object.
    * @throws AssertionError if the actual <code>double</code> value is not equal to <code>NAN</code>.
    */
-  public DoubleAssert isNaN() { return isEqualTo(Double.NaN); }
+  public DoubleAssert isNaN() {
+    return isEqualTo(Double.NaN);
+  }
 
   /**
    * Verifies that the actual <code>double</code> value is equal to the given one, within a positive delta.
@@ -208,10 +217,7 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
    */
   @Deprecated
   public DoubleAssert isEqualTo(double expected, Delta delta) {
-    if (compareTo(expected) == 0) return this;
-    if (!(abs(expected - actual) <= delta.value))
-      fail(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(delta.value)));
-    return this;
+    return isEqualTo(expected, delta.value);
   }
 
   /**
@@ -223,11 +229,14 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
    * @since 1.1
    */
   public DoubleAssert isEqualTo(double expected, org.fest.assertions.Delta delta) {
+    return isEqualTo(expected, delta.doubleValue());
+  }
+
+  private DoubleAssert isEqualTo(double expected, double deltaValue) {
     if (compareTo(expected) == 0) return this;
-    double deltaValue = delta.doubleValue();
-    if (!(abs(expected - actual) <= deltaValue))
-      fail(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(deltaValue)));
-    return this;
+    if (abs(expected - actual) <= deltaValue) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(deltaValue)));
   }
 
   private int compareTo(double other) {
@@ -260,5 +269,11 @@ public class DoubleAssert extends PrimitiveAssert implements NumberAssert {
     private Delta(double value) {
       this.value = value;
     }
+  }
+
+  /** {@inheritDoc} */
+  public DoubleAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
+    return this;
   }
 }

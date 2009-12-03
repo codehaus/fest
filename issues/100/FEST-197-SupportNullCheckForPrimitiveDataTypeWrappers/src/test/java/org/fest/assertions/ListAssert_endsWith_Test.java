@@ -20,7 +20,10 @@ import static org.fest.assertions.CommonFailures.*;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import static org.fest.util.Collections.list;
 
+import java.util.List;
+
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -30,86 +33,154 @@ import org.junit.Test;
  */
 public class ListAssert_endsWith_Test {
 
+  private static Object[] EMPTY_SEQUENCE = new Object[0];
+  
+  private static List<String> list;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    list = list("Anakin", "Leia");
+  }
+  
   @Test
   public void should_pass_if_actual_ends_with_sequence() {
-    new ListAssert(list("Anakin", "Leia", "Han")).endsWith("Leia", "Han");
+    new ListAssert(list).endsWith("Leia");
   }
 
   @Test
   public void should_pass_if_actual_and_expected_are_equal() {
-    new ListAssert(list("Anakin", "Leia", "Han")).endsWith("Anakin", "Leia", "Han");
+    new ListAssert(list).endsWith("Anakin", "Leia");
   }
 
   @Test
   public void should_pass_if_both_actual_and_sequence_are_empty() {
-    Object[] sequence = new Object[0];
-    new ListAssert(list()).endsWith(sequence);
+    new ListAssert(emptyList()).endsWith(EMPTY_SEQUENCE);
   }
 
   @Test
   public void should_fail_if_actual_is_smaller_than_sequence() {
-    expectAssertionError("list:<['Anakin', 'Leia']> does not end with the sequence:<['Han', 'Anakin', 'Leia']>").on(
-      new CodeToTest() {
-        public void run() {
-          new ListAssert(list("Anakin", "Leia")).endsWith("Han", "Anakin", "Leia");
-        }
-      });
+    String message = "list:<['Anakin', 'Leia']> does not end with the sequence:<['Han', 'Anakin', 'Leia']>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).endsWith("Han", "Anakin", "Leia");
+      }
+    });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_smaller_than_sequence() {
-    expectAssertionError("[A Test] list:<['Anakin', 'Leia']> does not end with the sequence:<['Han', 'Anakin', 'Leia']>").on(
-      new CodeToTest() {
-        public void run() {
-          new ListAssert(list("Anakin", "Leia")).as("A Test")
-                                                .endsWith("Han", "Anakin", "Leia");
-        }
-      });
+    String message = "[A Test] list:<['Anakin', 'Leia']> does not end with the sequence:<['Han', 'Anakin', 'Leia']>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .endsWith("Han", "Anakin", "Leia");
+      }
+    });
   }
 
   @Test
+  public void should_fail_with_custom_message_if_actual_is_smaller_than_sequence() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).overridingErrorMessage("My custom message")
+                            .endsWith("Han", "Anakin", "Leia");
+      }
+    });
+  }
+  
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_smaller_than_sequence() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .endsWith("Han", "Anakin", "Leia");
+      }
+    });
+  }
+  
+  @Test
   public void should_fail_if_actual_is_not_empty_and_sequence_is_empty() {
-    expectAssertionError("list:<['Anakin', 'Leia']> does not end with the sequence:<[]>").on(
-      new CodeToTest() {
-        public void run() {
-          Object[] sequence = new Object[0];
-          new ListAssert(list("Anakin", "Leia")).endsWith(sequence);
-        }
-      });
+    expectAssertionError("list:<['Anakin', 'Leia']> does not end with the sequence:<[]>").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).endsWith(EMPTY_SEQUENCE);
+      }
+    });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_is_not_empty_and_sequence_is_empty() {
-    expectAssertionError("[A Test] list:<['Anakin', 'Leia']> does not end with the sequence:<[]>").on(
-      new CodeToTest() {
-        public void run() {
-          Object[] sequence = new Object[0];
-          new ListAssert(list("Anakin", "Leia")).as("A Test")
-                                                .endsWith(sequence);
-        }
-      });
+    expectAssertionError("[A Test] list:<['Anakin', 'Leia']> does not end with the sequence:<[]>").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .endsWith(EMPTY_SEQUENCE);
+      }
+    });
   }
 
   @Test
+  public void should_fail_with_custom_message_if_actual_is_not_empty_and_sequence_is_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).overridingErrorMessage("My custom message") 
+                            .endsWith(EMPTY_SEQUENCE);
+      }
+    });
+  }
+  
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_empty_and_sequence_is_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .overridingErrorMessage("My custom message") 
+                            .endsWith(EMPTY_SEQUENCE);
+      }
+    });
+  }
+  
+  @Test
   public void should_fail_if_actual_does_not_end_with_sequence() {
-    expectAssertionError("list:<['Anakin', 'Leia']> does not end with the sequence:<['Leia', 'Anakin']>").on(
-      new CodeToTest() {
-        public void run() {
-          new ListAssert(list("Anakin", "Leia")).endsWith("Leia", "Anakin");
-        }
-      });
+    String message = "list:<['Anakin', 'Leia']> does not end with the sequence:<['Leia', 'Anakin']>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).endsWith("Leia", "Anakin");
+      }
+    });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_does_not_end_with_sequence() {
-    expectAssertionError("[A Test] list:<['Anakin', 'Leia']> does not end with the sequence:<['Leia', 'Anakin']>").on(
-      new CodeToTest() {
-        public void run() {
-          new ListAssert(list("Anakin", "Leia")).as("A Test")
-                                                .endsWith("Leia", "Anakin");
-        }
-      });
+    String message = "[A Test] list:<['Anakin', 'Leia']> does not end with the sequence:<['Leia', 'Anakin']>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .endsWith("Leia", "Anakin");
+      }
+    });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_end_with_sequence() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).overridingErrorMessage("My custom message")
+                            .endsWith("Leia", "Anakin");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_end_with_sequence() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .endsWith("Leia", "Anakin");
+      }
+    });
+  }
+  
   @Test
   public void should_fail_if_actual_is_null() {
     expectErrorIfListIsNull(new CodeToTest() {

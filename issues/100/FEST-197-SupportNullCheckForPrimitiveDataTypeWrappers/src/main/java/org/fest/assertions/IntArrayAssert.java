@@ -205,9 +205,9 @@ public class IntArrayAssert extends ArrayAssert<int[]> {
    * @throws AssertionError if the actual <code>int</code> array is equal to the given one.
    */
   public IntArrayAssert isNotEqualTo(int[] array) {
-    if (Arrays.equals(actual, array))
-      fail(unexpectedEqual(actual, array));
-    return this;
+    if (!Arrays.equals(actual, array)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, array));
   }
 
   /**

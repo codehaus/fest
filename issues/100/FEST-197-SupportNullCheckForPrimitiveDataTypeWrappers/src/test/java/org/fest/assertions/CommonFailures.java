@@ -20,6 +20,7 @@ import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
 import org.fest.test.ExpectedFailure.Message;
+import org.junit.ComparisonFailure;
 
 /**
  * Understands common, expected test failures.
@@ -75,6 +76,10 @@ public final class CommonFailures {
 
   public static void expectErrorWithDescriptionIfMapIsNull(CodeToTest codeToTest) {
     expectAssertionError("[A Test] expecting a non-null map, but it was null").on(codeToTest);
+  }
+
+  public static Message expectComparisonFailure(String message) {
+    return expect(ComparisonFailure.class).withMessage(message);
   }
 
   public static Message expectIllegalArgumentException(String message) {

@@ -208,9 +208,15 @@ public class ImageAssert extends GenericAssert<BufferedImage> {
    * @throws AssertionError if the actual image is equal to the given one.
    */
   public ImageAssert isNotEqualTo(BufferedImage image) {
-    if (areEqual(actual, image)) fail(unexpectedEqual(actual, image));
+    if (areEqual(actual, image)) {
+      failIfCustomMessageIsSet();
+      throw failure(unexpectedEqual(actual, image));
+    }
     if (image == null) return this;
-    if (areEqual(sizeOf(actual), sizeOf(image)) && hasEqualColor(image)) fail("images are equal");
+    if (areEqual(sizeOf(actual), sizeOf(image)) && hasEqualColor(image)) {
+      failIfCustomMessageIsSet();
+      throw failure("images are equal");
+    }
     return this;
   }
 

@@ -206,8 +206,9 @@ public class FloatArrayAssert extends ArrayAssert<float[]> {
    * @throws AssertionError if the actual <code>float</code> array is equal to the given one.
    */
   public FloatArrayAssert isNotEqualTo(float[] array) {
-    if (Arrays.equals(actual, array)) fail(unexpectedEqual(actual, array));
-    return this;
+    if (!Arrays.equals(actual, array)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, array));
   }
 
   /**

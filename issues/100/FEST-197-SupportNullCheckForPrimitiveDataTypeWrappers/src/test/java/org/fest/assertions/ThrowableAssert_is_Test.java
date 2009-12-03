@@ -19,6 +19,7 @@ import static org.fest.assertions.NotNull.notNullThrowable;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,16 +29,23 @@ import org.junit.Test;
  */
 public class ThrowableAssert_is_Test implements GenericAssert_satisfies_TestCase {
 
+  private static Exception exception;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    exception = new Exception();
+  }
+
   @Test
   public void should_pass_if_condition_is_satisfied() {
-    new ThrowableAssert(new Exception()).is(notNullThrowable());
+    new ThrowableAssert(exception).is(notNullThrowable());
   }
 
   @Test
   public void should_throw_error_if_condition_is_null() {
     expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
-        new ThrowableAssert(new Exception()).is(null);
+        new ThrowableAssert(exception).is(null);
       }
     });
   }
@@ -75,6 +83,37 @@ public class ThrowableAssert_is_Test implements GenericAssert_satisfies_TestCase
     expectAssertionError("[A Test] actual value:<null> should be:<Not Null>").on(new CodeToTest() {
       public void run() {
         new ThrowableAssert(null).as("A Test")
+                                 .is(notNullThrowable().as("Not Null"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ThrowableAssert(null).overridingErrorMessage("My custom message")
+                                 .is(notNullThrowable());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ThrowableAssert(null).as("A Test")
+                                 .overridingErrorMessage("My custom message")
+                                 .is(notNullThrowable());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ThrowableAssert(null).overridingErrorMessage("My custom message")
                                  .is(notNullThrowable().as("Not Null"));
       }
     });

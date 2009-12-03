@@ -205,8 +205,9 @@ public class BooleanArrayAssert extends ArrayAssert<boolean[]> {
    * @throws AssertionError if the actual <code>boolean</code> array is equal to the given one.
    */
   public BooleanArrayAssert isNotEqualTo(boolean[] array) {
-    if (Arrays.equals(actual, array)) fail(unexpectedEqual(actual, array));
-    return this;
+    if (!Arrays.equals(actual, array)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, array));
   }
 
   /**

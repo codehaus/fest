@@ -26,4 +26,8 @@ public interface GenericAssert_isSameAs_TestCase {
   void should_fail_if_actual_and_expected_are_not_same();
 
   void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_same();
+
+  void should_fail_with_custom_message_if_actual_and_expected_are_not_same();
+
+  void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_same();
 }

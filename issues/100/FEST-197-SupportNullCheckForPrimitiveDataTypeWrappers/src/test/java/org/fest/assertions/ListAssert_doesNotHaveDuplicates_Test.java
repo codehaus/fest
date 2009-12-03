@@ -21,7 +21,10 @@ import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfLis
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import static org.fest.util.Collections.list;
 
+import java.util.List;
+
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -30,6 +33,13 @@ import org.junit.Test;
  * @author Alex Ruiz
  */
 public class ListAssert_doesNotHaveDuplicates_Test implements GroupAssert_doesNotHaveDuplicates_TestCase {
+
+  private static List<String> withDuplicates;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    withDuplicates = list("Luke", "Yoda", "Luke");
+  }
 
   @Test
   public void should_pass_if_actual_does_not_contain_duplicates() {
@@ -64,19 +74,40 @@ public class ListAssert_doesNotHaveDuplicates_Test implements GroupAssert_doesNo
   public void should_fail_if_actual_has_duplicates() {
     expectAssertionError("list:<['Luke', 'Yoda', 'Luke']> contains duplicate(s):<['Luke']>").on(new CodeToTest() {
       public void run() {
-        new ListAssert(list("Luke", "Yoda", "Luke")).doesNotHaveDuplicates();
+        new ListAssert(withDuplicates).doesNotHaveDuplicates();
       }
     });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_has_duplicates() {
-    expectAssertionError("[A Test] list:<['Luke', 'Yoda', 'Luke']> contains duplicate(s):<['Luke']>").on(
-      new CodeToTest() {
-        public void run() {
-          new ListAssert(list("Luke", "Yoda", "Luke")).as("A Test")
-                                                      .doesNotHaveDuplicates();
-        }
-      });
+    String message = "[A Test] list:<['Luke', 'Yoda', 'Luke']> contains duplicate(s):<['Luke']>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new ListAssert(withDuplicates).as("A Test")
+                                      .doesNotHaveDuplicates();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_has_duplicates() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(withDuplicates).overridingErrorMessage("My custom message")
+                                      .doesNotHaveDuplicates();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_has_duplicates() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(withDuplicates).as("A Test")
+                                      .overridingErrorMessage("My custom message")
+                                      .doesNotHaveDuplicates();
+      }
+    });
   }
 }

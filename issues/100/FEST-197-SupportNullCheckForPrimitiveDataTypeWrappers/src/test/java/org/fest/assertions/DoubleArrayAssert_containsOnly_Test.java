@@ -20,6 +20,7 @@ import static org.fest.assertions.ArrayFactory.doubleArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -30,33 +31,21 @@ import org.junit.Test;
  */
 public class DoubleArrayAssert_containsOnly_Test implements GroupAssert_containsOnly_TestCase {
 
+  private static double[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = doubleArray(98.6, 8.66);
+  }
+
   @Test
   public void should_pass_if_actual_contains_only_given_values() {
-    new DoubleArrayAssert(98.6, 8.66).containsOnly(98.6, 8.66);
+    new DoubleArrayAssert(array).containsOnly(98.6, 8.66);
   }
 
   @Test
   public void should_pass_if_actual_contains_only_given_values_in_different_order() {
-    new DoubleArrayAssert(98.6, 8.66).containsOnly(8.66, 98.6);
-  }
-
-  @Test
-  public void should_fail_if_actual_is_empty_and_expecting_at_least_one_element() {
-    expectAssertionError("array:<[]> does not contain element(s):<[5323.2]>").on(new CodeToTest() {
-      public void run() {
-        new DoubleArrayAssert(emptyDoubleArray()).containsOnly(doubleArray(5323.2));
-      }
-    });
-  }
-
-  @Test
-  public void should_fail_and_display_description_of_assertion_if_actual_is_empty_and_expecting_at_least_one_element() {
-    expectAssertionError("[A Test] array:<[]> does not contain element(s):<[5323.2]>").on(new CodeToTest() {
-      public void run() {
-        new DoubleArrayAssert(emptyDoubleArray()).as("A Test")
-                                                 .containsOnly(doubleArray(5323.2));
-      }
-    });
+    new DoubleArrayAssert(array).containsOnly(8.66, 98.6);
   }
 
   @Test
@@ -98,42 +87,123 @@ public class DoubleArrayAssert_containsOnly_Test implements GroupAssert_contains
   }
 
   @Test
-  public void should_fail_if_actual_contains_unexpected_values() {
-    expectAssertionError("unexpected element(s):<[4345.91]> in array:<[55.03, 4345.91]>").on(new CodeToTest() {
+  public void should_fail_if_actual_is_empty_and_expecting_at_least_one_element() {
+    expectAssertionError("array:<[]> does not contain element(s):<[5323.2]>").on(new CodeToTest() {
       public void run() {
-        new DoubleArrayAssert(55.03, 4345.91).containsOnly(doubleArray(55.03));
+        new DoubleArrayAssert(emptyDoubleArray()).containsOnly(doubleArray(5323.2));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_and_display_description_of_assertion_if_actual_is_empty_and_expecting_at_least_one_element() {
+    expectAssertionError("[A Test] array:<[]> does not contain element(s):<[5323.2]>").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(emptyDoubleArray()).as("A Test")
+                                                 .containsOnly(doubleArray(5323.2));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_empty_and_expecting_at_least_one_element() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(emptyDoubleArray()).overridingErrorMessage("My custom message")
+                                                 .containsOnly(doubleArray(5323.2));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_empty_and_expecting_at_least_one_element() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(emptyDoubleArray()).as("A Test")
+                                                 .overridingErrorMessage("My custom message")
+                                                 .containsOnly(doubleArray(5323.2));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_if_actual_contains_unexpected_values() {
+    expectAssertionError("unexpected element(s):<[98.6]> in array:<[98.6, 8.66]>").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(array).containsOnly(doubleArray(8.66));
       }
     });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_contains_unexpected_values() {
-    expectAssertionError("[A Test] unexpected element(s):<[4345.91]> in array:<[55.03, 4345.91]>").on(new CodeToTest() {
+    expectAssertionError("[A Test] unexpected element(s):<[98.6]> in array:<[98.6, 8.66]>").on(new CodeToTest() {
       public void run() {
-        new DoubleArrayAssert(55.03, 4345.91).as("A Test")
-                                             .containsOnly(doubleArray(55.03));
+        new DoubleArrayAssert(array).as("A Test")
+                                    .containsOnly(doubleArray(8.66));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_contains_unexpected_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(array).overridingErrorMessage("My custom message")
+                                    .containsOnly(doubleArray(8.66));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_contains_unexpected_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(array).as("A Test")
+                                    .overridingErrorMessage("My custom message")
+                                    .containsOnly(doubleArray(8.66));
       }
     });
   }
 
   @Test
   public void should_fail_if_actual_does_not_contain_all_the_expected_values() {
-    expectAssertionError("array:<[55.03, 4345.91]> does not contain element(s):<[5323.2]>").on(new CodeToTest() {
+    expectAssertionError("array:<[98.6, 8.66]> does not contain element(s):<[5323.2]>").on(new CodeToTest() {
       public void run() {
-        new DoubleArrayAssert(55.03, 4345.91).containsOnly(doubleArray(5323.2));
+        new DoubleArrayAssert(array).containsOnly(doubleArray(5323.2));
       }
     });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_does_not_contain_all_the_expected_values() {
-    expectAssertionError("[A Test] array:<[55.03, 4345.91]> does not contain element(s):<[5323.2]>").on(
-      new CodeToTest() {
-        public void run() {
-          new DoubleArrayAssert(55.03, 4345.91).as("A Test")
-                                               .containsOnly(doubleArray(5323.2));
-        }
-      });
+    expectAssertionError("[A Test] array:<[98.6, 8.66]> does not contain element(s):<[5323.2]>").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(array).as("A Test")
+                                    .containsOnly(doubleArray(5323.2));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_contain_all_the_expected_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(array).overridingErrorMessage("My custom message")
+                                    .containsOnly(doubleArray(5323.2));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_contain_all_the_expected_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(array).as("A Test")
+                                    .overridingErrorMessage("My custom message")
+                                    .containsOnly(doubleArray(5323.2));
+      }
+    });
   }
 
 }

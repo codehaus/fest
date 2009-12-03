@@ -118,7 +118,9 @@ public class StringAssert extends GroupAssert<String> {
    */
   public void isEmpty() {
     isNotNull();
-    if (!Strings.isEmpty(actual)) fail(concat("expecting empty String but was:", inBrackets(actual)));
+    if (Strings.isEmpty(actual)) return;
+    failIfCustomMessageIsSet();
+    fail(concat("expecting empty String but was:", inBrackets(actual)));
   }
 
   /**
@@ -127,6 +129,7 @@ public class StringAssert extends GroupAssert<String> {
    */
   public final void isNullOrEmpty() {
     if (Strings.isEmpty(actual)) return;
+    failIfCustomMessageIsSet();
     fail(concat("expecting a null or empty String, but was:", inBrackets(actual)));
   }
 
@@ -138,8 +141,9 @@ public class StringAssert extends GroupAssert<String> {
    */
   public StringAssert isNotEmpty() {
     isNotNull();
-    if (Strings.isEmpty(actual)) fail(concat("expecting a non-empty String, but it was empty"));
-    return this;
+    if (!Strings.isEmpty(actual)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("expecting a non-empty String, but it was empty"));
   }
 
   /**
@@ -205,9 +209,9 @@ public class StringAssert extends GroupAssert<String> {
    */
   public StringAssert hasSize(int expected) {
     int actualSize = actualGroupSize();
-    if (actualSize != expected)
-      fail(concat("expected size:", inBrackets(expected)," but was:", inBrackets(actualSize), " for String:", actual()));
-    return this;
+    if (actualSize == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("expected size:", inBrackets(expected)," but was:", inBrackets(actualSize), " for String:", actual()));
   }
 
   /**
@@ -228,9 +232,9 @@ public class StringAssert extends GroupAssert<String> {
    */
   public StringAssert contains(String expected) {
     isNotNull();
-    if (actual.indexOf(expected) == -1)
-      fail(concat(actual(), " should contain the String:", inBrackets(expected)));
-    return this;
+    if (actual.indexOf(expected) != -1) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(actual(), " should contain the String:", inBrackets(expected)));
   }
 
   /**
@@ -242,9 +246,9 @@ public class StringAssert extends GroupAssert<String> {
    */
   public StringAssert endsWith(String expected) {
     isNotNull();
-    if (!actual.endsWith(expected))
-      fail(concat(actual(), " should end with:", inBrackets(expected)));
-    return this;
+    if (actual.endsWith(expected)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(actual(), " should end with:", inBrackets(expected)));
   }
 
   /**
@@ -256,9 +260,9 @@ public class StringAssert extends GroupAssert<String> {
    */
   public StringAssert startsWith(String expected) {
     isNotNull();
-    if (!actual.startsWith(expected))
-      fail(concat(actual(), " should start with:", inBrackets(expected)));
-    return this;
+    if (actual.startsWith(expected)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(actual(), " should start with:", inBrackets(expected)));
   }
 
   /**
@@ -270,9 +274,9 @@ public class StringAssert extends GroupAssert<String> {
    */
   public StringAssert excludes(String s) {
     isNotNull();
-    if (actual.indexOf(s) != -1)
-      fail(concat(actual(), " should not contain the String:", inBrackets(s)));
-    return this;
+    if (actual.indexOf(s) == -1) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(actual(), " should not contain the String:", inBrackets(s)));
   }
 
   /**
@@ -283,9 +287,9 @@ public class StringAssert extends GroupAssert<String> {
    */
   public StringAssert matches(String regex) {
     isNotNull();
-    if (!actual.matches(regex))
-      fail(concat(actual(), " should match the regular expression:", inBrackets(regex)));
-    return this;
+    if (actual.matches(regex)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(actual(), " should match the regular expression:", inBrackets(regex)));
   }
 
   /**
@@ -296,9 +300,9 @@ public class StringAssert extends GroupAssert<String> {
    */
   public StringAssert doesNotMatch(String regex) {
     isNotNull();
-    if (actual.matches(regex))
-      fail(concat(actual(), " should not match the regular expression:", inBrackets(regex)));
-    return this;
+    if (!actual.matches(regex)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(actual(), " should not match the regular expression:", inBrackets(regex)));
   }
 
   private String actual() {

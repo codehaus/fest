@@ -205,8 +205,9 @@ public class ByteArrayAssert extends ArrayAssert<byte[]> {
    * @throws AssertionError if the actual <code>byte</code> array is equal to the given one.
    */
   public ByteArrayAssert isNotEqualTo(byte[] array) {
-    if (Arrays.equals(actual, array)) fail(unexpectedEqual(actual, array));
-    return this;
+    if (!Arrays.equals(actual, array)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, array));
   }
 
   /**

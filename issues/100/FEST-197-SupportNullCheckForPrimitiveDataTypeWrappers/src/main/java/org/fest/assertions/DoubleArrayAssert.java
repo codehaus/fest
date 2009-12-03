@@ -218,6 +218,7 @@ public class DoubleArrayAssert extends ArrayAssert<double[]> {
   }
 
   private void failNotEquals(double[] expected, Delta delta) {
+    failIfCustomMessageIsSet();
     fail(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(delta.doubleValue())));
   }
 
@@ -234,8 +235,9 @@ public class DoubleArrayAssert extends ArrayAssert<double[]> {
    * @throws AssertionError if the actual <code>double</code> array is equal to the given one.
    */
   public DoubleArrayAssert isNotEqualTo(double[] array) {
-    if (Arrays.equals(actual, array)) fail(unexpectedEqual(actual, array));
-    return this;
+    if (!Arrays.equals(actual, array)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, array));
   }
 
   /**

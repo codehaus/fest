@@ -14,10 +14,12 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ArrayFactory.charArray;
 import static org.fest.assertions.EmptyArrays.emptyCharArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -27,6 +29,13 @@ import org.junit.Test;
  * @author Alex Ruiz
  */
 public class CharArrayAssert_isNullOrEmpty_Test implements GroupAssert_isNullOrEmpty_TestCase {
+
+  private static char[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = charArray('a');
+  }
 
   @Test
   public void should_pass_if_actual_is_null() {
@@ -42,7 +51,7 @@ public class CharArrayAssert_isNullOrEmpty_Test implements GroupAssert_isNullOrE
   public void should_fail_if_actual_has_content() {
     expectAssertionError("expecting a null or empty array, but was:<[a]>").on(new CodeToTest() {
       public void run() {
-        new CharArrayAssert('a').isNullOrEmpty();
+        new CharArrayAssert(array).isNullOrEmpty();
       }
     });
   }
@@ -51,8 +60,29 @@ public class CharArrayAssert_isNullOrEmpty_Test implements GroupAssert_isNullOrE
   public void should_fail_and_display_description_of_assertion_if_actual_has_content() {
     expectAssertionError("[A Test] expecting a null or empty array, but was:<[a]>").on(new CodeToTest() {
       public void run() {
-        new CharArrayAssert('a').as("A Test")
-                                .isNullOrEmpty();
+        new CharArrayAssert(array).as("A Test")
+                                  .isNullOrEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_has_content() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharArrayAssert(array).overridingErrorMessage("My custom message")
+                                  .isNullOrEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_has_content() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharArrayAssert(array).as("A Test")
+                                  .overridingErrorMessage("My custom message")
+                                  .isNullOrEmpty();
       }
     });
   }

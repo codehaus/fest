@@ -114,8 +114,9 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is not equal to the given one.
    */
   public CharAssert isEqualTo(char expected) {
-    if (actual != expected) fail(unexpectedNotEqual(actual, expected));
-    return this;
+    if (actual == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedNotEqual(actual, expected));
   }
 
   /**
@@ -125,8 +126,9 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is equal to the given one.
    */
   public CharAssert isNotEqualTo(char other) {
-    if (actual == other) fail(unexpectedEqual(actual, other));
-    return this;
+    if (actual != other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, other));
   }
 
   /**
@@ -136,8 +138,9 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is not greater than the given one.
    */
   public CharAssert isGreaterThan(char other) {
-    if (actual <= other) fail(unexpectedLessThanOrEqualTo(actual, other));
-    return this;
+    if (actual > other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedLessThanOrEqualTo(actual, other));
   }
 
   /**
@@ -147,8 +150,9 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is not less than the given one.
    */
   public CharAssert isLessThan(char other) {
-    if (actual >= other) fail(unexpectedGreaterThanOrEqualTo(actual, other));
-    return this;
+    if (actual < other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedGreaterThanOrEqualTo(actual, other));
   }
 
   /**
@@ -158,8 +162,9 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is not greater than or equal to the given one.
    */
   public CharAssert isGreaterThanOrEqualTo(char other) {
-    if (actual < other) fail(unexpectedLessThan(actual, other));
-    return this;
+    if (actual >= other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedLessThan(actual, other));
   }
 
   /**
@@ -169,8 +174,9 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is not less than or equal to the given one.
    */
   public CharAssert isLessThanOrEqualTo(char other) {
-    if (actual > other) fail(unexpectedGreaterThan(actual, other));
-    return this;
+    if (actual <= other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedGreaterThan(actual, other));
   }
 
   /**
@@ -179,8 +185,9 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is not an uppercase value.
    */
   public CharAssert isUpperCase() {
-    if (!Character.isUpperCase(actual)) fail(concat(inBrackets(actual), " should be an uppercase character"));
-    return this;
+    if (Character.isUpperCase(actual)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(inBrackets(actual), " should be an uppercase character"));
   }
 
   /**
@@ -189,7 +196,14 @@ public class CharAssert extends PrimitiveAssert {
    * @throws AssertionError if the actual <code>char</code> value is not an lowercase value.
    */
   public CharAssert isLowerCase() {
-    if (!Character.isLowerCase(actual)) fail(concat(inBrackets(actual), " should be a lowercase character"));
+    if (Character.isLowerCase(actual)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(inBrackets(actual), " should be a lowercase character"));
+  }
+
+  /** {@inheritDoc} */
+  public CharAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
     return this;
   }
 }

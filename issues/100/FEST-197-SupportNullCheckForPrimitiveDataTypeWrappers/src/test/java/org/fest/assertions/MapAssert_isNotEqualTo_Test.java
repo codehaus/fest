@@ -21,6 +21,7 @@ import static org.fest.test.ExpectedFailure.expectAssertionError;
 import java.util.*;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -32,34 +33,57 @@ import org.junit.Test;
  */
 public class MapAssert_isNotEqualTo_Test implements Assert_isNotEqualTo_TestCase {
 
+  private static Map<Object, Object> map;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    map = map(entry("key1", 1), entry("key2", 2));
+  }
+
   @Test
   public void should_pass_if_actual_and_expected_are_not_equal() {
-    Map<Object, Object> a = map(entry("key1", 1), entry("key2", 2));
-    Map<Object, Object> e = map(entry("key1", 1), entry("key3", 3));
-    new MapAssert(a).isNotEqualTo(e);
+    new MapAssert(map).isNotEqualTo(map(entry("key1", 1), entry("key3", 3)));
   }
 
   @Test
   public void should_fail_if_actual_and_expected_are_equal() {
-    expectAssertionError("actual value:<{'key1'=1, 'key2'=2}> should not be equal to:<{'key1'=1, 'key2'=2}>").on(
-        new CodeToTest() {
-          public void run() {
-            Map<Object, Object> a = map(entry("key1", 1), entry("key2", 2));
-            Map<Object, Object> e = map(entry("key1", 1), entry("key2", 2));
-            new MapAssert(a).isNotEqualTo(e);
-          }
-        });
+    String message = "actual value:<{'key1'=1, 'key2'=2}> should not be equal to:<{'key1'=1, 'key2'=2}>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new MapAssert(map).isNotEqualTo(map(entry("key1", 1), entry("key2", 2)));
+      }
+    });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_equal() {
-    expectAssertionError("[A Test] actual value:<{'key1'=1, 'key2'=2}> should not be equal to:<{'key1'=1, 'key2'=2}>")
-      .on(new CodeToTest() {
-        public void run() {
-          Map<Object, Object> a = map(entry("key1", 1), entry("key2", 2));
-          Map<Object, Object> e = map(entry("key1", 1), entry("key2", 2));
-          new MapAssert(a).as("A Test").isNotEqualTo(e);
-        }
-      });
+    String message = "[A Test] actual value:<{'key1'=1, 'key2'=2}> should not be equal to:<{'key1'=1, 'key2'=2}>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new MapAssert(map).as("A Test")
+                          .isNotEqualTo(map(entry("key1", 1), entry("key2", 2)));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new MapAssert(map).overridingErrorMessage("My custom message")
+                          .isNotEqualTo(map(entry("key1", 1), entry("key2", 2)));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new MapAssert(map).as("A Test")
+                          .overridingErrorMessage("My custom message")
+                          .isNotEqualTo(map(entry("key1", 1), entry("key2", 2)));
+      }
+    });
   }
 }

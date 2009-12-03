@@ -19,6 +19,7 @@ import static org.fest.assertions.NotNull.notNullObject;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,16 +29,23 @@ import org.junit.Test;
  */
 public class ObjectAssert_is_Test implements GenericAssert_satisfies_TestCase {
 
+  private static Object six;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    six = 6;
+  }
+
   @Test
   public void should_pass_if_condition_is_satisfied() {
-    new ObjectAssert(6).is(notNullObject());
+    new ObjectAssert(six).is(notNullObject());
   }
 
   @Test
   public void should_throw_error_if_condition_is_null() {
     expectErrorIfConditionIsNull().on(new CodeToTest() {
       public void run() {
-        new ObjectAssert(6).is(null);
+        new ObjectAssert(six).is(null);
       }
     });
   }
@@ -75,6 +83,37 @@ public class ObjectAssert_is_Test implements GenericAssert_satisfies_TestCase {
     expectAssertionError("[A Test] actual value:<null> should be:<Not Null>").on(new CodeToTest() {
       public void run() {
         new ObjectAssert(null).as("A Test")
+                              .is(notNullObject().as("Not Null"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(null).overridingErrorMessage("My custom message")
+                              .is(notNullObject());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(null).as("A Test")
+                              .overridingErrorMessage("My custom message")
+                              .is(notNullObject());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(null).overridingErrorMessage("My custom message")
                               .is(notNullObject().as("Not Null"));
       }
     });

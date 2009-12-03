@@ -54,7 +54,7 @@ public final class ComparisonFailureFactory {
   }
 
   private static AssertionError newComparisonFailure(String message, Object expected, Object actual) throws Exception {
-    final String className = "org.junit.ComparisonFailure";
+    String className = "org.junit.ComparisonFailure";
     Class<?>[] parameterTypes = new Class<?>[] { String.class, String.class, String.class };
     Object[] parameterValues = new Object[] { format(message), asString(expected), asString(actual) };
     Object o = constructorInvoker.newInstance(className, parameterTypes, parameterValues);

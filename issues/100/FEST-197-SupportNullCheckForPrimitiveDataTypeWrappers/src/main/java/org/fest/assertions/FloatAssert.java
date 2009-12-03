@@ -25,6 +25,7 @@ import static org.fest.util.Strings.concat;
  * method <code>{@link Assertions#assertThat(float)}</code>.
  *
  * @author Yvonne Wang
+ * @author Alex Ruiz
  */
 public class FloatAssert extends PrimitiveAssert implements NumberAssert {
 
@@ -117,8 +118,9 @@ public class FloatAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>float</code> value is not equal to the given one.
    */
   public FloatAssert isEqualTo(float expected) {
-    if (compareTo(expected) != 0) fail(unexpectedNotEqual(actual, expected));
-    return this;
+    if (compareTo(expected) == 0) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedNotEqual(actual, expected));
   }
 
   /**
@@ -127,12 +129,31 @@ public class FloatAssert extends PrimitiveAssert implements NumberAssert {
    * @param delta the given delta.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>float</code> value is not equal to the given one.
+   * @deprecated use method <code>{@link #isEqualTo(float, org.fest.assertions.Delta)}</code> instead. This method will
+   * be removed in version 2.0.
    */
+  @Deprecated
   public FloatAssert isEqualTo(float expected, Delta delta) {
+    return isEqualTo(expected, delta.value);
+  }
+
+  /**
+   * Verifies that the actual <code>float</code> value is equal to tdelta.valuene, within a positive delta.
+   * @param expected the value to compare the actual one to.
+   * @param delta the given delta.
+   * @return this assertion object.
+   * @throws AssertionError if the actual <code>float</code> value is not equal to the given one.
+   * @since 1.2
+   */
+  public FloatAssert isEqualTo(float expected, org.fest.assertions.Delta delta) {
+    return isEqualTo(expected, delta.floatValue());
+  }
+
+  private FloatAssert isEqualTo(float expected, float deltaValue) {
     if (compareTo(expected) == 0) return this;
-    if (!(abs(expected - actual) <= delta.value))
-      fail(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(delta.value)));
-    return this;
+    if (abs(expected - actual) <= deltaValue) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(unexpectedNotEqual(actual, expected), " using delta:", inBrackets(deltaValue)));
   }
 
   /**
@@ -142,8 +163,9 @@ public class FloatAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>float</code> value is equal to the given one.
    */
   public FloatAssert isNotEqualTo(float other) {
-    if (compareTo(other) == 0) fail(unexpectedEqual(actual, other));
-    return this;
+    if (compareTo(other) != 0) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, other));
   }
 
   /**
@@ -153,8 +175,9 @@ public class FloatAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>float</code> value is not greater than the given one.
    */
   public FloatAssert isGreaterThan(float other) {
-    if (compareTo(other) <= 0) fail(unexpectedLessThanOrEqualTo(actual, other));
-    return this;
+    if (compareTo(other) > 0) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedLessThanOrEqualTo(actual, other));
   }
 
   /**
@@ -164,8 +187,9 @@ public class FloatAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>float</code> value is not less than the given one.
    */
   public FloatAssert isLessThan(float other) {
-    if (compareTo(other) >= 0) fail(unexpectedGreaterThanOrEqualTo(actual, other));
-    return this;
+    if (compareTo(other) < 0) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedGreaterThanOrEqualTo(actual, other));
   }
 
   /**
@@ -175,8 +199,9 @@ public class FloatAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>float</code> value is not greater than or equal to the given one.
    */
   public FloatAssert isGreaterThanOrEqualTo(float other) {
-    if (compareTo(other) < 0) fail(unexpectedLessThan(actual, other));
-    return this;
+    if (compareTo(other) >= 0) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedLessThan(actual, other));
   }
 
   /**
@@ -186,8 +211,9 @@ public class FloatAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>float</code> value is not less than or equal to the given one.
    */
   public FloatAssert isLessThanOrEqualTo(float other) {
-    if (compareTo(other) > 0) fail(unexpectedGreaterThan(actual, other));
-    return this;
+    if (compareTo(other) <= 0) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedGreaterThan(actual, other));
   }
 
   private int compareTo(float other) {
@@ -235,7 +261,10 @@ public class FloatAssert extends PrimitiveAssert implements NumberAssert {
    * <code>{@link FloatAssert#isEqualTo(float, org.fest.assertions.FloatAssert.Delta)}</code>.
    * @param d the delta value.
    * @return a new delta value holder.
+   * @deprecated use method <code>{@link org.fest.assertions.Delta#delta(double)}</code> instead. This method will be
+   * removed in version 2.0.
    */
+  @Deprecated
   public static Delta delta(float d) {
     return new Delta(d);
   }
@@ -243,7 +272,10 @@ public class FloatAssert extends PrimitiveAssert implements NumberAssert {
   /**
    * Holds a delta value to be used in
    * <code>{@link FloatAssert#isEqualTo(float, org.fest.assertions.FloatAssert.Delta)}</code>.
+   * @deprecated use top-level class <code>{@link org.fest.assertions.Delta}</code> instead. This class will be removed
+   * in version 2.0.
    */
+  @Deprecated
   public static class Delta {
     final float value;
 
@@ -252,6 +284,11 @@ public class FloatAssert extends PrimitiveAssert implements NumberAssert {
     }
   }
 
+  /** {@inheritDoc} */
+  public FloatAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
+    return this;
+  }
 }
 
 

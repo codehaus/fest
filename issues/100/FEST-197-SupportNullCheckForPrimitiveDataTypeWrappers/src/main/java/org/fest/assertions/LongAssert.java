@@ -114,8 +114,9 @@ public class LongAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>long</code> value is not equal to the given one.
    */
   public LongAssert isEqualTo(long expected) {
-    if (actual != expected) fail(unexpectedNotEqual(actual, expected));
-    return this;
+    if (actual == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedNotEqual(actual, expected));
   }
 
   /**
@@ -125,8 +126,9 @@ public class LongAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>long</code> value is equal to the given one.
    */
   public LongAssert isNotEqualTo(long other) {
-    if (actual == other) fail(unexpectedEqual(actual, other));
-    return this;
+    if (actual != other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, other));
   }
 
   /**
@@ -136,8 +138,9 @@ public class LongAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>long</code> value is not greater than the given one.
    */
   public LongAssert isGreaterThan(long other) {
-    if (actual <= other) fail(unexpectedLessThanOrEqualTo(actual, other));
-    return this;
+    if (actual > other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedLessThanOrEqualTo(actual, other));
   }
 
   /**
@@ -147,8 +150,9 @@ public class LongAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>long</code> value is not less than the given one.
    */
   public LongAssert isLessThan(long other) {
-    if (actual >= other) fail(unexpectedGreaterThanOrEqualTo(actual, other));
-    return this;
+    if (actual < other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedGreaterThanOrEqualTo(actual, other));
   }
 
   /**
@@ -158,8 +162,9 @@ public class LongAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>long</code> value is not greater than or equal to the given one.
    */
   public LongAssert isGreaterThanOrEqualTo(long other) {
-    if (actual < other) fail(unexpectedLessThan(actual, other));
-    return this;
+    if (actual >= other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedLessThan(actual, other));
   }
 
   /**
@@ -169,8 +174,9 @@ public class LongAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>long</code> value is not less than or equal to the given one.
    */
   public LongAssert isLessThanOrEqualTo(long other) {
-    if (actual > other) fail(unexpectedGreaterThan(actual, other));
-    return this;
+    if (actual <= other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedGreaterThan(actual, other));
   }
 
   /**
@@ -198,5 +204,11 @@ public class LongAssert extends PrimitiveAssert implements NumberAssert {
    */
   public LongAssert isNegative() {
     return isLessThan(ZERO);
+  }
+
+  /** {@inheritDoc} */
+  public LongAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
+    return this;
   }
 }

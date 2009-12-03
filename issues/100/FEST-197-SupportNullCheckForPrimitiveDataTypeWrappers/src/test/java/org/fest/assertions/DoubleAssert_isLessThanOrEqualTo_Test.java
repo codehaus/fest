@@ -51,7 +51,29 @@ public class DoubleAssert_isLessThanOrEqualTo_Test implements Assert_isLessThanO
   public void should_fail_and_display_description_of_assertion_if_actual_is_greater_than_expected() {
     expectAssertionError("[A Test] actual value:<8.8> should be less than or equal to:<6.6>").on(new CodeToTest() {
       public void run() {
-        new DoubleAssert(8.8).as("A Test").isLessThanOrEqualTo(6.6);
+        new DoubleAssert(8.8).as("A Test")
+                             .isLessThanOrEqualTo(6.6);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_greater_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleAssert(8.8).overridingErrorMessage("My custom message")
+                             .isLessThanOrEqualTo(6.6);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_greater_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleAssert(8.8).as("A Test")
+                             .overridingErrorMessage("My custom message")
+                             .isLessThanOrEqualTo(6.6);
       }
     });
   }

@@ -26,11 +26,51 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author David DIDIER
  */
-public class ByteAssert_isNegative_Test implements Assert_isNegative_TestCase {
+public class ByteAssert_isNegative_Test implements NumberAssert_isNegative_TestCase {
 
   @Test
   public void should_pass_if_actual_is_negative() {
     new ByteAssert(asByte(-2)).isNegative();
+  }
+
+  @Test
+  public void should_fail_if_actual_is_positive() {
+    expectAssertionError("actual value:<6> should be less than:<0>").on(new CodeToTest() {
+      public void run() {
+        new ByteAssert(asByte(6)).isNegative();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_and_display_description_of_assertion_if_actual_is_positive() {
+    expectAssertionError("[A Test] actual value:<6> should be less than:<0>").on(new CodeToTest() {
+      public void run() {
+        new ByteAssert(asByte(6)).as("A Test")
+                                 .isNegative();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_positive() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteAssert(asByte(6)).overridingErrorMessage("My custom message")
+                                 .isNegative();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_positive() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteAssert(asByte(6)).as("A Test")
+                                 .overridingErrorMessage("My custom message")
+                                 .isNegative();
+      }
+    });
   }
 
   @Test
@@ -53,21 +93,24 @@ public class ByteAssert_isNegative_Test implements Assert_isNegative_TestCase {
   }
 
   @Test
-  public void should_fail_if_actual_is_positive() {
-    expectAssertionError("actual value:<6> should be less than:<0>").on(new CodeToTest() {
+  public void should_fail_with_custom_message_if_actual_is_zero() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new ByteAssert(asByte(6)).isNegative();
+        new ByteAssert(asByte(0)).overridingErrorMessage("My custom message")
+                                 .isNegative();
       }
     });
   }
 
   @Test
-  public void should_fail_and_display_description_of_assertion_if_actual_is_positive() {
-    expectAssertionError("[A Test] actual value:<6> should be less than:<0>").on(new CodeToTest() {
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_zero() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new ByteAssert(asByte(6)).as("A Test")
+        new ByteAssert(asByte(0)).as("A Test")
+                                 .overridingErrorMessage("My custom message")
                                  .isNegative();
       }
     });
   }
+
 }

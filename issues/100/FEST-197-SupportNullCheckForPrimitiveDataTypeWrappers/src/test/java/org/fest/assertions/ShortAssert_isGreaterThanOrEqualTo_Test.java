@@ -56,4 +56,25 @@ public class ShortAssert_isGreaterThanOrEqualTo_Test implements Assert_isGreater
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ShortAssert(asShort(6)).overridingErrorMessage("My custom message")
+                                   .isGreaterThanOrEqualTo(asShort(8));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ShortAssert(asShort(6)).as("A Test")
+                                   .overridingErrorMessage("My custom message")
+                                   .isGreaterThanOrEqualTo(asShort(8));
+      }
+    });
+  }
 }

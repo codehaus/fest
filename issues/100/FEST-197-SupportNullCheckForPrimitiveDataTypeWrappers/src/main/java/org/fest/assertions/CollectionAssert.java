@@ -53,9 +53,13 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
   public CollectionAssert contains(Object...objects) {
     isNotNull();
     validateIsNotNull(objects);
-    Collection<Object> notFound = notFound(actual, objects);
-    if (!notFound.isEmpty()) failIfElementsNotFound(notFound);
-    return this;
+    Collection<Object> notFound = notFoundInActual(objects);
+    if (notFound.isEmpty()) return this;
+    throw failureIfExpectedElementsNotFound(notFound);
+  }
+
+  private Collection<Object> notFoundInActual(Object... objects) {
+    return notFound(actual, objects);
   }
 
   /**
@@ -70,8 +74,15 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
   public CollectionAssert containsOnly(Object...objects) {
     isNotNull();
     validateIsNotNull(objects);
-    List<Object> notFound = new ArrayList<Object>();
     List<Object> copy = new ArrayList<Object>(actual);
+    List<Object> notFound = notFoundInCopy(copy, objects);
+    if (!notFound.isEmpty()) throw failureIfExpectedElementsNotFound(notFound);
+    if (copy.isEmpty()) return this;
+    throw failureIfUnexpectedElementsFound(copy);
+  }
+
+  private List<Object> notFoundInCopy(List<Object> copy, Object... objects) {
+    List<Object> notFound = new ArrayList<Object>();
     for (Object o : objects) {
       if (!copy.contains(o)) {
         notFound.add(o);
@@ -79,14 +90,17 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
       }
       copy.remove(o);
     }
-    if (!notFound.isEmpty()) failIfElementsNotFound(notFound);
-    if (!copy.isEmpty())
-      fail(concat("unexpected element(s):", format(copy), " in collection:", format(actual)));
-    return this;
+    return notFound;
   }
 
-  private void failIfElementsNotFound(Collection<Object> notFound) {
-    fail(concat("collection:", format(actual), " does not contain element(s):", format(notFound)));
+  private AssertionError failureIfExpectedElementsNotFound(Collection<Object> notFound) {
+    failIfCustomMessageIsSet();
+    return failure(concat("collection:", format(actual), " does not contain element(s):", format(notFound)));
+  }
+
+  private AssertionError failureIfUnexpectedElementsFound(List<Object> unexpected) {
+    failIfCustomMessageIsSet();
+    return failure(concat("unexpected element(s):", format(unexpected), " in collection:", format(actual)));
   }
 
   /**
@@ -101,9 +115,9 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
     isNotNull();
     validateIsNotNull(objects);
     Collection<Object> found = found(actual, objects);
-    if (!found.isEmpty())
-      fail(concat("collection:", format(actual), " does not exclude element(s):", format(found)));
-    return this;
+    if (found.isEmpty()) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("collection:", format(actual), " does not exclude element(s):", format(found)));
   }
 
   private void validateIsNotNull(Object[] objects) {
@@ -120,9 +134,9 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
   public CollectionAssert doesNotHaveDuplicates() {
     isNotNull();
     Collection<?> duplicates = duplicatesFrom(actual);
-    if (!duplicates.isEmpty())
-      fail(concat("collection:", format(actual), " contains duplicate(s):", format(duplicates)));
-    return this;
+    if (duplicates.isEmpty()) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("collection:", format(actual), " contains duplicate(s):", format(duplicates)));
   }
 
   private String format(Collection<?> c) {
@@ -209,6 +223,7 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
    */
   public void isNullOrEmpty() {
     if (Collections.isEmpty(actual)) return;
+    failIfCustomMessageIsSet();
     fail(concat("expecting a null or empty collection, but was:", format(actual)));
   }
 
@@ -230,7 +245,9 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
    */
   public void isEmpty() {
     isNotNull();
-    if (!Collections.isEmpty(actual)) fail(concat("expecting empty collection, but was:", format(actual)));
+    if (Collections.isEmpty(actual)) return;
+    failIfCustomMessageIsSet();
+    fail(concat("expecting empty collection, but was:", format(actual)));
   }
 
   /**
@@ -241,8 +258,9 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
    */
   public CollectionAssert isNotEmpty() {
     isNotNull();
-    if (actual.isEmpty()) fail("expecting a non-empty collection, but it was empty");
-    return this;
+    if (!actual.isEmpty()) return this;
+    failIfCustomMessageIsSet();
+    throw failure("expecting a non-empty collection, but it was empty");
   }
 
   /**
@@ -254,10 +272,10 @@ public class CollectionAssert extends GroupAssert<Collection<?>> {
    */
   public CollectionAssert hasSize(int expected) {
     int actualSize = actualGroupSize();
-    if (actualSize != expected)
-      fail(concat(
-          "expected size:", inBrackets(expected)," but was:", inBrackets(actualSize), " for collection:", format(actual)));
-    return this;
+    if (actualSize == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(
+        "expected size:", inBrackets(expected)," but was:", inBrackets(actualSize), " for collection:", format(actual)));
   }
 
   /**
