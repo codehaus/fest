@@ -23,6 +23,7 @@ import static org.fest.util.Collections.list;
 import java.util.List;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -32,30 +33,11 @@ import org.junit.Test;
  */
 public class ListAssert_hasSize_Test implements Assert_hasSize_TestCase {
 
-  @Test
-  public void should_pass_if_actual_has_expected_size() {
-    new ListAssert(list("Gandalf", "Frodo", "Sam")).hasSize(3);
-  }
+  private static List<String> list;
 
-  @Test
-  public void should_fail_if_actual_does_not_have_expected_size() {
-    expectAssertionError("expected size:<2> but was:<1> for list:<['Frodo']>").on(new CodeToTest() {
-      public void run() {
-        List<String> names = list("Frodo");
-        new ListAssert(names).hasSize(2);
-      }
-    });
-  }
-
-  @Test
-  public void should_fail_and_display_description_of_assertion_if_actual_does_not_have_expected_size() {
-    expectAssertionError("[A Test] expected size:<2> but was:<1> for list:<['Frodo']>").on(new CodeToTest() {
-      public void run() {
-        List<String> names = list("Frodo");
-        new ListAssert(names).as("A Test")
-                             .hasSize(2);
-      }
-    });
+  @BeforeClass
+  public static void setUpOnce() {
+    list = list("Gandalf", "Frodo", "Sam");
   }
 
   @Test
@@ -73,6 +55,52 @@ public class ListAssert_hasSize_Test implements Assert_hasSize_TestCase {
       public void run() {
         new ListAssert(null).as("A Test")
                             .hasSize(0);
+      }
+    });
+  }
+
+  @Test
+  public void should_pass_if_actual_has_expected_size() {
+    new ListAssert(list).hasSize(3);
+  }
+
+  @Test
+  public void should_fail_if_actual_does_not_have_expected_size() {
+    expectAssertionError("expected size:<2> but was:<3> for list:<['Gandalf', 'Frodo', 'Sam']>").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).hasSize(2);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_and_display_description_of_assertion_if_actual_does_not_have_expected_size() {
+    String message = "[A Test] expected size:<2> but was:<3> for list:<['Gandalf', 'Frodo', 'Sam']>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .hasSize(2);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_have_expected_size() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).overridingErrorMessage("My custom message")
+                            .hasSize(2);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_have_expected_size() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ListAssert(list).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .hasSize(2);
       }
     });
   }

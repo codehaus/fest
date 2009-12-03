@@ -401,5 +401,9 @@ public class Assertions {
     return new ThrowableAssert(actual);
   }
 
+  /**
+   * This constructor is protected to make it possible to subclass this class. Since all its methods are static, there
+   * is no point on creating a new instance of it.
+   */
   protected Assertions() {}
 }

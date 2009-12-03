@@ -23,7 +23,9 @@ import static org.fest.util.Collections.list;
 import static org.fest.util.Objects.areEqual;
 import static org.fest.util.Strings.concat;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.fest.util.Collections;
 
@@ -66,6 +68,7 @@ public class ListAssert extends GroupAssert<List<?>> {
   }
 
   private void failElementNotFound(Object e, Object a, int index) {
+    failIfCustomMessageIsSet();
     fail(concat("expecting ", inBrackets(e), " at index ", inBrackets(index), " but found ", inBrackets(a)));
   }
 
@@ -101,6 +104,7 @@ public class ListAssert extends GroupAssert<List<?>> {
   }
 
   private void failIfSequenceNotFound(Object[] notFound) {
+    failIfCustomMessageIsSet();
     fail(concat("list:", inBrackets(actual), " does not contain the sequence:", inBrackets(notFound)));
   }
 
@@ -130,6 +134,7 @@ public class ListAssert extends GroupAssert<List<?>> {
   }
 
   private void failIfNotStartingWithSequence(Object[] notFound) {
+    failIfCustomMessageIsSet();
     fail(concat("list:", inBrackets(actual), " does not start with the sequence:", inBrackets(notFound)));
   }
 
@@ -162,6 +167,7 @@ public class ListAssert extends GroupAssert<List<?>> {
   }
 
   private void failIfNotEndingWithSequence(Object[] notFound) {
+    failIfCustomMessageIsSet();
     fail(concat("list:", inBrackets(actual), " does not end with the sequence:", inBrackets(notFound)));
   }
 
@@ -176,9 +182,13 @@ public class ListAssert extends GroupAssert<List<?>> {
   public ListAssert contains(Object...objects) {
     isNotNull();
     validateIsNotNull(objects);
-    Collection<Object> notFound = notFound(actual, objects);
-    if (!notFound.isEmpty()) failIfElementsNotFound(notFound);
-    return this;
+    Collection<Object> notFound = notFoundInActual(objects);
+    if (notFound.isEmpty()) return this;
+    throw failureIfExpectedElementsNotFound(notFound);
+  }
+
+  private Collection<Object> notFoundInActual(Object... objects) {
+    return notFound(actual, objects);
   }
 
   /**
@@ -193,8 +203,15 @@ public class ListAssert extends GroupAssert<List<?>> {
   public ListAssert containsOnly(Object...objects) {
     isNotNull();
     validateIsNotNull(objects);
-    List<Object> notFound = new ArrayList<Object>();
     List<Object> copy = new ArrayList<Object>(actual);
+    List<Object> notFound = notFoundInCopy(copy, objects);
+    if (!notFound.isEmpty()) throw failureIfExpectedElementsNotFound(notFound);
+    if (copy.isEmpty()) return this;
+    throw failureIfUnexpectedElementsFound(copy);
+  }
+
+  private List<Object> notFoundInCopy(List<Object> copy, Object... objects) {
+    List<Object> notFound = new ArrayList<Object>();
     for (Object o : objects) {
       if (!copy.contains(o)) {
         notFound.add(o);
@@ -202,14 +219,17 @@ public class ListAssert extends GroupAssert<List<?>> {
       }
       copy.remove(o);
     }
-    if (!notFound.isEmpty()) failIfElementsNotFound(notFound);
-    if (!copy.isEmpty())
-      fail(concat("unexpected element(s):", inBrackets(copy), " in list:", inBrackets(actual)));
-    return this;
+    return notFound;
   }
 
-  private void failIfElementsNotFound(Collection<Object> notFound) {
-    fail(concat("list:", inBrackets(actual), " does not contain element(s):", inBrackets(notFound)));
+  private AssertionError failureIfExpectedElementsNotFound(Collection<Object> notFound) {
+    failIfCustomMessageIsSet();
+    return failure(concat("list:", inBrackets(actual), " does not contain element(s):", inBrackets(notFound)));
+  }
+
+  private AssertionError failureIfUnexpectedElementsFound(List<Object> unexpected) {
+    failIfCustomMessageIsSet();
+    return failure(concat("unexpected element(s):", inBrackets(unexpected), " in list:", inBrackets(actual)));
   }
 
   /**
@@ -224,9 +244,9 @@ public class ListAssert extends GroupAssert<List<?>> {
     isNotNull();
     validateIsNotNull(objects);
     Collection<Object> found = found(actual, objects);
-    if (!found.isEmpty())
-      fail(concat("list:", inBrackets(actual), " does not exclude element(s):", inBrackets(found)));
-    return this;
+    if (found.isEmpty()) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("list:", inBrackets(actual), " does not exclude element(s):", inBrackets(found)));
   }
 
   private void validateIsNotNull(Object[] objects) {
@@ -243,9 +263,9 @@ public class ListAssert extends GroupAssert<List<?>> {
   public ListAssert doesNotHaveDuplicates() {
     isNotNull();
     Collection<?> duplicates = duplicatesFrom(actual);
-    if (!duplicates.isEmpty())
-      fail(concat("list:", inBrackets(actual), " contains duplicate(s):", inBrackets(duplicates)));
-    return this;
+    if (duplicates.isEmpty()) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("list:", inBrackets(actual), " contains duplicate(s):", inBrackets(duplicates)));
   }
 
   /** {@inheritDoc} */
@@ -331,10 +351,10 @@ public class ListAssert extends GroupAssert<List<?>> {
    */
   public ListAssert hasSize(int expected) {
     int actualSize = actualGroupSize();
-    if (actualSize != expected)
-      fail(concat(
+    if (actualSize == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(
           "expected size:", inBrackets(expected)," but was:", inBrackets(actualSize), " for list:", inBrackets(actual)));
-    return this;
   }
 
   /**
@@ -353,7 +373,9 @@ public class ListAssert extends GroupAssert<List<?>> {
    */
   public void isEmpty() {
     isNotNull();
-    if (!Collections.isEmpty(actual)) fail(concat("expecting empty list, but was:", inBrackets(actual)));
+    if (Collections.isEmpty(actual)) return;
+    failIfCustomMessageIsSet();
+    fail(concat("expecting empty list, but was:", inBrackets(actual)));
   }
 
   /**
@@ -364,8 +386,9 @@ public class ListAssert extends GroupAssert<List<?>> {
    */
   public ListAssert isNotEmpty() {
     isNotNull();
-    if (actual.isEmpty()) fail("expecting a non-empty list, but it was empty");
-    return this;
+    if (!actual.isEmpty()) return this;
+    failIfCustomMessageIsSet();
+    throw failure("expecting a non-empty list, but it was empty");
   }
 
   /**
@@ -374,6 +397,7 @@ public class ListAssert extends GroupAssert<List<?>> {
    */
   public void isNullOrEmpty() {
     if (Collections.isEmpty(actual)) return;
+    failIfCustomMessageIsSet();
     fail(concat("expecting a null or empty list, but was:", inBrackets(actual)));
   }
 
@@ -395,7 +419,7 @@ public class ListAssert extends GroupAssert<List<?>> {
    * @param objects the objects to look for.
    * @return this assertion object.
    * @throws AssertionError if the actual <code>List</code> is <code>null</code>.
-   * @throws AssertionError if the given array is <code>null</code>.
+   * @throws NullPointerException if the given array is <code>null</code>.
    * @throws AssertionError if the actual <code>List</code> does not contain the given objects.
    */
   public ListAssert containsExactly(Object... objects) {

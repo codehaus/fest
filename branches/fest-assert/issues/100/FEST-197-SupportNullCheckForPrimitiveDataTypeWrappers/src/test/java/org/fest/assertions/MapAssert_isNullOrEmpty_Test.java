@@ -22,6 +22,7 @@ import static org.fest.test.ExpectedFailure.expectAssertionError;
 import java.util.*;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -32,6 +33,13 @@ import org.junit.Test;
  * @author Alex Ruiz
  */
 public class MapAssert_isNullOrEmpty_Test implements GroupAssert_isNullOrEmpty_TestCase {
+
+  private static Map<Object, Object> map;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    map = map(entry("key1", 1));
+  }
 
   @Test
   public void should_pass_if_actual_is_null() {
@@ -47,7 +55,6 @@ public class MapAssert_isNullOrEmpty_Test implements GroupAssert_isNullOrEmpty_T
   public void should_fail_if_actual_has_content() {
     expectAssertionError("expecting a null or empty map, but was:<{'key1'=1}>").on(new CodeToTest() {
       public void run() {
-        Map<Object, Object> map = map(entry("key1", 1));
         new MapAssert(map).isNullOrEmpty();
       }
     });
@@ -57,8 +64,29 @@ public class MapAssert_isNullOrEmpty_Test implements GroupAssert_isNullOrEmpty_T
   public void should_fail_and_display_description_of_assertion_if_actual_has_content() {
     expectAssertionError("[A Test] expecting a null or empty map, but was:<{'key1'=1}>").on(new CodeToTest() {
       public void run() {
-        Map<Object, Object> map = map(entry("key1", 1));
-        new MapAssert(map).as("A Test").isNullOrEmpty();
+        new MapAssert(map).as("A Test")
+                          .isNullOrEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_has_content() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new MapAssert(map).overridingErrorMessage("My custom message")
+                          .isNullOrEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_has_content() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new MapAssert(map).as("A Test")
+                          .overridingErrorMessage("My custom message")
+                          .isNullOrEmpty();
       }
     });
   }

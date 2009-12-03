@@ -80,4 +80,25 @@ public class BigDecimalAssert_isLessThanOrEqualTo_Test implements Assert_isLessT
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_greater_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(nine()).overridingErrorMessage("My custom message")
+                                    .isLessThanOrEqualTo(eight());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_greater_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(nine()).as("A Test")
+                                    .overridingErrorMessage("My custom message")
+                                    .isLessThanOrEqualTo(eight());
+      }
+    });
+  }
 }

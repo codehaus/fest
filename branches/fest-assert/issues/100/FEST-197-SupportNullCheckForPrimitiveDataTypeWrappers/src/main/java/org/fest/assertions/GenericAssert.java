@@ -30,8 +30,6 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
 
   protected final T actual;
 
-  private String errorMessage;
-
   /**
    * Creates a new <code>{@link GenericAssert}</code>.
    * @param actual the actual target to verify.
@@ -195,7 +193,9 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    * @throws AssertionError if the actual value does not satisfy the given condition.
    */
   protected final void assertSatisfies(Condition<T> condition) {
-    if (!matches(condition)) fail(errorMessageIfConditionNotSatisfied(condition));
+    if (matches(condition)) return;
+    failIfCustomMessageIsSet();
+    fail(errorMessageIfConditionNotSatisfied(condition));
   }
 
   private String errorMessageIfConditionNotSatisfied(Condition<T> condition) {
@@ -210,7 +210,9 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    * @throws AssertionError if the actual value does not satisfy the given condition.
    */
   protected final void assertIs(Condition<T> condition) {
-    if (!matches(condition)) fail(errorMessageIfIsNot(condition));
+    if (matches(condition)) return;
+    failIfCustomMessageIsSet();
+    fail(errorMessageIfIsNot(condition));
   }
 
   private String errorMessageIfIsNot(Condition<T> condition) {
@@ -276,7 +278,7 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    * @throws AssertionError if the actual value is equal to the given one.
    */
   protected final void assertNotEqualTo(T other) {
-    failIfEqual(rawDescription(), actual, other);
+    failIfEqual(customErrorMessage(), rawDescription(), actual, other);
   }
 
   /**
@@ -293,7 +295,7 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    * @throws AssertionError if the actual value is not the same as the given one.
    */
   protected final void assertSameAs(T expected) {
-    failIfNotSame(rawDescription(), actual, expected);
+    failIfNotSame(customErrorMessage(), rawDescription(), actual, expected);
   }
 
   /**
@@ -303,10 +305,6 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    */
   protected final void assertNotSameAs(T expected) {
     failIfSame(customErrorMessage(), rawDescription(), actual, expected);
-  }
-
-  void failIfCustomMessageIsSet() {
-    failWithMessage(customErrorMessage());
   }
 
   /**
@@ -330,20 +328,4 @@ public abstract class GenericAssert<T> extends Assert implements NullableAssert<
    * @since 1.2
    */
   protected abstract GenericAssert<T> overridingErrorMessage(String message);
-
-  /**
-   * Specifies the message to use in case of a failure, replacing the default one.
-   * @param message the new error message.
-   */
-  protected final void replaceDefaultErrorMessagesWith(String message) {
-    errorMessage = message;
-  }
-
-  /**
-   * Returns the message to use when a failure occurs, if one has been specified.
-   * @return the message to use when a failure occurs, or <code>null</code> if none has been specified.
-   */
-  protected final String customErrorMessage() {
-    return errorMessage;
-  }
 }

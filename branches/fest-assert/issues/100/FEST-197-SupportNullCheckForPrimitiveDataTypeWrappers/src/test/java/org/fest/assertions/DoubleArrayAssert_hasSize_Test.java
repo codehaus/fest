@@ -20,6 +20,7 @@ import static org.fest.assertions.ArrayFactory.doubleArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -30,9 +31,15 @@ import org.junit.Test;
  */
 public class DoubleArrayAssert_hasSize_Test implements Assert_hasSize_TestCase {
 
+  private static double[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = doubleArray(55.03, 4345.91);
+  }
+
   @Test
   public void should_pass_if_actual_has_expected_size() {
-    double[] array = doubleArray(55.03, 4345.91);
     new DoubleArrayAssert(array).hasSize(2);
   }
 
@@ -57,19 +64,40 @@ public class DoubleArrayAssert_hasSize_Test implements Assert_hasSize_TestCase {
 
   @Test
   public void should_fail_if_actual_does_not_have_expected_size() {
-    expectAssertionError("expected size:<2> but was:<1> for array:<[55.03]>").on(new CodeToTest() {
+    expectAssertionError("expected size:<3> but was:<2> for array:<[55.03, 4345.91]>").on(new CodeToTest() {
       public void run() {
-        new DoubleArrayAssert(doubleArray(55.03)).hasSize(2);
+        new DoubleArrayAssert(array).hasSize(3);
       }
     });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_does_not_have_expected_size() {
-    expectAssertionError("[A Test] expected size:<2> but was:<1> for array:<[55.03]>").on(new CodeToTest() {
+    expectAssertionError("[A Test] expected size:<3> but was:<2> for array:<[55.03, 4345.91]>").on(new CodeToTest() {
       public void run() {
-        new DoubleArrayAssert(doubleArray(55.03)).as("A Test")
-                                                 .hasSize(2);
+        new DoubleArrayAssert(array).as("A Test")
+                                    .hasSize(3);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_have_expected_size() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(array).overridingErrorMessage("My custom message")
+                                    .hasSize(3);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_have_expected_size() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(array).as("A Test")
+                                    .overridingErrorMessage("My custom message")
+                                    .hasSize(3);
       }
     });
   }

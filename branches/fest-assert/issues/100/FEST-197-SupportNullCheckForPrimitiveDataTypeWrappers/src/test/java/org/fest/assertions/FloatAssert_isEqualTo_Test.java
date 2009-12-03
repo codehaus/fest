@@ -45,7 +45,29 @@ public class FloatAssert_isEqualTo_Test implements Assert_isEqualTo_TestCase {
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_equal() {
     expectAssertionError("[A Test] expected:<-0.0> but was:<0.0>").on(new CodeToTest() {
       public void run() {
-        new FloatAssert(0.0f).as("A Test").isEqualTo(-0.0f);
+        new FloatAssert(0.0f).as("A Test")
+                             .isEqualTo(-0.0f);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FloatAssert(0.0f).overridingErrorMessage("My custom message")
+                             .isEqualTo(-0.0f);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FloatAssert(0.0f).as("A Test")
+                             .overridingErrorMessage("My custom message")
+                             .isEqualTo(-0.0f);
       }
     });
   }

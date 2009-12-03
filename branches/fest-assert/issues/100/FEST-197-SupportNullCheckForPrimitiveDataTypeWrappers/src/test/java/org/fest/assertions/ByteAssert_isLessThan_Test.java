@@ -53,6 +53,27 @@ public class ByteAssert_isLessThan_Test implements Assert_isLessThan_TestCase {
   }
 
   @Test
+  public void should_fail_with_custom_message_if_actual_is_equal_to_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteAssert(asByte(6)).as("A Test")
+                                 .overridingErrorMessage("My custom message")
+                                 .isLessThan(asByte(6));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_equal_to_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteAssert(asByte(6)).overridingErrorMessage("My custom message")
+                                 .isLessThan(asByte(6));
+      }
+    });
+  }
+
+  @Test
   public void should_fail_if_actual_is_greater_than_expected() {
     expectAssertionError("actual value:<10> should be less than:<6>").on(new CodeToTest() {
       public void run() {
@@ -70,4 +91,26 @@ public class ByteAssert_isLessThan_Test implements Assert_isLessThan_TestCase {
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_greater_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteAssert(asByte(10)).overridingErrorMessage("My custom message")
+                                  .isLessThan(asByte(6));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_greater_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteAssert(asByte(10)).as("A Test")
+                                  .overridingErrorMessage("My custom message")
+                                  .isLessThan(asByte(6));
+      }
+    });
+  }
+
 }

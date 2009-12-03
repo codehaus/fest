@@ -23,6 +23,7 @@ import static org.fest.test.ExpectedFailure.expectAssertionError;
 import java.util.*;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -34,9 +35,15 @@ import org.junit.Test;
  */
 public class MapAssert_hasSize_Test implements Assert_hasSize_TestCase {
 
+  private static Map<Object, Object> map;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    map = map(entry("key1", 1), entry("key2", 2));
+  }
+
   @Test
   public void should_pass_if_actual_has_expected_size() {
-    Map<Object, Object> map = map(entry("key1", 1), entry("key2", 2));
     new MapAssert(map).hasSize(2);
   }
 
@@ -61,21 +68,40 @@ public class MapAssert_hasSize_Test implements Assert_hasSize_TestCase {
 
   @Test
   public void should_fail_if_actual_does_not_have_expected_size() {
-    expectAssertionError("expected size:<2> but was:<1> for map:<{'key1'=1}>").on(new CodeToTest() {
+    expectAssertionError("expected size:<3> but was:<2> for map:<{'key1'=1, 'key2'=2}>").on(new CodeToTest() {
       public void run() {
-        Map<Object, Object> map = map(entry("key1", 1));
-        new MapAssert(map).hasSize(2);
+        new MapAssert(map).hasSize(3);
       }
     });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_does_not_have_expected_size() {
-    expectAssertionError("[A Test] expected size:<2> but was:<1> for map:<{'key1'=1}>").on(new CodeToTest() {
+    expectAssertionError("[A Test] expected size:<3> but was:<2> for map:<{'key1'=1, 'key2'=2}>").on(new CodeToTest() {
       public void run() {
-        Map<Object, Object> map = map(entry("key1", 1));
         new MapAssert(map).as("A Test")
-                          .hasSize(2);
+                          .hasSize(3);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_have_expected_size() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new MapAssert(map).overridingErrorMessage("My custom message")
+                          .hasSize(3);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_have_expected_size() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new MapAssert(map).as("A Test")
+                          .overridingErrorMessage("My custom message")
+                          .hasSize(3);
       }
     });
   }

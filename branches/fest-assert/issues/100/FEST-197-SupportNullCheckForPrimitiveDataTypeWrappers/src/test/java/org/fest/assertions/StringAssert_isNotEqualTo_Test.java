@@ -46,7 +46,29 @@ public class StringAssert_isNotEqualTo_Test implements Assert_isNotEqualTo_TestC
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_equal() {
     expectAssertionError("[A Test] actual value:<'Luke'> should not be equal to:<'Luke'>").on(new CodeToTest() {
       public void run() {
-        new StringAssert("Luke").as("A Test").isNotEqualTo("Luke");
+        new StringAssert("Luke").as("A Test")
+                                .isNotEqualTo("Luke");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("Luke").overridingErrorMessage("My custom message")
+                                .isNotEqualTo("Luke");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("Luke").as("A Test")
+                                .overridingErrorMessage("My custom message")
+                                .isNotEqualTo("Luke");
       }
     });
   }

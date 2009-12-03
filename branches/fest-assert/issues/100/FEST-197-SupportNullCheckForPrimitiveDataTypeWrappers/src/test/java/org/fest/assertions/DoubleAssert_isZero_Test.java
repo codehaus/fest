@@ -26,7 +26,7 @@ import org.junit.Test;
  * @author David DIDIER
  * @author Alex Ruiz
  */
-public class DoubleAssert_isZero_Test implements Assert_isZero_TestCase {
+public class DoubleAssert_isZero_Test implements NumberAssert_isZero_TestCase {
 
   @Test
   public void should_pass_if_actual_is_zero() {
@@ -47,6 +47,27 @@ public class DoubleAssert_isZero_Test implements Assert_isZero_TestCase {
     expectAssertionError("[A Test] expected:<0.0> but was:<9.0>").on(new CodeToTest() {
       public void run() {
         new DoubleAssert(9).as("A Test")
+                           .isZero();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_zero() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleAssert(9).overridingErrorMessage("My custom message")
+                           .isZero();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_zero() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleAssert(9).as("A Test")
+                           .overridingErrorMessage("My custom message")
                            .isZero();
       }
     });

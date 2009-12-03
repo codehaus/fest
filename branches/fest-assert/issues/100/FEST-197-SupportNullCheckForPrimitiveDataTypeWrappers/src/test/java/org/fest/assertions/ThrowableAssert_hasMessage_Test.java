@@ -14,10 +14,12 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.CommonFailures.*;
+import static org.fest.assertions.CommonFailures.expectErrorIfObjectIsNull;
+import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfObjectIsNull;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,9 +30,16 @@ import org.junit.Test;
  */
 public class ThrowableAssert_hasMessage_Test {
 
+  private static Exception actual;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    actual = new Exception("An exception");
+  }
+  
   @Test
   public void should_pass_if_message_in_actual_is_equal_to_expected() {
-    new ThrowableAssert(new Exception("An exception")).hasMessage("An exception");
+    new ThrowableAssert(actual).hasMessage("An exception");
   }
 
   @Test
@@ -56,7 +65,7 @@ public class ThrowableAssert_hasMessage_Test {
   public void should_fail_if_message_in_actual_is_not_equal_to_expected() {
     expectAssertionError("expected:<'[Hi]'> but was:<'[An exception]'>").on(new CodeToTest() {
       public void run() {
-        new ThrowableAssert(new Exception("An exception")).hasMessage("Hi");
+        new ThrowableAssert(actual).hasMessage("Hi");
       }
     });
   }
@@ -65,8 +74,29 @@ public class ThrowableAssert_hasMessage_Test {
   public void should_fail_and_display_description_of_assertion_if_message_in_actual_is_not_equal_to_expected() {
     expectAssertionError("[A Test] expected:<'[Hi]'> but was:<'[An exception]'>").on(new CodeToTest() {
       public void run() {
-        new ThrowableAssert(new Exception("An exception")).as("A Test")
-                                                          .hasMessage("Hi");
+        new ThrowableAssert(actual).as("A Test")
+                                   .hasMessage("Hi");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_message_in_actual_is_not_equal_to_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ThrowableAssert(actual).overridingErrorMessage("My custom message")
+                                   .hasMessage("Hi");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_message_in_actual_is_not_equal_to_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ThrowableAssert(actual).as("A Test")
+                                   .overridingErrorMessage("My custom message")
+                                   .hasMessage("Hi");
       }
     });
   }

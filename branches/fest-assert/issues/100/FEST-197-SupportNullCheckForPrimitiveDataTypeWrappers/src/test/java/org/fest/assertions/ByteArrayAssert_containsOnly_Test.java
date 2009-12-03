@@ -17,7 +17,6 @@ package org.fest.assertions;
 import static org.fest.assertions.CommonFailures.*;
 import static org.fest.assertions.EmptyArrays.emptyByteArray;
 import static org.fest.assertions.ArrayFactory.byteArray;
-import static org.fest.assertions.Primitives.asByte;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
@@ -33,38 +32,19 @@ public class ByteArrayAssert_containsOnly_Test implements GroupAssert_containsOn
 
   @Test
   public void should_pass_if_actual_contains_only_given_values() {
-    new ByteArrayAssert(asByte(8)).containsOnly(asByte(8));
+    new ByteArrayAssert(byteArray(8)).containsOnly(byteArray(8));
   }
 
   @Test
   public void should_pass_if_actual_contains_only_given_values_in_different_order() {
-    new ByteArrayAssert(asByte(8), asByte(6)).containsOnly(asByte(6), asByte(8));
-  }
-
-  @Test
-  public void should_fail_if_actual_is_empty_and_expecting_at_least_one_element() {
-    expectAssertionError("array:<[]> does not contain element(s):<[7]>").on(new CodeToTest() {
-      public void run() {
-        new ByteArrayAssert(emptyByteArray()).containsOnly(byteArray(7));
-      }
-    });
-  }
-
-  @Test
-  public void should_fail_and_display_description_of_assertion_if_actual_is_empty_and_expecting_at_least_one_element() {
-    expectAssertionError("[A Test] array:<[]> does not contain element(s):<[7]>").on(new CodeToTest() {
-      public void run() {
-        new ByteArrayAssert(emptyByteArray()).as("A Test")
-                                             .containsOnly(byteArray(7));
-      }
-    });
+    new ByteArrayAssert(byteArray(8, 6)).containsOnly(byteArray(6, 8));
   }
 
   @Test
   public void should_fail_if_actual_is_null() {
     expectErrorIfArrayIsNull(new CodeToTest() {
       public void run() {
-        new ByteArrayAssert(null).containsOnly(byteArray(asByte(7)));
+        new ByteArrayAssert(null).containsOnly(byteArray(7));
       }
     });
   }
@@ -99,10 +79,50 @@ public class ByteArrayAssert_containsOnly_Test implements GroupAssert_containsOn
   }
 
   @Test
+  public void should_fail_if_actual_is_empty_and_expecting_at_least_one_element() {
+    expectAssertionError("array:<[]> does not contain element(s):<[7]>").on(new CodeToTest() {
+      public void run() {
+        new ByteArrayAssert(emptyByteArray()).containsOnly(byteArray(7));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_and_display_description_of_assertion_if_actual_is_empty_and_expecting_at_least_one_element() {
+    expectAssertionError("[A Test] array:<[]> does not contain element(s):<[7]>").on(new CodeToTest() {
+      public void run() {
+        new ByteArrayAssert(emptyByteArray()).as("A Test")
+                                             .containsOnly(byteArray(7));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_empty_and_expecting_at_least_one_element() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteArrayAssert(emptyByteArray()).overridingErrorMessage("My custom message")
+                                             .containsOnly(byteArray(7));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_empty_and_expecting_at_least_one_element() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteArrayAssert(emptyByteArray()).as("A Test")
+                                             .overridingErrorMessage("My custom message")
+                                             .containsOnly(byteArray(7));
+      }
+    });
+  }
+
+  @Test
   public void should_fail_if_actual_contains_unexpected_values() {
     expectAssertionError("unexpected element(s):<[6]> in array:<[8, 6]>").on(new CodeToTest() {
       public void run() {
-        new ByteArrayAssert(asByte(8), asByte(6)).containsOnly(byteArray(8));
+        new ByteArrayAssert(byteArray(8, 6)).containsOnly(byteArray(8));
       }
     });
   }
@@ -111,8 +131,29 @@ public class ByteArrayAssert_containsOnly_Test implements GroupAssert_containsOn
   public void should_fail_and_display_description_of_assertion_if_actual_contains_unexpected_values() {
     expectAssertionError("[A Test] unexpected element(s):<[6]> in array:<[8, 6]>").on(new CodeToTest() {
       public void run() {
-        new ByteArrayAssert(asByte(8), asByte(6)).as("A Test")
-                                                 .containsOnly(byteArray(8));
+        new ByteArrayAssert(byteArray(8, 6)).as("A Test")
+                                            .containsOnly(byteArray(8));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_contains_unexpected_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteArrayAssert(byteArray(8, 6)).overridingErrorMessage("My custom message")
+                                            .containsOnly(byteArray(8));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_contains_unexpected_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteArrayAssert(byteArray(8, 6)).as("A Test")
+                                            .overridingErrorMessage("My custom message")
+                                            .containsOnly(byteArray(8));
       }
     });
   }
@@ -121,7 +162,7 @@ public class ByteArrayAssert_containsOnly_Test implements GroupAssert_containsOn
   public void should_fail_if_actual_does_not_contain_all_the_expected_values() {
     expectAssertionError("array:<[8, 6]> does not contain element(s):<[7]>").on(new CodeToTest() {
       public void run() {
-        new ByteArrayAssert(asByte(8), asByte(6)).containsOnly(byteArray(7));
+        new ByteArrayAssert(byteArray(8, 6)).containsOnly(byteArray(7));
       }
     });
   }
@@ -130,8 +171,29 @@ public class ByteArrayAssert_containsOnly_Test implements GroupAssert_containsOn
   public void should_fail_and_display_description_of_assertion_if_actual_does_not_contain_all_the_expected_values() {
     expectAssertionError("[A Test] array:<[8, 6]> does not contain element(s):<[7]>").on(new CodeToTest() {
       public void run() {
-        new ByteArrayAssert(asByte(8), asByte(6)).as("A Test")
-                                                 .containsOnly(byteArray(7));
+        new ByteArrayAssert(byteArray(8, 6)).as("A Test")
+                                            .containsOnly(byteArray(7));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_contain_all_the_expected_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteArrayAssert(byteArray(8, 6)).overridingErrorMessage("My custom message")
+                                            .containsOnly(byteArray(7));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_contain_all_the_expected_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteArrayAssert(byteArray(8, 6)).as("A Test")
+                                            .overridingErrorMessage("My custom message")
+                                            .containsOnly(byteArray(7));
       }
     });
   }

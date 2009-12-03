@@ -51,7 +51,29 @@ public class StringAssert_isNullOrEmpty_Test implements GroupAssert_isNullOrEmpt
   public void should_fail_and_display_description_of_assertion_if_actual_has_content() {
     expectAssertionError("[A Test] expecting a null or empty String, but was:<'Yoda'>").on(new CodeToTest() {
       public void run() {
-        new StringAssert("Yoda").as("A Test").isNullOrEmpty();
+        new StringAssert("Yoda").as("A Test")
+                                .isNullOrEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_has_content() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("Yoda").overridingErrorMessage("My custom message")
+                                .isNullOrEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_has_content() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("Yoda").as("A Test")
+                                .overridingErrorMessage("My custom message")
+                                .isNullOrEmpty();
       }
     });
   }

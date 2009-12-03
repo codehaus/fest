@@ -116,8 +116,9 @@ public class IntAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>int</code> value is not equal to the given one.
    */
   public IntAssert isEqualTo(int expected) {
-    if (actual != expected) fail(unexpectedNotEqual(actual, expected));
-    return this;
+    if (actual == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedNotEqual(actual, expected));
   }
 
   /**
@@ -127,8 +128,9 @@ public class IntAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>int</code> value is equal to the given one.
    */
   public IntAssert isNotEqualTo(int other) {
-    if (actual == other) fail(unexpectedEqual(actual, other));
-    return this;
+    if (actual != other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, other));
   }
 
   /**
@@ -138,8 +140,9 @@ public class IntAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>int</code> value is not greater than the given one.
    */
   public IntAssert isGreaterThan(int other) {
-    if (actual <= other) fail(unexpectedLessThanOrEqualTo(actual, other));
-    return this;
+    if (actual > other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedLessThanOrEqualTo(actual, other));
   }
 
   /**
@@ -149,8 +152,9 @@ public class IntAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>int</code> value is not less than the given one.
    */
   public IntAssert isLessThan(int other) {
-    if (actual >= other) fail(unexpectedGreaterThanOrEqualTo(actual, other));
-    return this;
+    if (actual < other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedGreaterThanOrEqualTo(actual, other));
   }
 
   /**
@@ -160,8 +164,9 @@ public class IntAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>int</code> value is not greater than or equal to the given one.
    */
   public IntAssert isGreaterThanOrEqualTo(int other) {
-    if (actual < other) fail(unexpectedLessThan(actual, other));
-    return this;
+    if (actual >= other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedLessThan(actual, other));
   }
 
   /**
@@ -171,8 +176,9 @@ public class IntAssert extends PrimitiveAssert implements NumberAssert {
    * @throws AssertionError if the actual <code>int</code> value is not less than or equal to the given one.
    */
   public IntAssert isLessThanOrEqualTo(int other) {
-    if (actual > other) fail(unexpectedGreaterThan(actual, other));
-    return this;
+    if (actual <= other) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedGreaterThan(actual, other));
   }
 
   /**
@@ -200,5 +206,11 @@ public class IntAssert extends PrimitiveAssert implements NumberAssert {
    */
   public IntAssert isNegative() {
     return isLessThan(ZERO);
+  }
+
+  /** {@inheritDoc} */
+  public IntAssert overridingErrorMessage(String message) {
+    replaceDefaultErrorMessagesWith(message);
+    return this;
   }
 }

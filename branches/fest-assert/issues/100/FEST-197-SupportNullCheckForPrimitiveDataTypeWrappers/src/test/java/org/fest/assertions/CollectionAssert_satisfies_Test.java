@@ -82,4 +82,35 @@ public class CollectionAssert_satisfies_Test implements GenericAssert_satisfies_
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CollectionAssert(null).overridingErrorMessage("My custom message")
+                                  .satisfies(notNullCollection());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CollectionAssert(null).as("A Test")
+                                  .overridingErrorMessage("My custom message")
+                                  .satisfies(notNullCollection());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CollectionAssert(null).overridingErrorMessage("My custom message")
+                                  .satisfies(notNullCollection().as("Not Null"));
+      }
+    });
+  }
 }

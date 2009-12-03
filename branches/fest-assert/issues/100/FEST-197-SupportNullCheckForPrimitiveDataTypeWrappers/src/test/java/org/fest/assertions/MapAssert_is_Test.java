@@ -80,4 +80,35 @@ public class MapAssert_is_Test implements GenericAssert_satisfies_TestCase {
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new MapAssert(null).overridingErrorMessage("My custom message")
+                           .is(notNullMap());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new MapAssert(null).as("A Test")
+                           .overridingErrorMessage("My custom message")
+                           .is(notNullMap());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new MapAssert(null).overridingErrorMessage("My custom message")
+                           .is(notNullMap().as("Not Null"));
+      }
+    });
+  }
 }

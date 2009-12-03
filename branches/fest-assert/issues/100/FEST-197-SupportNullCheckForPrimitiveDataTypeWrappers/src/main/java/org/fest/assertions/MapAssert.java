@@ -18,7 +18,10 @@ import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Strings.concat;
 import static org.fest.util.Strings.quote;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import org.fest.util.Maps;
 
@@ -163,6 +166,7 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
   }
 
   private void failIfNotFound(String description, Collection<?> notFound) {
+    failIfCustomMessageIsSet();
     fail(concat("the map:", formattedActual(), " does not contain the ", description, ":", inBrackets(notFound)));
   }
 
@@ -173,6 +177,7 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
   }
 
   private void failIfFound(String description, Collection<?> found) {
+    failIfCustomMessageIsSet();
     fail(concat("the map:", formattedActual(), " contains the ", description, ":", inBrackets(found)));
   }
 
@@ -186,10 +191,10 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
   public MapAssert hasSize(int expected) {
     isNotNull();
     int actualSize = actualGroupSize();
-    if (actualSize != expected)
-      fail(concat(
+    if (actualSize == expected) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat(
           "expected size:", inBrackets(expected)," but was:", inBrackets(actualSize), " for map:", inBrackets(actual)));
-    return this;
   }
 
   /**
@@ -198,19 +203,19 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
    */
   public final void isNullOrEmpty() {
     if (Maps.isEmpty(actual)) return;
+    failIfCustomMessageIsSet();
     fail(concat("expecting a null or empty map, but was:", formattedActual()));
   }
 
   /**
    * Verifies that the actual <code>{@link Map}</code> is empty.
-   * @throws AssertionError if the actual <code>Map</code> is <code>null</code>.
    * @throws AssertionError if the actual <code>Map</code> is <code>null</code> or not empty.
    */
   public void isEmpty() {
     isNotNull();
-    if ((actual != null) && !actual.isEmpty()) {
-      fail(concat("expecting empty map, but was:", formattedActual()));
-    }
+    if (actual.isEmpty()) return;
+    failIfCustomMessageIsSet();
+    fail(concat("expecting empty map, but was:", formattedActual()));
   }
 
   private String formattedActual() {
@@ -235,8 +240,9 @@ public class MapAssert extends GroupAssert<Map<?, ?>> {
    */
   public MapAssert isNotEmpty() {
     isNotNull();
-    if (actual.isEmpty()) fail("expecting non-empty map, but it was empty");
-    return this;
+    if (!actual.isEmpty()) return this;
+    failIfCustomMessageIsSet();
+    throw failure("expecting non-empty map, but it was empty");
   }
 
   /**

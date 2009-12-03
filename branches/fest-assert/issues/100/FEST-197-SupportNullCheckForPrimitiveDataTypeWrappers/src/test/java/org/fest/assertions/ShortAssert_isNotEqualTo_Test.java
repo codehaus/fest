@@ -29,6 +29,11 @@ import org.junit.Test;
 public class ShortAssert_isNotEqualTo_Test implements Assert_isNotEqualTo_TestCase {
 
   @Test
+  public void should_pass_if_actual_and_expected_are_not_equal() {
+    new ShortAssert(asShort(6)).isNotEqualTo(asShort(8));
+  }
+
+  @Test
   public void should_fail_if_actual_and_expected_are_equal() {
     expectAssertionError("actual value:<6> should not be equal to:<6>").on(new CodeToTest() {
       public void run() {
@@ -48,7 +53,23 @@ public class ShortAssert_isNotEqualTo_Test implements Assert_isNotEqualTo_TestCa
   }
 
   @Test
-  public void should_pass_if_actual_and_expected_are_not_equal() {
-    new ShortAssert(asShort(6)).isNotEqualTo(asShort(8));
+  public void should_fail_with_custom_message_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ShortAssert(asShort(6)).overridingErrorMessage("My custom message")
+                                   .isNotEqualTo(asShort(6));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ShortAssert(asShort(6)).as("A Test")
+                                   .overridingErrorMessage("My custom message")
+                                   .isNotEqualTo(asShort(6));
+      }
+    });
   }
 }

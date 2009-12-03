@@ -48,7 +48,8 @@ public class StringAssert_startsWith_Test {
   public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
     expectErrorWithDescriptionIfObjectIsNull(new CodeToTest() {
       public void run() {
-        new StringAssert(null).as("A Test").startsWith("Leia");
+        new StringAssert(null).as("A Test")
+                              .startsWith("Leia");
       }
     });
   }
@@ -66,7 +67,29 @@ public class StringAssert_startsWith_Test {
   public void should_fail_and_display_description_of_assertion_if_actual_does_not_start_with_given_String() {
     expectAssertionError("[A Test] <'Luke'> should start with:<'uke'>").on(new CodeToTest() {
       public void run() {
-        new StringAssert("Luke").as("A Test").startsWith("uke");
+        new StringAssert("Luke").as("A Test")
+                                .startsWith("uke");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_start_with_given_String() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("Luke").overridingErrorMessage("My custom message")
+                                .startsWith("uke");
+      }
+    });
+  }
+  
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_start_with_given_String() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new StringAssert("Luke").as("A Test")
+                                .overridingErrorMessage("My custom message")
+                                .startsWith("uke");
       }
     });
   }

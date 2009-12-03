@@ -51,6 +51,10 @@ final class ErrorMessages {
     return assertionFailed(actual, " should be less than or equal to:", value);
   }
 
+  static String unexpectedNullType(Description description) {
+    return createMessageFrom(description, array("expecting a non-null type, but it was null"));
+  }
+
   private static String assertionFailed(Object actual, String reason, Object expected) {
     return assertionFailed(null, actual, reason, expected);
   }

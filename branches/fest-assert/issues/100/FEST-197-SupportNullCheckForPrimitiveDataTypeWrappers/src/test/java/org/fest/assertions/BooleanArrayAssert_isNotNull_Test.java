@@ -58,8 +58,8 @@ public class BooleanArrayAssert_isNotNull_Test implements NullableAssert_isNotNu
   public void should_fail_with_custom_message_if_actual_is_null() {
     expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new ThrowableAssert(null).overridingErrorMessage("My custom message")
-                                 .isNotNull();
+        new BooleanArrayAssert(null).overridingErrorMessage("My custom message")
+                                    .isNotNull();
       }
     });
   }
@@ -68,9 +68,9 @@ public class BooleanArrayAssert_isNotNull_Test implements NullableAssert_isNotNu
   public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_null() {
     expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new ThrowableAssert(null).as("A Test")
-                                 .overridingErrorMessage("My custom message")
-                                 .isNotNull();
+        new BooleanArrayAssert(null).as("A Test")
+                                    .overridingErrorMessage("My custom message")
+                                    .isNotNull();
       }
     });
   }

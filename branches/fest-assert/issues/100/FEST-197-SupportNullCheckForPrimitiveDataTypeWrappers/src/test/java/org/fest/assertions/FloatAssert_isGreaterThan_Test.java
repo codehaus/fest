@@ -33,6 +33,46 @@ public class FloatAssert_isGreaterThan_Test implements Assert_isGreaterThan_Test
   }
 
   @Test
+  public void should_fail_if_actual_is_equal_to_expected() {
+    expectAssertionError("actual value:<8.68> should be greater than:<8.68>").on(new CodeToTest() {
+      public void run() {
+        new FloatAssert(8.68f).isGreaterThan(8.68f);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_and_display_description_of_assertion_if_actual_is_equal_to_expected() {
+    expectAssertionError("[A Test] actual value:<8.68> should be greater than:<8.68>").on(new CodeToTest() {
+      public void run() {
+        new FloatAssert(8.68f).as("A Test")
+                              .isGreaterThan(8.68f);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_equal_to_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FloatAssert(8.68f).overridingErrorMessage("My custom message")
+                              .isGreaterThan(8.68f);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_equal_to_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FloatAssert(8.68f).as("A Test")
+                              .overridingErrorMessage("My custom message")
+                              .isGreaterThan(8.68f);
+      }
+    });
+  }
+
+  @Test
   public void should_fail_if_actual_is_less_than_expected() {
     expectAssertionError("actual value:<8.68> should be greater than:<8.88>").on(new CodeToTest() {
       public void run() {
@@ -52,21 +92,25 @@ public class FloatAssert_isGreaterThan_Test implements Assert_isGreaterThan_Test
   }
 
   @Test
-  public void should_fail_if_actual_is_equal_to_expected() {
-    expectAssertionError("actual value:<8.68> should be greater than:<8.68>").on(new CodeToTest() {
+  public void should_fail_with_custom_message_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new FloatAssert(8.68f).isGreaterThan(8.68f);
+        new FloatAssert(8.68f).overridingErrorMessage("My custom message")
+                              .isGreaterThan(8.88f);
       }
     });
   }
 
   @Test
-  public void should_fail_and_display_description_of_assertion_if_actual_is_equal_to_expected() {
-    expectAssertionError("[A Test] actual value:<8.68> should be greater than:<8.68>").on(new CodeToTest() {
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
         new FloatAssert(8.68f).as("A Test")
-                              .isGreaterThan(8.68f);
+                              .overridingErrorMessage("My custom message")
+                              .isGreaterThan(8.88f);
       }
     });
   }
+
+
 }

@@ -14,13 +14,14 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ArrayFactory.byteArray;
 import static org.fest.assertions.CommonFailures.expectErrorIfArrayIsNull;
 import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfArrayIsNull;
 import static org.fest.assertions.EmptyArrays.emptyByteArray;
-import static org.fest.assertions.Primitives.asByte;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -30,6 +31,13 @@ import org.junit.Test;
  * @author Alex Ruiz
  */
 public class ByteArrayAssert_isEmpty_Test implements GroupAssert_isEmpty_TestCase {
+
+  private static byte[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = byteArray(8, 6);
+  }
 
   @Test
   public void should_pass_if_actual_is_empty() {
@@ -59,7 +67,7 @@ public class ByteArrayAssert_isEmpty_Test implements GroupAssert_isEmpty_TestCas
   public void should_fail_if_actual_is_not_empty() {
     expectAssertionError("expecting empty array, but was:<[8, 6]>").on(new CodeToTest() {
       public void run() {
-        new ByteArrayAssert(asByte(8), asByte(6)).isEmpty();
+        new ByteArrayAssert(array).isEmpty();
       }
     });
   }
@@ -68,8 +76,29 @@ public class ByteArrayAssert_isEmpty_Test implements GroupAssert_isEmpty_TestCas
   public void should_fail_and_display_description_of_assertion_if_actual_is_not_empty() {
     expectAssertionError("[A Test] expecting empty array, but was:<[8, 6]>").on(new CodeToTest() {
       public void run() {
-        new ByteArrayAssert(asByte(8), asByte(6)).as("A Test")
-                                                 .isEmpty();
+        new ByteArrayAssert(array).as("A Test")
+                                  .isEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteArrayAssert(array).overridingErrorMessage("My custom message")
+                                  .isEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ByteArrayAssert(array).as("A Test")
+                                  .overridingErrorMessage("My custom message")
+                                  .isEmpty();
       }
     });
   }

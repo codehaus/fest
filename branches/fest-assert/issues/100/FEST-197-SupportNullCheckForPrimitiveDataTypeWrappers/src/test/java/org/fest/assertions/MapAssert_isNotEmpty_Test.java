@@ -73,7 +73,29 @@ public class MapAssert_isNotEmpty_Test implements GroupAssert_isNotEmpty_TestCas
   public void should_fail_and_display_description_of_assertion_if_actual_is_empty() {
     expectAssertionError("[A Test] expecting non-empty map, but it was empty").on(new CodeToTest() {
       public void run() {
-        new MapAssert(emptyMap()).as("A Test").isNotEmpty();
+        new MapAssert(emptyMap()).as("A Test")
+                                 .isNotEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new MapAssert(emptyMap()).overridingErrorMessage("My custom message")
+                                 .isNotEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new MapAssert(emptyMap()).as("A Test")
+                                 .overridingErrorMessage("My custom message")
+                                 .isNotEmpty();
       }
     });
   }

@@ -14,11 +14,12 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ArrayFactory.objectArray;
 import static org.fest.assertions.CommonFailures.*;
-import static org.fest.assertions.EmptyArrays.emptyObjectArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -29,14 +30,21 @@ import org.junit.Test;
  */
 public class ObjectArrayAssert_contains_Test implements GroupAssert_contains_TestCase {
 
+  private static Object[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = objectArray(6, 8);
+  }
+
   @Test
   public void should_pass_if_actual_contains_given_value() {
-    new ObjectArrayAssert(6, 8).contains(6);
+    new ObjectArrayAssert(array).contains(6);
   }
 
   @Test
   public void should_pass_if_actual_contains_given_values() {
-    new ObjectArrayAssert(6, 8).contains(6, 8);
+    new ObjectArrayAssert(array).contains(6, 8);
   }
 
   @Test
@@ -65,7 +73,7 @@ public class ObjectArrayAssert_contains_Test implements GroupAssert_contains_Tes
     expectNullPointerException("the given array of objects should not be null").on(new CodeToTest() {
       public void run() {
         Object[] expected = null;
-        new ObjectArrayAssert(emptyObjectArray()).contains(expected);
+        new ObjectArrayAssert(array).contains(expected);
       }
     });
   }
@@ -75,27 +83,48 @@ public class ObjectArrayAssert_contains_Test implements GroupAssert_contains_Tes
     expectNullPointerException("[A Test] the given array of objects should not be null").on(new CodeToTest() {
       public void run() {
         Object[] expected = null;
-        new ObjectArrayAssert(emptyObjectArray()).as("A Test")
-                                                 .contains(expected);
+        new ObjectArrayAssert(array).as("A Test")
+                                    .contains(expected);
       }
     });
   }
 
   @Test
   public void should_fail_if_actual_does_not_contain_given_values() {
-    expectAssertionError("array:<[]> does not contain element(s):<[6, 8]>").on(new CodeToTest() {
+    expectAssertionError("array:<[6, 8]> does not contain element(s):<[10]>").on(new CodeToTest() {
       public void run() {
-        new ObjectArrayAssert(emptyObjectArray()).contains(6, 8);
+        new ObjectArrayAssert(array).contains(10);
       }
     });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_does_not_contain_given_values() {
-    expectAssertionError("[A Test] array:<[]> does not contain element(s):<[6, 8]>").on(new CodeToTest() {
+    expectAssertionError("[A Test] array:<[6, 8]> does not contain element(s):<[10]>").on(new CodeToTest() {
       public void run() {
-        new ObjectArrayAssert(emptyObjectArray()).as("A Test")
-                                                 .contains(6, 8);
+        new ObjectArrayAssert(array).as("A Test")
+                                    .contains(10);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_contain_given_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectArrayAssert(array).overridingErrorMessage("My custom message")
+                                    .contains(10);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_contain_given_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectArrayAssert(array).as("A Test")
+                                    .overridingErrorMessage("My custom message")
+                                    .contains(10);
       }
     });
   }

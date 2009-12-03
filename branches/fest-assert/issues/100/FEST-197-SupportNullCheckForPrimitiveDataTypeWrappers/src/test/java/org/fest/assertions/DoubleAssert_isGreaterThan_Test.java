@@ -34,6 +34,46 @@ public class DoubleAssert_isGreaterThan_Test implements Assert_isGreaterThan_Tes
   }
 
   @Test
+  public void should_fail_if_actual_is_equal_to_expected() {
+    expectAssertionError("actual value:<8.68> should be greater than:<8.68>").on(new CodeToTest() {
+      public void run() {
+        new DoubleAssert(8.68).isGreaterThan(8.68);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_and_display_description_of_assertion_if_actual_is_equal_to_expected() {
+    expectAssertionError("[A Test] actual value:<8.68> should be greater than:<8.68>").on(new CodeToTest() {
+      public void run() {
+        new DoubleAssert(8.68).as("A Test")
+                              .isGreaterThan(8.68);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_equal_to_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleAssert(8.68).overridingErrorMessage("My custom message")
+                              .isGreaterThan(8.68);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_equal_to_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleAssert(8.68).as("A Test")
+                              .overridingErrorMessage("My custom message")
+                              .isGreaterThan(8.68);
+      }
+    });
+  }
+
+  @Test
   public void should_fail_if_actual_is_less_than_expected() {
     expectAssertionError("actual value:<8.68> should be greater than:<8.88>").on(new CodeToTest() {
       public void run() {
@@ -53,20 +93,22 @@ public class DoubleAssert_isGreaterThan_Test implements Assert_isGreaterThan_Tes
   }
 
   @Test
-  public void should_fail_if_actual_is_equal_to_expected() {
-    expectAssertionError("actual value:<8.68> should be greater than:<8.68>").on(new CodeToTest() {
+  public void should_fail_with_custom_message_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new DoubleAssert(8.68).isGreaterThan(8.68);
+        new DoubleAssert(8.68).overridingErrorMessage("My custom message")
+                              .isGreaterThan(8.88);
       }
     });
   }
 
   @Test
-  public void should_fail_and_display_description_of_assertion_if_actual_is_equal_to_expected() {
-    expectAssertionError("[A Test] actual value:<8.68> should be greater than:<8.68>").on(new CodeToTest() {
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
         new DoubleAssert(8.68).as("A Test")
-                              .isGreaterThan(8.68);
+                              .overridingErrorMessage("My custom message")
+                              .isGreaterThan(8.88);
       }
     });
   }

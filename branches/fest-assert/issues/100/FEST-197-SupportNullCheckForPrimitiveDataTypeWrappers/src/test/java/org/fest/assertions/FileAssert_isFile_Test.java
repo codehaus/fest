@@ -73,4 +73,25 @@ public class FileAssert_isFile_Test extends FileAssert_TestCase {
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_file() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(file).overridingErrorMessage("My custom message")
+                            .isFile();
+      }
+    });
+  }
+  
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_file() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(file).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .isFile();
+      }
+    });
+  }
 }

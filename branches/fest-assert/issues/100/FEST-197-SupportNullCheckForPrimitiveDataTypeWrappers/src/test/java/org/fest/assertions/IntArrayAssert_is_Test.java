@@ -80,4 +80,35 @@ public class IntArrayAssert_is_Test implements GenericAssert_satisfies_TestCase 
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new IntArrayAssert(null).overridingErrorMessage("My custom message")
+                                .is(notNullIntArray());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new IntArrayAssert(null).as("A Test")
+                                .overridingErrorMessage("My custom message")
+                                .is(notNullIntArray());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_condition_if_condition_is_not_satisfied() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new IntArrayAssert(null).overridingErrorMessage("My custom message")
+                                .is(notNullIntArray().as("Not Null"));
+      }
+    });
+  }
 }

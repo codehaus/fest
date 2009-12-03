@@ -55,4 +55,25 @@ public class FloatAssert_isGreaterThanOrEqualTo_Test implements Assert_isGreater
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FloatAssert(6.6f).overridingErrorMessage("My custom message")
+                             .isGreaterThanOrEqualTo(8.8f);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_less_than_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FloatAssert(6.6f).as("A Test")
+                             .overridingErrorMessage("My custom message")
+                             .isGreaterThanOrEqualTo(8.8f);
+      }
+    });
+  }
 }

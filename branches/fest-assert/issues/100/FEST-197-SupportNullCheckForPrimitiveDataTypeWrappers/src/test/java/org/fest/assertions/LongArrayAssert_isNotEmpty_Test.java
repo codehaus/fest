@@ -35,6 +35,25 @@ public class LongArrayAssert_isNotEmpty_Test implements GroupAssert_isNotEmpty_T
   }
 
   @Test
+  public void should_fail_if_actual_is_null() {
+    expectErrorIfArrayIsNull(new CodeToTest() {
+      public void run() {
+        new LongArrayAssert(null).isNotEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
+    expectErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
+      public void run() {
+        new LongArrayAssert(null).as("A Test")
+                                 .isNotEmpty();
+      }
+    });
+  }
+
+  @Test
   public void should_fail_if_actual_is_empty() {
     expectAssertionError("expecting a non-empty array, but it was empty").on(new CodeToTest() {
       public void run() {
@@ -54,20 +73,22 @@ public class LongArrayAssert_isNotEmpty_Test implements GroupAssert_isNotEmpty_T
   }
 
   @Test
-  public void should_fail_if_actual_is_null() {
-    expectErrorIfArrayIsNull(new CodeToTest() {
+  public void should_fail_with_custom_message_if_actual_is_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new LongArrayAssert(null).isNotEmpty();
+        new LongArrayAssert(emptyLongArray()).overridingErrorMessage("My custom message")
+                                             .isNotEmpty();
       }
     });
   }
 
   @Test
-  public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new LongArrayAssert(null).as("A Test")
-                                 .isNotEmpty();
+        new LongArrayAssert(emptyLongArray()).as("A Test")
+                                             .overridingErrorMessage("My custom message")
+                                             .isNotEmpty();
       }
     });
   }

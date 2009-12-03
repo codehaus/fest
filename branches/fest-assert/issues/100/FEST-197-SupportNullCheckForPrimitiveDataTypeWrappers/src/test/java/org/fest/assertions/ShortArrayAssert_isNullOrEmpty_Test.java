@@ -15,10 +15,10 @@
 package org.fest.assertions;
 
 import static org.fest.assertions.EmptyArrays.emptyShortArray;
-import static org.fest.assertions.Primitives.asShort;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,6 +28,13 @@ import org.junit.Test;
  * @author Alex Ruiz
  */
 public class ShortArrayAssert_isNullOrEmpty_Test implements GroupAssert_isNullOrEmpty_TestCase {
+
+  private static short[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = ArrayFactory.shortArray(6);
+  }
 
   @Test
   public void should_pass_if_actual_is_null() {
@@ -43,7 +50,7 @@ public class ShortArrayAssert_isNullOrEmpty_Test implements GroupAssert_isNullOr
   public void should_fail_if_actual_has_content() {
     expectAssertionError("expecting a null or empty array, but was:<[6]>").on(new CodeToTest() {
       public void run() {
-        new ShortArrayAssert(asShort(6)).isNullOrEmpty();
+        new ShortArrayAssert(array).isNullOrEmpty();
       }
     });
   }
@@ -52,8 +59,29 @@ public class ShortArrayAssert_isNullOrEmpty_Test implements GroupAssert_isNullOr
   public void should_fail_and_display_description_of_assertion_if_actual_has_content() {
     expectAssertionError("[A Test] expecting a null or empty array, but was:<[6]>").on(new CodeToTest() {
       public void run() {
-        new ShortArrayAssert(asShort(6)).as("A Test")
-                                        .isNullOrEmpty();
+        new ShortArrayAssert(array).as("A Test")
+                                   .isNullOrEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_has_content() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ShortArrayAssert(array).overridingErrorMessage("My custom message")
+                                   .isNullOrEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_has_content() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ShortArrayAssert(array).as("A Test")
+                                   .overridingErrorMessage("My custom message")
+                                   .isNullOrEmpty();
       }
     });
   }

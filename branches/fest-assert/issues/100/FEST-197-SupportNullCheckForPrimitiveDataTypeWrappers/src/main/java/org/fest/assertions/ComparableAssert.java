@@ -94,7 +94,9 @@ public abstract class ComparableAssert<T extends Comparable<T>> extends GenericA
    */
   protected final void assertIsEqualByComparingTo(T expected) {
     isNotNull();
-    if (actual.compareTo(expected) != 0) fail(unexpectedNotEqual(actual, expected));
+    if (actual.compareTo(expected) == 0) return;
+    failIfCustomMessageIsSet();
+    fail(unexpectedNotEqual(actual, expected));
   }
 
   /**
@@ -116,7 +118,9 @@ public abstract class ComparableAssert<T extends Comparable<T>> extends GenericA
    */
   protected final void assertIsLessThan(T other) {
     isNotNull();
-    if (actual.compareTo(other) >= 0) fail(unexpectedGreaterThanOrEqualTo(actual, other));
+    if (actual.compareTo(other) < 0) return;
+    failIfCustomMessageIsSet();
+    fail(unexpectedGreaterThanOrEqualTo(actual, other));
   }
 
   /**
@@ -127,7 +131,9 @@ public abstract class ComparableAssert<T extends Comparable<T>> extends GenericA
    */
   protected final void assertIsGreaterThan(T other) {
     isNotNull();
-    if (actual.compareTo(other) <= 0) fail(unexpectedLessThanOrEqualTo(actual, other));
+    if (actual.compareTo(other) > 0) return;
+    failIfCustomMessageIsSet();
+    fail(unexpectedLessThanOrEqualTo(actual, other));
   }
 
   /**
@@ -138,7 +144,9 @@ public abstract class ComparableAssert<T extends Comparable<T>> extends GenericA
    */
   protected final void assertIsLessThanOrEqualTo(T other) {
     isNotNull();
-    if (actual.compareTo(other) > 0) fail(unexpectedGreaterThan(actual, other));
+    if (actual.compareTo(other) <= 0) return;
+    failIfCustomMessageIsSet();
+    fail(unexpectedGreaterThan(actual, other));
   }
 
   /**
@@ -149,6 +157,8 @@ public abstract class ComparableAssert<T extends Comparable<T>> extends GenericA
    */
   protected final void assertIsGreaterThanOrEqualTo(T other) {
     isNotNull();
-    if (actual.compareTo(other) < 0) fail(unexpectedLessThan(actual, other));
+    if (actual.compareTo(other) >= 0) return;
+    failIfCustomMessageIsSet();
+    fail(unexpectedLessThan(actual, other));
   }
 }

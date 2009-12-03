@@ -15,11 +15,13 @@
 package org.fest.assertions;
 
 import static org.fest.assertions.BigDecimals.eight;
+import static org.fest.assertions.BigDecimals.nine;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import java.math.BigDecimal;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -32,27 +34,54 @@ import org.junit.Test;
  */
 public class BigDecimalAssert_isSameAs_Test implements GenericAssert_isSameAs_TestCase {
 
+  private static BigDecimal eight;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    eight = eight();
+  }
+
   @Test
   public void should_pass_if_actual_and_expected_are_same() {
-    BigDecimal eight = eight();
     new BigDecimalAssert(eight).isSameAs(eight);
   }
 
   @Test
   public void should_fail_if_actual_and_expected_are_not_same() {
-    expectAssertionError("expected same instance but found:<8.0> and:<8.0>").on(new CodeToTest() {
+    expectAssertionError("expected same instance but found:<8.0> and:<9.0>").on(new CodeToTest() {
       public void run() {
-        new BigDecimalAssert(eight()).isSameAs(eight());
+        new BigDecimalAssert(eight).isSameAs(nine());
       }
     });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_not_same() {
-    expectAssertionError("[A Test] expected same instance but found:<8.0> and:<8.0>").on(new CodeToTest() {
+    expectAssertionError("[A Test] expected same instance but found:<8.0> and:<9.0>").on(new CodeToTest() {
       public void run() {
-        new BigDecimalAssert(eight()).as("A Test")
-                                     .isSameAs(eight());
+        new BigDecimalAssert(eight).as("A Test")
+                                   .isSameAs(nine());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_not_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(eight).overridingErrorMessage("My custom message")
+                                   .isSameAs(nine());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(eight).as("A Test")
+                                   .overridingErrorMessage("My custom message")
+                                   .isSameAs(nine());
       }
     });
   }

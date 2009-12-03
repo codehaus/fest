@@ -14,12 +14,14 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ArrayFactory.floatArray;
 import static org.fest.assertions.CommonFailures.expectErrorIfArrayIsNull;
 import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfArrayIsNull;
 import static org.fest.assertions.EmptyArrays.emptyFloatArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -29,6 +31,13 @@ import org.junit.Test;
  * @author Alex Ruiz
  */
 public class FloatArrayAssert_isEmpty_Test implements GroupAssert_isEmpty_TestCase {
+
+  private static float[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = floatArray(6f);
+  }
 
   @Test
   public void should_pass_if_actual_is_empty() {
@@ -58,7 +67,7 @@ public class FloatArrayAssert_isEmpty_Test implements GroupAssert_isEmpty_TestCa
   public void should_fail_if_actual_is_not_empty() {
     expectAssertionError("expecting empty array, but was:<[6.0]>").on(new CodeToTest() {
       public void run() {
-        new FloatArrayAssert(6f).isEmpty();
+        new FloatArrayAssert(array).isEmpty();
       }
     });
   }
@@ -67,8 +76,29 @@ public class FloatArrayAssert_isEmpty_Test implements GroupAssert_isEmpty_TestCa
   public void should_fail_and_display_description_of_assertion_if_actual_is_not_empty() {
     expectAssertionError("[A Test] expecting empty array, but was:<[6.0]>").on(new CodeToTest() {
       public void run() {
-        new FloatArrayAssert(6f).as("A Test")
-                                .isEmpty();
+        new FloatArrayAssert(array).as("A Test")
+                                   .isEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FloatArrayAssert(array).overridingErrorMessage("My custom message")
+                                   .isEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FloatArrayAssert(array).as("A Test")
+                                   .overridingErrorMessage("My custom message")
+                                   .isEmpty();
       }
     });
   }

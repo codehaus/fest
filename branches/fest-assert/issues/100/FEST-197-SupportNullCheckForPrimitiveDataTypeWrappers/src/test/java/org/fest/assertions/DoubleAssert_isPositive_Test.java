@@ -26,11 +26,51 @@ import org.junit.Test;
  * @author David DIDIER
  * @author Alex Ruiz
  */
-public class DoubleAssert_isPositive_Test implements Assert_isPositive_TestCase {
+public class DoubleAssert_isPositive_Test implements NumberAssert_isPositive_TestCase {
 
   @Test
   public void should_pass_if_actual_is_positive() {
     new DoubleAssert(6.68).isPositive();
+  }
+
+  @Test
+  public void should_fail_if_actual_is_negative() {
+    expectAssertionError("actual value:<-6.68> should be greater than:<0.0>").on(new CodeToTest() {
+      public void run() {
+        new DoubleAssert(-6.68).isPositive();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_and_display_description_of_assertion_if_actual_is_negative() {
+    expectAssertionError("[A Test] actual value:<-6.68> should be greater than:<0.0>").on(new CodeToTest() {
+      public void run() {
+        new DoubleAssert(-6.68).as("A Test")
+                               .isPositive();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_negative() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleAssert(-6.68).overridingErrorMessage("My custom message")
+                               .isPositive();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_negative() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleAssert(-6.68).as("A Test")
+                               .overridingErrorMessage("My custom message")
+                               .isPositive();
+      }
+    });
   }
 
   @Test
@@ -53,20 +93,22 @@ public class DoubleAssert_isPositive_Test implements Assert_isPositive_TestCase 
   }
 
   @Test
-  public void should_fail_if_actual_is_negative() {
-    expectAssertionError("actual value:<-6.68> should be greater than:<0.0>").on(new CodeToTest() {
+  public void should_fail_with_custom_message_if_actual_is_zero() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new DoubleAssert(-6.68).isPositive();
+        new DoubleAssert(0.0).overridingErrorMessage("My custom message")
+                             .isPositive();
       }
     });
   }
 
   @Test
-  public void should_fail_and_display_description_of_assertion_if_actual_is_negative() {
-    expectAssertionError("[A Test] actual value:<-6.68> should be greater than:<0.0>").on(new CodeToTest() {
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_zero() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new DoubleAssert(-6.68).as("A Test")
-                               .isPositive();
+        new DoubleAssert(0.0).as("A Test")
+                             .overridingErrorMessage("My custom message")
+                             .isPositive();
       }
     });
   }

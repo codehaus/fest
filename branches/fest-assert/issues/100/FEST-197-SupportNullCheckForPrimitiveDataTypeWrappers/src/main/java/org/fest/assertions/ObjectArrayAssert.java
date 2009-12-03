@@ -15,8 +15,7 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.ErrorMessages.unexpectedEqual;
-import static org.fest.assertions.ErrorMessages.unexpectedNotEqual;
+import static org.fest.assertions.ErrorMessages.*;
 import static org.fest.assertions.Formatting.inBrackets;
 import static org.fest.util.Collections.duplicatesFrom;
 import static org.fest.util.Collections.list;
@@ -77,14 +76,18 @@ public class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * </p>
    * @param type the expected type.
    * @return this assertion object.
+   * @throws NullPointerException if the given type is <code>null</code>.
    * @throws AssertionError if the component type of the actual <code>Object</code> array is not the same as the
    * specified one.
    */
   public ObjectArrayAssert hasAllElementsOfType(Class<?> type) {
+    validateIsNotNull(type);
     isNotNull();
-    for (Object o : actual)
-      if (!type.isInstance(o))
-        fail(concat("not all elements in array:", actualInBrackets(), " belong to the type:", inBrackets(type)));
+    for (Object o : actual) {
+      if (type.isInstance(o)) continue;
+      failIfCustomMessageIsSet();
+      fail(concat("not all elements in array:", actualInBrackets(), " belong to the type:", inBrackets(type)));
+    }
     return this;
   }
 
@@ -96,6 +99,7 @@ public class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * @throws AssertionError if the actual <code>Object</code> does not have any elements of the given type.
    */
   public ObjectArrayAssert hasAtLeastOneElementOfType(Class<?> type) {
+    validateIsNotNull(type);
     isNotNull();
     boolean found = false;
     for (Object o : actual) {
@@ -103,8 +107,13 @@ public class ObjectArrayAssert extends ArrayAssert<Object[]> {
       found = true;
       break;
     }
-    if (!found) fail(concat("array:", actualInBrackets(), " does not have any elements of type:", inBrackets(type)));
-    return this;
+    if (found) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("array:", actualInBrackets(), " does not have any elements of type:", inBrackets(type)));
+  }
+
+  private void validateIsNotNull(Class<?> type) {
+    if (type == null) throw new NullPointerException(unexpectedNullType(rawDescription()));
   }
 
   /**
@@ -168,9 +177,9 @@ public class ObjectArrayAssert extends ArrayAssert<Object[]> {
     isNotNull();
     Collection<?> actualAsList = list(actual);
     Collection<?> duplicates = duplicatesFrom(actualAsList);
-    if (!duplicates.isEmpty())
-      fail(concat("array:", actualInBrackets(), " contains duplicate(s):", inBrackets(duplicates)));
-    return this;
+    if (duplicates.isEmpty()) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("array:", actualInBrackets(), " contains duplicate(s):", inBrackets(duplicates)));
   }
 
   /**
@@ -267,8 +276,9 @@ public class ObjectArrayAssert extends ArrayAssert<Object[]> {
    * @throws AssertionError if the actual <code>Object</code> array is equal to the given one.
    */
   public ObjectArrayAssert isNotEqualTo(Object[] array) {
-    if (Arrays.deepEquals(actual, array)) fail(unexpectedEqual(actual, array));
-    return this;
+    if (!Arrays.deepEquals(actual, array)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(unexpectedEqual(actual, array));
   }
 
   /**

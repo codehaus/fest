@@ -14,11 +14,12 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ArrayFactory.doubleArray;
 import static org.fest.assertions.CommonFailures.*;
-import static org.fest.assertions.EmptyArrays.emptyDoubleArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -29,14 +30,21 @@ import org.junit.Test;
  */
 public class DoubleArrayAssert_excludes_Test implements GroupAssert_excludes_TestCase {
 
+  private static double[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = doubleArray(55.03, 4345.91);
+  }
+
   @Test
   public void should_pass_if_actual_excludes_given_value() {
-    new DoubleArrayAssert(55.03, 4345.91).excludes(5323.2);
+    new DoubleArrayAssert(array).excludes(5323.2);
   }
 
   @Test
   public void should_pass_if_actual_excludes_given_values() {
-    new DoubleArrayAssert(55.03, 4345.91).excludes(8.6, 5323.2);
+    new DoubleArrayAssert(array).excludes(8.6, 5323.2);
   }
 
   @Test
@@ -62,7 +70,7 @@ public class DoubleArrayAssert_excludes_Test implements GroupAssert_excludes_Tes
   public void should_throw_error_if_expected_is_null() {
     expectNullPointerException("the given array of doubles should not be null").on(new CodeToTest() {
       public void run() {
-        new DoubleArrayAssert(emptyDoubleArray()).excludes(null);
+        new DoubleArrayAssert(array).excludes(null);
       }
     });
   }
@@ -71,8 +79,8 @@ public class DoubleArrayAssert_excludes_Test implements GroupAssert_excludes_Tes
   public void should_throw_error_and_display_description_of_assertion_if_expected_is_null() {
     expectNullPointerException("[A Test] the given array of doubles should not be null").on(new CodeToTest() {
       public void run() {
-        new DoubleArrayAssert(emptyDoubleArray()).as("A Test")
-                                                 .excludes(null);
+        new DoubleArrayAssert(array).as("A Test")
+                                    .excludes(null);
       }
     });
   }
@@ -81,19 +89,40 @@ public class DoubleArrayAssert_excludes_Test implements GroupAssert_excludes_Tes
   public void should_fail_if_actual_contains_given_values() {
     expectAssertionError("array:<[55.03, 4345.91]> does not exclude element(s):<[55.03]>").on(new CodeToTest() {
       public void run() {
-        new DoubleArrayAssert(55.03, 4345.91).excludes(55.03);
+        new DoubleArrayAssert(array).excludes(55.03);
       }
     });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_contains_given_values() {
-    expectAssertionError("[A Test] array:<[55.03, 4345.91]> does not exclude element(s):<[55.03]>").on(
-      new CodeToTest() {
-        public void run() {
-          new DoubleArrayAssert(55.03, 4345.91).as("A Test")
-                                               .excludes(55.03);
-        }
-      });
+    String message = "[A Test] array:<[55.03, 4345.91]> does not exclude element(s):<[55.03]>";
+    expectAssertionError(message).on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(array).as("A Test")
+                                    .excludes(55.03);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_contains_given_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(array).overridingErrorMessage("My custom message")
+                                    .excludes(55.03);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_contains_given_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new DoubleArrayAssert(array).as("A Test")
+                                    .overridingErrorMessage("My custom message")
+                                    .excludes(55.03);
+      }
+    });
   }
 }

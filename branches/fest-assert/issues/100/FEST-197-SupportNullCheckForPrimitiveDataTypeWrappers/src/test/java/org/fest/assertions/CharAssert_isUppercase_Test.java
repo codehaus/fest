@@ -46,7 +46,29 @@ public class CharAssert_isUppercase_Test {
   public void should_fail_and_display_description_of_assertion_if_actual_is_not_uppercase() {
     expectAssertionError("[A Test] <a> should be an uppercase character").on(new CodeToTest() {
       public void run() {
-        new CharAssert('a').as("A Test").isUpperCase();
+        new CharAssert('a').as("A Test")
+                           .isUpperCase();
+      }
+    });
+  }
+  
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_uppercase() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharAssert('a').overridingErrorMessage("My custom message")
+                           .isUpperCase();
+      }
+    });
+  }
+  
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_uppercase() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharAssert('a').as("A Test")
+                           .overridingErrorMessage("My custom message")
+                           .isUpperCase();
       }
     });
   }

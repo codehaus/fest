@@ -73,7 +73,7 @@ public class CharArrayAssert_isNotNull_Test implements NullableAssert_isNotNull_
                                  .isNotNull();
       }
     });
-  }  
+  }
   
   @Test
   public void should_have_leaf_assertion_class_as_return_type() {

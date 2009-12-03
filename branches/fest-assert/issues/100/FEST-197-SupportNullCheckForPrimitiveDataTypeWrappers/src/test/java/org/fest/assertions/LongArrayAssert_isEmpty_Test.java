@@ -14,11 +14,13 @@
  */
 package org.fest.assertions;
 
+import static org.fest.assertions.ArrayFactory.longArray;
 import static org.fest.assertions.CommonFailures.*;
 import static org.fest.assertions.EmptyArrays.emptyLongArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,6 +30,13 @@ import org.junit.Test;
  * @author Alex Ruiz
  */
 public class LongArrayAssert_isEmpty_Test implements GroupAssert_isEmpty_TestCase {
+
+  private static long[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = longArray(6, 8);
+  }
 
   @Test
   public void should_pass_if_actual_is_empty() {
@@ -57,7 +66,7 @@ public class LongArrayAssert_isEmpty_Test implements GroupAssert_isEmpty_TestCas
   public void should_fail_if_actual_is_not_empty() {
     expectAssertionError("expecting empty array, but was:<[6, 8]>").on(new CodeToTest() {
       public void run() {
-        new LongArrayAssert(6, 8).isEmpty();
+        new LongArrayAssert(array).isEmpty();
       }
     });
   }
@@ -66,8 +75,29 @@ public class LongArrayAssert_isEmpty_Test implements GroupAssert_isEmpty_TestCas
   public void should_fail_and_display_description_of_assertion_if_actual_is_not_empty() {
     expectAssertionError("[A Test] expecting empty array, but was:<[6, 8]>").on(new CodeToTest() {
       public void run() {
-        new LongArrayAssert(6, 8).as("A Test")
-                                 .isEmpty();
+        new LongArrayAssert(array).as("A Test")
+                                  .isEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new LongArrayAssert(array).overridingErrorMessage("My custom message")
+                                  .isEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new LongArrayAssert(array).as("A Test")
+                                  .overridingErrorMessage("My custom message")
+                                  .isEmpty();
       }
     });
   }

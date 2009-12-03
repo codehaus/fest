@@ -17,6 +17,7 @@ package org.fest.assertions;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -27,9 +28,15 @@ import org.junit.Test;
  */
 public class ThrowableAssert_isSameAs_Test implements GenericAssert_isSameAs_TestCase {
 
+  private static Exception actual;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    actual = new Exception();
+  }
+
   @Test
   public void should_pass_if_actual_and_expected_are_same() {
-    Exception actual = new Exception();
     new ThrowableAssert(actual).isSameAs(actual);
   }
 
@@ -38,7 +45,7 @@ public class ThrowableAssert_isSameAs_Test implements GenericAssert_isSameAs_Tes
     String message = "expected same instance but found:<java.lang.Exception> and:<java.lang.NullPointerException>";
     expectAssertionError(message).on(new CodeToTest() {
       public void run() {
-        new ThrowableAssert(new Exception()).isSameAs(new NullPointerException());
+        new ThrowableAssert(actual).isSameAs(new NullPointerException());
       }
     });
   }
@@ -48,8 +55,29 @@ public class ThrowableAssert_isSameAs_Test implements GenericAssert_isSameAs_Tes
     String msg = "[A Test] expected same instance but found:<java.lang.Exception> and:<java.lang.NullPointerException>";
     expectAssertionError(msg).on(new CodeToTest() {
       public void run() {
-        new ThrowableAssert(new Exception()).as("A Test")
-                                            .isSameAs(new NullPointerException());
+        new ThrowableAssert(actual).as("A Test")
+                                   .isSameAs(new NullPointerException());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_not_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ThrowableAssert(actual).overridingErrorMessage("My custom message")
+                                   .isSameAs(new NullPointerException());
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_not_same() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ThrowableAssert(actual).as("A Test")
+                                   .overridingErrorMessage("My custom message")
+                                   .isSameAs(new NullPointerException());
       }
     });
   }

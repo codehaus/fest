@@ -18,6 +18,7 @@ import static org.fest.assertions.ArrayFactory.charArray;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,16 +29,23 @@ import org.junit.Test;
  */
 public class CharArrayAssert_isNotEqualTo_Test implements Assert_isNotEqualTo_TestCase {
 
+  private static char[] array;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    array = charArray('a', 'b');
+  }
+
   @Test
   public void should_pass_if_actual_and_expected_are_not_equal() {
-    new CharArrayAssert('a', 'b').isNotEqualTo(charArray('a'));
+    new CharArrayAssert(array).isNotEqualTo(charArray('a'));
   }
 
   @Test
   public void should_fail_if_actual_and_expected_are_equal() {
     expectAssertionError("actual value:<[a, b]> should not be equal to:<[a, b]>").on(new CodeToTest() {
       public void run() {
-        new CharArrayAssert('a', 'b').isNotEqualTo(charArray('a', 'b'));
+        new CharArrayAssert(array).isNotEqualTo(charArray('a', 'b'));
       }
     });
   }
@@ -46,8 +54,29 @@ public class CharArrayAssert_isNotEqualTo_Test implements Assert_isNotEqualTo_Te
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_equal() {
     expectAssertionError("[A Test] actual value:<[a, b]> should not be equal to:<[a, b]>").on(new CodeToTest() {
       public void run() {
-        new CharArrayAssert('a', 'b').as("A Test")
-                                     .isNotEqualTo(charArray('a', 'b'));
+        new CharArrayAssert(array).as("A Test")
+                                  .isNotEqualTo(charArray('a', 'b'));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharArrayAssert(array).overridingErrorMessage("My custom message")
+                                  .isNotEqualTo(charArray('a', 'b'));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CharArrayAssert(array).as("A Test")
+                                  .overridingErrorMessage("My custom message")
+                                  .isNotEqualTo(charArray('a', 'b'));
       }
     });
   }

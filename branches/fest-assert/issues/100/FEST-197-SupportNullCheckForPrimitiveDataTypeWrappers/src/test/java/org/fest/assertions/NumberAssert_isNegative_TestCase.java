@@ -15,19 +15,27 @@
 package org.fest.assertions;
 
 /**
- * Test case for implementations of <code>isPositive()</code>.
+ * Test case for implementations of <code>{@link NumberAssert#isNegative()}</code>.
  *
  * @author Alex Ruiz
  */
-public interface Assert_isPositive_TestCase {
+public interface NumberAssert_isNegative_TestCase {
 
-  void should_pass_if_actual_is_positive();
+  void should_pass_if_actual_is_negative();
 
-  void should_fail_if_actual_is_negative();
+  void should_fail_if_actual_is_positive();
 
-  void should_fail_and_display_description_of_assertion_if_actual_is_negative();
+  void should_fail_and_display_description_of_assertion_if_actual_is_positive();
+
+  void should_fail_with_custom_message_if_actual_is_positive();
+
+  void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_positive();
 
   void should_fail_if_actual_is_zero();
 
   void should_fail_and_display_description_of_assertion_if_actual_is_zero();
+
+  void should_fail_with_custom_message_if_actual_is_zero();
+
+  void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_zero();
 }

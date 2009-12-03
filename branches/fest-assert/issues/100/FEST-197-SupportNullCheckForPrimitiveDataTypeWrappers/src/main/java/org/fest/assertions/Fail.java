@@ -39,31 +39,34 @@ public final class Fail {
   }
 
   /**
-   * Throws an <code>{@link AssertionError}</code> with the given message an with the <code>{@link Throwable}</code>
-   * that caused the failure.
-   * @param description the description of the failed assertion. It can be <code>null</code>.
-   * @param realCause cause of the error.
+   * Throws an <code>{@link AssertionError}</code> if the given objects are equal.
+   * @param customErrorMessage any custom error message. This message will replace the default one only if it (the
+   * custom message) is not <code>null</code>.
+   * @param descriptionOfActual the description of the actual value.
+   * @param actual the actual object.
+   * @param other the object to compare to.
+   * @throws AssertionError if the given objects are equal.
+   * @since 1.2
    */
-  public static void fail(String description, Throwable realCause) {
-    AssertionError error = failure(description);
-    error.initCause(realCause);
-    throw error;
-  }
-
-  static void failIfEqual(Description description, Object first, Object second) {
-    if (areEqual(first, second)) fail(format(description, unexpectedEqual(first, second)));
+  protected static void failIfEqual(String customErrorMessage, Description descriptionOfActual, Object actual, Object other) {
+    if (!areEqual(actual, other)) return;
+    failWithMessage(customErrorMessage);
+    fail(format(descriptionOfActual, unexpectedEqual(actual, other)));
   }
 
   /**
-   * Throws an <code>{@link AssertionError}</code> if 'actual' is not equal to 'expected'.
+   * Throws an <code>{@link AssertionError}</code> if 'actual' is not equal to 'expected'. If JUnit 4 (or greater) is
+   * in the classpath, this method will throw a <code>ComparisonFailure</code> instead. More details about this feature
+   * can be found <a href="http://docs.codehaus.org/display/FEST/JUnit-Specific+Features">here</a>.
    * @param customErrorMessage any custom error message. This message will replace the default one only if it (the
    * custom message) is not <code>null</code>.
    * @param descriptionOfActual the description of the actual value.
    * @param actual the actual object.
    * @param expected the expected object.
    * @throws AssertionError if the given objects are not equal.
+   * @since 1.2
    */
-  static void failIfNotEqual(String customErrorMessage, Description descriptionOfActual, Object actual, Object expected) {
+  protected static void failIfNotEqual(String customErrorMessage, Description descriptionOfActual, Object actual, Object expected) {
     if (areEqual(actual, expected)) return;
     failWithMessage(customErrorMessage);
     failWhenNotEqual(descriptionOfActual, actual, expected);
@@ -82,8 +85,9 @@ public final class Fail {
    * @param description the description of the given object.
    * @param o the given object.
    * @throws AssertionError if the given object is <code>null</code>.
+   * @since 1.2
    */
-  static void failIfNull(String customErrorMessage, Description description, Object o) {
+  protected static void failIfNull(String customErrorMessage, Description description, Object o) {
     if (o != null) return;
     failWithMessage(customErrorMessage);
     fail(description, array("expecting a non-null object, but it was null"));
@@ -96,8 +100,9 @@ public final class Fail {
    * @param description the description of the given object.
    * @param o the given object.
    * @throws AssertionError if the given object is not <code>null</code>.
+   * @since 1.2
    */
-  static void failIfNotNull(String customErrorMessage, Description description, Object o) {
+  protected static void failIfNotNull(String customErrorMessage, Description description, Object o) {
     if (o == null) return;
     failWithMessage(customErrorMessage);
     fail(description, array(inBrackets(o), " should be null"));
@@ -111,30 +116,66 @@ public final class Fail {
    * @param actual the actual object.
    * @param other the object to compare to.
    * @throws AssertionError if the given objects are the same.
+   * @since 1.2
    */
-  static void failIfSame(String customErrorMessage, Description descriptionOfActual, Object actual, Object other) {
+  protected static void failIfSame(String customErrorMessage, Description descriptionOfActual, Object actual, Object other) {
     if (actual != other) return;
     failWithMessage(customErrorMessage);
     fail(descriptionOfActual, array("given objects are same:", inBrackets(actual)));
   }
 
-  static void failIfNotSame(Description description, Object first, Object second) {
-    if (first == second) return;
-    fail(description, array("expected same instance but found:", inBrackets(first), " and:", inBrackets(second)));
+  /**
+   * Throws an <code>{@link AssertionError}</code> if the given objects are not the same.
+   * @param customErrorMessage any custom error message. This message will replace the default one only if it (the
+   * custom message) is not <code>null</code>.
+   * @param descriptionOfActual the description of the actual value.
+   * @param actual the actual object.
+   * @param other the object to compare to.
+   * @throws AssertionError if the given objects are not the same.
+   * @since 1.2
+   */
+  protected static void failIfNotSame(String customErrorMessage, Description descriptionOfActual, Object actual, Object other) {
+    if (actual == other) return;
+    failWithMessage(customErrorMessage);
+    fail(descriptionOfActual,
+        array("expected same instance but found:", inBrackets(actual), " and:", inBrackets(other)));
+  }
+
+  private static void fail(Description description, Object[] message) {
+    throw failure(createMessageFrom(description, message));
   }
 
   /**
-   * Throws an <code>{@link AssertionError}</code> using the custom error message specified in the given assertion. If
-   * the assertion does not have a custom error message, this method will not throw any exceptions.
-   * @param assertion the assertion object, that may contain a custom error message.
-   * @throws AssertionError if the given assertion has a custom error message.
+   * Throws an <code>{@link AssertionError}</code> only if the given custom message is not <code>null</code>.
+   * @param customErrorMessage the custom error message.
+   * @throws AssertionError only if the custom error message is not <code>null</code>.
+   * @since 1.2
    */
-  static void failWithMessage(String customErrorMessage) {
+  protected static void failWithMessage(String customErrorMessage) {
     if (customErrorMessage != null) fail(customErrorMessage);
   }
 
-  private static AssertionError fail(Description description, Object[] message) {
-    throw failure(createMessageFrom(description, message));
+  /**
+   * Throws an <code>{@link AssertionError}</code> only if the given custom message is not <code>null</code>.
+   * @param customErrorMessage the custom error message.
+   * @param realCause cause of the error.
+   * @throws AssertionError only if the custom error message is not <code>null</code>.
+   * @since 1.2
+   */
+  protected static void failWithMessage(String customErrorMessage, Throwable realCause) {
+    if (customErrorMessage != null) fail(customErrorMessage, realCause);
+  }
+
+  /**
+   * Throws an <code>{@link AssertionError}</code> with the given message and with the <code>{@link Throwable}</code>
+   * that caused the failure.
+   * @param description the description of the failed assertion. It can be <code>null</code>.
+   * @param realCause cause of the error.
+   */
+  public static void fail(String description, Throwable realCause) {
+    AssertionError error = failure(description);
+    error.initCause(realCause);
+    throw error;
   }
 
   /**
@@ -165,5 +206,9 @@ public final class Fail {
     return new AssertionError(message);
   }
 
-  private Fail() {}
+  /**
+   * This constructor is protected to make it possible to subclass this class. Since all its methods are static, there
+   * is no point on creating a new instance of it.
+   */
+  protected Fail() {}
 }

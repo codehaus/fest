@@ -15,12 +15,13 @@
  */
 package org.fest.assertions;
 
-import static java.util.Collections.emptyList;
 import static org.fest.assertions.CommonFailures.*;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import static org.fest.util.Collections.list;
 
+import java.util.Collection;
 import org.fest.test.CodeToTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -31,14 +32,21 @@ import org.junit.Test;
  */
 public class CollectionAssert_contains_Test implements GroupAssert_contains_TestCase {
 
+  private static Collection<String> collection;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    collection = list("Luke", "Leia", "Anakin");
+  }
+
   @Test
   public void should_pass_if_actual_contains_given_value() {
-    new CollectionAssert(list("Luke", "Leia")).contains("Luke");
+    new CollectionAssert(collection).contains("Luke");
   }
 
   @Test
   public void should_pass_if_actual_contains_given_values() {
-    new CollectionAssert(list("Luke", "Leia", "Anakin")).contains("Luke", "Leia");
+    new CollectionAssert(collection).contains("Luke", "Leia");
   }
 
   @Test
@@ -65,7 +73,7 @@ public class CollectionAssert_contains_Test implements GroupAssert_contains_Test
     expectNullPointerException("the given array of objects should not be null").on(new CodeToTest() {
       public void run() {
         Object[] objects = null;
-        new CollectionAssert(emptyList()).contains(objects);
+        new CollectionAssert(collection).contains(objects);
       }
     });
   }
@@ -75,27 +83,50 @@ public class CollectionAssert_contains_Test implements GroupAssert_contains_Test
     expectNullPointerException("[A Test] the given array of objects should not be null").on(new CodeToTest() {
       public void run() {
         Object[] objects = null;
-        new CollectionAssert(emptyList()).as("A Test")
-                                         .contains(objects);
+        new CollectionAssert(collection).as("A Test")
+                                        .contains(objects);
       }
     });
   }
 
   @Test
   public void should_fail_if_actual_does_not_contain_given_values() {
-    expectAssertionError("collection:<[]> does not contain element(s):<['Luke']>").on(new CodeToTest() {
+    String message = "collection:<['Luke', 'Leia', 'Anakin']> does not contain element(s):<['Han']>";
+    expectAssertionError(message).on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(emptyList()).contains("Luke");
+        new CollectionAssert(collection).contains("Han");
       }
     });
   }
 
   @Test
   public void should_fail_and_display_description_of_assertion_if_actual_does_not_contain_given_values() {
-    expectAssertionError("[A Test] collection:<[]> does not contain element(s):<['Luke']>").on(new CodeToTest() {
+    String message = "[A Test] collection:<['Luke', 'Leia', 'Anakin']> does not contain element(s):<['Han']>";
+    expectAssertionError(message).on(new CodeToTest() {
       public void run() {
-        new CollectionAssert(emptyList()).as("A Test")
-                                         .contains("Luke");
+        new CollectionAssert(collection).as("A Test")
+                                        .contains("Han");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_does_not_contain_given_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CollectionAssert(collection).overridingErrorMessage("My custom message")
+                                        .contains("Han");
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_does_not_contain_given_values() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new CollectionAssert(collection).as("A Test")
+                                        .overridingErrorMessage("My custom message")
+                                        .contains("Han");
       }
     });
   }

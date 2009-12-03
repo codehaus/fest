@@ -32,7 +32,7 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class BigDecimalAssert_isPositive_Test implements Assert_isPositive_TestCase {
+public class BigDecimalAssert_isPositive_Test implements NumberAssert_isPositive_TestCase {
 
   @Test
   public void should_pass_if_actual_is_positive() {
@@ -78,6 +78,27 @@ public class BigDecimalAssert_isPositive_Test implements Assert_isPositive_TestC
   }
 
   @Test
+  public void should_fail_with_custom_message_if_actual_is_negative() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(negativeEight()).overridingErrorMessage("My custom message")
+                                             .isPositive();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_negative() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(negativeEight()).as("A Test")
+                                             .overridingErrorMessage("My custom message")
+                                             .isPositive();
+      }
+    });
+  }
+
+  @Test
   public void should_fail_if_actual_is_zero() {
     expectAssertionError("actual value:<0> should be greater than:<0>").on(new CodeToTest() {
       public void run() {
@@ -91,6 +112,27 @@ public class BigDecimalAssert_isPositive_Test implements Assert_isPositive_TestC
     expectAssertionError("[A Test] actual value:<0> should be greater than:<0>").on(new CodeToTest() {
       public void run() {
         new BigDecimalAssert(ZERO).as("A Test")
+                                  .isPositive();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_zero() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(ZERO).overridingErrorMessage("My custom message")
+                                  .isPositive();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_zero() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new BigDecimalAssert(ZERO).as("A Test")
+                                  .overridingErrorMessage("My custom message")
                                   .isPositive();
       }
     });

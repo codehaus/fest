@@ -14,8 +14,10 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.CommonFailures.*;
+import static org.fest.assertions.CommonFailures.expectErrorIfObjectIsNull;
+import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfObjectIsNull;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
+
 import org.fest.test.CodeToTest;
 import org.junit.Test;
 
@@ -67,6 +69,27 @@ public class FileAssert_isAbsolute_Test extends FileAssert_TestCase {
     expectAssertionError("[A Test] file:<c:\\f.txt> should be an absolute path").on(new CodeToTest() {
       public void run() {
         new FileAssert(file).as("A Test")
+                            .isAbsolute();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_absolute() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(file).overridingErrorMessage("My custom message")
+                            .isAbsolute();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_absolute() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(file).as("A Test")
+                            .overridingErrorMessage("My custom message")
                             .isAbsolute();
       }
     });

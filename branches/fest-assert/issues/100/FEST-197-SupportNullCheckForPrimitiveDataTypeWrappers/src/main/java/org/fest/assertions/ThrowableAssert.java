@@ -27,6 +27,7 @@ import static org.fest.util.Strings.concat;
  */
 public class ThrowableAssert extends GenericAssert<Throwable> {
 
+  // TODO remove dependency on ObjectAssert.
   private final ObjectAssert objectAssert;
 
   /**
@@ -88,9 +89,9 @@ public class ThrowableAssert extends GenericAssert<Throwable> {
     isNotNull();
     objectAssert.validateNotNull(type);
     Class<?> current = actual.getClass();
-    if (!type.equals(current))
-      fail(concat("expected exactly the same type:", inBrackets(type), " but was:", inBrackets(current)));
-    return this;
+    if (type.equals(current)) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("expected exactly the same type:", inBrackets(type), " but was:", inBrackets(current)));
   }
 
   /**
@@ -115,9 +116,9 @@ public class ThrowableAssert extends GenericAssert<Throwable> {
   public ThrowableAssert hasNoCause() {
     isNotNull();
     Throwable actualCause = actual.getCause();
-    if (actualCause != null)
-      fail(concat("expected exception without cause, but cause was:", inBrackets(actualCause.getClass())));
-    return this;
+    if (actualCause == null) return this;
+    failIfCustomMessageIsSet();
+    throw failure(concat("expected exception without cause, but cause was:", inBrackets(actualCause.getClass())));
   }
 
   /**
@@ -232,6 +233,7 @@ public class ThrowableAssert extends GenericAssert<Throwable> {
   /** {@inheritDoc} */
   public ThrowableAssert overridingErrorMessage(String message) {
     replaceDefaultErrorMessagesWith(message);
+    objectAssert.overridingErrorMessage(message);
     return this;
   }
 }

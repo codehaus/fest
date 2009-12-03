@@ -28,8 +28,7 @@ public class Fail_failIfNull_Test {
 
   @Test
   public void should_fail_if_value_is_null() {
-    String expectedMessage = "[A message] expecting a non-null object, but it was null";
-    expectAssertionError(expectedMessage).on(new CodeToTest() {
+    expectAssertionError("[A message] expecting a non-null object, but it was null").on(new CodeToTest() {
       public void run() {
         Fail.failIfNull(null, new BasicDescription("A message"), null);
       }
@@ -38,8 +37,7 @@ public class Fail_failIfNull_Test {
 
   @Test
   public void should_fail_with_custom_message_if_value_is_null() {
-    String expectedMessage = "My custom message";
-    expectAssertionError(expectedMessage).on(new CodeToTest() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
         Fail.failIfNull("My custom message", null, null);
       }

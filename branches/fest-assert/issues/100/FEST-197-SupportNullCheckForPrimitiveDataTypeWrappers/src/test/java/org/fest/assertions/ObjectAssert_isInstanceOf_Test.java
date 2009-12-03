@@ -33,6 +33,25 @@ public class ObjectAssert_isInstanceOf_Test implements Assert_isInstanceOf_TestC
   }
 
   @Test
+  public void should_fail_if_actual_is_null() {
+    expectErrorIfObjectIsNull(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(null).isInstanceOf(String.class);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
+    expectErrorWithDescriptionIfObjectIsNull(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(null).as("A Test")
+                              .isInstanceOf(String.class);
+      }
+    });
+  }
+
+  @Test
   public void should_throw_error_if_expected_is_null() {
     expectErrorIfTypeIsNull(new CodeToTest() {
       public void run() {
@@ -53,40 +72,42 @@ public class ObjectAssert_isInstanceOf_Test implements Assert_isInstanceOf_TestC
 
   @Test
   public void should_fail_if_actual_is_not_instance_of_expected() {
-    expectAssertionError("expected instance of:<java.lang.String> but was instance of:<java.lang.Integer>").on(
-      new CodeToTest() {
-        public void run() {
-          new ObjectAssert(2).isInstanceOf(String.class);
-        }
-      });
-  }
-
-  @Test
-  public void should_fail_and_display_description_of_assertion_if_actual_is_not_instance_of_expected() {
-    expectAssertionError("[A Test] expected instance of:<java.lang.String> but was instance of:<java.lang.Integer>")
-      .on(new CodeToTest() {
-        public void run() {
-          new ObjectAssert(2).as("A Test")
-                             .isInstanceOf(String.class);
-        }
-      });
-  }
-
-  @Test
-  public void should_fail_if_actual_is_null() {
-    expectErrorIfObjectIsNull(new CodeToTest() {
+    final String message = "expected instance of:<java.lang.String> but was instance of:<java.lang.Integer>";
+    expectAssertionError(message).on(new CodeToTest() {
       public void run() {
-        new ObjectAssert(null).isInstanceOf(String.class);
+        new ObjectAssert(2).isInstanceOf(String.class);
       }
     });
   }
 
   @Test
-  public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
-    expectErrorWithDescriptionIfObjectIsNull(new CodeToTest() {
+  public void should_fail_and_display_description_of_assertion_if_actual_is_not_instance_of_expected() {
+    final String message = "[A Test] expected instance of:<java.lang.String> but was instance of:<java.lang.Integer>";
+    expectAssertionError(message).on(new CodeToTest() {
       public void run() {
-        new ObjectAssert(null).as("A Test")
-                              .isInstanceOf(String.class);
+        new ObjectAssert(2).as("A Test")
+                           .isInstanceOf(String.class);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_instance_of_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(2).overridingErrorMessage("My custom message")
+                           .isInstanceOf(String.class);
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_instance_of_expected() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new ObjectAssert(2).as("A Test")
+                           .overridingErrorMessage("My custom message")
+                           .isInstanceOf(String.class);
       }
     });
   }

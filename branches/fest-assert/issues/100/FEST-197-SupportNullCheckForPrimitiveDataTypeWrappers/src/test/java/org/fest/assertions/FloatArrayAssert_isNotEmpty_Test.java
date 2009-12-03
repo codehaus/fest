@@ -37,6 +37,25 @@ public class FloatArrayAssert_isNotEmpty_Test implements GroupAssert_isNotEmpty_
 
   @Test
   public void should_fail_if_actual_is_null() {
+    expectErrorIfArrayIsNull(new CodeToTest() {
+      public void run() {
+        new FloatArrayAssert(null).isNotEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
+    expectErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
+      public void run() {
+        new FloatArrayAssert(null).as("A Test")
+                                  .isNotEmpty();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_if_actual_is_empty() {
     expectAssertionError("expecting a non-empty array, but it was empty").on(new CodeToTest() {
       public void run() {
         new FloatArrayAssert(emptyFloatArray()).isNotEmpty();
@@ -45,7 +64,7 @@ public class FloatArrayAssert_isNotEmpty_Test implements GroupAssert_isNotEmpty_
   }
 
   @Test
-  public void should_fail_and_display_description_of_assertion_if_actual_is_null() {
+  public void should_fail_and_display_description_of_assertion_if_actual_is_empty() {
     expectAssertionError("[A Test] expecting a non-empty array, but it was empty").on(new CodeToTest() {
       public void run() {
         new FloatArrayAssert(emptyFloatArray()).as("A Test")
@@ -55,20 +74,22 @@ public class FloatArrayAssert_isNotEmpty_Test implements GroupAssert_isNotEmpty_
   }
 
   @Test
-  public void should_fail_if_actual_is_empty() {
-    expectErrorIfArrayIsNull(new CodeToTest() {
+  public void should_fail_with_custom_message_if_actual_is_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new FloatArrayAssert(null).isNotEmpty();
+        new FloatArrayAssert(emptyFloatArray()).overridingErrorMessage("My custom message")
+                                               .isNotEmpty();
       }
     });
   }
 
   @Test
-  public void should_fail_and_display_description_of_assertion_if_actual_is_empty() {
-    expectErrorWithDescriptionIfArrayIsNull(new CodeToTest() {
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_empty() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
       public void run() {
-        new FloatArrayAssert(null).as("A Test")
-                                  .isNotEmpty();
+        new FloatArrayAssert(emptyFloatArray()).as("A Test")
+                                               .overridingErrorMessage("My custom message")
+                                               .isNotEmpty();
       }
     });
   }

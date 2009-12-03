@@ -17,7 +17,7 @@ package org.fest.assertions;
 import static org.fest.assertions.FileStub.newFile;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
 import org.fest.test.CodeToTest;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * Tests for <code>{@link FileAssert#isNotEqualTo(java.io.File)}</code>.
@@ -26,7 +26,14 @@ import org.junit.Test;
  * @author Yvonne Wang
  * @author Alex Ruiz
  */
-public class FileAssert_isNotEqualTo_Test extends FileAssert_TestCase implements Assert_isNotEqualTo_TestCase {
+public class FileAssert_isNotEqualTo_Test implements Assert_isNotEqualTo_TestCase {
+
+  private static FileStub file;
+
+  @BeforeClass
+  public static void setUpOnce() {
+    file = newFile("c:\\f.txt");
+  }
 
   @Test
   public void should_pass_if_actual_and_expected_are_not_equal() {
@@ -46,7 +53,29 @@ public class FileAssert_isNotEqualTo_Test extends FileAssert_TestCase implements
   public void should_fail_and_display_description_of_assertion_if_actual_and_expected_are_equal() {
     expectAssertionError("[A Test] actual value:<c:\\f.txt> should not be equal to:<c:\\f.txt>").on(new CodeToTest() {
       public void run() {
-        new FileAssert(file).as("A Test").isNotEqualTo(newFile("c:\\f.txt"));
+        new FileAssert(file).as("A Test")
+                            .isNotEqualTo(newFile("c:\\f.txt"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(file).overridingErrorMessage("My custom message")
+                            .isNotEqualTo(newFile("c:\\f.txt"));
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_and_expected_are_equal() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(file).as("A Test")
+                            .overridingErrorMessage("My custom message")
+                            .isNotEqualTo(newFile("c:\\f.txt"));
       }
     });
   }

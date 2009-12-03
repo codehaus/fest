@@ -50,4 +50,25 @@ public class FloatAssert_isNaN_Test {
       }
     });
   }
+
+  @Test
+  public void should_fail_with_custom_message_if_actual_is_not_NaN() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FloatAssert(6.68f).overridingErrorMessage("My custom message")
+                              .isNaN();
+      }
+    });
+  }
+
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_is_not_NaN() {
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FloatAssert(6.68f).as("A Test")
+                              .overridingErrorMessage("My custom message")
+                              .isNaN();
+      }
+    });
+  }
 }

@@ -14,8 +14,10 @@
  */
 package org.fest.assertions;
 
-import static org.fest.assertions.CommonFailures.*;
+import static org.fest.assertions.CommonFailures.expectErrorIfObjectIsNull;
+import static org.fest.assertions.CommonFailures.expectErrorWithDescriptionIfObjectIsNull;
 import static org.fest.test.ExpectedFailure.expectAssertionError;
+
 import org.fest.test.CodeToTest;
 import org.junit.Test;
 
@@ -68,6 +70,29 @@ public class FileAssert_doesNotExist_Test extends FileAssert_TestCase {
     expectAssertionError("[A Test] file:<c:\\f.txt> should not exist").on(new CodeToTest() {
       public void run() {
         new FileAssert(file).as("A Test")
+                            .doesNotExist();
+      }
+    });
+  }
+  
+  @Test
+  public void should_fail_with_custom_message_if_actual_exists() {
+    file.ensureExists();
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(file).overridingErrorMessage("My custom message")
+                            .doesNotExist();
+      }
+    });
+  }
+  
+  @Test
+  public void should_fail_with_custom_message_ignoring_description_of_assertion_if_actual_exists() {
+    file.ensureExists();
+    expectAssertionError("My custom message").on(new CodeToTest() {
+      public void run() {
+        new FileAssert(file).as("A Test")
+                            .overridingErrorMessage("My custom message")
                             .doesNotExist();
       }
     });
