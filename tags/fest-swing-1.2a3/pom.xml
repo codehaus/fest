@@ -105,10 +105,10 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>swinghelper</groupId>
-      <artifactId>debug</artifactId>
-      <version>1.0</version>
-      <scope>compile</scope>
+    	<groupId>net.java.dev.swinghelper</groupId>
+    	<artifactId>swinghelper-debug</artifactId>
+    	<version>1.0</version>
+    	<scope>compile</scope>
     </dependency>
   </dependencies>
 </project>
