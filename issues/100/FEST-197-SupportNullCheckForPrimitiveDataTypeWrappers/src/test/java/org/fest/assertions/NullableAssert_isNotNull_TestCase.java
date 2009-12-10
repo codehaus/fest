@@ -15,7 +15,7 @@
 package org.fest.assertions;
 
 /**
- * Test case for implementations of <code>{@link GenericAssert#isNotNull()}</code>.
+ * Test case for implementations of <code>{@link NullableAssert#isNotNull()}</code>.
  *
  * @author Alex Ruiz
  * @author Ansgar Konermann
